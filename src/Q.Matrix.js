@@ -6,8 +6,8 @@
 Q.Matrix = function(){
 
 	`
-	Creates a matrix of arbitrary dimensions.
-	Expects an argument list of arrays 
+	Creates a matrix of arbitrary dimension.
+	Expects an argument list of equal-length arrays 
 	where each array represents a row of column values.
 	Automatically determines matrix dimensions 
 	based on the number of arguments (rows)
@@ -91,7 +91,7 @@ Object.assign( Q.Matrix, {
 	},
 	create: function( size, f ){
 
-		if( typeof s !== 'number' ) s = 2
+		if( typeof size !== 'number' ) size = 2
 		if( typeof f !== 'function' ) f = function(){ return 0 }
 		const data = []
 		for( let y = 0; y < size; y ++ ){
@@ -199,9 +199,9 @@ Object.assign( Q.Matrix.prototype, {
 
 		`
 		Equivalent to 
-			this.columns[ x ][ y ] 
+		this.columns[ x ][ y ] 
 		or 
-			this.rows[ y ][ x ]
+		this.rows[ y ][ x ]
 		but with safety checks.
 		`
 		
@@ -266,9 +266,9 @@ Object.assign( Q.Matrix.prototype, {
 
 		`
 		Equivalent to 
-			this.columns[ x ][ y ] = n 
+		this.columns[ x ][ y ] = n 
 		or 
-			this.rows[ y ][ x ] = n
+		this.rows[ y ][ x ] = n
 		but with safety checks.
 		`
 
