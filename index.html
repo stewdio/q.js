@@ -1,0 +1,92 @@
+<script src="src/Q.js"></script>
+<script src="src/Q.Matrix.js"></script>
+<script src="src/Q.Gate.js"></script>
+<script>
+
+
+
+/*
+console.log( '\n\nQ.Matrix\n', Q.extractDocumentation( Q.Matrix ), '\n\n' )
+console.log( '\n\nQ.Matrix.prototype.multiply\n', Q.extractDocumentation( Q.Matrix.prototype.multiply ), '\n\n' )
+
+
+console.log( 'Q.Matrix.IDENTITY_2X2', Q.Matrix.IDENTITY_2X2 )
+console.log( 'Q.Matrix.IDENTITY_3X3', Q.Matrix.IDENTITY_3X3 )
+console.log( 'Q.Matrix.IDENTITY_4X4', Q.Matrix.IDENTITY_4X4 )
+
+
+console.log( 'Q.Matrix.CNOT', Q.Matrix.CNOT )
+console.log( '\nQ.Matrix.CNOT.toHtml()', Q.Matrix.CNOT.toHTML(), '\n\n' )
+console.log( '\nQ.Matrix.TEST_MAP_9X9.toCSV()', Q.Matrix.TEST_MAP_9X9.toCSV(), '\n\n' )
+console.log( '\nQ.Matrix.TEST_MAP_9X9.toTSV()', Q.Matrix.TEST_MAP_9X9.toTSV(), '\n\n' )
+
+
+console.log( 'How many matrices have we created?', Q.Matrix.index )
+*/
+
+
+
+var a = new Q.Matrix(
+	[ 2, 2, 2 ],
+	[ 2, 2, 2 ],
+	[ 2, 2, 2 ])
+
+var b = new Q.Matrix(
+	[ 3 ],
+	[ 3 ],
+	[ 3 ])
+
+console.log( 'a.multiply( b ).toTSV()', a.multiply( b ).toTSV() )
+
+
+
+
+var c = new Q.Matrix(
+	[ 1, 2, 3 ],
+	[ 4, 5, 6 ],
+	[ 7, 8, 9 ])
+
+var d = new Q.Matrix(
+	[ 1 ],
+	[ 2 ],
+	[ 3 ])
+
+console.log( 'c.multiply( d ).toTSV()', c.multiply( d ).toTSV() )
+
+
+
+var e = new Q.Matrix(
+	[ 1, 2 ],
+	[ 3, 4 ])
+
+var f = new Q.Matrix(
+	[ 1, 2 ],
+	[ 3, 4 ])
+
+console.log( 'e.multiply( df ).toTSV()', e.multiply( f ).toTSV() )
+
+
+
+
+
+var twos = new Q.Matrix(
+	[ 2, 2, 2 ],
+	[ 2, 2, 2 ],
+	[ 2, 2, 2 ])
+
+var threes = new Q.Matrix(
+	[ 3, 3, 3 ],
+	[ 3, 3, 3 ],
+	[ 3, 3, 3 ])
+
+
+console.log( 'Q.Matrix.IDENTITY_2X2.multiply( e ).toTSV()', Q.Matrix.IDENTITY_2X2.multiply( e ))
+console.log( 'Q.Matrix.IDENTITY_3X3.multiply( c ).toTSV()', Q.Matrix.IDENTITY_3X3.multiply( c ))
+
+
+
+
+const gate = new Q.Gate()
+
+
+</script>
