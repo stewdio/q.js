@@ -5,6 +5,43 @@
 
 
 
+
+console.log( '\n\nQ.Matrix\n', Q.extractDocumentation( Q.Matrix ), '\n\n' )
+
+
+
+
+var qubit0 = new Q.Matrix(
+	[ 1 ],
+	[ 0 ])
+
+var qubit1 = new Q.Matrix(
+	[ 0 ],
+	[ 1 ])
+
+console.log( '0 ⊗ 0 =', qubit0.multiplyTensor( qubit0 ).toTSV(), '\n\n' )
+console.log( '0 ⊗ 1 =', qubit0.multiplyTensor( qubit1 ).toTSV(), '\n\n' )
+console.log( '1 ⊗ 0 =', qubit1.multiplyTensor( qubit0 ).toTSV(), '\n\n' )
+console.log( '1 ⊗ 1 =', qubit1.multiplyTensor( qubit1 ).toTSV(), '\n\n' )
+
+
+
+
+var matrixA = new Q.Matrix(
+	[ 1, 2 ],
+	[ 3, 4 ])
+console.log( 'Matrix A =', matrixA.toTSV(), '\n\n' )
+
+var matrixB = new Q.Matrix(
+	[ 0, 5 ],
+	[ 6, 7 ])
+console.log( 'Matrix B =', matrixB.toTSV(), '\n\n' )
+
+console.log( 'Matrix A ⊗ Matrix B =', matrixA.multiplyTensor( matrixB ).toTSV(), '\n\n' )
+
+
+
+
 /*
 console.log( '\n\nQ.Matrix\n', Q.extractDocumentation( Q.Matrix ), '\n\n' )
 console.log( '\n\nQ.Matrix.prototype.multiply\n', Q.extractDocumentation( Q.Matrix.prototype.multiply ), '\n\n' )
@@ -25,7 +62,7 @@ console.log( 'How many matrices have we created?', Q.Matrix.index )
 */
 
 
-
+/*
 var a = new Q.Matrix(
 	[ 2, 2, 2 ],
 	[ 2, 2, 2 ],
@@ -82,11 +119,46 @@ var threes = new Q.Matrix(
 
 console.log( 'Q.Matrix.IDENTITY_2X2.multiply( e ).toTSV()', Q.Matrix.IDENTITY_2X2.multiply( e ))
 console.log( 'Q.Matrix.IDENTITY_3X3.multiply( c ).toTSV()', Q.Matrix.IDENTITY_3X3.multiply( c ))
+*/
+
+
+
+/*
+
+var a = new Q.Matrix(
+	[ 1, 2 ],
+	[ 3, 4 ])
+
+var b = new Q.Matrix(
+	[ 0, 5 ],
+	[ 6, 7 ])
+
+// console.log( 'a.multiplyTensor( b )', a.multiplyTensor( b ))
+
+*/
+
+
+
+
+
+/*
+var csv = Q.Matrix.fromCSV(`
+	0, 1, 2
+	3, 4, 5
+	6, 7, 8`)
+console.log( 'csv import', csv.toTSV(), '\n\n' )
+
+
+var tsv = Q.Matrix.fromTSV(`0	1	2
+3	4	5
+6	7	8`)
+console.log( 'tsv import', tsv.toTSV(), '\n\n' )
 
 
 
 
 const gate = new Q.Gate()
+*/
 
 
 </script>

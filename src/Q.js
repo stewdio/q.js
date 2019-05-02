@@ -21,7 +21,7 @@ const Q = (function(){
 
 	const domElement = document.createElement( 'div' )
 	domElement.style.fontFamily = '"Courier New", Courier, monospace'
-	domElement.innerHTML = 'Q.js'
+	domElement.innerHTML = 'Q.js<br>Open your JavaScript console!'
 	document.addEventListener( 'DOMContentLoaded', function(){
 	
 		document.body.append( domElement )

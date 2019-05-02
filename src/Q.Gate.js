@@ -64,6 +64,7 @@ Q.Gate.createConstants(
 	//Pauli-Y
 	//Pauli-Z
 	//etc
+
 )
 
 
