@@ -15,8 +15,11 @@ actually just make these special Q.Matrix instances
 
 Q.Qubit = function(){
 
-	0
-	1
+	//0
+	//1
+
+
+	//this.controlBit = this[ 0 ]
 }
 
 

@@ -32,6 +32,7 @@ Q.Matrix = function(){
 		SEE ALSO
 
 	https://en.wikipedia.org/wiki/Matrix_(mathematics)
+	https://en.wikipedia.org/wiki/Row-_and_column-major_order
 
 	`
 
@@ -48,17 +49,19 @@ Q.Matrix = function(){
 	//  That means it’s easier to write an instance invocation in code
 	//  and easier to read when inspecting properties in the console.
 
+	let 
+	matrixWidth = null,
+	matrixWidthIsBroken = false
+
 	this.rows = Array.from( arguments )
-	let columnLength = null
 	this.rows.forEach( function( row ){
 
 		if( typeof row === 'number' ) row = [ row ]
-		if( columnLength === null ) columnLength = row.length
-		else if( columnLength !== row.length ){
-
-			Q.error( `Matrix#${index} was malformed.`, this )
-		}
+		if( matrixWidth === null ) matrixWidth = row.length
+		else if( matrixWidth !== row.length ) matrixWidthIsBroken = true
 	})
+	if( matrixWidthIsBroken )
+		return Q.error( `Q.Matrix found upon initialization that matrix#${this.index} row lengths were not equal. You are going to have a bad time.`, this )		
 
 
 	//  But for convenience we can also organize by columns.
@@ -66,7 +69,7 @@ Q.Matrix = function(){
 
 	const matrix = this
 	this.columns = []
-	for( let x = 0; x < columnLength; x ++ ){
+	for( let x = 0; x < matrixWidth; x ++ ){
 	
 		const column = []
 		for( let y = 0; y < this.rows.length; y ++ ){
@@ -172,19 +175,37 @@ Object.assign( Q.Matrix, {
 	
 
 
-	//  Ingest.
+	//  Import FROM a format.
 
+	from: function( format ){
+
+		if( typeof format !== 'string' ) format = 'Array'
+		format = format.toLowerCase()
+
+		const f = Q.Matrix[ 'from'+ format ]
+		if( typeof f !== 'function' )
+			return Q.error( `Q.Matrix could not find an importer for “${format}” data.` )
+		return f()
+	},
 	fromArray: function( array ){
 
-		//  so.... we need to decide on how we figure out the intended dimensions.
-		//  explicit argument pass?
-		//  educated guess? (try for a square?)
-		return this
+		return new Q.Matrix( ...array )
 	},
-	fromXSV: function( input, separator ){
+	fromXSV: function( input, rowSeparator, valueSeparator ){
+
+		`
+		Ingest string data organized by row, then by column
+		where rows are separated by one token (default: \n)
+		and column values are separated by another token
+		(default: \t).
+
+		`
+
+		if( typeof rowSeparator   !== 'string' ) rowSeparator   = '\n'
+		if( typeof valueSeparator !== 'string' ) valueSeparator = '\t'
 
 		const 
-		inputRows  = input.split( '\n' ),
+		inputRows  = input.split( rowSeparator ),
 		outputRows = []
 
 		inputRows.forEach( function( inputRow ){
@@ -193,9 +214,9 @@ Object.assign( Q.Matrix, {
 			if( inputRow === '' ) return
 			
 			const outputRow = []
-			inputRow.split( separator ).forEach( function( cellValue ){
+			inputRow.split( valueSeparator ).forEach( function( cellValue ){
 
-				outputRow.push( cellValue )
+				outputRow.push( parseFloat( cellValue ))
 			})
 			outputRows.push( outputRow )
 		})
@@ -203,17 +224,23 @@ Object.assign( Q.Matrix, {
 	},
 	fromCSV: function( csv ){
 
-		return Q.Matrix.fromXSV( csv, ',' )
+		return Q.Matrix.fromXSV( csv.replace( /\r/g, '\n' ), '\n', ',' )
 	},
 	fromTSV: function( tsv ){
 
-		return Q.Matrix.fromXSV( tsv, '\t' )
+		return Q.Matrix.fromXSV( tsv, '\n', '\t' )
 	},
 	fromHTML: function( html ){
 
-		//  from HTML code? or domElements?
-		//  break apart by TR / TD
-		return 'OMFG some other day get off my back'
+		return Q.Matrix.fromXSV(
+
+			html
+				.replace( /\r?\n|\r|<tr>|<td>/g, '' )
+				.replace( /<\/td>(\s*)<\/tr>/g, '</tr>' )
+				.match( /<table>(.*)<\/table>/i )[ 1 ],
+			'</tr>',
+			'</td>'
+		)
 	},
 
 
@@ -453,7 +480,19 @@ Object.assign( Q.Matrix.prototype, {
 	},
 	toArray: function(){
 
-		return this.rows.flat()
+		return this.rows//.flat()
+	},
+	toXSV: function( rowSeparator, valueSeparator ){
+		
+		return this.rows.reduce( function( xsv, row ){
+
+			return xsv + rowSeparator + row.reduce( function( xsv, cell, c ){
+
+				return xsv + ( c > 0 ? valueSeparator : '' ) + cell
+			
+			}, '' )
+		
+		}, '' )
 	},
 	toCSV: function(){
 
@@ -461,15 +500,7 @@ Object.assign( Q.Matrix.prototype, {
 		Creates a comma-separated-values table and returns it as a string.
 		`
 
-		return this.rows.reduce( function( csv, row ){
-
-			return csv +'\n'+ row.reduce( function( csv, cell, c ){
-
-				return csv + ( c > 0 ? ',' : '' ) + cell
-			
-			}, '' )
-		
-		}, '' )
+		return this.toXSV( '\n', ',' )
 	},
 	toTSV: function(){
 
@@ -477,15 +508,7 @@ Object.assign( Q.Matrix.prototype, {
 		Creates a tab-separated-values table and returns it as a string.
 		`
 
-		return this.rows.reduce( function( csv, row ){
-
-			return csv +'\n'+ row.reduce( function( csv, cell, c ){
-
-				return csv + ( c > 0 ? '\t' : '' ) + cell
-			
-			}, '' )
-		
-		}, '' )
+		return this.toXSV( '\n', '\t' )
 	},
 	toHTML: function(){
 

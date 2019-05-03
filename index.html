@@ -141,24 +141,46 @@ var b = new Q.Matrix(
 
 
 
-/*
+
 var csv = Q.Matrix.fromCSV(`
-	0, 1, 2
-	3, 4, 5
-	6, 7, 8`)
-console.log( 'csv import', csv.toTSV(), '\n\n' )
+	1, 2, 3
+	4, 5, 6
+	7, 8, 9`)
+console.log( 'Matrix from CSV', csv.toTSV(), '\n\n' )
 
 
-var tsv = Q.Matrix.fromTSV(`0	1	2
-3	4	5
-6	7	8`)
-console.log( 'tsv import', tsv.toTSV(), '\n\n' )
+var tsv = Q.Matrix.fromTSV(`1	2	3
+4	5	6
+7	8	9`)
+console.log( 'Matrix from TSV', tsv.toTSV(), '\n\n' )
+
+
+const html = `
+<table>
+	<tr>
+		<td>1</td>
+		<td>2</td>
+		<td>3</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>5</td>
+		<td>6</td>
+	</tr>
+	<tr>
+		<td>7</td>
+		<td>8</td>
+		<td>9</td>
+	</tr>
+</table> `
+
+console.log( 'Matrix from HTML', Q.Matrix.fromHTML( html ).toTSV(), '\n\n' )
 
 
 
 
-const gate = new Q.Gate()
-*/
+
+
 
 
 </script>

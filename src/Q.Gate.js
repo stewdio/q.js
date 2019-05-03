@@ -1,8 +1,18 @@
 'strict'
 
 
+/*
 
 
+
+unclear to me at this point if better for Gate to extend Matrix
+or for Gate to just have a .matrix property
+
+probably the latter...
+
+
+
+*/
 Q.Gate = function( matrix ){
 
 	`
@@ -12,15 +22,18 @@ Q.Gate = function( matrix ){
 	https://en.wikipedia.org/wiki/Quantum_logic_gate
 	`
 
+	Q.Matrix.call( this )
+	this.index = Q.Gate.index ++
+
+
 	const domElement = document.createElement( 'div' )
 	domElement.classList.add( 'qc-gate' )
 	domElement.innerHTML = '[]'
 	Q.domElement.appendChild( domElement )
 
-	this.index = Q.Gate.index
-	Q.Gate.index += 1
+	
 
-
+	this.domElement = domElement
 
 	/*
 	when hover over a gate we should see popup info about its state
@@ -28,6 +41,14 @@ Q.Gate = function( matrix ){
 	*/
 
 }
+
+
+//  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain
+
+Q.Gate.prototype = Q.Matrix.prototype
+Q.Gate.constructor = Q.Gate
+
+
 
 
 
@@ -72,7 +93,6 @@ Q.Gate.createConstants(
 
 Object.assign( Q.Gate.prototype, {
 
-
 	destroy: function(){
 
 		// this.domElement.parent.removeChild( this.domElement )
@@ -82,7 +102,6 @@ Object.assign( Q.Gate.prototype, {
 		Array.from( arguments ).forEach( function(){})
 		return this
 	}
-
 })
 
 
