@@ -3,7 +3,7 @@
 Q.js
 ==============================================================================
 
-Q.js is quantumn computation in your browser. I’m just learning how quantum 
+Q.js is quantum computation in your browser. I’m just learning how quantum 
 computation works—and I’m writing Q.js as I go along. This is starting small, 
 but I think it’s got big potential. Right now all the action is in your 
 JavaScript console, so open that up!
