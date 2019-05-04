@@ -24,8 +24,8 @@ Q.Matrix = function(){
 		
 		[ 1, 0, 0, 0 ],
 		[ 0, 1, 0, 0 ],
-		[ 0, 0, 1, 0 ],
-		[ 0, 0, 0, 1 ]
+		[ 0, 0, 0, 1 ],
+		[ 0, 0, 1, 0 ]
 	)
 
 	
@@ -99,14 +99,38 @@ Q.Matrix = function(){
 Object.assign( Q.Matrix, {
 
 	index: 0,
-	isWithinRange: function( n, min, max ){
+	isMatrixLike: function( obj ){
+
+		return obj instanceof Q.Matrix || Q.Matrix.prototype.isPrototypeOf( obj )
+	},
+	isWithinRange: function( n, minimum, maximum ){
 
 		return typeof n === 'number' && 
-			n >= min && 
-			n <= max && 
+			n >= minimum && 
+			n <= maximum && 
 			n == parseInt( n )
 	},
-	create: function( size, f ){
+	getWidth: function( matrix ){
+
+		return matrix.columns.length
+	},
+	getHeight: function( matrix ){
+
+		return matrix.rows.length
+	},
+	haveEqualDimensions: function( matrix0, matrix1 ){
+
+		return (
+		
+			matrix0.rows.length === matrix1.rows.length && 
+			matrix0.columns.length === matrix1.columns.length
+		)
+	},
+
+
+
+
+	createSquare: function( size, f ){
 
 		if( typeof size !== 'number' ) size = 2
 		if( typeof f !== 'function' ) f = function(){ return 0 }
@@ -124,15 +148,15 @@ Object.assign( Q.Matrix, {
 	},
 	createZero: function( size ){
 	
-		return new Q.Matrix.create( size )
+		return new Q.Matrix.createSquare( size )
 	},
 	createOne: function( size ){
 	
-		return new Q.Matrix.create( size, function(){ return 1 })
+		return new Q.Matrix.createSquare( size, function(){ return 1 })
 	},
 	createIdentity: function( size ){
 
-		return new Q.Matrix.create( size, function( x, y ){ return x === y ? 1 : 0 })
+		return new Q.Matrix.createSquare( size, function( x, y ){ return x === y ? 1 : 0 })
 	},
 	createConstant: function( key, value ){
 
@@ -143,33 +167,12 @@ Object.assign( Q.Matrix, {
 
 		if( arguments.length % 2 !== 0 ){
 
-			Q.error( 'Q.Matrix attempted to create constants with invalid (KEY, VALUE) pairs.' )
-			return
+			return Q.error( 'Q.Matrix attempted to create constants with invalid (KEY, VALUE) pairs.' )
 		}
 		for( let i = 0; i < arguments.length; i += 2 ){
 
 			Q.Matrix.createConstant( arguments[ i ], arguments[ i + 1 ])
 		}
-	},
-	
-
-
-
-	getWidth: function( matrix ){
-
-		return matrix.columns.length
-	},
-	getHeight: function( matrix ){
-
-		return matrix.rows.length
-	},
-	haveEqualDimensions: function( matrix0, matrix1 ){
-
-		return (
-		
-			matrix0.rows.length === matrix1.rows.length && 
-			matrix0.columns.length === matrix1.columns.length
-		)
 	},
 
 	
@@ -250,8 +253,8 @@ Object.assign( Q.Matrix, {
 
 	add: function( matrix0, matrix1 ){
 
-		if( matrix0 instanceof Q.Matrix !== true ||
-			matrix1 instanceof Q.Matrix !== true ){
+		if( Q.Matrix.isMatrixLike( matrix0 ) !== true ||
+			Q.Matrix.isMatrixLike( matrix1 ) !== true ){
 
 			return Q.error( `Q.Matrix attempted to add something that was not a matrix.` )
 		}
@@ -270,21 +273,21 @@ Object.assign( Q.Matrix, {
 
 		}, [] ))
 	},
-	multiplyScalar: function( matrix, s ){
+	multiplyScalar: function( matrix, scalar ){
 
-		if( matrix instanceof Q.Matrix !== true ){
+		if( Q.Matrix.isMatrixLike( matrix ) !== true ){
 
 			return Q.error( `Q.Matrix attempted to scale something that was not a matrix.` )
 		}
-		if( typeof s !== 'number' ){
+		if( typeof scalar !== 'number' ){
 
-			return Q.error( `Q.Matrix attempted to scale this matrix#${matrix.index} by an invalid scalar: ${s}.` )
+			return Q.error( `Q.Matrix attempted to scale this matrix#${matrix.index} by an invalid scalar: ${scalar}.` )
 		}
-		return new Q.Matrix( ...this.rows.reduce( function( resultMatrixRow, row ){
+		return new Q.Matrix( ...matrix.rows.reduce( function( resultMatrixRow, row ){
 
-			resultMatrixRow.push( row.reduce( function( resultMatrixColumn, cell ){
+			resultMatrixRow.push( row.reduce( function( resultMatrixColumn, cellValue ){
 
-				resultMatrixColumn.push( cell * s )
+				resultMatrixColumn.push( cellValue * scalar )
 				return resultMatrixColumn
 			
 			}, [] ))
@@ -307,8 +310,8 @@ Object.assign( Q.Matrix, {
 		https://en.wikipedia.org/wiki/Matrix_multiplication
 		`
 
-		if( matrix0 instanceof Q.Matrix !== true ||
-			matrix1 instanceof Q.Matrix !== true ){
+		if( Q.Matrix.isMatrixLike( matrix0 ) !== true ||
+			Q.Matrix.isMatrixLike( matrix1 ) !== true ){
 
 			return Q.error( `Q.Matrix attempted to multiply something that was not a matrix.` )
 		}
@@ -340,8 +343,8 @@ Object.assign( Q.Matrix, {
 		https://en.wikipedia.org/wiki/Tensor_product
 		`
 
-		if( matrix0 instanceof Q.Matrix !== true ||
-			matrix1 instanceof Q.Matrix !== true ){
+		if( Q.Matrix.isMatrixLike( matrix0 ) !== true ||
+			Q.Matrix.isMatrixLike( matrix1 ) !== true ){
 
 			return Q.error( `Q.Matrix attempted to tensor something that was not a matrix.` )
 		}
@@ -372,54 +375,6 @@ Object.assign( Q.Matrix, {
 		return new Q.Matrix( ...resultMatrix )
 	}
 })
-
-
-
-
-
-
-    //////////////////////////
-   //                      //
-  //   Static constants   //
- //                      //
-//////////////////////////
-
-
-Q.Matrix.createConstants(
-
-	'IDENTITY_2X2', Q.Matrix.createIdentity( 2 ),
-	'IDENTITY_3X3', Q.Matrix.createIdentity( 3 ),
-	'IDENTITY_4X4', Q.Matrix.createIdentity( 4 ),
-		
-	'NEGATION_2X2', new Q.Matrix(
-		[ 0, 1 ],
-		[ 1, 0 ]),
-
-	'CONSTANT0_2X2', new Q.Matrix(
-		[ 1, 1 ],
-		[ 0, 0 ]),
-
-	'CONSTANT1_2X2', new Q.Matrix(
-		[ 0, 0 ],
-		[ 1, 1 ]),
-
-	'CNOT', new Q.Matrix(
-		[ 1, 0, 0, 0 ],
-		[ 0, 1, 0, 0 ],
-		[ 0, 0, 0, 1 ],
-		[ 0, 0, 1, 0 ]),
-
-	'TEST_MAP_9X9', new Q.Matrix(
-		[ 11, 21, 31, 41, 51, 61, 71, 81, 91 ],
-		[ 12, 22, 32, 42, 52, 62, 72, 82, 92 ],
-		[ 13, 23, 33, 43, 53, 63, 73, 83, 93 ],
-		[ 14, 24, 34, 44, 54, 64, 74, 84, 94 ],
-		[ 15, 25, 35, 45, 55, 65, 75, 85, 95 ],
-		[ 16, 26, 36, 46, 56, 66, 76, 86, 96 ],
-		[ 17, 27, 37, 47, 57, 67, 77, 87, 97 ],
-		[ 18, 28, 38, 48, 58, 68, 78, 88, 98 ],
-		[ 19, 29, 39, 49, 59, 69, 79, 89, 99 ])
-)
 
 
 
@@ -459,7 +414,7 @@ Object.assign( Q.Matrix.prototype, {
 
 
 
-	//  Read NON-destructive by nature. (Except quantum!)
+	//  Read NON-destructive by nature. (Except quantum reads of course! ROFL!!)
 
 	read: function( x, y ){
 
@@ -480,7 +435,7 @@ Object.assign( Q.Matrix.prototype, {
 	},
 	toArray: function(){
 
-		return this.rows//.flat()
+		return this.rows
 	},
 	toXSV: function( rowSeparator, valueSeparator ){
 		
@@ -530,7 +485,7 @@ Object.assign( Q.Matrix.prototype, {
 
 
 
-	//  Write DESTRUCTIVE by nature.
+	//  Write is DESTRUCTIVE by nature. Not cuz I hate ya.
 
 	write$: function( x, y, n ){
 
@@ -587,7 +542,7 @@ Object.assign( Q.Matrix.prototype, {
 
 
 
-	//  Operate NON-destructive
+	//  Operate NON-destructive.
 
 	add: function( otherMatrix ){
 
@@ -620,6 +575,59 @@ Object.assign( Q.Matrix.prototype, {
 		return this.copy$( Q.Matrix.multiplyScalar( this, scalar ))
 	}
 })
+
+
+
+
+
+
+    //////////////////////////
+   //                      //
+  //   Static constants   //
+ //                      //
+//////////////////////////
+
+
+Q.Matrix.createConstants(
+
+	'IDENTITY_2X2', Q.Matrix.createIdentity( 2 ),
+	'IDENTITY_3X3', Q.Matrix.createIdentity( 3 ),
+	'IDENTITY_4X4', Q.Matrix.createIdentity( 4 ),
+		
+	'NEGATION_2X2', new Q.Matrix(
+		[ 0, 1 ],
+		[ 1, 0 ]),
+
+	'CONSTANT0_2X2', new Q.Matrix(
+		[ 1, 1 ],
+		[ 0, 0 ]),
+
+	'CONSTANT1_2X2', new Q.Matrix(
+		[ 0, 0 ],
+		[ 1, 1 ]),
+
+	'CNOT', new Q.Matrix(
+		[ 1, 0, 0, 0 ],
+		[ 0, 1, 0, 0 ],
+		[ 0, 0, 0, 1 ],
+		[ 0, 0, 1, 0 ]),
+
+	'HADAMARD', new Q.Matrix(
+		[ 1,  1 ],
+		[ 1, -1 ])
+		.multiplyScalar( 1 / Math.SQRT2 ),
+
+	'TEST_MAP_9X9', new Q.Matrix(
+		[ 11, 21, 31, 41, 51, 61, 71, 81, 91 ],
+		[ 12, 22, 32, 42, 52, 62, 72, 82, 92 ],
+		[ 13, 23, 33, 43, 53, 63, 73, 83, 93 ],
+		[ 14, 24, 34, 44, 54, 64, 74, 84, 94 ],
+		[ 15, 25, 35, 45, 55, 65, 75, 85, 95 ],
+		[ 16, 26, 36, 46, 56, 66, 76, 86, 96 ],
+		[ 17, 27, 37, 47, 57, 67, 77, 87, 97 ],
+		[ 18, 28, 38, 48, 58, 68, 78, 88, 98 ],
+		[ 19, 29, 39, 49, 59, 69, 79, 89, 99 ])
+)
 
 
 

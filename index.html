@@ -1,15 +1,52 @@
-<script src="src/Q.js"></script>
-<script src="src/Q.Matrix.js"></script>
-<script src="src/Q.Gate.js"></script>
-<script>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Q.js</title>
+		<meta charset="utf-8">
+		<meta name="viewport"             content="width=device-width,initial-scale=1.0">
+		<meta name="description"          content="Q.js is quantumn computation in your browser.">
+		
+		<!-- meta name="twitter:card"         content="summary">
+		<meta name="twitter:site"         content="@stew_rtsmith">
+		<meta name="twitter:creator"      content="@stew_rtsmith">
+		<meta name="twitter:description"  content="Q.js is quantumn computation in your browser.">
+		<meta name="twitter:title"        content="Q.js">
+		<meta name="twitter:image"        content="">
+		<meta name="twitter:url"          content="https://github.com/stewdio/q.js">
+		
+		<meta property="og:type"          content="website">
+		<meta property="og:description"   content="Q.js is quantumn computation in your browser.">
+		<meta property="og:title"         content="Q.js">
+		<meta property="og:image"         content="">
+		<meta property="og:url"           content="https://github.com/stewdio/q.js" -->
+		
+		<!-- link rel="canonical"             href="http://">
+		<link rel="icon" type="image/png" href="media/favicon-064.png">
+		<link rel="apple-touch-icon"      href="media/favicon-144.png" -->
+		<link rel="stylesheet" type="text/css" href="style.css">
+		
+		<script src="Q/Q.js"></script>
+		<script src="Q/Matrix.js"></script>
+		<script src="Q/Qubit.js"></script>
+		<script src="Q/Gate.js"></script>
+	</head>
+	<body>
+
+		<strong>Q.js is quantumn computation in your browser.</strong><br>
+		Right now all the action is in your JavaScript console,<br>
+		so open that up!
+		<script>
 
 
 
 
 console.log( '\n\nQ.Matrix\n', Q.extractDocumentation( Q.Matrix ), '\n\n' )
+console.log( '\n\nQ.Qubit\n', Q.extractDocumentation( Q.Qubit ), '\n\n' )
 
 
 
+
+//  Qubit logical tensor products.
 
 var qubit0 = new Q.Matrix(
 	[ 1 ],
@@ -26,6 +63,8 @@ console.log( '1 ⊗ 1 =', qubit1.multiplyTensor( qubit1 ).toTSV(), '\n\n' )
 
 
 
+
+//  More complex tensor product.
 
 var matrixA = new Q.Matrix(
 	[ 1, 2 ],
@@ -141,6 +180,7 @@ var b = new Q.Matrix(
 
 
 
+//  Import and export formats.
 
 var csv = Q.Matrix.fromCSV(`
 	1, 2, 3
@@ -179,8 +219,19 @@ console.log( 'Matrix from HTML', Q.Matrix.fromHTML( html ).toTSV(), '\n\n' )
 
 
 
+//  Superposition via Hadamard gate.
+
+console.log( '\n\nSUPERPOSITION:\n\n' )
+var h = Q.Qubit.H
+console.log( 'Let’s start with a simple horizontal qubit, `h`:', h.toTSV(), '\n\n' )
+console.log( 'We’ve got a Hadamard gate handy, `Q.Gate.HADAMARD`:', Q.Gate.HADAMARD.toTSV(), '\n\n' )
+console.log( 'And now let’s multiply them together:' )
+console.log( 'Q.Gate.HADAMARD.multiply( h )', Q.Gate.HADAMARD.multiply( h ).toTSV(), '\n\n' )
+console.log( 'Our `h` qubit is now in superposition!\n\n' )
 
 
 
 
-</script>
+		</script>
+	</body>
+</html>

@@ -24,7 +24,7 @@ const Q = (function(){
 	domElement.innerHTML = 'Q.js<br>Open your JavaScript console!'
 	document.addEventListener( 'DOMContentLoaded', function(){
 	
-		document.body.append( domElement )
+		//document.body.append( domElement )
 	})
 
 
@@ -34,6 +34,7 @@ const Q = (function(){
 		//return console.error.apply( console, arguments )
 		//return null//  Is it better to return null or undefined to signal an error?
 
+		//if( Q.vebosity > 0 ) 
 		console.error.apply( console, arguments )
 		return '(error)'
 	}
@@ -101,7 +102,8 @@ const Q = (function(){
 
 
 
-	const QC = {
+
+	return {
 
 		REVISION,
 		verbosity,
@@ -111,33 +113,17 @@ const Q = (function(){
 
 		ONE_SQRT: 1 / Math.sqrt( 2 )
 	}
-	return QC
-
 
 }())
 
 
 
-Q.Circuit = function(){}
+
 Q.Moment = function(){}
 Q.Operation = function(){}//  
 Q.GateOperation = function(){}
 
 
-
-
-
-
-
-
-
-/*
-
-https://en.wikipedia.org/wiki/Box-drawing_character
-
-────────X─────
-
-*/
 
 
 

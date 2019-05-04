@@ -1,18 +1,8 @@
 'strict'
 
 
-/*
 
 
-
-unclear to me at this point if better for Gate to extend Matrix
-or for Gate to just have a .matrix property
-
-probably the latter...
-
-
-
-*/
 Q.Gate = function( matrix ){
 
 	`
@@ -22,32 +12,20 @@ Q.Gate = function( matrix ){
 	https://en.wikipedia.org/wiki/Quantum_logic_gate
 	`
 
-	Q.Matrix.call( this )
+	Q.Matrix.call( this, ...matrix.rows )
 	this.index = Q.Gate.index ++
+	
 
+	//  We need to be able to see and interact with this thing.
 
 	const domElement = document.createElement( 'div' )
 	domElement.classList.add( 'qc-gate' )
 	domElement.innerHTML = '[]'
 	Q.domElement.appendChild( domElement )
-
-	
-
 	this.domElement = domElement
-
-	/*
-	when hover over a gate we should see popup info about its state
-
-	*/
-
 }
-
-
-//  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain
-
 Q.Gate.prototype = Q.Matrix.prototype
-Q.Gate.constructor = Q.Gate
-
+//Q.Qubit.constructor = Q.Qubit
 
 
 
@@ -64,8 +42,7 @@ Object.assign( Q.Gate, {
 
 		if( arguments.length % 2 !== 0 ){
 
-			Q.error( 'Attempted to create constants with invalid (KEY, VALUE) pairs.' )
-			return
+			return Q.error( 'Q.Gate attempted to create constants with invalid (KEY, VALUE) pairs.' )
 		}
 		for( let i = 0; i < arguments.length; i += 2 ){
 
@@ -80,7 +57,7 @@ Object.assign( Q.Gate, {
 Q.Gate.createConstants(
 
 	'CNOT', new Q.Gate( Q.Matrix.CNOT ),
-	'H', new Q.Gate()//  Hadamard
+	'HADAMARD', new Q.Gate( Q.Matrix.HADAMARD )
 	//Pauli-X
 	//Pauli-Y
 	//Pauli-Z
