@@ -14,7 +14,7 @@ superposition straight away then have at it:
 `Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL )`  
 
 Or perform the most superfluous coin-flip code ever:  
-`Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).collapse().toTSV()`
+`Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).collapse().targetBit`
 
 
 &nbsp;  
@@ -22,8 +22,8 @@ Or perform the most superfluous coin-flip code ever:
 
 Qubit
 ------------------------------------------------------------------------------
-A qubit is represented by `Q.Matrix([ a ],[ b ])` where ‘`a`’ and ‘`b`’ are 
-(ideally) complex numbers such that `a`² + `b`² = `1`. 
+A qubit — `Q.Qubit( a, b )` — is represented by `Q.Matrix([ a ],[ b ])` where 
+‘`a`’ and ‘`b`’ are (ideally) complex numbers such that `a`² + `b`² = `1`. 
 
 `a` represents the “control bit” while `b` represents  the “target bit.” A 
 qubit may be in superposition, _ie._ its target bit is neither `0` or `1` and computationally exists as _both_ `0` and `1` at the same time. The probability
