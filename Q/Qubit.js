@@ -6,48 +6,58 @@
 Q.Qubit = function( a, b ){
 
 	`
-	A qubit is represented by Q.Matrix([ a ],[ b ])
-	where ‘a’ and ‘b’ are (ideally) complex numbers 
-	and ‖a‖² + ‖b‖² = 1. When in superposition, 
-	the probability it will collapse to 0 is ‖a‖²,
-	the probability it will collapse to 1 is ‖b‖².
+	  A qubit is represented by Q.Matrix([ a ],[ b ])
+	  where ‘a’ and ‘b’ are (ideally) complex numbers 
+	  such that a² + b² = 1. 
+
+	 ‘a’ represents the “control bit” while ‘b’ represents
+	  the “target bit.” A qubit may be in superposition, ie.
+	  its target bit is neither 0 or 1 and computationally
+	  exists as BOTH 0 and 1 at the same time. The probability
+	  that the qubit will “collapse” to 0 is a², while the
+	  probability that the qubit will “collapse” to 1 is b².
 
 
 		EXAMPLES
 
-	• Qubit( 1÷√2, 1÷√2 ) has 50% chance of collapsing to 0
-	  and a 50% chance of collapsing to 1.
 	• Qubit( 1, 0 ) has a 100% chance of collapsing to 0.
 	• Qubit( 0, 1 ) has a 100% chance of collapsing to 1.
+	• Qubit( 1÷√2, 1÷√2 ) has a 50% chance of collapsing to 0
+	  and a 50% chance of collapsing to 1.
 
 
 		BLOCH SPHERE
 
-	If we plot all of the possible values for ‘a’ and ‘b’ on a graph
-	it will create a circle with a radius of 1 -- a unit circle.
-	This is a result of our rule that ‖a‖² + ‖b‖² = 1.
-	             
-	             [  0 ] Vertical
-	             [ +1 ]
-	                │
-	    [ -1÷√2 ]   │   [ +1÷√2 ] Diagonal
-	    [ +1÷√2 ]╲  │  ╱[ +1÷√2 ]
-	              ╲ │ ╱
-	               ╲│╱
-	[ -1 ]──────────╳──────────[ +1 ] Horizontal
-	[  0 ]         ╱│╲         [  0 ]
-	              ╱ │ ╲
-	             ╱  │  ╲
-	    [ -1÷√2 ]   │   [ +1÷√2 ] Anti-diagonal
-	    [ -1÷√2 ]   │   [ -1÷√2 ]
-	                │
-	             [  0 ]
-	             [ -1 ]
+	  If we plot all of the possible values for ‘a’ and ‘b’ 
+	  on a standard graph it will create a circle with a radius 
+	  of 1, centered at the origin (0, 0) -- a unit circle.
+	  This is the visual result of our rule that a² + b² = 1:
 
-	If we allow complex numbers (‘i’) our 2D circle becomes a 3D sphere:
-	https://en.wikipedia.org/wiki/Bloch_sphere
-	But for our purposes we can use real numbers and a 2D unit circle.
-	This can be used as a state machine for quantum compuation.
+	             
+	               ( 0, 1 )  Vertical
+	                   │
+	   ( -1÷√2, 1÷√2 ) │ ( 1÷√2, 1÷√2 )  Diagonal
+	                ╲  │  ╱
+	                 ╲ │ ╱
+	                  ╲│╱
+	  ( -1, 0 )────────╳────────( 1, 0 )  Horizontal
+	                  ╱│╲
+	                 ╱ │ ╲
+	                ╱  │  ╲
+	  ( -1÷√2, -1÷√2 ) │ ( 1÷√2, -1÷√2 )  Anti-diagonal
+	                   │
+	                   │
+	               ( 0, -1 )
+
+
+	  If we allow complex numbers like ‘i’ (√-1) then our 
+	  2D circle becomes a 3D sphere like so:
+	  https://en.wikipedia.org/wiki/Bloch_sphere
+	  For our current (simple) purposes we can use real numbers 
+	  and a 2D unit circle.
+
+	  Our unit circle or unit sphere can be used as a state 
+	  machine for quantum compuation.
 	
 	`
 
@@ -74,6 +84,21 @@ Q.Qubit = function( a, b ){
 
 	Q.Matrix.call( this, [ a ],[ b ])
 	this.index = Q.Qubit.index ++
+
+
+	//  Convenience getters and setters for this qubit’s
+	//  controll bit and target bit.
+
+	Object.defineProperty( this, 'controlBit', { 
+
+		get: function(){ return this.rows[ 0 ][ 0 ]},
+		set: function( n ){ this.rows[ 0 ][ 0 ] = n }
+	})
+	Object.defineProperty( this, 'targetBit', { 
+
+		get: function(){ return this.rows[ 1 ][ 0 ]},
+		set: function( n ){ this.rows[ 1 ][ 0 ] = n }
+	})
 }
 Q.Qubit.prototype = Object.create( Q.Matrix.prototype )
 Q.Qubit.prototype.constructor = Q.Qubit
