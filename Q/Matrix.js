@@ -98,10 +98,17 @@ Q.Matrix = function(){
 
 Object.assign( Q.Matrix, {
 
+	help: function(){
+
+		return Q.extractDocumentation( this )
+	},
 	index: 0,
+
+
 	isMatrixLike: function( obj ){
 
-		return obj instanceof Q.Matrix || Q.Matrix.prototype.isPrototypeOf( obj )
+		//return obj instanceof Q.Matrix || Q.Matrix.prototype.isPrototypeOf( obj )
+		return obj instanceof this || this.prototype.isPrototypeOf( obj )
 	},
 	isWithinRange: function( n, minimum, maximum ){
 
@@ -334,7 +341,8 @@ Object.assign( Q.Matrix, {
 			})
 			resultMatrix.push( resultMatrixRow )
 		})
-		return new Q.Matrix( ...resultMatrix )
+		//return new Q.Matrix( ...resultMatrix )
+		return new this( ...resultMatrix )
 	},
 	multiplyTensor: function( matrix0, matrix1 ){
 
@@ -507,17 +515,18 @@ Object.assign( Q.Matrix.prototype, {
 	},
 	copy$: function( matrix ){
 
-		if( matrix instanceof Q.Matrix !== true )
+		if( Q.Matrix.isMatrixLike( matrix ) !== true )
 			return Q.error( `Q.Matrix attempted to copy something that was not a matrix in to this matrix#${m0.index}.`, this )
 
 		if( Q.Matrix.haveEqualDimensions( matrix, this ) !== true )
 			return Q.error( `Q.Matrix cannot copy matrix#${matrix.index} of dimensions ${matrix.columns.length}x${matrix.rows.length} in to this Matrix#${this.index} of dimensions ${this.columns.length}x${this.rows.length} because their dimensions do not match.`, this )
 		
+		const that = this
 		matrix.rows.forEach( function( row, r ){
 
 			row.forEach( function( n, c ){
-			
-				this.rows[ r ][ c ] = n
+
+				that.rows[ r ][ c ] = n
 			})
 		})
 		return this
@@ -593,10 +602,6 @@ Q.Matrix.createConstants(
 	'IDENTITY_2X2', Q.Matrix.createIdentity( 2 ),
 	'IDENTITY_3X3', Q.Matrix.createIdentity( 3 ),
 	'IDENTITY_4X4', Q.Matrix.createIdentity( 4 ),
-		
-	'NEGATION_2X2', new Q.Matrix(
-		[ 0, 1 ],
-		[ 1, 0 ]),
 
 	'CONSTANT0_2X2', new Q.Matrix(
 		[ 1, 1 ],
@@ -606,16 +611,121 @@ Q.Matrix.createConstants(
 		[ 0, 0 ],
 		[ 1, 1 ]),
 
-	'CNOT', new Q.Matrix(
+	'NEGATION_2X2', new Q.Matrix(
+		[ 0, 1 ],
+		[ 1, 0 ]),
+
+
+
+
+	//  Hadamard
+	//   ┌───┐
+	//  ─┤ H ├─
+	//   └───┘
+
+	'HADAMARD', new Q.Matrix(
+		[ Math.SQRT1_2,  Math.SQRT1_2 ],
+		[ Math.SQRT1_2, -Math.SQRT1_2 ]),
+
+
+	//  Pauli X
+	//   ┌───┐
+	//  ─┤ X ├─
+	//   └───┘
+
+	'PAULI_X', new Q.Matrix(
+		[ 0, 1 ],
+		[ 1, 0 ]),
+
+
+	//  Pauli Y
+	//   ┌───┐
+	//  ─┤ Y ├─
+	//   └───┘
+
+	// 'PAULI_Y', new Q.Matrix(//  Yep. Totally need to add complex number support.
+	// 	[ 0, -i ],
+	// 	[ i,  0 ]),
+
+
+	//  Pauli Z
+	//   ┌───┐
+	//  ─┤ Z ├─
+	//   └───┘
+
+	'PAULI_Z', new Q.Matrix(
+		[ 1,  0 ],
+		[ 0, -1 ]),
+
+
+	//  Phase
+	//   ┌───┐
+	//  ─┤ S ├─
+	//   └───┘
+
+	// 'PHASE', new Q.Matrix(
+	// 	[ 1, 0 ],
+	// 	[ 0, i ]),
+
+
+	//  π / 8
+	//   ┌───┐
+	//  ─┤ T ├─
+	//   └───┘
+
+	// 'PI_8', new Q.Matrix(
+	// 	[ 1, 0 ],
+	// 	[ 0, Math.pow( Math.E, i * Math.PI / 4 )]),
+
+
+
+
+	'CONTROLLED_NOT', new Q.Matrix(//  C-NOT
 		[ 1, 0, 0, 0 ],
 		[ 0, 1, 0, 0 ],
 		[ 0, 0, 0, 1 ],
 		[ 0, 0, 1, 0 ]),
 
-	'HADAMARD', new Q.Matrix(
-		[ 1,  1 ],
-		[ 1, -1 ])
-		.multiplyScalar( 1 / Math.SQRT2 ),
+	'SWAP', new Q.Matrix(
+		[ 1, 0, 0, 0 ],
+		[ 0, 0, 1, 0 ],
+		[ 0, 1, 0, 0 ],
+		[ 0, 0, 0, 1 ]),
+
+	'CONTROLLED_Z', new Q.Matrix(
+		[ 1, 0, 0,  0 ],
+		[ 0, 1, 0,  0 ],
+		[ 0, 0, 1,  0 ],
+		[ 0, 0, 0, -1 ]),
+
+	// 'CONTROLLED_PHASE', new Q.Matrix(
+	// 	[ 1, 0, 0, 0 ],
+	// 	[ 0, 1, 0, 0 ],
+	// 	[ 0, 0, 1, 0 ],
+	// 	[ 0, 0, 0, i ]),
+
+	'TOFFOLI', new Q.Matrix(
+		[ 1, 0, 0, 0, 0, 0, 0, 0 ],
+		[ 0, 1, 0, 0, 0, 0, 0, 0 ],
+		[ 0, 0, 1, 0, 0, 0, 0, 0 ],
+		[ 0, 0, 0, 1, 0, 0, 0, 0 ],
+		[ 0, 0, 0, 0, 1, 0, 0, 0 ],
+		[ 0, 0, 0, 0, 0, 1, 0, 0 ],
+		[ 0, 0, 0, 0, 0, 0, 0, 1 ],
+		[ 0, 0, 0, 0, 0, 0, 1, 0 ]),
+
+	'CONTROLLED_SWAP', new Q.Matrix(//  Fredkin
+		[ 1, 0, 0, 0, 0, 0, 0, 0 ],
+		[ 0, 1, 0, 0, 0, 0, 0, 0 ],
+		[ 0, 0, 1, 0, 0, 0, 0, 0 ],
+		[ 0, 0, 0, 1, 0, 0, 0, 0 ],
+		[ 0, 0, 0, 0, 1, 0, 0, 0 ],
+		[ 0, 0, 0, 0, 0, 0, 1, 0 ],
+		[ 0, 0, 0, 0, 0, 1, 0, 0 ],
+		[ 0, 0, 0, 0, 0, 0, 0, 1 ]),
+
+
+
 
 	'TEST_MAP_9X9', new Q.Matrix(
 		[ 11, 21, 31, 41, 51, 61, 71, 81, 91 ],

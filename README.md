@@ -10,8 +10,11 @@ JavaScript console, so open that up!
 
 The examples you see in the console are coming from `index.html`. Open that up
 to see how it all works. Or if you just want to launch a qubit in to 
-superposition straight away then have at it:
-`Q.Gate.HADAMARD.multiply( Q.Qubit.H )`
+superposition straight away then have at it:  
+`Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL )`  
+
+Or perform the most superfluous coin-flip code ever:  
+`Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).collapse().toTSV()`
 
 
 

@@ -6,6 +6,11 @@
 const Q = (function(){
 
 	`
+
+	Q.Matrix
+	Q.Gate
+	Q.Qubit
+
 	Stewart Smith
 	http://stewartsmith.io
 	30 April 2019
@@ -97,6 +102,10 @@ const Q = (function(){
 	}
 
 
+	function help(){
+
+		return Q.extractDocumentation( Q )
+	}
 
 
 
@@ -107,7 +116,8 @@ const Q = (function(){
 
 		REVISION,
 		verbosity,
-		error,		
+		error,	
+		help,	
 		domElement,
 		extractDocumentation,
 

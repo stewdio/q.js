@@ -221,14 +221,21 @@ console.log( 'Matrix from HTML', Q.Matrix.fromHTML( html ).toTSV(), '\n\n' )
 
 //  Superposition via Hadamard gate.
 
-console.log( '\n\nSUPERPOSITION:\n\n' )
-var h = Q.Qubit.H
-console.log( 'Let’s start with a simple horizontal qubit, `h`:', h.toTSV(), '\n\n' )
-console.log( 'We’ve got a Hadamard gate handy, `Q.Gate.HADAMARD`:', Q.Gate.HADAMARD.toTSV(), '\n\n' )
-console.log( 'And now let’s multiply them together:' )
-console.log( 'Q.Gate.HADAMARD.multiply( h )', Q.Gate.HADAMARD.multiply( h ).toTSV(), '\n\n' )
-console.log( 'Our `h` qubit is now in superposition!\n\n' )
+console.log( '\n\n\n\nSUPERPOSITION' )
 
+console.log( '\nLet’s start with a simple horizontal qubit, `Q.Qubit.HORIZONTAL`:', Q.Qubit.HORIZONTAL.toTSV() )
+
+console.log( '\nWe’ve got a Hadamard gate handy, `Q.Gate.HADAMARD`:', Q.Gate.HADAMARD.toTSV() )
+
+console.log( '\nAnd now let’s apply that Hadamard gate to our qubit:' )
+console.log( 'Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL )', Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).toTSV() )
+
+console.log( '\nOur `h` qubit is now in superposition!' )
+
+console.log( '\nHere’s how to put a qubit in to superposition, then collapse it, all in one go, ie. the most superfluous coin flip routine of all time:' )
+console.log( 'Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).collapse()', Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).collapse().toTSV() )
+
+console.log( '\nSometimes that will produce (0,1), sometimes (1,0). Yay for [fake] quantum!\n\n')
 
 
 
