@@ -72,9 +72,9 @@ result of our rule that `a`² + `b`² = `1`:
                    │
                ( 0, -1 )
 ```
-------------------------------------------------------------------------------
+
 If we allow for complex numbers like _i_ then our 2D circle becomes a 3D 
-sphere like so: [Bloch sphere](https://en.wikipedia.org/wiki/Bloch_sphere).
+[Bloch sphere](https://en.wikipedia.org/wiki/Bloch_sphere).
 For the moment, without support for complex numbers, Q.js limits itself to 
 [real numbers](https://en.wikipedia.org/wiki/Real_number) only and therefore 
 a 2D unit circle.
