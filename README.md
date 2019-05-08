@@ -71,6 +71,7 @@ result of our rule that `a`² + `b`² = `1`:
                    │
                    │
                ( 0, -1 )
+
 ```
 
 If we allow for complex numbers like _i_ then our 2D circle becomes a 3D 
@@ -95,7 +96,7 @@ constants:
 • `DIAGONAL` = `new Q.Qubit( Math.SQRT1_2,  Math.SQRT1_2 )`  
 • `ANTI_DIAGONAL` = `new Q.Qubit( Math.SQRT1_2, -Math.SQRT1_2 )`  
 Constants for “Right-hand circular polarized” (RHCP) and 
-“Left-hand circular polarized” (RHCP) will be supported once **Q.js** 
+“Left-hand circular polarized” (LHCP) will be supported once **Q.js** 
 supports complex numbers.
 
 
