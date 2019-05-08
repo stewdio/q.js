@@ -199,14 +199,14 @@ Q.Qubit.createConstants(
 	.ket = 'R'
 	.jones = Q.Matrix(
 		[  1 ],
-		[ -i ]).multiplyScalar( 1 / Math.SQRT2 )
+		[ -***i*** ]).multiplyScalar( 1 / Math.SQRT2 )
 
 	Left-hand circular polarized (RHCP)
 	.dirac = '|L⟩'
 	.ket = 'L'
 	.jones = Q.Matrix(
 		[  1 ],
-		[ +i ]).multiplyScalar( 1 / Math.SQRT2 )
+		[ +***i*** ]).multiplyScalar( 1 / Math.SQRT2 )
 
 
 
