@@ -26,6 +26,7 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
 		
 		<script src="Q/Q.js"></script>
+		<script src="Q/Expression.js"></script>
 		<script src="Q/Matrix.js"></script>
 		<script src="Q/Qubit.js"></script>
 		<script src="Q/Gate.js"></script>
@@ -232,10 +233,46 @@ console.log( 'Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL )', Q.Gate.HADAMARD.ap
 
 console.log( '\nOur `h` qubit is now in superposition!' )
 
-console.log( '\nHere’s how to put a qubit in to superposition, then collapse it, all in one go, ie. the most superfluous coin flip routine of all time:' )
-console.log( 'Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).collapse()', Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).collapse().toTSV() )
+console.log( '\nHere’s how to put a qubit in to superposition, then collapse it, and only output the target bit -- all in one go, ie. the most superfluous coin flip routine of all time:' )
+console.log( 'Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).collapse().targetBit : ')
+console.log( Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).collapse().targetBit )
 
-console.log( '\nSometimes that will produce (0,1), sometimes (1,0). Yay for [fake] quantum!\n\n')
+console.log( '\nSometimes the above code will produce a 0, sometimes a 1. Yay for [fake] quantum!\n\n')
+
+
+
+
+
+/*
+const
+expressions = [
+
+	new Q.Expression( '1' ),
+	new Q.Expression( '2i' ),
+	new Q.Expression( '3 + 4i' ),
+	new Q.Expression( '5.1' ),
+	new Q.Expression( '6.2i' ),
+	new Q.Expression( '7.3 + 8.4i' ),
+
+	new Q.Expression( '7.3i + 8.4' ),
+	new Q.Expression( 'ax + 2.3b - 16.2' ),
+
+	new Q.Expression( '2e-3' ),
+	new Q.Expression( '3e+4' ),
+	new Q.Expression( '5e+6 - 7e-8i' ),
+
+	new Q.Expression( '1/2' ),
+	new Q.Expression( '2 / 3i' ),
+	new Q.Expression( '3 * 4i' ),
+
+	new Q.Expression( '2^i' ),
+	new Q.Expression( 'i^3' ),
+
+
+	new Q.Expression( '7 + (i^2)^4x - 7y' ),
+	new Q.Expression( 'if i ruled the world i’d free all my sons' )
+]
+*/
 
 
 
