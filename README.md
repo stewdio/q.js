@@ -3,7 +3,7 @@
 Q.js
 ==============================================================================
 
-Q.js is quantum computing in your browser. I’m just learning how quantum 
+Quantum computing in your browser! I’m just learning how quantum 
 computation works—and I’m writing Q.js as I go along. This is starting small, 
 but I think it’s got big potential. Right now all the action is in your 
 JavaScript console, so open that up!
@@ -15,6 +15,15 @@ superposition straight away then have at it:
 
 Or perform the most superfluous coin-flip code ever:  
 `Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).collapse().targetBit`
+
+&nbsp;  
+
+**Update**: I’ve just added a `Q.ComplexNumber` class, but still need to re-tool 
+`Q.Matrix` and `Q.Qubit` to take advantage of it. 
+Also, you might notice the variable naming across Q.js is verbose. I’m writing this as a learning / teaching tool. The code should not only explain
+what it does funcationally, but also explain the math behind it and provide
+links to external references for further study.
+
 
 
 &nbsp;  

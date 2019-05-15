@@ -96,9 +96,10 @@ const Q = (function(){
 		})
 		lines.forEach( function( line, i ){
 
-			lines[ i ] = line.substring( tabs )
+			if( line.trim() === '' ) line = '\n\n'
+			lines[ i ] = line.substring( tabs ).replace( / {2}$/, '\n' )
 		})
-		return lines.join( '\n' )
+		return lines.join( '' )
 	}
 
 

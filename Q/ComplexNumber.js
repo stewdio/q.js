@@ -6,21 +6,33 @@
 Q.ComplexNumber = function( real, imaginary ){
 
 	`
-	A complex number is a number that can be expressed in the 
-	form a + bi, where a and b are real numbers, and i is a 
-	solution of the equation x2 = −1. Because no real number 
-	satisfies this equation, i is called an imaginary number. 
-	For the complex number a + bi, a is called the real part, 
-	and b is called the imaginary part.
+	The set of “real numbers” (ℝ) contains any number that can be expressed 
+	along an infinite timeline. https://en.wikipedia.org/wiki/Real_number  
 
-	Operations on Q.ComplexNumber instances generally accept
-	as arguments both sibling instances and pure Number instances
-	but the value returned is always an instance of Q.ComplexNumber.
+	  …  -3  -2  -1   0  +1  +2  +3   …  
+	  ┄───┴───┴───┴───┴───┴─┬─┴──┬┴┬──┄  
+	                       √2    𝒆 π  
 
 
-		SEE ALSO
+	Meanwhile, “imaginary numbers” (𝕀) consist of a real (ℝ) multiplier and 
+	the symbol 𝒊, which is the impossible solution to the equation 𝒙² = −1. 
+	Note that no number when multiplied by itself can ever result in a 
+	negative product, but the concept of 𝒊 gives us a way to reason around 
+	this imaginary scenario nonetheless. 
+	https://en.wikipedia.org/wiki/Imaginary_number  
 
-	https://en.wikipedia.org/wiki/Complex_number
+	  …  -3𝒊 -2𝒊  -1𝒊  0𝒊  +1𝒊 +2𝒊 +3𝒊  …  
+	  ┄───┴───┴───┴───┴───┴───┴───┴───┄  
+
+
+	A “complex number“ (ℂ) is a number that can be expressed in the form 
+	𝒂 + 𝒃𝒊, where 𝒂 is the real component (ℝ) and 𝒃𝒊 is the imaginary 
+	component (𝕀). https://en.wikipedia.org/wiki/Complex_number  
+
+
+	Operation functions on Q.ComplexNumber instances generally accept as 
+	arguments both sibling instances and pure Number instances, though the 
+	value returned is always an instance of Q.ComplexNumber.
 
 	`
 
@@ -46,10 +58,6 @@ Q.ComplexNumber = function( real, imaginary ){
 Object.assign( Q.ComplexNumber, {
 
 	index: 0,
-	toString: function( n ){
-
-		return ''+ n.real +' '+ ( n.imaginary >= 0 ? '+' : '-' ) +' '+ Math.abs( n.imaginary ) +'i'
-	},
 	isNumberLike: function( n ){
 
 		return typeof n === 'number' || n instanceof Number
@@ -269,7 +277,10 @@ Object.assign( Q.ComplexNumber.prototype, {
 	},
 	toString: function(){
 
-		return Q.ComplexNumber.toString( this )//  Note: this kills function chaining.
+		
+		//  Note: this kills function chaining.
+		
+		return ''+ n.real +' '+ ( n.imaginary >= 0 ? '+' : '-' ) +' '+ Math.abs( n.imaginary ) +'i'
 	},
 
 

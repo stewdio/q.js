@@ -6,34 +6,32 @@
 Q.Matrix = function(){
 
 	`
-	Creates a matrix of arbitrary dimensions.
-	Expects an argument list of equal-length arrays 
-	where each array represents a row of column values.
-	Automatically determines matrix dimensions 
-	based on the number of arguments (rows)
-	and length of each row (number of columns).
-	Throws an error if the row lengths are not equal.
+	Creates a matrix of arbitrary dimensions. Expects an argument list of 
+	equal-length arrays where each array represents a row of column values. 
+	Automatically determines matrix dimensions based on the number of 
+	arguments (rows) and length of each row (number of columns). Throws an 
+	error if the row lengths are not equal.  
 
-	Limitation: A matrix cannot change its dimensions
-	after initialization and cannot contain matrices.
+	Limitation: A matrix cannot change its dimensions after initialization 
+	and cannot contain matrices.  
 	
 
-		EXAMPLES
+		EXAMPLES  
 
-	const myMatrix = new Q.Matrix(
+	const myMatrix = new Q.Matrix(  
 		
-		[ 1, 0, 0, 0 ],
-		[ 0, 1, 0, 0 ],
-		[ 0, 0, 0, 1 ],
-		[ 0, 0, 1, 0 ]
-	)
+		[ 1, 0, 0, 0 ],  
+		[ 0, 1, 0, 0 ],  
+		[ 0, 0, 0, 1 ],  
+		[ 0, 0, 1, 0 ]  
+	)  
 
 	
-		SEE ALSO
+		SEE ALSO  
 
-	https://en.wikipedia.org/wiki/Matrix_(mathematics)
+	https://en.wikipedia.org/wiki/Matrix_(mathematics)  
 	https://en.wikipedia.org/wiki/Row-_and_column-major_order
-
+	
 	`
 
 

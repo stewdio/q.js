@@ -6,58 +6,74 @@
 Q.Qubit = function( a, b, dirac ){
 
 	`
-	A qubit is represented by Q.Matrix([ a ],[ b ])
-	where ‘a’ and ‘b’ are (ideally) complex numbers 
-	such that a² + b² = 1. 
+	A qubit is represented by Q.Matrix([ 𝒂 ],[ 𝒃 ]) where 𝒂 and 𝒃 are “complex 
+	numbers” such that 𝒂 × 𝒂 + 𝒃 × 𝒃 = 1. If brevity’s your thing, that’s the 
+	same as 𝒂² + 𝒃² = 1. https://en.wikipedia.org/wiki/Qubit  
+
+
+	  EXAMPLE  
+
+	  const ourQubit = new Q.Qubit( 0, 1 )  
+
+
+	Our 𝒂 argument represents our qubit’s “control bit” while our 𝒃 argument 
+	represents our quibit’s “target bit”—the part we are ultimately concerned 
+	with. A qubit may be in superposition, ie.  its target bit is neither 0 
+	or 1 and computationally exists as both 0 and 1 at the same time. The 
+	probability that the qubit will “collapse” to 0 is 𝒂², while the 
+	probability that the qubit will “collapse” to 1 is 𝒃². 
+	https://en.wikipedia.org/wiki/Quantum_superposition   
 	
-	Here ‘a’ represents the “control bit” while ‘b’ represents
-	the “target bit.” A qubit may be in superposition, ie.
-	its target bit is neither 0 or 1 and computationally
-	exists as BOTH 0 and 1 at the same time. The probability
-	that the qubit will “collapse” to 0 is a², while the
-	probability that the qubit will “collapse” to 1 is b².
+
+		EXAMPLES  
 	
-	
-		EXAMPLES
-	
-	• Qubit( 1, 0 ) has a 100% chance of collapsing to 0.
-	• Qubit( 0, 1 ) has a 100% chance of collapsing to 1.
-	• Qubit( 1÷√2, 1÷√2 ) has a 50% chance of collapsing to 0
-	  and a 50% chance of collapsing to 1.
-	
-	
-		BLOCH SPHERE
-	
-	If we plot all of the possible values for ‘a’ and ‘b’ 
-	on a standard graph it will create a circle with a radius 
-	of 1, centered at the origin (0, 0) -- a unit circle.
-	This is the visual result of our rule that a² + b² = 1:
+	• Qubit( 1, 0 ) has a 100% chance of collapsing to 0.  
+	• Qubit( 0, 1 ) has a 100% chance of collapsing to 1.  
+	• Qubit( 1÷√2, 1÷√2 ) has a 50% chance of collapsing to 0 and a 50% 
+	chance of collapsing to 1.  
+
+
+		BLOCH SPHERE  
+
+	If we plot all of the possible values for 𝒂 and 𝒃 on a standard graph 
+	it will create a circle with a radius of 1 centered at the origin (0, 0); 
+	ie. a unit circle. This is the result of our rule that 𝒂² + 𝒃² = 1. 
+	https://en.wikipedia.org/wiki/Unit_circle).  
 	
 	             
-	               ( 0, 1 )  Vertical
-	                   │
-	   ( -1÷√2, 1÷√2 ) │ ( 1÷√2, 1÷√2 )  Diagonal
-	                ╲  │  ╱
-	                 ╲ │ ╱
-	                  ╲│╱
-	  ( -1, 0 )────────╳────────( 1, 0 )  Horizontal
-	                  ╱│╲
-	                 ╱ │ ╲
-	                ╱  │  ╲
-	  ( -1÷√2, -1÷√2 ) │ ( 1÷√2, -1÷√2 )  Anti-diagonal
-	                   │
-	                   │
-	               ( 0, -1 )
+	               ( 0, 1 )  Vertical   
+	                   │  
+	   ( -1÷√2, 1÷√2 ) │ ( 1÷√2, 1÷√2 )  Diagonal  
+	                ╲  │  ╱  
+	                 ╲ │ ╱  
+	                  ╲│╱   
+	  ( -1, 0 )────────╳────────( 1, 0 )  Horizontal  
+	                  ╱│╲  
+	                 ╱ │ ╲   
+	                ╱  │  ╲  
+	  ( -1÷√2, -1÷√2 ) │ ( 1÷√2, -1÷√2 )  Anti-diagonal  
+	                   │  
+	                   │  
+	               ( 0, -1 )  
 
+
+	If we allow for complex numbers like 𝒊 then our 2D circle becomes a 3D 
+	Bloch sphere. Our unit circle or unit sphere can be used as a state 
+	machine for quantum compuation, though Q.js currently focusses on 
+	matrices for calculation. 
+	https://en.wikipedia.org/wiki/Bloch_sphere  
 	
-	If we allow complex numbers like ‘i’ (√-1) then our 
-	2D circle becomes a 3D sphere like so:
-	https://en.wikipedia.org/wiki/Bloch_sphere
-	For our current (simple) purposes we can use real numbers 
-	and a 2D unit circle.
 
-	Our unit circle or unit sphere can be used as a state 
-	machine for quantum compuation.
+		CONSTANTS  
+
+	Q.Qubit provides the following built-in Jones vectors. 
+	https://en.wikipedia.org/wiki/Jones_calculus#Jones_vectors  
+	• HORIZONTAL = new Q.Qubit( 1, 0 )  
+	• VERTICAL   = new Q.Qubit( 0, 1 )  
+	• DIAGONAL      = new Q.Qubit( 1÷√2,  1÷√2 )  
+	• ANTI_DIAGONAL = new Q.Qubit( 1÷√2, -1÷√2 )  
+	• RIGHT_HAND_CIRCULAR_POLARIZED = new Q.Qubit( 1÷√2, -1÷√2𝒊 )  
+	• LEFT_HAND_CIRCULAR_POLARIZED  = new Q.Qubit( 1÷√2,  1÷√2𝒊 )  
 	
 	`
 
@@ -160,15 +176,11 @@ Q.Qubit.createConstants(
 	//  |R⟩ and |L⟩
 
 	'HORIZONTAL', new Q.Qubit( 1, 0, 'H' ),//  ZERO.
-	'VERTICAL', new Q.Qubit( 0, 1, 'V' ),//  ONE.
-	'DIAGONAL', new Q.Qubit( Math.SQRT1_2,  Math.SQRT1_2, 'D' ),
+	'VERTICAL',   new Q.Qubit( 0, 1, 'V' ),//  ONE.
+	'DIAGONAL',      new Q.Qubit( Math.SQRT1_2,  Math.SQRT1_2, 'D' ),
 	'ANTI_DIAGONAL', new Q.Qubit( Math.SQRT1_2, -Math.SQRT1_2, 'A' ),
-	
-
-	//  Not yet supported; requires complex numbers:
-
-	'RIGHT_HAND_CIRCULAR_POLARIZED', { qubit: [ Math.SQRT1_2, '-i * Math.SQRT1_2' ], dirac: 'R' },//  RHCP
-	'LEFT_HAND_CIRCULAR_POLARIZED', { qubit: [ Math.SQRT1_2, 'i * Math.SQRT1_2' ], dirac: 'L' }//  LHCP
+	'RIGHT_HAND_CIRCULAR_POLARIZED', new Q.Qubit( Math.SQRT1_2, new Q.ComplexNumber( 0, -Math.SQRT1_2 ), 'R' ),//  RHCP
+	'LEFT_HAND_CIRCULAR_POLARIZED',  new Q.Qubit( Math.SQRT1_2, new Q.ComplexNumber( 0,  Math.SQRT1_2 ), 'L' )//  LHCP
 )
 
 
