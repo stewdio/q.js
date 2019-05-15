@@ -41,32 +41,73 @@ Object.assign( Q.Expression, {
 		}
 		if( typeof n === 'string' ){
 
+
+			//  Before we even attempt to parse this expression
+			//  do we have matching pairs of parentheses?
+			//  Every time we open a new scope we increment our depth
+			//  and every time we close a scope we decrement our depth.
+
+
+
+// ***** THIS NEEDS TO  ACTUALLY *INDIVIDUALLY*  MATCH (, [, {  INSTEAD
+
+
+			const depthBalance = n.split( '' ).reduce( function( depth, c ){
+			
+				if( '([{'.indexOf() > -1 ) return depth + 1
+				if( ')]}'.indexOf() > -1 ) return depth - 1
+				return depth
+		
+			}, 0 ) === 0
+			if( depthBalance !== 0 ) return Q.error( `Q.Expression attempted to parse an expression with mismatched parentheses; depth of ${depthBalance}.` )
+
+/*
+
+
+Get the inner most parens
+reduce that
+work outward
+
+https://stackoverflow.com/questions/20906479/javascript-regex-innermost-parentheses-not-surrounded-by-quotes
+
+
+/\([^()"]*(?:"[^"]*"[^()"]*)*\)/
+
+
+
+*/
+
+
+
+
+
 			/*
 				
-				Split this string up in to *any* type of real number,
-				and then split any remaining bits up in to single chars.
-				https://regexr.com
-				
-				\d+     Match any digit, 1 or more times.
-				\.?     Match a decimal point (period), 0 or 1 times.
-				\d*     Match any digit, 0 or more times.
-				e[+-]?  Match an “e” (for 10^x expressions) with a “+” or “-” after it, 0 or 1 times.
-				\d+     Match any digit, 1 or more times.
-				
-				|       or
-				
-				\d+     Match any digit, 1 or more times.
-				\.?     Match a decimal point (period), 0 or 1 times.
-				\d*     Match any digit, 0 or more times.
-				
-				|       or
-				
-				\.      Match a decimal point (period), 1 time.
-				\d+     Match any digit, 1 or more times.
-				
-				|       or
-				
-				.       Match a decimal point (period), 1 time.
+
+			Split this string up in to *any* type of real number,
+			and then split any remaining bits up in to single chars.
+			https://regexr.com
+			
+			\d+     Match any digit, 1 or more times.
+			\.?     Match a decimal point (period), 0 or 1 times.
+			\d*     Match any digit, 0 or more times.
+			e[+-]?  Match an “e” (for 10^x expressions) with a “+” or “-” after it, 0 or 1 times.
+			\d+     Match any digit, 1 or more times.
+			
+			|       or
+			
+			\d+     Match any digit, 1 or more times.
+			\.?     Match a decimal point (period), 0 or 1 times.
+			\d*     Match any digit, 0 or more times.
+			
+			|       or
+			
+			\.      Match a decimal point (period), 1 time.
+			\d+     Match any digit, 1 or more times.
+			
+			|       or
+			
+			.       Match a decimal point (period), 1 time.
 
 			
 			*/
@@ -85,25 +126,17 @@ Object.assign( Q.Expression, {
 				automatically reduce / simplify / combineLikeTerms()
 			*/
 
+
 			/*
 
 
-			if contains parens
+			if nesting structure looks correct
 
-				if matching number of close-parens
+				work from inner-most to outter most
 
-					if nesting structure looks correct
+					combineLikeTerms( this )
 
-						work from inner-most to outter most
-
-							combineLikeTerms( this )
-
-					else return fucked
-
-				else return fucked
-
-			else combineLikeTerms( this )
-
+			else return fucked
 
 
 

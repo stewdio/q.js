@@ -6,7 +6,8 @@
 		<meta name="viewport"             content="width=device-width,initial-scale=1.0">
 		<meta name="description"          content="Q.js is quantum computing in your browser.">
 		
-		<!-- meta name="twitter:card"         content="summary">
+		<!-- 
+		<meta name="twitter:card"         content="summary">
 		<meta name="twitter:site"         content="@stew_rtsmith">
 		<meta name="twitter:creator"      content="@stew_rtsmith">
 		<meta name="twitter:description"  content="Q.js is quantum computing in your browser.">
@@ -18,15 +19,16 @@
 		<meta property="og:description"   content="Q.js is quantum computing in your browser.">
 		<meta property="og:title"         content="Q.js">
 		<meta property="og:image"         content="">
-		<meta property="og:url"           content="https://github.com/stewdio/q.js" -->
+		<meta property="og:url"           content="https://github.com/stewdio/q.js">
 		
-		<!-- link rel="canonical"             href="http://">
+		<link rel="canonical"             href="http://">
 		<link rel="icon" type="image/png" href="media/favicon-064.png">
-		<link rel="apple-touch-icon"      href="media/favicon-144.png" -->
+		<link rel="apple-touch-icon"      href="media/favicon-144.png">
+		-->
 		<link rel="stylesheet" type="text/css" href="style.css">
 		
 		<script src="Q/Q.js"></script>
-		<script src="Q/Expression.js"></script>
+		<script src="Q/ComplexNumber.js"></script>
 		<script src="Q/Matrix.js"></script>
 		<script src="Q/Qubit.js"></script>
 		<script src="Q/Gate.js"></script>
@@ -231,7 +233,7 @@ console.log( '\nWe’ve got a Hadamard gate handy, `Q.Gate.HADAMARD`:', Q.Gate.H
 console.log( '\nAnd now let’s apply that Hadamard gate to our qubit:' )
 console.log( 'Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL )', Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).toTSV() )
 
-console.log( '\nOur `h` qubit is now in superposition!' )
+console.log( '\nOur qubit is now in superposition!' )
 
 console.log( '\nHere’s how to put a qubit in to superposition, then collapse it, and only output the target bit -- all in one go, ie. the most superfluous coin flip routine of all time:' )
 console.log( 'Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).collapse().targetBit : ')

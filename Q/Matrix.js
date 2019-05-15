@@ -507,7 +507,7 @@ Object.assign( Q.Matrix.prototype, {
 
 		if( this.isValidAddress( x, y )){
 
-			if( typeof n !== 'number' ) return Q.error( `Attempted to write an invalid value (${n}) to Matrix#${this.index} at x=${x}, y=${y}`, this )
+			if( typeof n !== 'number' ) return Q.error( `Attempted to write an invalid value (${n}) to matrix#${this.index} at x=${x}, y=${y}`, this )
 			this.rows[ y ][ x ] = n
 			return this
 		}
@@ -516,10 +516,10 @@ Object.assign( Q.Matrix.prototype, {
 	copy$: function( matrix ){
 
 		if( Q.Matrix.isMatrixLike( matrix ) !== true )
-			return Q.error( `Q.Matrix attempted to copy something that was not a matrix in to this matrix#${m0.index}.`, this )
+			return Q.error( `Q.Matrix attempted to copy something that was not a matrix in to this matrix#${matrix.index}.`, this )
 
 		if( Q.Matrix.haveEqualDimensions( matrix, this ) !== true )
-			return Q.error( `Q.Matrix cannot copy matrix#${matrix.index} of dimensions ${matrix.columns.length}x${matrix.rows.length} in to this Matrix#${this.index} of dimensions ${this.columns.length}x${this.rows.length} because their dimensions do not match.`, this )
+			return Q.error( `Q.Matrix cannot copy matrix#${matrix.index} of dimensions ${matrix.columns.length}x${matrix.rows.length} in to this matrix#${this.index} of dimensions ${this.columns.length}x${this.rows.length} because their dimensions do not match.`, this )
 		
 		const that = this
 		matrix.rows.forEach( function( row, r ){
@@ -577,11 +577,11 @@ Object.assign( Q.Matrix.prototype, {
 
 	add$: function( otherMatrix ){
 
-		return this.copy$( Q.Matrix.add( this, otherMatrix ))
+		return this.copy$( this.add( otherMatrix ))
 	},
 	multiplyScalar$: function( scalar ){
 
-		return this.copy$( Q.Matrix.multiplyScalar( this, scalar ))
+		return this.copy$( this.multiplyScalar( scalar ))
 	}
 })
 
