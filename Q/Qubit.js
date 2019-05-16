@@ -119,7 +119,24 @@ Q.Qubit = function( a, b, dirac ){
 
 	//  Used for Dirac notation: |?⟩
 
-	this.dirac = typeof dirac === 'string' ? dirac : '?'
+	if( typeof dirac === 'string' ) this.dirac = dirac
+	else {
+
+		const found = Q.Qubit.constants.find( function( qubit ){
+
+			return (
+
+				a === qubit.controlBit && 
+				b === qubit.targetBit
+			)
+		})
+		if( found === undefined ) this.dirac = '?'
+		else {
+
+			this.dirac = found.dirac
+			this.name  = found.name
+		}
+	}
 }
 Q.Qubit.prototype = Object.create( Q.Matrix.prototype )
 Q.Qubit.prototype.constructor = Q.Qubit
@@ -130,10 +147,13 @@ Q.Qubit.prototype.constructor = Q.Qubit
 Object.assign( Q.Qubit, {
 
 	index: 0,
+	constants: [],
 	createConstant: function( key, value ){
 
 		Q.Qubit[ key ] = value
+		Q.Qubit[ key ].name = key
 		Object.freeze( Q.Qubit[ key ])
+		Q.Qubit.constants.push( Q.Qubit[ key ])
 	},
 	createConstants: function(){
 
@@ -206,6 +226,15 @@ Object.assign( Q.Qubit.prototype, {
 		})
 		this.dirac = matrix.dirac
 		return this
+	},
+	isEqualTo: function( otherQubit ){
+
+		return ( 
+
+			otherQubit instanceof Q.Qubit &&
+			this.controlBit === otherQubit.controlBit &&
+			this.targetBit  === otherQubit.targetBit 
+		)
 	},
 	collapse: function(){
 
