@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Q ⟩ ComplexNumber</title>
+		<link rel="stylesheet" type="text/css" href="Assets/style.css">
+		<script src="Source/Q.js"></script>
+		<script src="Source/ComplexNumber.js"></script>
+		<script src="Assets/navigation.js"></script>
+	</head>
+	<body>
+		<main>
+			<h3>Maths</h3>
+			<p>
+				The set of 
+				<a href="https://en.wikipedia.org/wiki/Real_number" target="_blank">real numbers (ℝ)</a>
+				contains any number that can be expressed 
+				along an infinite timeline.
+			</p>
+<pre><code>
+…  -3  -2  -1   0  +1  +2  +3   …  
+┄───┴───┴───┴───┴───┴─┬─┴──┬┴┬──┄  
+                     √2    𝒆 π  
+
+</pre></code>
+			<p>
+				Meanwhile, 
+				<a href="https://en.wikipedia.org/wiki/Imaginary_number" target="_blank">imaginary numbers (𝕀)</a>
+				consist of a real (ℝ) multiplier and 
+				the symbol 𝒊, which is the impossible solution to the equation 𝒙² = −1. 
+				Note that no number multiplied by itself can ever result in a 
+				negative product, yet the concept of 𝒊 gives us a way to reason around 
+				this imaginary scenario nonetheless. 
+			</p>
+<pre><code>
+…  -3𝒊 -2𝒊  -1𝒊  0  +1𝒊 +2𝒊 +3𝒊  …  
+┄───┴───┴───┴───┴───┴───┴───┴───┄  
+
+</pre></code>
+			<p>
+				A <a href="https://en.wikipedia.org/wiki/Complex_number" target="_blank">complex number (ℂ)</a>
+				is a number that can be expressed in the form 
+				𝒂 + 𝒃𝒊, where 𝒂 is the real component (ℝ) and 𝒃𝒊 is the imaginary 
+				component (𝕀). 
+			</p>
+			<h3>Code</h3>
+			<p>
+				Operation functions on <code>Q.ComplexNumber</code> instances generally accept as 
+				arguments both sibling instances and pure <code>Number</code> instances, though the 
+				value returned is always an instance of <code>Q.ComplexNumber</code>.
+			</p>
+<pre><code>
+var 
+a = new Q.ComplexNumber( 1,  2 ),
+b = new Q.ComplexNumber( 3, -4 ),
+a_add_b      = a.add( b ),
+a_subtract_b = a.subtract( b ),
+a_multiply_b = a.multiply( b )
+a_divide_b   = a.divide( b )
+
+console.log( '' )
+console.log( '𝒂 =', a.toString() )
+console.log( '𝒃 =', b.toString() )
+console.log( '' )
+console.log( '𝒂 + 𝒃 = ', a_add_b.toString() )
+console.log( '𝒂 - 𝒃 =', a_subtract_b.toString() )
+console.log( '𝒂 × 𝒃 =', a_multiply_b.toString() )
+console.log( '𝒂 ÷ 𝒃 =', a_divide_b.toString() )
+console.log( '' )
+
+</pre></code>
+
+			<p>A reminder that 𝒊² = -1.</p>
+<pre><code>
+var
+i  = new Q.ComplexNumber( 0,  1 ),
+ii = i.multiply( i )
+
+console.log( '𝒊  = ', i.toString() )
+console.log( '𝒊² =', ii.toString() )
+
+</pre></code>		
+		
+
+			<h3>Class methods</h3>
+			<p>
+				TK
+			</p>
+			<h3>Instance methods</h3>
+			<p>
+				TK
+			</p>
+		</main>
+		<script>
+
+
+
+
+//  First, what do the docs have to say?
+
+console.log( '\n\nQ.ComplexNumber\n', Q.extractDocumentation( Q.ComplexNumber ), '\n\n' )
+
+
+//  We’re going to use `var` here instead of `let` or `const`
+//  because it’s more flexible for your console-hacking needs.
+//  Also taking the *rare* step to use underscores rather than
+//  camel case for clarity with describing operations.
+
+
+var 
+a = new Q.ComplexNumber( 1,  2 ),
+b = new Q.ComplexNumber( 3, -4 ),
+a_add_b      = a.add( b ),
+a_subtract_b = a.subtract( b ),
+a_multiply_b = a.multiply( b )
+a_divide_b   = a.divide( b )
+
+console.log( '' )
+console.log( '𝒂 =', a.toString() )
+console.log( '𝒃 =', b.toString() )
+console.log( '' )
+console.log( '𝒂 + 𝒃 = ', a_add_b.toString() )
+console.log( '𝒂 - 𝒃 =', a_subtract_b.toString() )
+console.log( '𝒂 × 𝒃 =', a_multiply_b.toString() )
+console.log( '𝒂 ÷ 𝒃 =', a_divide_b.toString() )
+console.log( '' )
+
+
+//  A reminder that 𝒊² = -1.
+
+var
+i  = new Q.ComplexNumber( 0,  1 ),
+ii = i.multiply( i )
+
+console.log( '𝒊  = ', i.toString() )
+console.log( '𝒊² =', ii.toString() )
+
+
+
+
+		</script>
+	</body>
+</html>

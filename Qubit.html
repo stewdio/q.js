@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Q ⟩ Qubit</title>
+		<link rel="stylesheet" type="text/css" href="Assets/style.css">
+		<script src="Source/Q.js"></script>
+		<script src="Source/ComplexNumber.js"></script>
+		<script src="Source/Matrix.js"></script>
+		<script src="Source/Qubit.js"></script>
+		<script src="Assets/navigation.js"></script>
+	</head>
+	<body>
+		<main>
+			<p>
+				A <a href="https://en.wikipedia.org/wiki/Qubit" target="_blank">qubit</a>
+				is represented by 
+				<code>Q.<a href="Matrix.html">Matrix</a>([ 𝒂 ],[ 𝒃 ])</code>
+				where 𝒂 and 𝒃 are “complex 
+				numbers” such that 𝒂 × 𝒂 + 𝒃 × 𝒃 = 1. If brevity’s your thing, that’s the 
+				same as 𝒂² + 𝒃² = 1. 
+			</p>
+			<pre><code>
+const ourQubit = new Q.Qubit( 0, 1 )
+
+</code></pre>
+			<p>
+				Our 𝒂 argument represents our qubit’s “control bit” while our 𝒃 argument 
+				represents our qubit’s “target bit”—the part we are ultimately concerned 
+				with. A qubit may be in <a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>, ie.  its target bit is neither 0 
+				or 1 and computationally exists as both 0 and 1 at the same time. The 
+				probability that the qubit will “collapse” to 0 is 𝒂², while the 
+				probability that the qubit will “collapse” to 1 is 𝒃². 
+			</p>
+			<h3>Examples</h3>
+			<ul>
+				<li>• <code>Qubit( 1, 0 )</code> has a 100% chance of collapsing to 0.</li>
+				<li>• <code>Qubit( 0, 1 )</code> has a 100% chance of collapsing to 1.</li>
+				<li>• <code>Qubit( 1÷√2, 1÷√2 )</code> has a 50% chance of collapsing to 0, and a 50% 
+				chance of collapsing to 1.</li>
+			</ul>
+			<br>
+			<h3>Bloch sphere</h3>
+			<p>
+				If we plot all of the possible values for 𝒂 and 𝒃 on a standard graph 
+				it will create a circle with a radius of 1 centered at the origin (0, 0); 
+				ie. a <a href="https://en.wikipedia.org/wiki/Unit_circle)" target="_blank">unit circle</a>. This is the result of our rule that 𝒂² + 𝒃² = 1. 
+			</p>
+
+
+<pre><code>
+             ( 0, 1 )  Vertical 
+                 │
+ ( -1÷√2, 1÷√2 ) │ ( 1÷√2, 1÷√2 )  Diagonal
+              ╲  │  ╱
+               ╲ │ ╱
+                ╲│╱ 
+( -1, 0 )────────╳────────( 1, 0 )  Horizontal
+                ╱│╲
+               ╱ │ ╲ 
+              ╱  │  ╲
+( -1÷√2, -1÷√2 ) │ ( 1÷√2, -1÷√2 )  Anti-diagonal
+                 │
+                 │
+             ( 0, -1 )
+
+</code></pre>
+			<p>
+				If we allow for complex numbers like 𝒊 then our 2D circle becomes a 3D 
+				<a href="https://en.wikipedia.org/wiki/Bloch_sphere" target="_blank">Bloch sphere</a>. Our unit circle or unit sphere can be used as a state 
+				machine for quantum compuation, though Q.js currently focusses on 
+				matrices for calculation. 
+			</p>
+			<h3>Constants</h3>
+			<p>
+				Q.Qubit provides the following built-in <a href="https://en.wikipedia.org/wiki/Jones_calculus#Jones_vectors" target="_blank">Jones vectors</a>.
+			</p>
+			<ul>
+				<li>• HORIZONTAL = new Q.Qubit( 1, 0 )</li>
+				<li>• VERTICAL   = new Q.Qubit( 0, 1 )</li>
+				<li>• DIAGONAL      = new Q.Qubit( 1÷√2,  1÷√2 )</li>
+				<li>• ANTI_DIAGONAL = new Q.Qubit( 1÷√2, -1÷√2 )</li>
+				<li>• RIGHT_HAND_CIRCULAR_POLARIZED = new Q.Qubit( 1÷√2, -1÷√2𝒊 )</li>
+				<li>• LEFT_HAND_CIRCULAR_POLARIZED  = new Q.Qubit( 1÷√2,  1÷√2𝒊 )</li>
+			</ul>
+		</main>
+		<script>
+
+
+
+
+//  First, what do the docs have to say?
+
+console.log( '\n\nQ.Qubit\n', Q.extractDocumentation( Q.Qubit ), '\n\n' )
+
+
+
+
+		</script>
+	</body>
+</html>

@@ -1,4 +1,3 @@
-'strict'
 
 
 
@@ -48,7 +47,7 @@ Q.Gate = function( matrix ){
 	*/
 }
 Q.Gate.prototype = Q.Matrix.prototype
-//Q.Qubit.constructor = Q.Qubit
+//Q.Gate.constructor = Q.Gate
 
 
 

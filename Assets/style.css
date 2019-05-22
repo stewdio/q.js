@@ -1,0 +1,254 @@
+
+
+
+
+    /*************/
+   /*           */
+  /*   Fonts   */
+ /*           */
+/*************/
+
+
+@font-face {
+  
+	font-family: 'Source Code Pro';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: local( 'Source Code Pro' ),
+	     local( 'SourceCodePro-Regular' ), 
+	     url(   'fonts/SourceCodePro-Regular-Latin.woff2' ) format( 'woff2' );
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  
+	font-family: 'Source Code Pro';
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: local( 'Source Code Pro' ),
+	     local( 'SourceCodePro-Semibold' ), 
+	     url(   'fonts/SourceCodePro-Semibold-Latin.woff2' ) format( 'woff2' );
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+
+
+
+    /***************/
+   /*             */
+  /*   General   */
+ /*             */
+/***************/
+
+
+* {
+
+	box-sizing: border-box;
+	margin:  0;
+	border:  0;
+	padding: 0;
+}
+::-moz-selection {
+
+	background: #FFF;
+	color: #000;
+}
+::selection {
+
+	background: #FD0;
+	/*color: rgba( 0, 0, 0, 0.8 );*/
+	/*color:  #000;*/
+}
+html, body {
+
+	width:  100%;
+	height: 100%;
+}
+body {
+
+	display: grid;
+	grid-gap: 0;
+	grid-template-columns: 240px 1fr;
+	margin: 0;
+	background-color: #FFF;
+	padding: 0;
+	color: #333;
+	/*font-family: 'Source Sans Pro', Menlo, "Courier New", monospace;*/
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight: 400;
+	font-size:   14px;
+	line-height: 25px;
+	box-shadow: 0 0 10px rgba( 0, 0, 0, 0.3 );
+	overflow: hidden;
+}
+
+
+
+
+h1, h2, h3 {
+
+	margin:  0;
+	padding: 0;
+	/*padding-bottom: 20px;*/
+	color: #000;
+	font-weight: 700;
+	font-size:   14px;
+	line-height: 25px;
+}
+h3 {
+
+	margin-bottom: 10px;
+}
+p + p {
+
+	text-indent: 20px;
+}
+p + h3, code + h3, table + h3 {
+
+	margin-top: 40px;
+}
+hr {
+
+	height: 12px;
+	visibility: hidden;
+}
+li {
+
+	list-style: none;
+}
+strong {
+
+	font-weight: 600;
+	color: #000;
+}
+pre {
+
+	margin:  10px 0 10px -15px;
+	padding:  5px 15px;
+	line-height:  18px;
+}
+pre, code, samp {
+
+	background-color: #F6F6F6;
+	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
+	font-weight: 300;
+	font-size: 14px;
+}
+code, samp {
+
+	margin:  0  -2px;
+	padding: 5px 2px;
+}
+samp {
+
+	color: #CCC;
+}
+pre code {
+
+	margin:  0;
+	padding: 0;
+}
+small {
+
+	font-size: 0.8em;
+	letter-spacing: 0.02em;
+}
+
+
+
+
+a {
+
+	color: #0A0;
+	text-decoration: none;
+}
+a:hover {
+
+	background-color: #0A0;
+	color: #FFF;
+}
+
+
+
+#banner {
+
+	width: 100%;	
+}
+nav {
+
+	grid-column: 1;
+  	grid-row: 1;
+	padding: 20px 0 60px 0;
+	overflow: auto;
+	font-size:   21px;
+	line-height: 50px;
+}
+header {
+
+	margin-left: 20px;
+}
+header img {
+
+	width:  60px;
+	height: 60px;
+}
+nav ul {
+
+	display: block;
+	position: relative;
+	top: 10px;
+}
+nav li a {
+
+	display: block;
+	padding-left: 20px;
+	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
+}
+nav a.selected {
+
+	color: #000;
+	font-weight: 600;
+}
+nav a.selected:hover {
+
+	background-color: transparent;
+}
+.topic-number {
+
+	color: rgba( 0, 0, 0, 0.2 );
+}
+nav section {
+
+	position: sticky;
+	top: 20px;
+}
+
+
+
+
+main {
+	
+	grid-column: 2;
+	grid-row: 1;
+	padding: 40px 60px 120px 40px;
+	overflow: auto;
+}
+main a {
+
+	margin:  0  -2px;
+	padding: 5px 2px;
+}
+table {
+
+	margin: 20px 0 20px -15px;
+	background-color: #F9F9F9;
+	padding: 10px 20px;
+}
+td {
+
+	padding: 10px 20px;
+}
+
+
+

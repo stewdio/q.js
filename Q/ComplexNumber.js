@@ -1,4 +1,3 @@
-'strict'
 
 
 
@@ -255,6 +254,14 @@ Object.assign( Q.ComplexNumber.prototype, {
 
 		return new Q.ComplexNumber( this.real, this.imaginary )
 	},
+	reduce: function(){
+
+		
+		//  Note: this *might* kill function chaining.
+
+		if( this.imaginary === 0 ) return this.real
+		return this
+	},
 	conjugate: function(){
 
 		return Q.ComplexNumber.conjugate( this )
@@ -280,7 +287,10 @@ Object.assign( Q.ComplexNumber.prototype, {
 		
 		//  Note: this kills function chaining.
 		
-		return ''+ n.real +' '+ ( n.imaginary >= 0 ? '+' : '-' ) +' '+ Math.abs( n.imaginary ) +'i'
+		const reduced = this.reduce()
+		if( Q.ComplexNumber.isNumberLike( reduced )) return ''+ reduced//  Because we promised a String!
+		if( reduced.real === 0 ) return Math.abs( reduced.imaginary ) +'i'
+		return ''+ reduced.real +' '+ ( reduced.imaginary >= 0 ? '+' : '-' ) +' '+ Math.abs( reduced.imaginary ) +'i'
 	},
 
 

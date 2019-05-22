@@ -1,283 +1,131 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Q.js</title>
+		<title>Q ⟩</title>
 		<meta charset="utf-8">
-		<meta name="viewport"             content="width=device-width,initial-scale=1.0">
-		<meta name="description"          content="Q.js is quantum computing in your browser.">
-		
-		<!-- 
-		<meta name="twitter:card"         content="summary">
-		<meta name="twitter:site"         content="@stew_rtsmith">
-		<meta name="twitter:creator"      content="@stew_rtsmith">
-		<meta name="twitter:description"  content="Q.js is quantum computing in your browser.">
-		<meta name="twitter:title"        content="Q.js">
-		<meta name="twitter:image"        content="">
-		<meta name="twitter:url"          content="https://github.com/stewdio/q.js">
-		
-		<meta property="og:type"          content="website">
-		<meta property="og:description"   content="Q.js is quantum computing in your browser.">
-		<meta property="og:title"         content="Q.js">
-		<meta property="og:image"         content="">
-		<meta property="og:url"           content="https://github.com/stewdio/q.js">
-		
-		<link rel="canonical"             href="http://">
-		<link rel="icon" type="image/png" href="media/favicon-064.png">
-		<link rel="apple-touch-icon"      href="media/favicon-144.png">
-		-->
-		<link rel="stylesheet" type="text/css" href="style.css">
-		
-		<script src="Q/Q.js"></script>
-		<script src="Q/ComplexNumber.js"></script>
-		<script src="Q/Matrix.js"></script>
-		<script src="Q/Qubit.js"></script>
-		<script src="Q/Gate.js"></script>
+		<link rel="stylesheet" type="text/css" href="Assets/style.css">		
+		<script src="Source/Q.js"></script>
+		<script src="Assets/navigation.js"></script>
 	</head>
 	<body>
-
-		<strong>Q.js is quantum computing in your browser.</strong><br>
-		Right now all the action is in your JavaScript console,<br>
-		so open that up!
+		<main>
+			<h3>Introducing Q.js</h3>
+			<p>
+				Q is quantum computing in your browser.
+				Or a <em>simulation</em> of it anyway—after all, you cannot do actual quantum physics on a classical computer!
+				So why build this? 
+				The same reason Google, IBM, and Microsoft build quantum simulators:
+				to explore quantum circuit design in a cheap and easy medium before applying those designs to the real hardware.
+				This project was started by me, <a href="http://stewartsmith.io" target="_blank">Stewart Smith</a>, 
+				in April 2019
+				as a learning and teaching tool for Web coders interested in quantum programming.
+				(I’m learning as I go along!)
+				Q’s code repository is avilable on GitHub at
+				<a href="https://github.com/stewdio/q.js" target="_blank">https://github.com/stewdio/q.js</a>.
+			</p>
+			<p>
+				In the future, Q will take advantage of the browser
+				as a graphic user interface, 
+				but for now all of the action takes place 
+				in your browser’s JavaScript console.
+				You can use the following key commands to open it:
+			</p>
+			<table id="console-open-commands"> 
+				<tr>
+					<td>&nbsp;</td>
+					<td><a target="_blank" href="https://www.apple.com/macos">
+						macOS
+					</a></td>
+					<td><a target="_blank" href="https://www.microsoft.com/en-us/windows">
+						Windows
+					</a></td>
+				</tr>
+				<tr>
+					<td><a target="_blank" href="https://www.mozilla.org/firefox/">
+						Firefox
+					</a></td>
+					<td>
+						Option<br>
+						Command<br>
+						<strong>K</strong>
+					</td>
+					<td>
+						Control<br>
+						Shift<br>
+						<strong>K</strong>
+					</td>
+				</tr>
+				<tr>
+					<td><a target="_blank" href="https://www.google.com/chrome/">
+						Chrome
+					</a></td>
+					<td>
+						Option<br>
+						Command<br>
+						<strong>J</strong>
+					</td>
+					<td>
+						Control<br>
+						Shift<br>
+						<strong>I</strong>
+					</td>
+				</tr>
+				<tr>
+					<td><a target="_blank" href="https://www.apple.com/safari/">
+						Safari
+					</a></td>
+					<td>
+						Option<br>
+						Command<br>
+						<strong>C</strong>
+					</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td><a target="_blank" href="https://www.microsoft.com/windows/microsoft-edge">
+						Edge
+					</a></td>
+					<td>&nbsp;</td>
+					<td>F12</td>
+				</tr>
+			</table>
+			<h3>Getting started</h3>
+			<p>
+				Once you have your JavaScript console open you can start playing.
+				Want to launch a qubit in to superposition straight away? Have at it:
+			</p>
+			<pre><code>
+Q.<a href="Gate.html">Gate</a>.HADAMARD.applyTo( Q.<a href="Qubit.html">Qubit</a>.HORIZONTAL )
+			</pre></code>
+			<br>
+			<p>
+				Or perform the most superfluous coin-flip code ever:  				
+			</p>
+			<pre><code>
+Q.<a href="Gate.html">Gate</a>.HADAMARD.applyTo( Q.<a href="Qubit.html">Qubit</a>.HORIZONTAL ).collapse().targetBit
+			</pre></code>
+			<br>
+			<h3>Roadmap</h3>
+			<p>
+				Q is very much a work-in-progress.
+				Right now the basic non-imaginary math works for matrices, qubits, and gates.
+				The <code><a href="ComplexNumber.html">ComplexNumber</a></code> class is now in place, so the next step is to 
+				integrate that in to matrices and qubits. 
+				Then would be a good time to update the documentation here and in the code itself
+				so that all of the math examples, code examples, and the tone-of-voice are consistent.
+				Then we can get more serious about logic gates, and building the graphic user interface!
+			</p>
+			<p>
+				Are you in to this stuff? Quantum computing? JavaScript and the Web?
+				I could use some help building this out!
+				I have some strong opinions about code style and what counts as simple and/or elegant—so leave your semicolons behind!—but there’s a lot of heavy lifting to be done and I’m willing to listen :)
+			</p>
+		</main>
 		<script>
-
-
-
-console.log( '\n\nQ.ComplexNumber\n', Q.extractDocumentation( Q.ComplexNumber ), '\n\n' )
-console.log( '\n\nQ.Matrix\n', Q.extractDocumentation( Q.Matrix ), '\n\n' )
-console.log( '\n\nQ.Qubit\n', Q.extractDocumentation( Q.Qubit ), '\n\n' )
-
-
-
-
-//  Qubit logical tensor products.
-
-var qubit0 = new Q.Matrix(
-	[ 1 ],
-	[ 0 ])
-
-var qubit1 = new Q.Matrix(
-	[ 0 ],
-	[ 1 ])
-
-console.log( '0 ⊗ 0 =', qubit0.multiplyTensor( qubit0 ).toTSV(), '\n\n' )
-console.log( '0 ⊗ 1 =', qubit0.multiplyTensor( qubit1 ).toTSV(), '\n\n' )
-console.log( '1 ⊗ 0 =', qubit1.multiplyTensor( qubit0 ).toTSV(), '\n\n' )
-console.log( '1 ⊗ 1 =', qubit1.multiplyTensor( qubit1 ).toTSV(), '\n\n' )
-
-
-
-
-//  More complex tensor product.
-
-var matrixA = new Q.Matrix(
-	[ 1, 2 ],
-	[ 3, 4 ])
-console.log( 'Matrix A =', matrixA.toTSV(), '\n\n' )
-
-var matrixB = new Q.Matrix(
-	[ 0, 5 ],
-	[ 6, 7 ])
-console.log( 'Matrix B =', matrixB.toTSV(), '\n\n' )
-
-console.log( 'Matrix A ⊗ Matrix B =', matrixA.multiplyTensor( matrixB ).toTSV(), '\n\n' )
-
-
-
-
-/*
-console.log( '\n\nQ.Matrix\n', Q.extractDocumentation( Q.Matrix ), '\n\n' )
-console.log( '\n\nQ.Matrix.prototype.multiply\n', Q.extractDocumentation( Q.Matrix.prototype.multiply ), '\n\n' )
-
-
-console.log( 'Q.Matrix.IDENTITY_2X2', Q.Matrix.IDENTITY_2X2 )
-console.log( 'Q.Matrix.IDENTITY_3X3', Q.Matrix.IDENTITY_3X3 )
-console.log( 'Q.Matrix.IDENTITY_4X4', Q.Matrix.IDENTITY_4X4 )
-
-
-console.log( 'Q.Matrix.CNOT', Q.Matrix.CNOT )
-console.log( '\nQ.Matrix.CNOT.toHtml()', Q.Matrix.CNOT.toHTML(), '\n\n' )
-console.log( '\nQ.Matrix.TEST_MAP_9X9.toCSV()', Q.Matrix.TEST_MAP_9X9.toCSV(), '\n\n' )
-console.log( '\nQ.Matrix.TEST_MAP_9X9.toTSV()', Q.Matrix.TEST_MAP_9X9.toTSV(), '\n\n' )
-
-
-console.log( 'How many matrices have we created?', Q.Matrix.index )
-*/
-
-
-/*
-var a = new Q.Matrix(
-	[ 2, 2, 2 ],
-	[ 2, 2, 2 ],
-	[ 2, 2, 2 ])
-
-var b = new Q.Matrix(
-	[ 3 ],
-	[ 3 ],
-	[ 3 ])
-
-console.log( 'a.multiply( b ).toTSV()', a.multiply( b ).toTSV() )
-
-
-
-
-var c = new Q.Matrix(
-	[ 1, 2, 3 ],
-	[ 4, 5, 6 ],
-	[ 7, 8, 9 ])
-
-var d = new Q.Matrix(
-	[ 1 ],
-	[ 2 ],
-	[ 3 ])
-
-console.log( 'c.multiply( d ).toTSV()', c.multiply( d ).toTSV() )
-
-
-
-var e = new Q.Matrix(
-	[ 1, 2 ],
-	[ 3, 4 ])
-
-var f = new Q.Matrix(
-	[ 1, 2 ],
-	[ 3, 4 ])
-
-console.log( 'e.multiply( df ).toTSV()', e.multiply( f ).toTSV() )
-
-
-
-
-
-var twos = new Q.Matrix(
-	[ 2, 2, 2 ],
-	[ 2, 2, 2 ],
-	[ 2, 2, 2 ])
-
-var threes = new Q.Matrix(
-	[ 3, 3, 3 ],
-	[ 3, 3, 3 ],
-	[ 3, 3, 3 ])
-
-
-console.log( 'Q.Matrix.IDENTITY_2X2.multiply( e ).toTSV()', Q.Matrix.IDENTITY_2X2.multiply( e ))
-console.log( 'Q.Matrix.IDENTITY_3X3.multiply( c ).toTSV()', Q.Matrix.IDENTITY_3X3.multiply( c ))
-*/
-
-
-
-/*
-
-var a = new Q.Matrix(
-	[ 1, 2 ],
-	[ 3, 4 ])
-
-var b = new Q.Matrix(
-	[ 0, 5 ],
-	[ 6, 7 ])
-
-// console.log( 'a.multiplyTensor( b )', a.multiplyTensor( b ))
-
-*/
-
-
-
-
-
-//  Import and export formats.
-
-var csv = Q.Matrix.fromCSV(`
-	1, 2, 3
-	4, 5, 6
-	7, 8, 9`)
-console.log( 'Matrix from CSV', csv.toTSV(), '\n\n' )
-
-
-var tsv = Q.Matrix.fromTSV(`1	2	3
-4	5	6
-7	8	9`)
-console.log( 'Matrix from TSV', tsv.toTSV(), '\n\n' )
-
-
-const html = `
-<table>
-	<tr>
-		<td>1</td>
-		<td>2</td>
-		<td>3</td>
-	</tr>
-	<tr>
-		<td>4</td>
-		<td>5</td>
-		<td>6</td>
-	</tr>
-	<tr>
-		<td>7</td>
-		<td>8</td>
-		<td>9</td>
-	</tr>
-</table> `
-
-console.log( 'Matrix from HTML', Q.Matrix.fromHTML( html ).toTSV(), '\n\n' )
-
-
-
-
-//  Superposition via Hadamard gate.
-
-console.log( '\n\n\n\nSUPERPOSITION' )
-
-console.log( '\nLet’s start with a simple horizontal qubit, `Q.Qubit.HORIZONTAL`:', Q.Qubit.HORIZONTAL.toTSV() )
-
-console.log( '\nWe’ve got a Hadamard gate handy, `Q.Gate.HADAMARD`:', Q.Gate.HADAMARD.toTSV() )
-
-console.log( '\nAnd now let’s apply that Hadamard gate to our qubit:' )
-console.log( 'Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL )', Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).toTSV() )
-
-console.log( '\nOur qubit is now in superposition!' )
-
-console.log( '\nHere’s how to put a qubit in to superposition, then collapse it, and only output the target bit -- all in one go, ie. the most superfluous coin flip routine of all time:' )
-console.log( 'Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).collapse().targetBit : ')
-console.log( Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).collapse().targetBit )
-
-console.log( '\nSometimes the above code will produce a 0, sometimes a 1. Yay for [fake] quantum!\n\n')
-
-
-
-
-
-/*
-const
-expressions = [
-
-	new Q.Expression( '1' ),
-	new Q.Expression( '2i' ),
-	new Q.Expression( '3 + 4i' ),
-	new Q.Expression( '5.1' ),
-	new Q.Expression( '6.2i' ),
-	new Q.Expression( '7.3 + 8.4i' ),
-
-	new Q.Expression( '7.3i + 8.4' ),
-	new Q.Expression( 'ax + 2.3b - 16.2' ),
-
-	new Q.Expression( '2e-3' ),
-	new Q.Expression( '3e+4' ),
-	new Q.Expression( '5e+6 - 7e-8i' ),
-
-	new Q.Expression( '1/2' ),
-	new Q.Expression( '2 / 3i' ),
-	new Q.Expression( '3 * 4i' ),
-
-	new Q.Expression( '2^i' ),
-	new Q.Expression( 'i^3' ),
-
-
-	new Q.Expression( '7 + (i^2)^4x - 7y' ),
-	new Q.Expression( 'if i ruled the world i’d free all my sons' )
-]
-*/
-
-
-
+			
+			console.log( '\n\n\nYou did it! You opened your browser’s JavaScript console!!\n\n\n\n' )
+			console.log( '\n\n\nNow try navigating to the other topic pages to learn more and experiment with Q.\n\n\n\n' )
+		
 		</script>
 	</body>
 </html>
