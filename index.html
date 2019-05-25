@@ -5,6 +5,10 @@
 		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="Assets/style.css">		
 		<script src="Q/Q.js"></script>
+		<script src="Q/ComplexNumber.js"></script>
+		<script src="Q/Matrix.js"></script>
+		<script src="Q/Qubit.js"></script>
+		<script src="Q/Gate.js"></script>
 		<script src="Assets/navigation.js"></script>
 	</head>
 	<body>
@@ -20,8 +24,10 @@
 				in April 2019
 				as a learning and teaching tool for Web coders interested in quantum programming.
 				(I’m learning as I go along!)
-				Q’s code repository is avilable on GitHub at
+				Q’s code repository is available on GitHub at
 				<a href="https://github.com/stewdio/q.js" target="_blank">https://github.com/stewdio/q.js</a>.
+				This repository website is live at
+				<a href="https://stewdio.github.io/q.js">https://stewdio.github.io/q.js</a>.
 			</p>
 			<p>
 				In the future, Q will take advantage of the browser
@@ -79,13 +85,13 @@
 						Command<br>
 						<strong>C</strong>
 					</td>
-					<td>&nbsp;</td>
+					<td>×</td>
 				</tr>
 				<tr>
 					<td><a target="_blank" href="https://www.microsoft.com/windows/microsoft-edge">
 						Edge
 					</a></td>
-					<td>&nbsp;</td>
+					<td>×</td>
 					<td>F12</td>
 				</tr>
 			</table>
@@ -122,10 +128,69 @@ Q.<a href="Gate.html">Gate</a>.HADAMARD.applyTo( Q.<a href="Qubit.html">Qubit</a
 			</p>
 		</main>
 		<script>
-			
-			console.log( '\n\n\nYou did it! You opened your browser’s JavaScript console!!\n\n\n\n' )
-			console.log( '\n\n\nNow try navigating to the other topic pages to learn more and experiment with Q.\n\n\n\n' )
+
+
+
+
+console.log( '\n\n\nYou did it! You opened your browser’s JavaScript console!!\n\n\n\n' )
+console.log( '\n\n\nNow try navigating to the other topic pages to learn more and experiment with Q.\n\n\n\n' )
 		
+
+//  Enable hover interactions for the compatability table.
+
+const 
+elements  = Array.from( document.querySelectorAll( '#console-open-commands td' )),
+highlight = function( event ){
+
+	const 
+	el = event.target,
+	x  = el.cellIndex,
+	y  = el.parentNode.rowIndex
+
+	if( x === 0 && y === 0 ) return
+	el.classList.add( 'highlighted' )
+	elements.forEach( function( other ){
+
+		const
+		otherX = other.cellIndex,
+		otherY = other.parentNode.rowIndex
+
+		if(( x === 0 && y === otherY ) ||
+		   ( y === 0 && x === otherX )){
+
+			other.classList.add( 'highlighted' )
+		}
+		if( 
+			
+			x > 0 && y > 0 && (
+
+				( otherX === x && otherY === 0 ) || 
+				( otherX === 0 && otherY === y )
+			)
+		){
+		
+			other.classList.add( 'highlighted' )
+		}
+	})
+},
+unhighlight = function(){
+
+	elements.forEach( function( el ){
+
+		el.classList.remove( 'highlighted' )
+	})
+}
+elements.forEach( function( el ){
+
+	el.addEventListener( 'mouseenter',  highlight )
+	el.addEventListener( 'touchstart',  highlight )
+	el.addEventListener( 'mouseleave',  unhighlight )
+	el.addEventListener( 'touchend',    unhighlight )
+})
+
+
+
+
 		</script>
 	</body>
 </html>

@@ -42,6 +42,12 @@
 /***************/
 
 
+:root {
+
+	--text-color: #333;
+	--internal-link-color: #0A0;
+	--external-link-color: var( --text-color );
+}
 * {
 
 	box-sizing: border-box;
@@ -72,8 +78,9 @@ body {
 	grid-template-columns: 240px 1fr;
 	margin: 0;
 	background-color: #FFF;
+	/*background-color: #F6F6F6;*/
 	padding: 0;
-	color: #333;
+	color: var( --text-color );
 	/*font-family: 'Source Sans Pro', Menlo, "Courier New", monospace;*/
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: 400;
@@ -115,7 +122,7 @@ hr {
 }
 li {
 
-	list-style: none;
+/*	list-style: none;*/
 }
 strong {
 
@@ -130,6 +137,7 @@ pre {
 }
 pre, code, samp {
 
+	background-color: #FFF;
 	background-color: #F6F6F6;
 	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
 	font-weight: 300;
@@ -154,27 +162,55 @@ small {
 	font-size: 0.8em;
 	letter-spacing: 0.02em;
 }
+sup, sub {
+
+	vertical-align: baseline;
+	position: relative;
+	top: -0.4em;
+}
+sub { 
+
+	top: 0.4em; 
+}
 
 
 
 
 a {
 
-	color: #0A0;
+	color: var( --internal-link-color );
 	text-decoration: none;
 }
 a:hover {
 
-	background-color: #0A0;
+	background-color: var( --internal-link-color );
 	color: #FFF;
 }
+a[ target=_blank ]{
 
-
-
-#banner {
-
-	width: 100%;	
+	color: var( --external-link-color );
+	text-decoration: #999 underline;
 }
+a[ target=_blank ]:hover{
+
+	background-color: var( --external-link-color );
+	color: #FFF;
+}
+/*a[target=_blank]:after {
+
+	content:  " \2197 ";
+}*/
+
+
+
+
+    /******************/
+   /*                */
+  /*   Navigation   */
+ /*                */
+/******************/
+
+
 nav {
 
 	grid-column: 1;
@@ -182,7 +218,7 @@ nav {
 	padding: 20px 0 60px 0;
 	overflow: auto;
 	font-size:   21px;
-	line-height: 50px;
+	line-height: 40px;
 }
 header {
 
@@ -197,12 +233,16 @@ nav ul {
 
 	display: block;
 	position: relative;
-	top: 10px;
+	top: 20px;
+}
+nav li {
+
+	list-style: none;
 }
 nav li a {
 
 	display: block;
-	padding-left: 20px;
+	padding-left: 40px;
 	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
 }
 nav a.selected {
@@ -214,10 +254,6 @@ nav a.selected:hover {
 
 	background-color: transparent;
 }
-.topic-number {
-
-	color: rgba( 0, 0, 0, 0.2 );
-}
 nav section {
 
 	position: sticky;
@@ -227,11 +263,13 @@ nav section {
 
 
 
+
+
 main {
 	
 	grid-column: 2;
 	grid-row: 1;
-	padding: 40px 60px 120px 40px;
+	padding: 120px 60px 240px 40px;
 	overflow: auto;
 }
 main a {
@@ -242,13 +280,31 @@ main a {
 table {
 
 	margin: 20px 0 20px -15px;
-	background-color: #F9F9F9;
-	padding: 10px 20px;
+	border-collapse: collapse;
+	background-color: #F6F6F6;
+	/*background-color: #FFF;*/
+	/*padding: 10px 20px;*/
 }
 td {
 
-	padding: 10px 20px;
+	padding: 10px 15px;
 }
+td.highlighted{
+
+	background-color: #EEE;
+}
+
+
+
+#console-open-commands td {
+
+	text-align: center;
+	vertical-align: middle;
+}
+
+
+
+
 
 
 

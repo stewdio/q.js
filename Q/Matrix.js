@@ -53,12 +53,12 @@ Q.Matrix = function(){
 	this.rows = Array.from( arguments )
 	this.rows.forEach( function( row ){
 
-		if( typeof row === 'number' ) row = [ row ]
+		if( row instanceof Array !== true ) row = [ row ]
 		if( matrixWidth === null ) matrixWidth = row.length
 		else if( matrixWidth !== row.length ) matrixWidthIsBroken = true
 	})
 	if( matrixWidthIsBroken )
-		return Q.error( `Q.Matrix found upon initialization that matrix#${this.index} row lengths were not equal. You are going to have a bad time.`, this )		
+		return Q.error( `Q.Matrix found upon initialization that matrix#${this.index} row lengths were not equal. You are going to have a bad time.`, this )
 
 
 	//  But for convenience we can also organize by columns.
@@ -70,6 +70,23 @@ Q.Matrix = function(){
 	
 		const column = []
 		for( let y = 0; y < this.rows.length; y ++ ){
+
+
+			//  Since we’re combing through here
+			//  this is a good time to convert Number to ComplexNumber!
+
+			const value = matrix.rows[ y ][ x ]
+			if( typeof value === 'number' ){
+				
+				// console.log('Created a  complex number!')
+				matrix.rows[ y ][ x ] = new Q.ComplexNumber( value )
+			}
+			else if( value instanceof Q.ComplexNumber === false ){
+				return Q.error( `Q.Matrix found upon initialization that matrix#${this.index} contained non-quantitative values. A+ for creativity, but F for functionality.`, this )
+			}
+
+			// console.log( x, y, matrix.rows[ y ][ x ])
+			
 
 			Object.defineProperty( column, y, { 
 
@@ -269,7 +286,8 @@ Object.assign( Q.Matrix, {
 
 			resultMatrixRow.push( row.reduce( function( resultMatrixColumn, cellValue, c ){
 
-				resultMatrixColumn.push( cellValue + matrix1.rows[ r ][ c ])
+				// resultMatrixColumn.push( cellValue + matrix1.rows[ r ][ c ])
+				resultMatrixColumn.push( cellValue.add( matrix1.rows[ r ][ c ]))
 				return resultMatrixColumn
 
 			}, [] ))
@@ -291,7 +309,8 @@ Object.assign( Q.Matrix, {
 
 			resultMatrixRow.push( row.reduce( function( resultMatrixColumn, cellValue ){
 
-				resultMatrixColumn.push( cellValue * scalar )
+				// resultMatrixColumn.push( cellValue * scalar )
+				resultMatrixColumn.push( cellValue.multiply( scalar ))
 				return resultMatrixColumn
 			
 			}, [] ))
@@ -332,7 +351,8 @@ Object.assign( Q.Matrix, {
 				let sum = 0
 				matrix1Column.forEach( function( matrix1CellValue, index ){//  Work down the column of OTHER matrix
 
-					sum += matrix0Row[ index ] * matrix1CellValue
+					//sum += matrix0Row[ index ] * matrix1CellValue
+					sum += matrix0Row[ index ].multiply( matrix1CellValue )
 				})
 				resultMatrixRow.push( sum )
 			})
@@ -372,7 +392,8 @@ Object.assign( Q.Matrix, {
 
 				resultMatrixRow.push( 
 
-					matrix0.rows[ matrix0Y ][ matrix0X ] * matrix1.rows[ matrix1Y ][ matrix1X ]
+					//matrix0.rows[ matrix0Y ][ matrix0X ] * matrix1.rows[ matrix1Y ][ matrix1X ]
+					matrix0.rows[ matrix0Y ][ matrix0X ].multiply( matrix1.rows[ matrix1Y ][ matrix1X ])
 				)
 			}
 			resultMatrix.push( resultMatrixRow )
@@ -448,7 +469,7 @@ Object.assign( Q.Matrix.prototype, {
 
 			return xsv + rowSeparator + row.reduce( function( xsv, cell, c ){
 
-				return xsv + ( c > 0 ? valueSeparator : '' ) + cell
+				return xsv + ( c > 0 ? valueSeparator : '' ) + cell.toString()
 			
 			}, '' )
 		
@@ -480,7 +501,7 @@ Object.assign( Q.Matrix.prototype, {
 
 			return html + row.reduce( function( html, cell ){
 
-				return html +'\n\t\t<td>'+ cell +'</td>'
+				return html +'\n\t\t<td>'+ cell.toString() +'</td>'
 			
 			}, '\n\t<tr>' ) + '\n\t</tr>'
 		
@@ -695,11 +716,11 @@ Q.Matrix.createConstants(
 		[ 0, 0, 1,  0 ],
 		[ 0, 0, 0, -1 ]),
 
-	// 'CONTROLLED_PHASE', new Q.Matrix(
-	// 	[ 1, 0, 0, 0 ],
-	// 	[ 0, 1, 0, 0 ],
-	// 	[ 0, 0, 1, 0 ],
-	// 	[ 0, 0, 0, i ]),
+	'CONTROLLED_PHASE', new Q.Matrix(
+		[ 1, 0, 0, 0 ],
+		[ 0, 1, 0, 0 ],
+		[ 0, 0, 1, 0 ],
+		[ 0, 0, 0, new Q.ComplexNumber( 0, 1 )]),
 
 	'TOFFOLI', new Q.Matrix(
 		[ 1, 0, 0, 0, 0, 0, 0, 0 ],

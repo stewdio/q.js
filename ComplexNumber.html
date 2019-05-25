@@ -6,16 +6,23 @@
 		<link rel="stylesheet" type="text/css" href="Assets/style.css">
 		<script src="Q/Q.js"></script>
 		<script src="Q/ComplexNumber.js"></script>
+		<script src="Q/Matrix.js"></script>
+		<script src="Q/Qubit.js"></script>
+		<script src="Q/Gate.js"></script>
 		<script src="Assets/navigation.js"></script>
 	</head>
 	<body>
 		<main>
-			<h3>Maths</h3>
+			<h3>Imaginary numbers</h3>
 			<p>
-				The set of 
+				Our <code>ComplexNumber</code> class allows us to compute using the imaginary number 𝒊.
+				Has it been a while since you last dealt with imaginary numbers? 
+				Was that in high school?
+				Or maybe never?
+				Let’s back up a second.
+				Regular, ordinary numbers are called
 				<a href="https://en.wikipedia.org/wiki/Real_number" target="_blank">real numbers (ℝ)</a>
-				contains any number that can be expressed 
-				along an infinite timeline.
+				and exist along an infinite number line—with zero in the middle, negative numbers to the left, and positive to the right:
 			</p>
 <pre><code>
 …  -3  -2  -1   0  +1  +2  +3   …  
@@ -24,64 +31,126 @@
 
 </pre></code>
 			<p>
-				Meanwhile, 
-				<a href="https://en.wikipedia.org/wiki/Imaginary_number" target="_blank">imaginary numbers (𝕀)</a>
-				consist of a real (ℝ) multiplier and 
-				the symbol 𝒊, which is the impossible solution to the equation 𝒙² = −1. 
-				Note that no number multiplied by itself can ever result in a 
-				negative product, yet the concept of 𝒊 gives us a way to reason around 
-				this imaginary scenario nonetheless. 
+				Now let’s consider the imaginary number named 𝒊. 
+				What makes 𝒊 imaginary? 
+				And why is an imaginary number even useful?
+				Recall that any number multiplied by itself will always be a positive number.
+				For example, 7 × 7 = 49. But also -7 × -7 = 49.
+				For brevity we could rewrite those equations as 7<sup>2</sup> = 49 and -7<sup>2</sup> = 49, respectively.
+				No matter what <em>real number</em> you try,
+				when you multiply it by itself the product will be a positive number.
+				Try solving for 𝒙 in this equation: 𝒙² = 49. 
+				You’ll find that 𝒙 can equal 7 <em>and</em> 𝒙 can also equal -7. 
+				Both are true.
+				But now try solving for 𝒙 in this equation: 𝒙² = -49.
+				There is no real solution.
+			</p>
+			<p>
+				Here comes 𝒊 to the rescue. 
+				The imaginary number 𝒊 represents the impossible solution to the 
+				<a href="https://en.wikipedia.org/wiki/Square_root" target="_blank">square root</a> of <em>negative</em> one. We can express that elegantly in two ways:
+			</p>
+<pre><code>
+𝒊² = −1
+
+𝒊 = √-1
+
+</code></pre>
+			<p>
+				This is what Monty Python’s John Cleese might call the
+				impossible intermediate.
+				And with it we can now <em>sort of</em> solve for 𝒙 in 𝒙² = -49:
+			</p>
+<pre><code>
+𝒙² = -49
+
+𝒙  = √-49
+
+𝒙  = √(49 × -1)
+
+𝒙  = √49 × √-1
+
+𝒙  = 7 × √-1
+
+𝒙  = 7 × 𝒊
+
+𝒙  = 7𝒊
+
+</code></pre>
+
+
+			<p>
+				Our result, 7𝒊, is an
+				<a href="https://en.wikipedia.org/wiki/Imaginary_number" target="_blank">imaginary number (𝕀)</a>
+				that consists of a real number multiplier, 7, and 
+				our special imaginary number 𝒊.
+				Imaginary numbers also exist along an infinite number line—with zero in the middle, negative numbers to the left, and positive to the right:
 			</p>
 <pre><code>
 …  -3𝒊 -2𝒊  -1𝒊  0  +1𝒊 +2𝒊 +3𝒊  …  
 ┄───┴───┴───┴───┴───┴───┴───┴───┄  
 
 </pre></code>
+			<br>
+			<h3>Complex numbers</h3>
 			<p>
+				We just saw that multiplying a real number (ℝ) by the imaginary number 𝒊
+				yields a number that is also imaginary (𝕀).
+				But what if you add a real number to an imaginary one?
+				Things get <em>complex</em>.
 				A <a href="https://en.wikipedia.org/wiki/Complex_number" target="_blank">complex number (ℂ)</a>
 				is a number that can be expressed in the form 
 				𝒂 + 𝒃𝒊, where 𝒂 is the real component (ℝ) and 𝒃𝒊 is the imaginary 
 				component (𝕀). 
+				Some examples might be 1 + 2𝒊 or 3 - 4𝒊.
+				This is what the <code>ComplexNumber</code> class was built to handle.
+				Open up your JavaScript console and paste in the following:
 			</p>
-			<h3>Code</h3>
+<pre><code>
+var 
+a = new Q.ComplexNumber( 1,  2 ),
+b = new Q.ComplexNumber( 3, -4 )
+
+</pre></code>
+			<p>
+				Now we have two variables, 𝒂 and 𝒃, that we can operate with. 
+				As you might guess, <code>ComplexNumber</code>
+				includes instance methods for common operations like 
+				addition, subtraction, multiplication, and divion.
+				It also includes a handy <code>toString</code> for expressing
+				a complex number in our familiar way.
+				For example <code>a.toString()</code> will output <samp>1 + 2i</samp>.
+				Try the following lines individually in your JavaScript console:
+			</p>
+<pre><code>
+'𝒂 = '+ a.toString()
+'𝒃 = '+ b.toString()
+
+'𝒂 + 𝒃 = '+ a.add( b ).toString()
+'𝒂 - 𝒃 = '+ a.subtract( b ).toString()
+'𝒂 × 𝒃 = '+ a.multiply( b ).toString()
+'𝒂 ÷ 𝒃 = '+ a.divide( b ).toString()
+
+</pre></code>
 			<p>
 				Operation functions on <code>Q.ComplexNumber</code> instances generally accept as 
 				arguments both sibling instances and pure <code>Number</code> instances, though the 
 				value returned is always an instance of <code>Q.ComplexNumber</code>.
 			</p>
+			<h3>Reduction</h3>
+			<p>
+				We can check that 𝒊² = -1.
+			</p>
 <pre><code>
-var 
-a = new Q.ComplexNumber( 1,  2 ),
-b = new Q.ComplexNumber( 3, -4 ),
-a_add_b      = a.add( b ),
-a_subtract_b = a.subtract( b ),
-a_multiply_b = a.multiply( b )
-a_divide_b   = a.divide( b )
-
-console.log( '' )
-console.log( '𝒂 =', a.toString() )
-console.log( '𝒃 =', b.toString() )
-console.log( '' )
-console.log( '𝒂 + 𝒃 = ', a_add_b.toString() )
-console.log( '𝒂 - 𝒃 =', a_subtract_b.toString() )
-console.log( '𝒂 × 𝒃 =', a_multiply_b.toString() )
-console.log( '𝒂 ÷ 𝒃 =', a_divide_b.toString() )
-console.log( '' )
-
-</pre></code>
-
-			<p>A reminder that 𝒊² = -1.</p>
-<pre><code>
-var
-i  = new Q.ComplexNumber( 0,  1 ),
+var i  = new Q.ComplexNumber( 0,  1 )
 ii = i.multiply( i )
 
-console.log( '𝒊  = ', i.toString() )
-console.log( '𝒊² =', ii.toString() )
+'𝒊  = '+ i.toString()
+'𝒊² = '+ i.multiply( i ).toString()
 
 </pre></code>		
 		
-
+			<br>
 			<h3>Class methods</h3>
 			<p>
 				TK
@@ -91,53 +160,5 @@ console.log( '𝒊² =', ii.toString() )
 				TK
 			</p>
 		</main>
-		<script>
-
-
-
-
-//  First, what do the docs have to say?
-
-console.log( '\n\nQ.ComplexNumber\n', Q.extractDocumentation( Q.ComplexNumber ), '\n\n' )
-
-
-//  We’re going to use `var` here instead of `let` or `const`
-//  because it’s more flexible for your console-hacking needs.
-//  Also taking the *rare* step to use underscores rather than
-//  camel case for clarity with describing operations.
-
-
-var 
-a = new Q.ComplexNumber( 1,  2 ),
-b = new Q.ComplexNumber( 3, -4 ),
-a_add_b      = a.add( b ),
-a_subtract_b = a.subtract( b ),
-a_multiply_b = a.multiply( b )
-a_divide_b   = a.divide( b )
-
-console.log( '' )
-console.log( '𝒂 =', a.toString() )
-console.log( '𝒃 =', b.toString() )
-console.log( '' )
-console.log( '𝒂 + 𝒃 = ', a_add_b.toString() )
-console.log( '𝒂 - 𝒃 =', a_subtract_b.toString() )
-console.log( '𝒂 × 𝒃 =', a_multiply_b.toString() )
-console.log( '𝒂 ÷ 𝒃 =', a_divide_b.toString() )
-console.log( '' )
-
-
-//  A reminder that 𝒊² = -1.
-
-var
-i  = new Q.ComplexNumber( 0,  1 ),
-ii = i.multiply( i )
-
-console.log( '𝒊  = ', i.toString() )
-console.log( '𝒊² =', ii.toString() )
-
-
-
-
-		</script>
 	</body>
 </html>

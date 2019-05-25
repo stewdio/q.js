@@ -289,7 +289,10 @@ Object.assign( Q.ComplexNumber.prototype, {
 		
 		const reduced = this.reduce()
 		if( Q.ComplexNumber.isNumberLike( reduced )) return ''+ reduced//  Because we promised a String!
-		if( reduced.real === 0 ) return Math.abs( reduced.imaginary ) +'i'
+		if( reduced.real === 0 ){
+
+			return ( reduced.imaginary === 1 ? 'i' : reduced.imaginary +'i' )
+		}
 		return ''+ reduced.real +' '+ ( reduced.imaginary >= 0 ? '+' : '-' ) +' '+ Math.abs( reduced.imaginary ) +'i'
 	},
 
