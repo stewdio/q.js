@@ -34,9 +34,9 @@ const ourQubit = new Q.Qubit( 0, 1 )
 			</p>
 			<h3>Examples</h3>
 			<ul>
-				<li>• <code>Qubit( 1, 0 )</code> has a 100% chance of collapsing to 0.</li>
-				<li>• <code>Qubit( 0, 1 )</code> has a 100% chance of collapsing to 1.</li>
-				<li>• <code>Qubit( 1÷√2, 1÷√2 )</code> has a 50% chance of collapsing to 0, and a 50% 
+				<li><code>Qubit( 1, 0 )</code> has a 100% chance of collapsing to 0.</li>
+				<li><code>Qubit( 0, 1 )</code> has a 100% chance of collapsing to 1.</li>
+				<li><code>Qubit( 1÷√2, 1÷√2 )</code> has a 50% chance of collapsing to 0, and a 50% 
 				chance of collapsing to 1.</li>
 			</ul>
 			<br>
@@ -75,14 +75,15 @@ const ourQubit = new Q.Qubit( 0, 1 )
 			<p>
 				Q.Qubit provides the following built-in <a href="https://en.wikipedia.org/wiki/Jones_calculus#Jones_vectors" target="_blank">Jones vectors</a>.
 			</p>
-			<ul>
-				<li>• HORIZONTAL = new Q.Qubit( 1, 0 )</li>
-				<li>• VERTICAL   = new Q.Qubit( 0, 1 )</li>
-				<li>• DIAGONAL      = new Q.Qubit( 1÷√2,  1÷√2 )</li>
-				<li>• ANTI_DIAGONAL = new Q.Qubit( 1÷√2, -1÷√2 )</li>
-				<li>• RIGHT_HAND_CIRCULAR_POLARIZED = new Q.Qubit( 1÷√2, -1÷√2𝒊 )</li>
-				<li>• LEFT_HAND_CIRCULAR_POLARIZED  = new Q.Qubit( 1÷√2,  1÷√2𝒊 )</li>
-			</ul>
+<pre><code>
+HORIZONTAL = new Q.Qubit( 1, 0 )
+VERTICAL   = new Q.Qubit( 0, 1 )
+DIAGONAL      = new Q.Qubit( 1÷√2,  1÷√2 )
+ANTI_DIAGONAL = new Q.Qubit( 1÷√2, -1÷√2 )
+RIGHT_HAND_CIRCULAR_POLARIZED = new Q.Qubit( 1÷√2, -1÷√2𝒊 )
+LEFT_HAND_CIRCULAR_POLARIZED  = new Q.Qubit( 1÷√2,  1÷√2𝒊 )
+
+</code></pre>
 		</main>
 		<script>
 
