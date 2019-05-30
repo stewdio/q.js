@@ -111,7 +111,6 @@ const Q = (function(){
 
 
 
-
 	return {
 
 		REVISION,
@@ -121,6 +120,57 @@ const Q = (function(){
 		domElement,
 		extractDocumentation,
 
+
+		constants: {},
+		createConstant: function( key, value ){
+
+			this[ key ] = value
+			this.constants[ key ] = this[ key ]
+			Object.freeze( this[ key ])
+		},
+		createConstants: function(){
+
+			if( arguments.length % 2 !== 0 ){
+
+				return Q.error( 'Q attempted to create constants with invalid (KEY, VALUE) pairs.' )
+			}
+			for( let i = 0; i < arguments.length; i += 2 ){
+
+				this.createConstant( arguments[ i ], arguments[ i + 1 ])
+			}
+		},
+		hypotenuse: function( x, y ){
+			
+			let
+			a = Math.abs( x ),
+			b = Math.abs( y )
+
+			if( a < 2048 && b < 2048 ){
+				
+				return Math.sqrt( a * a + b * b )
+			}
+			if( a < b ){
+			
+				a = b
+				b = x / y
+			} 
+			else b = y / x
+			return a * Math.sqrt( 1 + b * b )
+		},
+		logHypotenuse: function( x, y ){
+
+			const
+			a = Math.abs( x ),
+			b = Math.abs( y )
+
+			if( x === 0 ) return Math.log( b )
+			if( y === 0 ) return Math.log( a )
+			if( a < 2048 && b < 2048 ){
+			
+				return Math.log( x * x + y * y ) / 2
+			}
+			return Math.log( x / Math.cos( Math.atan2( y, x )))
+		},
 		ONE_SQRT: 1 / Math.sqrt( 2 )
 	}
 

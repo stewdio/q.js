@@ -76,26 +76,46 @@ Q.Qubit = function( a, b, dirac ){
 	
 	`
 
-	if( Q.Matrix.isMatrixLike( a )){
+
+	//  If we’ve received an instance of Q.Matrix as our first argument
+	//  then we’ll assume there are no further arguments
+	//  and just use that matrix as our new Q.Qubit instance.
+
+	if( Q.Matrix.isMatrixLike( a ) && b === undefined ){
 
 		b = a.rows[ 1 ][ 0 ]
 		a = a.rows[ 0 ][ 0 ]
 	}
 	else {
 
-		if( typeof a !== 'number' ) a = 1
-		if( typeof b !== 'number' ) b = Math.sqrt( 1 - Math.pow( a, 2 ))
+
+		//  All of our internal math now uses complex numbers
+		//  rather than Number literals
+		//  so we’d better convert!
+
+		if( typeof a === 'number' ) a = new Q.ComplexNumber( a, 0 )
+		if( typeof b === 'number' ) b = new Q.ComplexNumber( b, 0 )
+
+
+		//  If we receive undefined (or garbage inputs)
+		//  let’s try to make it useable.
+		//  This way we can always call Q.Qubit with no arguments
+		//  to make a new qubit available for computing with.
+
+		if( a instanceof Q.ComplexNumber !== true ) a = new Q.ComplexNumber( 1, 0 )
+			//****** THIS IS BAD NEED TO FIX FOR COMPLEX NUMBERS:   Math.sqrt( 1 - Math.pow( a, 2 ))
+		if( b instanceof Q.ComplexNumber !== true ) b = new Q.ComplexNumber( 0, 0 )
 	}
 
 
 	//  Fuzzy math! Thanks floating point numbers...
 
-	const 
-	n = Math.pow( a, 2 ) + Math.pow( b, 2 ),
-	t = Number.EPSILON * 2
+	// const 
+	// n = Math.pow( a, 2 ) + Math.pow( b, 2 ),
+	// t = Number.EPSILON * 2
 
-	if( Math.abs( n - 1 ) > t )
-		return Q.error( `Q.Qubit could not accept the initialization values of a=${a} and b=${b} for qbit${this.index} because their squares do not add up to 1.` )	
+	// if( Math.abs( n - 1 ) > t )
+	// 	return Q.error( `Q.Qubit could not accept the initialization values of a=${a} and b=${b} for qbit${this.index} because their squares do not add up to 1.` )	
 
 	Q.Matrix.call( this, [ a ],[ b ])
 	this.index = Q.Qubit.index ++
@@ -121,7 +141,7 @@ Q.Qubit = function( a, b, dirac ){
 	if( typeof dirac === 'string' ) this.dirac = dirac
 	else {
 
-		const found = Q.Qubit.constants.find( function( qubit ){
+		const found = Object.values( Q.Qubit.constants ).find( function( qubit ){
 
 			return (
 
@@ -146,25 +166,15 @@ Q.Qubit.prototype.constructor = Q.Qubit
 Object.assign( Q.Qubit, {
 
 	index: 0,
-	constants: [],
+	constants: {},
 	createConstant: function( key, value ){
 
 		Q.Qubit[ key ] = value
 		Q.Qubit[ key ].name = key
+		Q.Qubit.constants[ key ] = Q.Qubit[ key ]
 		Object.freeze( Q.Qubit[ key ])
-		Q.Qubit.constants.push( Q.Qubit[ key ])
 	},
-	createConstants: function(){
-
-		if( arguments.length % 2 !== 0 ){
-
-			return Q.error( 'Q.Qubit attempted to create constants with invalid (KEY, VALUE) pairs.' )
-		}
-		for( let i = 0; i < arguments.length; i += 2 ){
-
-			Q.Qubit.createConstant( arguments[ i ], arguments[ i + 1 ])
-		}
-	},
+	createConstants: Q.createConstants,
 	collapse: function( qubit ){
 
 		const 

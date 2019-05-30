@@ -13,16 +13,18 @@ superposition straight away then have at it:
 `Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL )`  
 
 Or perform the most superfluous coin-flip code ever:  
-`Q.Gate.HADAMARD.applyTo( Q.Qubit.HORIZONTAL ).collapse().targetBit`
+```
+Q.Gate.HADAMARD
+  .applyTo( Q.Qubit.HORIZONTAL )
+  .collapse()
+  .targetBit
+  .toString()
+```
 
-&nbsp;  
-
-**Update**: I’ve just added a `Q.ComplexNumber` class, but still need to re-tool 
-`Q.Matrix` and `Q.Qubit` to take advantage of it. 
-Also, you might notice the variable naming across Q.js is verbose. I’m writing this as a learning / teaching tool. The code should not only explain
-what it does funcationally, but also explain the math behind it and provide
-links to external references for further study.
-
+Q’s code repository is available on GitHub at 
+[https://github.com/stewdio/q.js](https://github.com/stewdio/q.js). 
+This repository website is live at 
+[https://stewdio.github.io/q.js](https://stewdio.github.io/q.js).  
 
 
 &nbsp;  

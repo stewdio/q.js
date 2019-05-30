@@ -55,22 +55,9 @@ Q.Gate.prototype = Q.Matrix.prototype
 Object.assign( Q.Gate, {
 
 	index: 0,
-	createConstant: function( key, value ){
-
-		Q.Gate[ key ] = value
-		Object.freeze( Q.Gate[ key ])
-	},
-	createConstants: function(){
-
-		if( arguments.length % 2 !== 0 ){
-
-			return Q.error( 'Q.Gate attempted to create constants with invalid (KEY, VALUE) pairs.' )
-		}
-		for( let i = 0; i < arguments.length; i += 2 ){
-
-			Q.Gate.createConstant( arguments[ i ], arguments[ i + 1 ])
-		}
-	}
+	constants: {},
+	createConstant: Q.createConstant,
+	createConstants: Q.createConstants
 })
 
 
@@ -100,7 +87,7 @@ Q.Gate.createConstants(
 	//  ─┤ Y ├─
 	//   └───┘
 
-	// 'PAULI_Y', new Q.Gate( Q.Matrix.PAULI_Y ),
+	'PAULI_Y', new Q.Gate( Q.Matrix.PAULI_Y ),
 
 
 	//  Pauli Z
@@ -116,7 +103,7 @@ Q.Gate.createConstants(
 	//  ─┤ S ├─
 	//   └───┘
 
-	// 'PHASE', new Q.Gate( Q.Matrix.PHASE ),
+	'PHASE', new Q.Gate( Q.Matrix.PHASE ),
 
 
 	//  π / 8

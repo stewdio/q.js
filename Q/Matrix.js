@@ -112,11 +112,14 @@ Q.Matrix = function(){
 
 Object.assign( Q.Matrix, {
 
+	index: 0,
+	constants: {},//  Only holds references; an easy way to look up what constants exist.
+	createConstant:  Q.createConstant,
+	createConstants: Q.createConstants,
 	help: function(){
 
 		return Q.extractDocumentation( this )
 	},
-	index: 0,
 
 
 	isMatrixLike: function( obj ){
@@ -178,22 +181,6 @@ Object.assign( Q.Matrix, {
 	createIdentity: function( size ){
 
 		return new Q.Matrix.createSquare( size, function( x, y ){ return x === y ? 1 : 0 })
-	},
-	createConstant: function( key, value ){
-
-		Q.Matrix[ key ] = value
-		Object.freeze( Q.Matrix[ key ])
-	},
-	createConstants: function(){
-
-		if( arguments.length % 2 !== 0 ){
-
-			return Q.error( 'Q.Matrix attempted to create constants with invalid (KEY, VALUE) pairs.' )
-		}
-		for( let i = 0; i < arguments.length; i += 2 ){
-
-			Q.Matrix.createConstant( arguments[ i ], arguments[ i + 1 ])
-		}
 	},
 
 	
@@ -348,11 +335,10 @@ Object.assign( Q.Matrix, {
 			const resultMatrixRow = []
 			matrix1.columns.forEach( function( matrix1Column ){//  Each column of OTHER matrix
 
-				let sum = 0
+				const sum = new Q.ComplexNumber()
 				matrix1Column.forEach( function( matrix1CellValue, index ){//  Work down the column of OTHER matrix
 
-					//sum += matrix0Row[ index ] * matrix1CellValue
-					sum += matrix0Row[ index ].multiply( matrix1CellValue )
+					sum.add$( matrix0Row[ index ].multiply( matrix1CellValue ))
 				})
 				resultMatrixRow.push( sum )
 			})
@@ -661,9 +647,9 @@ Q.Matrix.createConstants(
 	//  ─┤ Y ├─
 	//   └───┘
 
-	// 'PAULI_Y', new Q.Matrix(//  Yep. Totally need to add complex number support.
-	// 	[ 0, -i ],
-	// 	[ i,  0 ]),
+	'PAULI_Y', new Q.Matrix(//  Yep. Totally need to add complex number support.
+		[ 0, new Q.ComplexNumber( 0, -1 )],
+		[ new Q.ComplexNumber( 0, 1 ),  0 ]),
 
 
 	//  Pauli Z
@@ -681,9 +667,9 @@ Q.Matrix.createConstants(
 	//  ─┤ S ├─
 	//   └───┘
 
-	// 'PHASE', new Q.Matrix(
-	// 	[ 1, 0 ],
-	// 	[ 0, i ]),
+	'PHASE', new Q.Matrix(
+		[ 1, 0 ],
+		[ 0, new Q.ComplexNumber( 0, 1 )]),
 
 
 	//  π / 8

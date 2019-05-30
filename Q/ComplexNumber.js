@@ -41,13 +41,14 @@ Q.ComplexNumber = function( real, imaginary ){
 		imaginary = Q.ComplexNumber.imaginary
 		Q.warn( 'Q.ComplexNumber tried to create a new instance with an argument that is already a Q.ComplexNumber — and that’s weird!' )
 	}
+	else if( real === undefined ) real = 0
 	if( imaginary === undefined ) imaginary = 0
 	if( Q.ComplexNumber.isNumberLike( real ) !== true || 
 		Q.ComplexNumber.isNumberLike( imaginary ) !== true )
 		return Q.error( 'Q.ComplexNumber attempted to create a new instance but the arguments provided were not actual numbers.' )
 
 	this.real = real
-	this.imaginary = imaginary	
+	this.imaginary = imaginary
 	this.index = Q.ComplexNumber.index ++
 }
 
@@ -57,10 +58,31 @@ Q.ComplexNumber = function( real, imaginary ){
 Object.assign( Q.ComplexNumber, {
 
 	index: 0,
+	constants: {},
+	createConstant: Q.createConstant,
+	createConstants: Q.createConstants,
 	isNumberLike: function( n ){
 
 		return typeof n === 'number' || n instanceof Number
 	},
+	isNaN: function( n ){
+		
+		return isNaN( n.real ) || isNaN( n.imaginary )
+	},
+	isZero: function( n ){
+
+		return ( n.real === 0 || n.real === -0 ) &&
+		       ( n.imaginary === 0 || n.imaginary === -0 )
+	},
+	isFinite: function( n ){
+
+		return isFinite( n.real ) && isFinite( n.imaginary )
+	},
+	isInfinite: function( n ){
+	
+		return !( this.isNaN( n ) || this.isFinite( n ))
+	},
+	absolute: Q.hypotenuse,
 	conjugate: function( n ){
 
 		return new Q.ComplexNumber( n.real, n.imaginary * -1 )
@@ -239,8 +261,74 @@ Object.assign( Q.ComplexNumber, {
 				)
 			}
 		)
+	},
+
+
+
+
+
+	
+	
+
+	//  ADD raiseTo() here so we can check qubits for a^2+b^2 = 1 !!!!!!!!!!!!!
+	
+
+	squareRoot: function( n ){
+
+		const 
+		result = new Q.ComplexNumber( 0, 0 ),
+		absolute = Q.ComplexNumber.absolute( n )
+
+		if( n.real >= 0 ){
+
+			if( n.imaginary === 0 ){
+				
+				result.real = Math.sqrt( n.real )//  and imaginary already equals 0.
+			}
+			else {
+				
+				result.real = Math.sqrt( 2 * ( absolute + n.real )) /  2
+			}
+		} 
+		else {
+			
+			result.real = Math.abs( n.imaginary ) / Math.sqrt( 2 * ( absolute - n.real ))
+		}
+		if( n.real <= 0 ){
+			
+			result.imaginary = Math.sqrt( 2 * ( absolute - n.real )) / 2
+		}
+		else {
+			
+			result.imaginary = Math.abs( n.imaginary ) / Math.sqrt( 2 * ( absolute + n.real ))
+		}
+		if( n.imaginary < 0 ) result.imaginary *= -1
+		return result
+	},
+	log: function( n ){
+
+		return new Complex(
+		
+			Q.logHypotenuse( n.real, n.imaginary ),
+			Math.atan2( n.imaginary, n.real )
+		)
 	}
 })
+
+
+
+
+Q.ComplexNumber.createConstants(
+
+	'ZERO',     new Q.ComplexNumber( 0, 0 ),
+	'ONE',      new Q.ComplexNumber( 1, 0 ),
+	'E',        new Q.ComplexNumber( Math.E,  0 ),
+	'PI',       new Q.ComplexNumber( Math.PI, 0 ),
+	'I',        new Q.ComplexNumber( 0, 1 ),
+	'EPSILON',  new Q.ComplexNumber( Number.EPSILON, Number.EPSILON ),
+	'INFINITY', new Q.ComplexNumber( Infinity, Infinity ),
+	'NAN',      new Q.ComplexNumber( NaN, NaN )
+)
 
 
 
@@ -262,10 +350,34 @@ Object.assign( Q.ComplexNumber.prototype, {
 		if( this.imaginary === 0 ) return this.real
 		return this
 	},
+
+
+	isNaN: function( n ){
+		
+		return Q.ComplexNumber.isNaN( this )//  Returned boolean will kill function chaining.
+	},
+	isZero: function( n ){
+
+		return Q.ComplexNumber.isZero( this )//  Returned boolean will kill function chaining.
+	},
+	isFinite: function( n ){
+
+		return Q.ComplexNumber.isFinite( this )//  Returned boolean will kill function chaining.
+	},
+	isInfinite: function( n ){
+	
+		return Q.ComplexNumber.isInfinite( this )//  Returned boolean will kill function chaining.
+	},
+	absolute: function( n ){
+	
+		return Q.ComplexNumber.absolute( this )//  Returned number will kill function chaining.
+	},
 	conjugate: function(){
 
 		return Q.ComplexNumber.conjugate( this )
 	},
+	
+
 	multiply: function( otherComplexNumber ){
 
 		return Q.ComplexNumber.multiply( this, otherComplexNumber )
@@ -282,6 +394,8 @@ Object.assign( Q.ComplexNumber.prototype, {
 
 		return Q.ComplexNumber.subtract( this, otherComplexNumber )
 	},
+	
+
 	toString: function(){
 
 		

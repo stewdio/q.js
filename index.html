@@ -59,7 +59,7 @@
 				This project was started by me, <a href="http://stewartsmith.io" target="_blank">Stewart Smith</a>, 
 				in April 2019
 				as a learning and teaching tool for Web coders interested in quantum programming.
-				(I’m learning as I go along!)
+				(It’s a nights-and-weekends project. I’m learning as I go along!)
 				Q’s code repository is available on GitHub at
 				<a href="https://github.com/stewdio/q.js" target="_blank">https://github.com/stewdio/q.js</a>.
 				This repository website is live at
@@ -144,15 +144,18 @@ Q.<a href="Gate.html">Gate</a>.HADAMARD.applyTo( Q.<a href="Qubit.html">Qubit</a
 				Or perform the most superfluous coin-flip code ever:  				
 			</p>
 			<pre><code>
-Q.<a href="Gate.html">Gate</a>.HADAMARD.applyTo( Q.<a href="Qubit.html">Qubit</a>.HORIZONTAL ).collapse().targetBit
+Q.<a href="Gate.html">Gate</a>.HADAMARD
+	.applyTo( Q.<a href="Qubit.html">Qubit</a>.HORIZONTAL )
+	.collapse()
+	.targetBit
+	.toString()
 			</pre></code>
 			<br>
 			<h3>Roadmap</h3>
 			<p>
 				Q is very much a work-in-progress.
-				Right now the basic non-imaginary math works for matrices, qubits, and gates.
-				The <code><a href="ComplexNumber.html">ComplexNumber</a></code> class is now in place, so the next step is to 
-				integrate that in to matrices and qubits. 
+				Right now all the computation is done through matrices. 
+				It’d be nice to create a Bloch Sphere state machine as an alternative.
 				Then would be a good time to update the documentation here and in the code itself
 				so that all of the math examples, code examples, and the tone-of-voice are consistent.
 				Then we can get more serious about logic gates, and building the graphic user interface!
