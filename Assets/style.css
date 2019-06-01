@@ -98,12 +98,12 @@ h1, h2, h3 {
 }
 h3 {
 
-	margin-bottom: 12px;
+	margin-bottom: 8px;
 }
 h3 code {
 	
 	font-weight: 700;
-	font-size:   20px;
+	font-size:   23px;
 	line-height: 24px;
 }
 p + p {
@@ -242,7 +242,7 @@ nav ul {
 
 	display: block;
 	position: relative;
-	top: 24px;
+	top: 18px;
 }
 nav li {
 
@@ -270,6 +270,13 @@ nav section {
 }
 
 
+
+
+    /***************/
+   /*             */
+  /*   Content   */
+ /*             */
+/***************/
 
 
 main {
