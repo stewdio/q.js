@@ -22,7 +22,11 @@ document.addEventListener( 'DOMContentLoaded', function(){
 	document.body.appendChild( nav )
 	Array.from( nav.getElementsByTagName( 'a' )).forEach( function( link ){
 
-		if( link.pathname === document.location.pathname ) link.classList.add( 'selected' )
+		if( link.pathname === document.location.pathname ||
+			link.pathname === document.location.pathname +'index.html' ){
+			
+			link.classList.add( 'selected' )
+		}
 	})
 })
 
