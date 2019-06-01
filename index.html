@@ -246,7 +246,8 @@ Q.<a href="Gate.html">Gate</a>.HADAMARD
 	.toString()
 			</pre></code>
 			<p>
-				You just performed the most superfluous coin flip ever!
+				Did you try it?
+				You just performed the most superfluous coin flip ever.
 				Each time you run the above code there’s a 50% chance of receiving a 
 				<code>"0"</code>—let’s call that heads—and a 50% chance of receiving a 
 				<code>"1"</code>—and we’ll call that tails.
@@ -255,31 +256,60 @@ Q.<a href="Gate.html">Gate</a>.HADAMARD
 			<p>
 				Note what’s taking place here:
 				You haven’t installed or configured any fancy software, 
-				yet you’re already doing quantum computation!
+				yet you’re already doing quantum computation.
 				You must be a genius!
 			</p>		
-			<h3>Code style</h3>
+			<h3>Style</h3>
 			<p>
-				You’ll notice that Q is quite verbose, heavily commented, and there’s an emphasis on teaching.
-				I’m trying to convey the knowledge I’ve picked up.
-				Also there’s a lot of whitespace. You’ve got to let your code breathe!
-				See the variables. Allow for visual hierarchy in code by grouping things together, or spacing them apart.
-				And no semicolons unless necessary!
-				They’re just visual clutter otherwise.
+				Q’s source code is verbose, heavily commented, and there’s great empathy for fellow learners.
+				<a href="https://en.wikipedia.org/wiki/Visual_hierarchy" target="_blank">Visual hierarchy</a> is key when facing a brick of monospace code gibberish. 
+				<a href="https://en.wikipedia.org/wiki/White_space_(visual_arts)" target="_blank">White space</a> helps; whitespace around variables, between conceptually different blocks of code.
+				(You’ve got to let code breathe.)
+				Semicolons as line-enders are avoided unless absolutely necessary. 
+				(They’re just visual clutter otherwise; <a href="https://en.wikipedia.org/wiki/Typography" target="_blank">typographic</a> noise in the signal.)
+				Q is meant to be flexible and expressive to adapt to your style.
+				<a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">Function chaining</a> is prized, but Q often uses static class methods as a foundation for instance methods, so you’re free to use either approach.
+				Some ES6 syntax is preferred, but the bits that disfigure JavaScript to look more like Java are weeded out, bagged, and tossed in the river.
+				Let JavaScript be JavaScript.
 			</p>
 			<h3>Roadmap</h3>
 			<p>
-				Q is very much a work-in-progress.
-				Right now all the computation is done through matrices. 
-				It’d be nice to create a Bloch Sphere state machine as an alternative.
-				Then would be a good time to update the documentation here and in the code itself
-				so that all of the math examples, code examples, and the tone-of-voice are consistent.
-				Then we can get more serious about logic gates, and building the graphic user interface!
+				This is a work-in-progress.
+				Currently the computation relies on matrix math,
+				but it may be desirable to create a 
+				<a href="https://en.wikipedia.org/wiki/Finite-state_machine#Representations" target="_blank">state machine</a> based on the 
+				<a href="https://en.wikipedia.org/wiki/Bloch_sphere" target="_blank">Bloch Sphere</a> as an alternative.
+				This documentation is still being written, as is the code it documents.
+				We’re laying railroad track directly in front of the train.
+				While
+				the <code><a href="index.html">Q</a></code> object,
+				<code><a href="ComplexNumber.html">ComplexNumber</a></code>,
+				<code><a href="Matrix.html">Matrix</a></code>,
+				<code><a href="Qubit.html">Qubit</a></code>,
+				and <code><a href="Gate.html">Gate</a></code> are functional,
+				the <code><a href="Circuit.html">Circuit</a></code> class is not.
+				(Stay tuned.)
+				Full functionality and a <a href="https://en.wikipedia.org/wiki/Graphical_user_interface" target="_blank">graphic user interface</a>—as an alternative to the console’s 
+				<a href="https://en.wikipedia.org/wiki/Command-line_interface" target="_blank">commaind-line interface</a>—are coming.
+				Developing and mainting a consistent tone-of-voice across documentation, code, and code comments is a never-ending marathon, but it’s worth it.
 			</p>
 			<p>
-				Are you in to this stuff? Quantum computing? JavaScript and the Web?
-				I could use some help building this out!
-				I have some strong opinions about code style and what counts as simple and/or elegant—so leave your semicolons behind!—but there’s a lot of heavy lifting to be done and I’m willing to listen :)
+				Want to get involved? 
+				Are you a quantum computation expert?
+				Do you love JavaScript and the free Web?
+				How about breaking down complex subjects in to simple bite-sized chunks of 
+				<a href="https://en.wikipedia.org/wiki/Copywriting" target="_blank">copywriting</a> and minimalist diagrams?
+				Help us by <a href="https://github.com/stewdio/q.js/issues" target="_blank">creating (or resolving) issues</a> on <a href="https://github.com/stewdio/q.js" target="_blank">Q’s GitHub repository</a>.
+				Let’s make quantum accessible!
+			</p>
+			<hr>
+			<h3>The <code>Q</code> object</h3>
+			<p>
+				The root of Q.js is the <code>Q</code> object.
+				In addition to providing a single object to attach all other building blocks to
+				(and avoid polluting the global namespace)
+				<code>Q</code> provides some convenience functions.
+				(And we’ll detail all of that <em>later</em> when we make another pass on revising these docs!)
 			</p>
 		</main>
 		<script>

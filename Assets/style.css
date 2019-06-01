@@ -100,6 +100,12 @@ h3 {
 
 	margin-bottom: 12px;
 }
+h3 code {
+	
+	font-weight: 700;
+	font-size:   20px;
+	line-height: 24px;
+}
 p + p {
 
 	text-indent: 24px;
@@ -110,8 +116,10 @@ p + h3, code + h3, table + h3 {
 }
 hr {
 
-	height: 12px;
-	visibility: hidden;
+	margin: 48px 0;
+	height: 0px;
+	border-top: 1px solid #DDD;
+	padding: 0;
 }
 li {
 
