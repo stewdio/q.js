@@ -267,8 +267,6 @@ nav section {
 
 
 
-
-
 main {
 	
 	grid-column: 2;
@@ -281,32 +279,44 @@ main a {
 	margin:  0  -2px;
 	padding: 5px 2px;
 }
+
+
+
+
 table {
 
 	margin: 20px 0 20px -15px;
 	border-collapse: collapse;
 	background-color: #F6F6F6;
-	/*background-color: #FFF;*/
-	/*padding: 10px 20px;*/
 }
 td {
 
-	padding: 10px 15px;
+	border: 1px solid #FFF;
+	padding: 16px 24px;
+	transition: background-color 0.5s;
 }
 td.highlighted{
 
-	background-color: #EEE;
+	background-color: #DDD;
+	transition: background-color 0s;
 }
-
-
-
 #console-open-commands td {
 
 	text-align: center;
 	vertical-align: middle;
 }
+.key {
 
-
+	margin: 0 6px 6px 0;
+	width:  40px;
+	height: 40px;
+	display: inline-block;
+	border-radius: 6px;
+	background-color: #FFF;
+	text-align: center;
+	line-height: 38px;
+	box-shadow: 0 1px 2px #666;
+}
 
 
 
