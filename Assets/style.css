@@ -301,6 +301,10 @@ td.highlighted{
 	background-color: #DDD;
 	transition: background-color 0s;
 }
+#console-open-commands {
+
+	margin-bottom: 64px;
+}
 #console-open-commands td {
 
 	text-align: center;
@@ -308,9 +312,16 @@ td.highlighted{
 }
 #console-open-commands svg {
 
-	width:  48px;
-	height: 48px;
+	display: block;
+	margin: 0 auto 2px auto;
+	width:  42px;
+	height: 42px;
+	padding: 0;
 	fill: #555;
+}
+#console-open-commands .na {
+
+	color: #BBB;
 }
 .key {
 
