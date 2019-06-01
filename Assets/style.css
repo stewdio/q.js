@@ -183,11 +183,17 @@ a {
 
 	color: var( --internal-link-color );
 	text-decoration: none;
+	transition: 
+		background-color 0.2s,
+		color 0.2s;
 }
 a:hover {
 
 	background-color: var( --internal-link-color );
 	color: #FFF;
+	transition: 
+		background-color 0s,
+		color 0s;
 }
 a[ target=_blank ]{
 
