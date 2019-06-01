@@ -49,28 +49,31 @@
 	</head>
 	<body>
 		<main>
-			<h3>Hello, I’m Q</h3>
+			<h3>Hello, this is Q</h3>
 			<p>
 				Q is quantum computing in your browser.
-				Or a <em>simulation</em> of it anyway—after all, you cannot do actual quantum physics on a classical computer!
-				So why build this? 
+				(What?!)
+				Okay, okay, it’s a quantum circuit <em>simulator</em>—because you can’t do actual quantum computing using whatever non-quantum device you’re reading this on.
+				(So why build this?)
 				The same reason Google, IBM, and Microsoft build quantum simulators:
-				to explore quantum circuit design in a cheap and easy medium before applying those designs to the real hardware.
-				This project was started by me, <a href="http://stewartsmith.io" target="_blank">Stewart Smith</a>, 
+				to explore quantum circuit design using a cheap and easy medium before applying those designs to the real hardware.
+				Q was started by <a href="http://stewartsmith.io" target="_blank">Stewart Smith</a>, 
 				in April 2019
-				as a learning and teaching tool for Web coders interested in quantum programming.
-				(It’s a nights-and-weekends project. I’m learning as I go along!)
-				Q’s code repository is available on GitHub at
+				as a way to learn about quantum computing, 
+				share that learning with others,
+				and do some actual quantum circuit programming.
+				Q’s source code—including this documentation—is available for download from GitHub at
 				<a href="https://github.com/stewdio/q.js" target="_blank">https://github.com/stewdio/q.js</a>.
-				This repository website is live at
-				<a href="https://stewdio.github.io/q.js">https://stewdio.github.io/q.js</a>.
+				This documentation website is live at
+				<a href="https://stewdio.github.io/q.js">https://stewdio.github.io/q.js</a>,
+				which is probably where you’re viewing it from now, eh?
 			</p>
 			<p>
 				In the future, Q will take advantage of the browser
 				as a graphic user interface, 
-				but for now all of the action takes place 
+				but for now the action takes place 
 				in your browser’s JavaScript console.
-				You can use the following key commands to open it:
+				Use one of the following key commands to open your JavaScript console and start exploring:
 			</p>
 			<table id="console-open-commands"> 
 				<tr>
@@ -233,17 +236,13 @@
 					<td><span class="key"><small>F12</small></span></td>
 				</tr>
 			</table>
-			<h3>Getting started</h3>
+			<h3>My first superposition</h3>
 			<p>
-				Once you have your JavaScript console open you can start playing.
-				Want to launch a qubit in to superposition straight away? Have at it:
-			</p>
-			<pre><code>
-Q.<a href="Gate.html">Gate</a>.HADAMARD.applyTo( Q.<a href="Qubit.html">Qubit</a>.HORIZONTAL )
-			</pre></code>
-			<br>
-			<p>
-				Or perform the most superfluous coin-flip code ever:  				
+				Have you opened up your browser’s JavaScript console yet? 
+				(See above.)
+				You don’t have to know anything about quantum physics or JavaScript
+				to launch your first qubit in to <a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>!
+				Just copy and paste the following in to your console:
 			</p>
 			<pre><code>
 Q.<a href="Gate.html">Gate</a>.HADAMARD
@@ -252,7 +251,18 @@ Q.<a href="Gate.html">Gate</a>.HADAMARD
 	.targetBit
 	.toString()
 			</pre></code>
-			<br>
+			<p>
+				You just performed the most superfluous coin flip ever!
+				Each time you run the above code there’s a 50% chance of receiving a zero (heads),
+				and a 50% chance of receiving a one (tails).
+				Go ahead and try it out.
+			</p>
+			<p>
+				Note what’s taking place here:
+				You haven’t installed or configured any fancy software, 
+				yet you’re already doing quantum computation!
+				You must be a genius!
+			</p>		
 			<h3>Code style</h3>
 			<p>
 				You’ll notice that Q is quite verbose, heavily commented, and there’s an emphasis on teaching.
