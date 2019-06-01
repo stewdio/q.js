@@ -305,6 +305,12 @@ td.highlighted{
 	text-align: center;
 	vertical-align: middle;
 }
+#console-open-commands svg {
+
+	width:  48px;
+	height: 48px;
+	fill: #555;
+}
 .key {
 
 	margin: 0 6px 6px 0;
