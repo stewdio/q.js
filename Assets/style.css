@@ -45,7 +45,8 @@
 :root {
 
 	--text-color: #333;
-	--internal-link-color: #0A0;
+	/*--internal-link-color: #0A0;*/
+	--internal-link-color: #0366D6;
 	--external-link-color: var( --text-color );
 }
 * {
@@ -84,8 +85,8 @@ body {
 	/*font-family: 'Source Sans Pro', Menlo, "Courier New", monospace;*/
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: 400;
-	font-size:   14px;
-	line-height: 25px;
+	font-size:   16px;
+	line-height: 24px;
 	box-shadow: 0 0 10px rgba( 0, 0, 0, 0.3 );
 	overflow: hidden;
 }
@@ -97,23 +98,22 @@ h1, h2, h3 {
 
 	margin:  0;
 	padding: 0;
-	/*padding-bottom: 20px;*/
 	color: #000;
 	font-weight: 700;
-	font-size:   14px;
-	line-height: 25px;
+	font-size:   20px;
+	line-height: 24px;
 }
 h3 {
 
-	margin-bottom: 10px;
+	margin-bottom: 12px;
 }
 p + p {
 
-	text-indent: 20px;
+	text-indent: 24px;
 }
 p + h3, code + h3, table + h3 {
 
-	margin-top: 40px;
+	margin-top: 48px;
 }
 hr {
 
@@ -131,9 +131,9 @@ strong {
 }
 pre {
 
-	margin:  10px 0 10px -15px;
-	padding:  5px 15px;
-	line-height:  18px;
+	margin:  12px 0 12px -16px;
+	padding:  8px 16px;
+	line-height:  20px;
 	tab-size: 4;
 }
 pre, code, samp {
@@ -141,13 +141,14 @@ pre, code, samp {
 	background-color: #FFF;
 	background-color: #F6F6F6;
 	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
+	/*font-family: Menlo, "Courier New", monospace;*/
 	font-weight: 300;
-	font-size: 14px;
+	font-size: 16px;
 }
 code, samp {
 
 	margin:  0  -2px;
-	padding: 5px 2px;
+	padding: 4px 2px;
 }
 samp {
 
@@ -216,25 +217,27 @@ nav {
 
 	grid-column: 1;
   	grid-row: 1;
-	padding: 20px 0 60px 0;
+	padding: 16px 0 64px 0;
 	overflow: auto;
-	font-size:   21px;
-	line-height: 40px;
+/*	font-size:   24px;
+	line-height: 48px;*/
+	font-size:   20px;
+	line-height: 36px;
 }
 header {
 
-	margin-left: 20px;
+	margin-left: 16px;
 }
 header img {
 
-	width:  60px;
-	height: 60px;
+	width:  64px;
+	height: 64px;
 }
 nav ul {
 
 	display: block;
 	position: relative;
-	top: 20px;
+	top: 24px;
 }
 nav li {
 
@@ -243,7 +246,7 @@ nav li {
 nav li a {
 
 	display: block;
-	padding-left: 40px;
+	padding-left: 36px;
 	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
 }
 nav a.selected {
