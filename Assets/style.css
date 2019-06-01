@@ -74,21 +74,14 @@ html, body {
 }
 body {
 
-	display: grid;
-	grid-gap: 0;
-	grid-template-columns: 240px 1fr;
 	margin: 0;
 	background-color: #FFF;
-	/*background-color: #F6F6F6;*/
 	padding: 0;
 	color: var( --text-color );
-	/*font-family: 'Source Sans Pro', Menlo, "Courier New", monospace;*/
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: 400;
 	font-size:   16px;
 	line-height: 24px;
-	box-shadow: 0 0 10px rgba( 0, 0, 0, 0.3 );
-	overflow: hidden;
 }
 
 
@@ -142,7 +135,6 @@ pre, code, samp {
 	background-color: #FFF;
 	background-color: #F6F6F6;
 	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
-	/*font-family: Menlo, "Courier New", monospace;*/
 	font-weight: 300;
 	font-size: 16px;
 }
@@ -151,10 +143,7 @@ code, samp {
 	margin:  0  -2px;
 	padding: 4px 2px;
 }
-samp {
-
-	/*color: #CCC;*/
-}
+samp {}
 pre code {
 
 	margin:  0;
@@ -222,12 +211,13 @@ a[ target=_blank ]:hover{
 
 nav {
 
-	grid-column: 1;
-  	grid-row: 1;
-	padding: 16px 0 64px 0;
+	position: fixed;
+	top:  0;
+	left: 0;
+	width: 240px;
+	height: 100%;
+	padding: 16px 0 128px 0;
 	overflow: auto;
-/*	font-size:   24px;
-	line-height: 48px;*/
 	font-size:   20px;
 	line-height: 36px;
 }
@@ -276,10 +266,12 @@ nav section {
 
 main {
 	
-	grid-column: 2;
-	grid-row: 1;
+	position: absolute;
+	top: 0;
+	left: 240px;
 	padding: 120px 60px 240px 40px;
 	overflow: auto;
+	max-width: 720px;
 }
 main a {
 
@@ -301,7 +293,7 @@ table {
 td {
 
 	border: 1px solid #FFF;
-	padding: 16px 24px;
+	padding: 16px 32px;
 	transition: background-color 0.5s;
 }
 td.highlighted{
@@ -322,7 +314,7 @@ td.highlighted{
 }
 .key {
 
-	margin: 0 6px 6px 0;
+	margin: 6px 3px 6px 3px;
 	width:  40px;
 	height: 40px;
 	display: inline-block;
