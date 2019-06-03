@@ -30,11 +30,11 @@ Q.Gate = function( matrix ){
 
 	//  We need to be able to see and interact with this thing.
 
-	const domElement = document.createElement( 'div' )
-	domElement.classList.add( 'qc-gate' )
-	domElement.innerHTML = '[]'
-	Q.domElement.appendChild( domElement )
-	this.domElement = domElement
+	// const domElement = document.createElement( 'div' )
+	// domElement.classList.add( 'qc-gate' )
+	// domElement.innerHTML = '[]'
+	// Q.domElement.appendChild( domElement )
+	// this.domElement = domElement
 
 	/*
 

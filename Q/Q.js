@@ -5,63 +5,29 @@
 const Q = (function(){
 
 	`
-
-	Q.Matrix
-	Q.Gate
-	Q.Qubit
-
 	Stewart Smith
 	http://stewartsmith.io
 	30 April 2019
 	`
+})
 
 
 
 
-	const REVISION = 0
+Object.assign( Q, {
 
+	verbosity: 0.5,
+	error: function(){
 
-	//  We want output!
-
-	const domElement = document.createElement( 'div' )
-	domElement.style.fontFamily = '"Courier New", Courier, monospace'
-	domElement.innerHTML = 'Q.js<br>Open your JavaScript console!'
-	document.addEventListener( 'DOMContentLoaded', function(){
-	
-		//document.body.append( domElement )
-	})
-
-
-	let verbosity = 0.5
-	const error = function(){
-
-		//return console.error.apply( console, arguments )
-		//return null//  Is it better to return null or undefined to signal an error?
-
-		//if( Q.vebosity > 0 ) 
+		`
+		Right now we’re returning a String when we encounter an error.
+		But is it better to return _null_ or _undefined_ instead?
+		Or even return the console.error.apply( console, arguments )?
+		`
 		console.error.apply( console, arguments )
 		return '(error)'
-	}
-
-
-
-
-
-
-
-
-	
-	function countPrefixTabs( text ){
-	
-		`
-		Counting tabs “manually” is actually more performant than regex.
-		`
-
-		let count = index = 0
-		while( text.charAt( index ++ ) === '\t' ) count ++
-		return count
-	}
-	function extractDocumentation( f ){
+	},
+	extractDocumentation: function( f ){
 
 		`
 		I wanted a way to document code
@@ -76,6 +42,18 @@ const Q = (function(){
 		begin = f.indexOf( '`' ) + 1,
 		end   = f.indexOf( '`', begin ),
 		lines = f.substring( begin, end ).split( '\n' )
+
+
+		function countPrefixTabs( text ){
+		
+			`
+			Is counting tabs “manually” is actually more performant than regex?
+			`
+
+			let count = index = 0
+			while( text.charAt( index ++ ) === '\t' ) count ++
+			return count
+		}
 
 
 		//-------------------  TO DO!
@@ -99,92 +77,72 @@ const Q = (function(){
 			lines[ i ] = line.substring( tabs ).replace( / {2}$/, '\n' )
 		})
 		return lines.join( '' )
-	}
+	},
+	help: function( f ){
 
+		if( f === undefined ) f = Q
+		return Q.extractDocumentation( f )
+	},
+	constants: {},
+	createConstant: function( key, value ){
 
-	function help(){
+		this[ key ] = value
+		this.constants[ key ] = this[ key ]
+		Object.freeze( this[ key ])
+	},
+	createConstants: function(){
 
-		return Q.extractDocumentation( Q )
-	}
+		if( arguments.length % 2 !== 0 ){
 
+			return Q.error( 'Q attempted to create constants with invalid (KEY, VALUE) pairs.' )
+		}
+		for( let i = 0; i < arguments.length; i += 2 ){
 
+			this.createConstant( arguments[ i ], arguments[ i + 1 ])
+		}
+	},
+	hypotenuse: function( x, y ){
+		
+		let
+		a = Math.abs( x ),
+		b = Math.abs( y )
 
-
-
-	return {
-
-		REVISION,
-		verbosity,
-		error,	
-		help,	
-		domElement,
-		extractDocumentation,
-
-
-		constants: {},
-		createConstant: function( key, value ){
-
-			this[ key ] = value
-			this.constants[ key ] = this[ key ]
-			Object.freeze( this[ key ])
-		},
-		createConstants: function(){
-
-			if( arguments.length % 2 !== 0 ){
-
-				return Q.error( 'Q attempted to create constants with invalid (KEY, VALUE) pairs.' )
-			}
-			for( let i = 0; i < arguments.length; i += 2 ){
-
-				this.createConstant( arguments[ i ], arguments[ i + 1 ])
-			}
-		},
-		hypotenuse: function( x, y ){
+		if( a < 2048 && b < 2048 ){
 			
-			let
-			a = Math.abs( x ),
-			b = Math.abs( y )
+			return Math.sqrt( a * a + b * b )
+		}
+		if( a < b ){
+		
+			a = b
+			b = x / y
+		} 
+		else b = y / x
+		return a * Math.sqrt( 1 + b * b )
+	},
+	logHypotenuse: function( x, y ){
 
-			if( a < 2048 && b < 2048 ){
-				
-				return Math.sqrt( a * a + b * b )
-			}
-			if( a < b ){
-			
-				a = b
-				b = x / y
-			} 
-			else b = y / x
-			return a * Math.sqrt( 1 + b * b )
-		},
-		logHypotenuse: function( x, y ){
+		const
+		a = Math.abs( x ),
+		b = Math.abs( y )
 
-			const
-			a = Math.abs( x ),
-			b = Math.abs( y )
-
-			if( x === 0 ) return Math.log( b )
-			if( y === 0 ) return Math.log( a )
-			if( a < 2048 && b < 2048 ){
-			
-				return Math.log( x * x + y * y ) / 2
-			}
-			return Math.log( x / Math.cos( Math.atan2( y, x )))
-		},
-		ONE_SQRT: 1 / Math.sqrt( 2 )
+		if( x === 0 ) return Math.log( b )
+		if( y === 0 ) return Math.log( a )
+		if( a < 2048 && b < 2048 ){
+		
+			return Math.log( x * x + y * y ) / 2
+		}
+		return Math.log( x / Math.cos( Math.atan2( y, x )))
 	}
-
-}())
-
+})
 
 
 
-Q.Moment = function(){}
-Q.Operation = function(){}//  
-Q.GateOperation = function(){}
 
+Q.createConstants( 
 
-
+	'REVISION', 1,
+	'ONE_SQRT', 1 / Math.sqrt( 2 )
+)
 
 
 

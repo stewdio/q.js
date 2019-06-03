@@ -98,6 +98,7 @@ h1, h2, h3 {
 }
 h3 {
 
+	padding-top:  36px;
 	margin-bottom: 8px;
 }
 h3 code {
@@ -112,7 +113,7 @@ p + p {
 }
 p + h3, code + h3, table + h3 {
 
-	margin-top: 36px;
+	/*margin-top: 36px;*/
 }
 hr {
 
@@ -137,6 +138,7 @@ pre {
 	padding:  8px 16px;
 	line-height:  20px;
 	tab-size: 4;
+	overflow: auto;
 }
 pre, code, samp {
 
@@ -284,7 +286,7 @@ main {
 	position: absolute;
 	top: 0;
 	left: 240px;
-	padding: 120px 60px 240px 40px;
+	padding: 84px 60px 240px 40px;
 	overflow: auto;
 	max-width: 720px;
 }
@@ -318,7 +320,7 @@ td.highlighted{
 }
 #console-open-commands {
 
-	margin-bottom: 64px;
+	/*margin-bottom: 64px;*/
 }
 #console-open-commands td {
 
