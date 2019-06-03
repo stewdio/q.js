@@ -5,8 +5,8 @@
 const Q = (function(){
 
 	`
-	Stewart Smith
-	http://stewartsmith.io
+	Stewart Smith  
+	http://stewartsmith.io  
 	30 April 2019
 	`
 })
@@ -141,7 +141,16 @@ Object.assign( Q, {
 Q.createConstants( 
 
 	'REVISION', 1,
-	'ONE_SQRT', 1 / Math.sqrt( 2 )
+	'ONE_SQRT', 1 / Math.sqrt( 2 ),
+
+
+	//  Yeah... F’ing floating point numbers man!
+	//  Here’s the issue:
+	//  var a = new Q.ComplexNumber( 1, 2 )
+	//  a.multiply(a).isEqualTo( a.power( new Q.ComplexNumber( 2, 0 )))
+	//  That’s only true if Q.EPSILON >= Number.EPSILON * 6
+	
+	'EPSILON', Number.EPSILON * 6
 )
 
 

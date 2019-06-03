@@ -82,7 +82,48 @@ Object.assign( Q.ComplexNumber, {
 	
 		return !( this.isNaN( n ) || this.isFinite( n ))
 	},
-	absolute: Q.hypotenuse,
+	areEqual: function( a, b ){
+
+		return Q.ComplexNumber.operate(
+
+			'areEqual', a, b,
+			function( a, b ){
+				
+				return Math.abs( a - b ) < Q.EPSILON
+			},
+			function( a, b ){
+
+				return (
+
+					Math.abs( a - b.real ) < Q.EPSILON &&
+					Math.abs( b.imaginary ) < Q.EPSILON
+				)
+			},
+			function( a, b ){
+
+				return (
+
+					Math.abs( a.real - b ) < Q.EPSILON &&
+					Math.abs( a.imaginary ) < Q.EPSILON
+				)
+			},
+			function( a, b ){
+
+				return ( 
+		
+					Math.abs( a.real - b.real ) < Q.EPSILON &&
+					Math.abs( a.imaginary - b.imaginary ) < Q.EPSILON
+				)
+			}
+		)
+	},
+
+
+
+	absolute: function( n ){
+	
+		return Q.hypotenuse( n.real, n.imaginary )
+	},
 	conjugate: function( n ){
 
 		return new Q.ComplexNumber( n.real, n.imaginary * -1 )
@@ -90,63 +131,166 @@ Object.assign( Q.ComplexNumber, {
 	operate: function( 
 		
 		name,
-		n0,
-		n1,
+		a,
+		b,
 		numberAndNumber,
 		numberAndComplex,
 		complexAndNumber,
 		complexAndComplex ){
 
-		if( Q.ComplexNumber.isNumberLike( n0 )){
+		if( Q.ComplexNumber.isNumberLike( a )){
 
-			if( Q.ComplexNumber.isNumberLike( n1 )) return numberAndNumber( n0, n1 )
-			else if( n1 instanceof Q.ComplexNumber ) return numberAndComplex( n0, n1 )
-			else return Q.error( 'Q.ComplexNumber attempted to', name, 'with the number', n0, 'and something that is neither a Number or Q.ComplexNumber:', n1 )
+			if( Q.ComplexNumber.isNumberLike( b )) return numberAndNumber( a, b )
+			else if( b instanceof Q.ComplexNumber ) return numberAndComplex( a, b )
+			else return Q.error( 'Q.ComplexNumber attempted to', name, 'with the number', a, 'and something that is neither a Number or Q.ComplexNumber:', b )
 		}
-		else if( n0 instanceof Q.ComplexNumber ){
+		else if( a instanceof Q.ComplexNumber ){
 
-			if( Q.ComplexNumber.isNumberLike( n1 )) return complexAndNumber( n0, n1 )
-			else if( n1 instanceof Q.ComplexNumber ) return complexAndComplex( n0, n1 )
-			else return Q.error( 'Q.ComplexNumber attempted to', name, 'with the complex number', n0, 'and something that is neither a Number or Q.ComplexNumber:', n1 )
+			if( Q.ComplexNumber.isNumberLike( b )) return complexAndNumber( a, b )
+			else if( b instanceof Q.ComplexNumber ) return complexAndComplex( a, b )
+			else return Q.error( 'Q.ComplexNumber attempted to', name, 'with the complex number', a, 'and something that is neither a Number or Q.ComplexNumber:', b )
 		}
-		else return Q.error( 'Q.ComplexNumber attempted to', name, 'with something that is neither a Number or Q.ComplexNumber:', n0 )
+		else return Q.error( 'Q.ComplexNumber attempted to', name, 'with something that is neither a Number or Q.ComplexNumber:', a )
 	},
-	multiply: function( n0, n1 ){
+	
+
+
+
+	power: function( a, b ){
+
+
+		//  Anything raised to the Zero power is 1.
+
+		if( b.isZero() ) return Q.ComplexNumber.ONE
+
+
+		//  Zero raised to any power is 0.
+		//  Note: What happens if b.real is zero or negative?
+		//        What happens if b.imaginary is negative?
+		//        Do we really need those conditionals??
+
+		if( a.isZero() &&
+			b.real > 0 && 
+			b.imaginary >= 0 ){
+
+			return Q.ComplexNumber.ZERO
+		}
+
+
+		//  If our exponent is Real (has no Imaginary component)
+		//  then we’re really just raising to a power.
+		
+		if( b.imaginary === 0 ){
+
+			if( a.real >= 0 && a.imaginary === 0 ){
+
+				return new Q.ComplexNumber( Math.pow( a.real, b.real ), 0 )
+			}
+			else if( a.real === 0 ){//  If our base is Imaginary (has no Real component).
+
+				switch(( b.real % 4 + 4 ) % 4 ){
+			
+					case 0:
+						return new Q.ComplexNumber( Math.pow( a.imaginary, b.real ), 0 )
+					case 1:
+						return new Q.ComplexNumber( 0, Math.pow( a.imaginary, b.real ))
+					case 2:
+						return new Q.ComplexNumber( -Math.pow( a.imaginary, b.real ), 0 )
+					case 3:
+						return new Q.ComplexNumber( 0, -Math.pow( a.imaginary, b.real ))
+				}
+			}
+		}
+
+
+		const
+		arctangent2 = Math.atan2( a.imaginary, a.real ),
+		logHypotenuse = Q.logHypotenuse( a.real, a.imaginary )
+
+		a.real = Math.exp( b.real * logHypotenuse - b.imaginary * arctangent2 )
+		a.imaginary = b.imaginary * logHypotenuse + b.real * arctangent2
+		return new Q.ComplexNumber(
+		
+			a.real * Math.cos( a.imaginary ),
+			a.real * Math.sin( a.imaginary )
+		)
+	},
+	squareRoot: function( a ){
+
+		const 
+		result = new Q.ComplexNumber( 0, 0 ),
+		absolute = Q.ComplexNumber.absolute( a )
+
+		if( a.real >= 0 ){
+
+			if( a.imaginary === 0 ){
+				
+				result.real = Math.sqrt( a.real )//  and imaginary already equals 0.
+			}
+			else {
+				
+				result.real = Math.sqrt( 2 * ( absolute + a.real )) /  2
+			}
+		} 
+		else {
+			
+			result.real = Math.abs( a.imaginary ) / Math.sqrt( 2 * ( absolute - a.real ))
+		}
+		if( a.real <= 0 ){
+			
+			result.imaginary = Math.sqrt( 2 * ( absolute - a.real )) / 2
+		}
+		else {
+			
+			result.imaginary = Math.abs( a.imaginary ) / Math.sqrt( 2 * ( absolute + a.real ))
+		}
+		if( a.imaginary < 0 ) result.imaginary *= -1
+		return result
+	},
+	log: function( a ){
+
+		return new Complex(
+		
+			Q.logHypotenuse( a.real, a.imaginary ),
+			Math.atan2( a.imaginary, a.real )
+		)
+	},
+	multiply: function( a, b ){
 		
 		return Q.ComplexNumber.operate(
 
-			'multiply', n0, n1,
-			function( n0, n1 ){
+			'multiply', a, b,
+			function( a, b ){
 				
-				return new Q.ComplexNumber( n0 * n1 )
+				return new Q.ComplexNumber( a * b )
 			},
-			function( n0, n1 ){
+			function( a, b ){
 
 				return new Q.ComplexNumber( 
 
-					n0 * n1.real,
-					n0 * n1.imaginary
+					a * b.real,
+					a * b.imaginary
 				)
 			},
-			function( n0, n1 ){
+			function( a, b ){
 
 				return new Q.ComplexNumber( 
 
-					n0.real * n1,
-					n0.imaginary * n1
+					a.real * b,
+					a.imaginary * b
 				)
 			},
-			function( n0, n1 ){
+			function( a, b ){
 
 
 				//  FOIL Method that shit.
 				//  https://en.wikipedia.org/wiki/FOIL_method
 
 				const
-				firsts = n0.real * n1.real,
-				outers = n0.real * n1.imaginary,
-				inners = n0.imaginary * n1.real,				
-				lasts  = n0.imaginary * n1.imaginary * -1//  Because i² = -1.
+				firsts = a.real * b.real,
+				outers = a.real * b.imaginary,
+				inners = a.imaginary * b.real,				
+				lasts  = a.imaginary * b.imaginary * -1//  Because i² = -1.
 				
 				return new Q.ComplexNumber( 
 
@@ -156,161 +300,110 @@ Object.assign( Q.ComplexNumber, {
 			}
 		)
 	},
-	divide: function( n0, n1 ){
+	divide: function( a, b ){
 
 		return Q.ComplexNumber.operate(
 
-			'multiply', n0, n1,
-			function( n0, n1 ){
+			'multiply', a, b,
+			function( a, b ){
 				
-				return new Q.ComplexNumber( n0 / n1 )
+				return new Q.ComplexNumber( a / b )
 			},
-			function( n0, n1 ){
+			function( a, b ){
 
-				return new Q.ComplexNumber( n0 ).divide( n1 )
+				return new Q.ComplexNumber( a ).divide( b )
 			},
-			function( n0, n1 ){
+			function( a, b ){
 
 				return new Q.ComplexNumber( 
 
-					n0.real / n1,
-					n0.imaginary / n1
+					a.real / b,
+					a.imaginary / b
 				)
 			},
-			function( n0, n1 ){
+			function( a, b ){
 
 
 				//  Ermergerd I had to look this up because it’s been so long.
 				//  https://www.khanacademy.org/math/precalculus/imaginary-and-complex-numbers/complex-conjugates-and-dividing-complex-numbers/a/dividing-complex-numbers-review
 
 				const 
-				conjugate   = n1.conjugate(),
-				numerator   = n0.multiply( conjugate ),
-				denominator = n1.multiply( conjugate ).real
+				conjugate   = b.conjugate(),
+				numerator   = a.multiply( conjugate ),
+				denominator = b.multiply( conjugate ).real
 
 				return numerator.divide( denominator )
 			}
 		)
 	},
-	add: function( n0, n1 ){
+	add: function( a, b ){
 		
 		return Q.ComplexNumber.operate(
 
-			'add', n0, n1,
-			function( n0, n1 ){
+			'add', a, b,
+			function( a, b ){
 
-				return new Q.ComplexNumber( n0 + n1 )
+				return new Q.ComplexNumber( a + b )
 			},
-			function( n0, n1 ){
+			function( a, b ){
 
 				return new Q.ComplexNumber(
 
-					n1.real + n0,
-					n1.imaginary
+					b.real + a,
+					b.imaginary
 				)
 			},
-			function( n0, n1 ){
+			function( a, b ){
 
 				return new Q.ComplexNumber(
 
-					n0.real + n1,
-					n0.imaginary
+					a.real + b,
+					a.imaginary
 				)
 			},
-			function( n0, n1 ){
+			function( a, b ){
 
 				return new Q.ComplexNumber(
 
-					n0.real + n1.real,
-					n0.imaginary + n1.imaginary
+					a.real + b.real,
+					a.imaginary + b.imaginary
 				)
 			}
 		)
 	},
-	subtract: function( n0, n1 ){
+	subtract: function( a, b ){
 
 		return Q.ComplexNumber.operate(
 
-			'subtract', n0, n1,
-			function( n0, n1 ){
+			'subtract', a, b,
+			function( a, b ){
 
-				return new Q.ComplexNumber( n0 + n1 )
+				return new Q.ComplexNumber( a + b )
 			},
-			function( n0, n1 ){
+			function( a, b ){
 
 				return new Q.ComplexNumber(
 
-					n1.real - n0,
-					n1.imaginary
+					b.real - a,
+					b.imaginary
 				)
 			},
-			function( n0, n1 ){
+			function( a, b ){
 
 				return new Q.ComplexNumber(
 
-					n0.real - n1,
-					n0.imaginary
+					a.real - b,
+					a.imaginary
 				)
 			},
-			function( n0, n1 ){
+			function( a, b ){
 
 				return new Q.ComplexNumber(
 
-					n0.real - n1.real,
-					n0.imaginary - n1.imaginary
+					a.real - b.real,
+					a.imaginary - b.imaginary
 				)
 			}
-		)
-	},
-
-
-
-
-
-	
-	
-
-	//  ADD raiseTo() here so we can check qubits for a^2+b^2 = 1 !!!!!!!!!!!!!
-	
-
-	squareRoot: function( n ){
-
-		const 
-		result = new Q.ComplexNumber( 0, 0 ),
-		absolute = Q.ComplexNumber.absolute( n )
-
-		if( n.real >= 0 ){
-
-			if( n.imaginary === 0 ){
-				
-				result.real = Math.sqrt( n.real )//  and imaginary already equals 0.
-			}
-			else {
-				
-				result.real = Math.sqrt( 2 * ( absolute + n.real )) /  2
-			}
-		} 
-		else {
-			
-			result.real = Math.abs( n.imaginary ) / Math.sqrt( 2 * ( absolute - n.real ))
-		}
-		if( n.real <= 0 ){
-			
-			result.imaginary = Math.sqrt( 2 * ( absolute - n.real )) / 2
-		}
-		else {
-			
-			result.imaginary = Math.abs( n.imaginary ) / Math.sqrt( 2 * ( absolute + n.real ))
-		}
-		if( n.imaginary < 0 ) result.imaginary *= -1
-		return result
-	},
-	log: function( n ){
-
-		return new Complex(
-		
-			Q.logHypotenuse( n.real, n.imaginary ),
-			Math.atan2( n.imaginary, n.real )
 		)
 	}
 })
@@ -325,7 +418,7 @@ Q.ComplexNumber.createConstants(
 	'E',        new Q.ComplexNumber( Math.E,  0 ),
 	'PI',       new Q.ComplexNumber( Math.PI, 0 ),
 	'I',        new Q.ComplexNumber( 0, 1 ),
-	'EPSILON',  new Q.ComplexNumber( Number.EPSILON, Number.EPSILON ),
+	'EPSILON',  new Q.ComplexNumber( Q.EPSILON, Q.EPSILON ),
 	'INFINITY', new Q.ComplexNumber( Infinity, Infinity ),
 	'NAN',      new Q.ComplexNumber( NaN, NaN )
 )
@@ -368,7 +461,13 @@ Object.assign( Q.ComplexNumber.prototype, {
 	
 		return Q.ComplexNumber.isInfinite( this )//  Returned boolean will kill function chaining.
 	},
-	absolute: function( n ){
+	isEqualTo: function( b ){
+
+		return Q.ComplexNumber.areEqual( this, b )//  Returned boolean will kill function chaining.
+	},
+
+
+	absolute: function(){
 	
 		return Q.ComplexNumber.absolute( this )//  Returned number will kill function chaining.
 	},
@@ -378,23 +477,35 @@ Object.assign( Q.ComplexNumber.prototype, {
 	},
 	
 
-	multiply: function( otherComplexNumber ){
+	power: function( b ){
 
-		return Q.ComplexNumber.multiply( this, otherComplexNumber )
+		return Q.ComplexNumber.power( this, b )
 	},
-	divide: function( otherComplexNumber ){
+	squareRoot: function(){
 
-		return Q.ComplexNumber.divide( this, otherComplexNumber )
+		return Q.ComplexNumber.squareRoot( this )
 	},
-	add: function( otherComplexNumber ){
+	log: function(){
 
-		return Q.ComplexNumber.add( this, otherComplexNumber )
+		return Q.ComplexNumber.log( this )
 	},
-	subtract: function( otherComplexNumber ){
+	multiply: function( b ){
 
-		return Q.ComplexNumber.subtract( this, otherComplexNumber )
+		return Q.ComplexNumber.multiply( this, b )
 	},
-	
+	divide: function( b ){
+
+		return Q.ComplexNumber.divide( this, b )
+	},
+	add: function( b ){
+
+		return Q.ComplexNumber.add( this, b )
+	},
+	subtract: function( b ){
+
+		return Q.ComplexNumber.subtract( this, b )
+	},
+
 
 	toString: function(){
 
@@ -411,36 +522,50 @@ Object.assign( Q.ComplexNumber.prototype, {
 	},
 
 
+
+
 	//  DESTRUCTIVE operations.
 
-	copy$: function( otherComplexNumber ){
+	copy$: function( b ){
 		
-		if( otherComplexNumber instanceof Q.ComplexNumber !== true )
+		if( b instanceof Q.ComplexNumber !== true )
 			return Q.error( `Q.ComplexNumber attempted to copy something that was not a complex number in to this complex number #${this.index}.`, this )
 		
-		this.real = otherComplexNumber.real
-		this.imaginary = otherComplexNumber.imaginary
+		this.real = b.real
+		this.imaginary = b.imaginary
 		return this
 	},
 	conjugate$: function(){
 
-		return this.copy( this.conjugate() )
+		return this.copy$( this.conjugate() )
 	},
-	multiply$: function( otherComplexNumber ){
+	power$: function( b ){
 
-		return this.copy$( this.multiply( otherComplexNumber ))
+		return this.copy$( this.power( b ))
 	},
-	divide$: function( otherComplexNumber ){
+	squareRoot$: function(){
 
-		return this.copy$( this.divide( otherComplexNumber ))
+		return this.copy$( this.squareRoot() )
 	},
-	add$: function( otherComplexNumber ){
+	log$: function(){
 
-		return this.copy$( this.add( otherComplexNumber ))
+		return this.copy$( this.log() )
 	},
-	subtract$: function( otherComplexNumber ){
+	multiply$: function( b ){
 
-		return this.copy$( this.subtract( otherComplexNumber ))
+		return this.copy$( this.multiply( b ))
+	},
+	divide$: function( b ){
+
+		return this.copy$( this.divide( b ))
+	},
+	add$: function( b ){
+
+		return this.copy$( this.add( b ))
+	},
+	subtract$: function( b ){
+
+		return this.copy$( this.subtract( b ))
 	}
 })
 

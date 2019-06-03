@@ -103,19 +103,20 @@ Q.Qubit = function( a, b, dirac ){
 		//  to make a new qubit available for computing with.
 
 		if( a instanceof Q.ComplexNumber !== true ) a = new Q.ComplexNumber( 1, 0 )
-			//****** THIS IS BAD NEED TO FIX FOR COMPLEX NUMBERS:   Math.sqrt( 1 - Math.pow( a, 2 ))
-		if( b instanceof Q.ComplexNumber !== true ) b = new Q.ComplexNumber( 0, 0 )
+		if( b instanceof Q.ComplexNumber !== true ){
+
+			b = Q.ComplexNumber.ONE.subtract( a.multiply( a )).squareRoot()
+		}
 	}
 
 
 	//  Fuzzy math! Thanks floating point numbers...
 
-	// const 
-	// n = Math.pow( a, 2 ) + Math.pow( b, 2 ),
-	// t = Number.EPSILON * 2
-
-	// if( Math.abs( n - 1 ) > t )
-	// 	return Q.error( `Q.Qubit could not accept the initialization values of a=${a} and b=${b} for qbit${this.index} because their squares do not add up to 1.` )	
+	//  I am DEEPLY WORRIED that for R> and L> we need to take the absolute value.
+	//  Doesn’t that destroy our assertion that 𝒂² + 𝒃² = 1?!?!
+	//  if( a.multiply( a ).add( b.multiply( b )).subtract( 1 ).isEqualTo( 0 ) === false )
+	if( a.multiply( a ).absolute() + b.multiply( b ).absolute() - 1 > Q.EPSILON )
+	 	return Q.error( `Q.Qubit could not accept the initialization values of a=${a} and b=${b} because their squares do not add up to 1.` )	
 
 	Q.Matrix.call( this, [ a ],[ b ])
 	this.index = Q.Qubit.index ++
@@ -209,7 +210,7 @@ Q.Qubit.createConstants(
 	'DIAGONAL',      new Q.Qubit( Math.SQRT1_2,  Math.SQRT1_2, 'D' ),
 	'ANTI_DIAGONAL', new Q.Qubit( Math.SQRT1_2, -Math.SQRT1_2, 'A' ),
 	'RIGHT_HAND_CIRCULAR_POLARIZED', new Q.Qubit( Math.SQRT1_2, new Q.ComplexNumber( 0, -Math.SQRT1_2 ), 'R' ),//  RHCP
-	'LEFT_HAND_CIRCULAR_POLARIZED',  new Q.Qubit( Math.SQRT1_2, new Q.ComplexNumber( 0,  Math.SQRT1_2 ), 'L' )//  LHCP
+	'LEFT_HAND_CIRCULAR_POLARIZED',  new Q.Qubit( Math.SQRT1_2, new Q.ComplexNumber( 0,  Math.SQRT1_2 ), 'L' ) //  LHCP
 )
 
 
