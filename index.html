@@ -270,14 +270,36 @@ Q.<a href="Gate.html">Gate</a>.HADAMARD
 				Q is meant to be flexible and expressive to adapt to your style.
 				<a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">Function chaining</a> is prized, but Q often uses static class methods as a foundation for instance methods, so you’re free to use either approach.
 				Some ES6 syntax is preferred, but the bits that disfigure JavaScript to look more like Java are weeded out, bagged, and tossed in the river.
-				Let JavaScript be JavaScript.
 			</p>
 			<p>
 				While Q’s internal code uses <code>let</code> and <code>const</code> when declaring variables,
 				the examples here often use <code>var</code> instead.  
-				This is to make free-form experimenting in the console a bit friendlier;
-				redeclare and overwrite variables to your heart’s content.
+				This is to make free-form experimenting in the console a bit friendlier.
+				Redeclare and overwrite variables to your heart’s content.
 			</p>
+			<p>
+				Q pays particular attention to <em>destructive</em> versus <em>non-destructive</em> instance methods. 
+				For example, the archetypal <em>non-destructive</em> method is <code>.clone()</code>
+				which returns a new sibling instance of the object it was called from 
+				and by its nature makes no alterations to that original object.
+				In contrast, <code>.copy$(&nbsp;sibling&nbsp;)</code> is the archetypal <em>destructive</em> method
+				which causes an instance to alter itself by overwriting its own properties’ values with values from a sibling instance, then returns itself.
+				The dollar sign suffix is similar to 
+				<a href="https://en.wikipedia.org/wiki/Ruby_(programming_language)" target="_blank">Ruby</a>’s
+				exclamation point suffix and is a reminder that the operation is destructive; will alter the instance.
+			</p>
+			<pre><code>
+var 
+a = new Q.<a href="Matrix.html">Matrix</a>([ 1 ],[ 2 ]),
+b = new Q.<a href="Matrix.html">Matrix</a>([ 3 ],[ 4 ])
+
+a.<strong>add</strong>( b )
+a.toTSV()//  Returns 1, 2.
+
+a.<strong>add$</strong>( b )
+a.toTSV()//  Returns 4, 6.
+
+		</pre></code>
 			<h3 id="Roadmap">Roadmap</h3>
 			<p>
 				This is a work-in-progress.

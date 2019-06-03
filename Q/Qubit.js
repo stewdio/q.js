@@ -167,6 +167,7 @@ Q.Qubit.prototype.constructor = Q.Qubit
 Object.assign( Q.Qubit, {
 
 	index: 0,
+	help: function(){ return Q.help( this )},
 	constants: {},
 	createConstant: function( key, value ){
 

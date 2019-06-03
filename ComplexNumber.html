@@ -23,8 +23,9 @@
 			<h3 id="Real_numbers">Real numbers: ℝ</h3>
 			<p>
 				Regular, ordinary numbers are called
-				<a href="https://en.wikipedia.org/wiki/Real_number" target="_blank">real numbers</a>
-				and exist along an infinite number line—with zero in the middle, negative numbers to the left, and positive to the right:
+				<a href="https://en.wikipedia.org/wiki/Real_number" target="_blank">real numbers</a>.
+				Integers, fractions, decimals… 
+				You can visualize them all existing along an infinite number line—with zero in the middle, positive numbers counting up forever to infinity to the right, and negative numbers doing the exact opposite to the left:
 			</p>
 <pre><code>
 …  -3  -2  -1   0  +1  +2  +3   …  
@@ -145,10 +146,9 @@ b = new Q.ComplexNumber( 3, -4 )
 			</p>
 <pre><code>
 var i  = new Q.ComplexNumber( 0,  1 )
-ii = i.multiply( i )
 
 '𝒊  = '+ i.toString()
-'𝒊² = '+ i.multiply( i ).toString()
+'𝒊² = '+ i.power( 2 ).toString()
 
 </pre></code>
 			<hr>
@@ -165,5 +165,10 @@ ii = i.multiply( i )
 				TK
 			</p>
 		</main>
+		<script>
+
+console.log( '\n\nQ.ComplexNumber\n', Q.ComplexNumber.help(), '\n\n' )
+			
+		</script>
 	</body>
 </html>

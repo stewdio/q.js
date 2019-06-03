@@ -15,7 +15,7 @@ so we can do that trick to make our gates always reversible.
 */
 
 
-Q.Gate = function( matrix ){
+Q.Gate = function(){
 
 	`
 	
@@ -24,7 +24,7 @@ Q.Gate = function( matrix ){
 	https://en.wikipedia.org/wiki/Quantum_logic_gate
 	`
 
-	Q.Matrix.call( this, ...matrix.rows )
+	Q.Matrix.apply( this, arguments )
 	this.index = Q.Gate.index ++
 	
 
@@ -47,7 +47,7 @@ Q.Gate = function( matrix ){
 	*/
 }
 Q.Gate.prototype = Q.Matrix.prototype
-//Q.Gate.constructor = Q.Gate
+Q.Gate.constructor = Q.Gate
 
 
 
@@ -55,6 +55,7 @@ Q.Gate.prototype = Q.Matrix.prototype
 Object.assign( Q.Gate, {
 
 	index: 0,
+	help: function(){ return Q.help( this )},
 	constants: {},
 	createConstant: Q.createConstant,
 	createConstants: Q.createConstants
@@ -71,7 +72,9 @@ Q.Gate.createConstants(
 	//  ─┤ H ├─
 	//   └───┘
 
-	'HADAMARD', new Q.Gate( Q.Matrix.HADAMARD ),
+	'HADAMARD', new Q.Gate(
+		[ Math.SQRT1_2,  Math.SQRT1_2 ],
+		[ Math.SQRT1_2, -Math.SQRT1_2 ]),
 
 
 	//  Pauli X
@@ -79,7 +82,9 @@ Q.Gate.createConstants(
 	//  ─┤ X ├─
 	//   └───┘
 
-	'PAULI_X', new Q.Gate( Q.Matrix.PAULI_X ),
+	'PAULI_X', new Q.Gate(
+		[ 0, 1 ],
+		[ 1, 0 ]),
 
 
 	//  Pauli Y
@@ -87,7 +92,9 @@ Q.Gate.createConstants(
 	//  ─┤ Y ├─
 	//   └───┘
 
-	'PAULI_Y', new Q.Gate( Q.Matrix.PAULI_Y ),
+	'PAULI_Y', new Q.Gate(
+		[ 0, new Q.ComplexNumber( 0, -1 )],
+		[ new Q.ComplexNumber( 0, 1 ),  0 ]),
 
 
 	//  Pauli Z
@@ -95,7 +102,9 @@ Q.Gate.createConstants(
 	//  ─┤ Z ├─
 	//   └───┘
 
-	'PAULI_Z', new Q.Gate( Q.Matrix.PAULI_Z ),
+	'PAULI_Z', new Q.Gate(
+		[ 1,  0 ],
+		[ 0, -1 ]),
 
 
 	//  Phase
@@ -103,7 +112,9 @@ Q.Gate.createConstants(
 	//  ─┤ S ├─
 	//   └───┘
 
-	'PHASE', new Q.Gate( Q.Matrix.PHASE ),
+	'PHASE', new Q.Gate(
+		[ 1, 0 ],
+		[ 0, new Q.ComplexNumber( 0, 1 )]),
 
 
 	//  π / 8
@@ -111,17 +122,56 @@ Q.Gate.createConstants(
 	//  ─┤ T ├─
 	//   └───┘
 
-	// 'PI_8', new Q.Gate( Q.Matrix.PI_8 ),
+	'PI_8', new Q.Gate(
+		[ 1, 0 ],
+		[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, Math.PI / 4 )) ]),
 
 
 
 
-	'CONTROLLED_NOT', new Q.Gate( Q.Matrix.CONTROLLED_NOT ),
-	'SWAP', new Q.Gate( Q.Matrix.SWAP ),
-	'CONTROLLED_Z', new Q.Gate( Q.Matrix.CONTROLLED_Z ),
-	// 'CONTROLLED_PHASE', new Q.Gate( Q.Matrix.PHASE ),
-	'TOFFOLI', new Q.Gate( Q.Matrix.TOFFOLI ),
-	'CONTROLLED_SWAP', new Q.Gate( Q.Matrix.CONTROLLED_SWAP )
+	'CONTROLLED_NOT', new Q.Gate(//  C-NOT
+		[ 1, 0, 0, 0 ],
+		[ 0, 1, 0, 0 ],
+		[ 0, 0, 0, 1 ],
+		[ 0, 0, 1, 0 ]),
+
+	'SWAP', new Q.Gate(
+		[ 1, 0, 0, 0 ],
+		[ 0, 0, 1, 0 ],
+		[ 0, 1, 0, 0 ],
+		[ 0, 0, 0, 1 ]),
+
+	'CONTROLLED_Z', new Q.Gate(
+		[ 1, 0, 0,  0 ],
+		[ 0, 1, 0,  0 ],
+		[ 0, 0, 1,  0 ],
+		[ 0, 0, 0, -1 ]),
+
+	'CONTROLLED_PHASE', new Q.Gate(
+		[ 1, 0, 0, 0 ],
+		[ 0, 1, 0, 0 ],
+		[ 0, 0, 1, 0 ],
+		[ 0, 0, 0, new Q.ComplexNumber( 0, 1 )]),
+
+	'TOFFOLI', new Q.Gate(
+		[ 1, 0, 0, 0, 0, 0, 0, 0 ],
+		[ 0, 1, 0, 0, 0, 0, 0, 0 ],
+		[ 0, 0, 1, 0, 0, 0, 0, 0 ],
+		[ 0, 0, 0, 1, 0, 0, 0, 0 ],
+		[ 0, 0, 0, 0, 1, 0, 0, 0 ],
+		[ 0, 0, 0, 0, 0, 1, 0, 0 ],
+		[ 0, 0, 0, 0, 0, 0, 0, 1 ],
+		[ 0, 0, 0, 0, 0, 0, 1, 0 ]),
+
+	'CONTROLLED_SWAP', new Q.Gate(//  Fredkin
+		[ 1, 0, 0, 0, 0, 0, 0, 0 ],
+		[ 0, 1, 0, 0, 0, 0, 0, 0 ],
+		[ 0, 0, 1, 0, 0, 0, 0, 0 ],
+		[ 0, 0, 0, 1, 0, 0, 0, 0 ],
+		[ 0, 0, 0, 0, 1, 0, 0, 0 ],
+		[ 0, 0, 0, 0, 0, 0, 1, 0 ],
+		[ 0, 0, 0, 0, 0, 1, 0, 0 ],
+		[ 0, 0, 0, 0, 0, 0, 0, 1 ])
 )
 
 

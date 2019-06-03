@@ -5,9 +5,11 @@
 const Q = (function(){
 
 	`
-	Stewart Smith  
-	http://stewartsmith.io  
-	30 April 2019
+	Hi. Do you need help with something? 
+	Each Q class has its own description. 
+	For example, try this:  
+
+	Q.Qubit.help()
 	`
 })
 

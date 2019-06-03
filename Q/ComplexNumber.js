@@ -58,6 +58,7 @@ Q.ComplexNumber = function( real, imaginary ){
 Object.assign( Q.ComplexNumber, {
 
 	index: 0,
+	help: function(){ return Q.help( this )},
 	constants: {},
 	createConstant: Q.createConstant,
 	createConstants: Q.createConstants,
@@ -157,6 +158,9 @@ Object.assign( Q.ComplexNumber, {
 
 
 	power: function( a, b ){
+
+		if( Q.ComplexNumber.isNumberLike( a )) a = new Q.ComplexNumber( a )
+		if( Q.ComplexNumber.isNumberLike( b )) b = new Q.ComplexNumber( b )
 
 
 		//  Anything raised to the Zero power is 1.

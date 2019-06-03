@@ -113,6 +113,7 @@ Q.Matrix = function(){
 Object.assign( Q.Matrix, {
 
 	index: 0,
+	help: function(){ return Q.help( this )},
 	constants: {},//  Only holds references; an easy way to look up what constants exist.
 	createConstant:  Q.createConstant,
 	createConstants: Q.createConstants,
@@ -618,118 +619,6 @@ Q.Matrix.createConstants(
 	'NEGATION_2X2', new Q.Matrix(
 		[ 0, 1 ],
 		[ 1, 0 ]),
-
-
-
-
-	//  Hadamard
-	//   ┌───┐
-	//  ─┤ H ├─
-	//   └───┘
-
-	'HADAMARD', new Q.Matrix(
-		[ Math.SQRT1_2,  Math.SQRT1_2 ],
-		[ Math.SQRT1_2, -Math.SQRT1_2 ]),
-
-
-	//  Pauli X
-	//   ┌───┐
-	//  ─┤ X ├─
-	//   └───┘
-
-	'PAULI_X', new Q.Matrix(
-		[ 0, 1 ],
-		[ 1, 0 ]),
-
-
-	//  Pauli Y
-	//   ┌───┐
-	//  ─┤ Y ├─
-	//   └───┘
-
-	'PAULI_Y', new Q.Matrix(//  Yep. Totally need to add complex number support.
-		[ 0, new Q.ComplexNumber( 0, -1 )],
-		[ new Q.ComplexNumber( 0, 1 ),  0 ]),
-
-
-	//  Pauli Z
-	//   ┌───┐
-	//  ─┤ Z ├─
-	//   └───┘
-
-	'PAULI_Z', new Q.Matrix(
-		[ 1,  0 ],
-		[ 0, -1 ]),
-
-
-	//  Phase
-	//   ┌───┐
-	//  ─┤ S ├─
-	//   └───┘
-
-	'PHASE', new Q.Matrix(
-		[ 1, 0 ],
-		[ 0, new Q.ComplexNumber( 0, 1 )]),
-
-
-	//  π / 8
-	//   ┌───┐
-	//  ─┤ T ├─
-	//   └───┘
-
-	// 'PI_8', new Q.Matrix(
-	// 	[ 1, 0 ],
-	// 	[ 0, Math.pow( Math.E, i * Math.PI / 4 )]),
-
-
-
-
-	'CONTROLLED_NOT', new Q.Matrix(//  C-NOT
-		[ 1, 0, 0, 0 ],
-		[ 0, 1, 0, 0 ],
-		[ 0, 0, 0, 1 ],
-		[ 0, 0, 1, 0 ]),
-
-	'SWAP', new Q.Matrix(
-		[ 1, 0, 0, 0 ],
-		[ 0, 0, 1, 0 ],
-		[ 0, 1, 0, 0 ],
-		[ 0, 0, 0, 1 ]),
-
-	'CONTROLLED_Z', new Q.Matrix(
-		[ 1, 0, 0,  0 ],
-		[ 0, 1, 0,  0 ],
-		[ 0, 0, 1,  0 ],
-		[ 0, 0, 0, -1 ]),
-
-	'CONTROLLED_PHASE', new Q.Matrix(
-		[ 1, 0, 0, 0 ],
-		[ 0, 1, 0, 0 ],
-		[ 0, 0, 1, 0 ],
-		[ 0, 0, 0, new Q.ComplexNumber( 0, 1 )]),
-
-	'TOFFOLI', new Q.Matrix(
-		[ 1, 0, 0, 0, 0, 0, 0, 0 ],
-		[ 0, 1, 0, 0, 0, 0, 0, 0 ],
-		[ 0, 0, 1, 0, 0, 0, 0, 0 ],
-		[ 0, 0, 0, 1, 0, 0, 0, 0 ],
-		[ 0, 0, 0, 0, 1, 0, 0, 0 ],
-		[ 0, 0, 0, 0, 0, 1, 0, 0 ],
-		[ 0, 0, 0, 0, 0, 0, 0, 1 ],
-		[ 0, 0, 0, 0, 0, 0, 1, 0 ]),
-
-	'CONTROLLED_SWAP', new Q.Matrix(//  Fredkin
-		[ 1, 0, 0, 0, 0, 0, 0, 0 ],
-		[ 0, 1, 0, 0, 0, 0, 0, 0 ],
-		[ 0, 0, 1, 0, 0, 0, 0, 0 ],
-		[ 0, 0, 0, 1, 0, 0, 0, 0 ],
-		[ 0, 0, 0, 0, 1, 0, 0, 0 ],
-		[ 0, 0, 0, 0, 0, 0, 1, 0 ],
-		[ 0, 0, 0, 0, 0, 1, 0, 0 ],
-		[ 0, 0, 0, 0, 0, 0, 0, 1 ]),
-
-
-
 
 	'TEST_MAP_9X9', new Q.Matrix(
 		[ 11, 21, 31, 41, 51, 61, 71, 81, 91 ],
