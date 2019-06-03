@@ -87,19 +87,21 @@ body {
 
 
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
 
 	margin:  0;
 	padding: 0;
 	color: #000;
-	font-weight: 700;
-	font-size:   20px;
+	font-weight: 400;
+	font-size:   16px;
 	line-height: 24px;
 }
 h3 {
 
-	padding-top:  36px;
 	margin-bottom: 8px;
+	padding-top:  36px;
+	font-size:   20px;
+	font-weight: 700;
 }
 h3 code {
 	
@@ -110,10 +112,6 @@ h3 code {
 p + p {
 
 	text-indent: 24px;
-}
-p + h3, code + h3, table + h3 {
-
-	/*margin-top: 36px;*/
 }
 hr {
 
@@ -228,6 +226,9 @@ nav {
 	height: 100%;
 	padding: 16px 0 128px 0;
 	overflow: auto;
+}
+nav, h2 {
+	
 	font-size:   20px;
 	line-height: 36px;
 }
@@ -235,10 +236,11 @@ header {
 
 	margin-left: 16px;
 }
-header img {
+header h1 svg {
 
-	width:  64px;
+	width: 64px;
 	height: 64px;
+	fill: #555;
 }
 nav ul {
 

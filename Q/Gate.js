@@ -2,19 +2,6 @@
 
 
 
-/*
-
-
-Thinking that Gate might not be able to extend Matrix...
-That it needs to be its own thing that contains .matrix
-and we can have MULTIPLE inputs
-AND MULTIPLE outputs
-so we can do that trick to make our gates always reversible. 
-
-
-*/
-
-
 Q.Gate = function(){
 
 	`
@@ -24,7 +11,12 @@ Q.Gate = function(){
 	https://en.wikipedia.org/wiki/Quantum_logic_gate
 	`
 
-	Q.Matrix.apply( this, arguments )
+	const args = [ ...arguments ]
+	if( typeof args[ 0 ] === 'string' ){
+
+		this.label = args.shift()
+	}
+	Q.Matrix.apply( this, args )
 	this.index = Q.Gate.index ++
 	
 
@@ -38,11 +30,9 @@ Q.Gate = function(){
 
 	/*
 
-
 	Gate needs to have a location! 
 	inputs!
 	outputs!
-
 
 	*/
 }
@@ -72,7 +62,8 @@ Q.Gate.createConstants(
 	//  ─┤ H ├─
 	//   └───┘
 
-	'HADAMARD', new Q.Gate(
+	'HADAMARD', new Q.Gate( 'H',
+		
 		[ Math.SQRT1_2,  Math.SQRT1_2 ],
 		[ Math.SQRT1_2, -Math.SQRT1_2 ]),
 
@@ -82,17 +73,19 @@ Q.Gate.createConstants(
 	//  ─┤ X ├─
 	//   └───┘
 
-	'PAULI_X', new Q.Gate(
+	'PAULI_X', new Q.Gate( 'X',
+	
 		[ 0, 1 ],
 		[ 1, 0 ]),
-
+	
 
 	//  Pauli Y
 	//   ┌───┐
 	//  ─┤ Y ├─
 	//   └───┘
 
-	'PAULI_Y', new Q.Gate(
+	'PAULI_Y', new Q.Gate( 'Y',
+		
 		[ 0, new Q.ComplexNumber( 0, -1 )],
 		[ new Q.ComplexNumber( 0, 1 ),  0 ]),
 
@@ -102,7 +95,8 @@ Q.Gate.createConstants(
 	//  ─┤ Z ├─
 	//   └───┘
 
-	'PAULI_Z', new Q.Gate(
+	'PAULI_Z', new Q.Gate( 'Z',
+		
 		[ 1,  0 ],
 		[ 0, -1 ]),
 
@@ -112,7 +106,8 @@ Q.Gate.createConstants(
 	//  ─┤ S ├─
 	//   └───┘
 
-	'PHASE', new Q.Gate(
+	'PHASE', new Q.Gate( 'S',
+		
 		[ 1, 0 ],
 		[ 0, new Q.ComplexNumber( 0, 1 )]),
 
@@ -122,7 +117,8 @@ Q.Gate.createConstants(
 	//  ─┤ T ├─
 	//   └───┘
 
-	'PI_8', new Q.Gate(
+	'PI_8', new Q.Gate( 'T',
+		
 		[ 1, 0 ],
 		[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, Math.PI / 4 )) ]),
 
