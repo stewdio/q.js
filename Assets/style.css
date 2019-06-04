@@ -139,10 +139,23 @@ sup, sub {
 	vertical-align: baseline;
 	position: relative;
 	top: -0.4em;
+	left: 0.1em;
 }
 sub { 
 
 	top: 0.4em; 
+}
+
+
+
+
+.symbol {
+
+	padding: 0 0.1em;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-style: italic;
+	font-weight: bold;
+	letter-spacing: 0.05em;
 }
 
 

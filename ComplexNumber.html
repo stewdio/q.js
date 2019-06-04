@@ -14,19 +14,12 @@
 	</head>
 	<body>
 		<main>
+			<h3 id="Real_numbers">Real numbers ℝ</h3>
 			<p>
-				Q’s <code>ComplexNumber</code> class allows us to compute using the imaginary number 𝒊.
-				Has it been a while since you last dealt with imaginary numbers? 
-				Was that in high school?
-				Or maybe never?
-				Let’s back up a second.
-			</p>
-			<h3 id="Real_numbers">Real numbers: ℝ</h3>
-			<p>
-				Regular, ordinary numbers are called
+				Our regular, ordinary, everyday numbers are called
 				<a href="https://en.wikipedia.org/wiki/Real_number" target="_blank">real numbers</a>.
-				Integers, fractions, decimals… 
-				You can visualize them all existing along an infinite number line—with zero in the middle, positive numbers counting up forever to infinity to the right, and negative numbers doing the exact opposite to the left:
+				These include integers and decimals.
+				You can visualize real numbers as existing along an infinite number line—with zero in the middle, positive numbers counting up forever to infinity on the right, and negative numbers doing the exact opposite on the left.
 			</p>
 <pre><code>
 …  -3  -2  -1   0  +1  +2  +3   …  
@@ -34,80 +27,79 @@
                      √2    𝒆 π  
 
 </pre></code>
-			<h3 id="Imaginary_numbers">Imaginary numbers: 𝕀</h3>
 			<p>
-				Now let’s consider the imaginary number named 𝒊. 
-				What makes 𝒊 imaginary? 
-				And why is an imaginary number even useful?
-				Recall that any number multiplied by itself will always be a positive number.
-				For example, 7 × 7 = 49. But also -7 × -7 = 49.
-				For brevity we could rewrite those equations as 7<sup>2</sup> = 49 and -7<sup>2</sup> = 49, respectively.
-				No matter what <em>real number</em> you try,
-				when you multiply it by itself the product will be a positive number.
-				Try solving for 𝒙 in this equation: 𝒙² = 49. 
-				You’ll find that 𝒙 can equal 7 <em>and</em> 𝒙 can also equal -7. 
-				Both are true.
-				But now try solving for 𝒙 in this equation: 𝒙² = -49.
-				There is no real solution.
+				When a real number is multiplied by itself the product is always positive.
+				For example, if we choose the number 7 we see that 7 × 7 = 49.
+				Similarly, had we chosen the negative number -7, the product would still be positive
+				because two negative numbers multiplied together also produce a positive result;
+				-7 × -7 = 49.
+				For brevity we could rewrite these equations as 7<sup>2</sup> = 49 and -7<sup>2</sup> = 49, respectively.
 			</p>
 			<p>
-				Here comes 𝒊 to the rescue. 
-				The imaginary number 𝒊 represents the impossible solution to the 
-				<a href="https://en.wikipedia.org/wiki/Square_root" target="_blank">square root</a> of <em>negative</em> one. We can express that elegantly in two ways:
+				The <a href="https://en.wikipedia.org/wiki/Square_root" target="_blank">square root</a> 
+				of a real number has two possible answers. 
+				The square root of 49, for example, is both 7 <em>and</em> -7
+				because both are solutions for <span class="symbol">x</span> 
+				in the equation <span class="symbol">x</span> = √49.
+			</p>
+			<h3 id="Imaginary_numbers">Imaginary numbers 𝕀</h3>
+			<p>
+				But suppose we wanted to find the square root of a <em>negative</em> number.
+				Is there any number that could solve for <span class="symbol">x</span> 
+				in the equation <span class="symbol">x</span> = √-49?
+				Sadly, there is not. Or more precisely: there is not any <em>real</em> solution for the square root of a negative number.
+			</p>
+			<p>
+				In his 1991 address on “Creativity in Management”, Monty Python’s John Cleese
+				articulates Edward de Bono’s concept of the
+				<a href="https://youtu.be/Pb5oIIPO62g?t=1926" target="_blank">intermediate impossible (32:06)</a>
+				as a useful stepping stone towards a novel and useful solution.
+				<a href="https://en.wikipedia.org/wiki/Imaginary_number" target="_blank">Imaginary numbers</a> 
+				might be considered an intermediate impossible. 
+				The symbol <span class="symbol">i</span> is defined as the imaginary solution to the equation 
+				<span class="symbol">x</span> = √-1,
+				therefore <span class="symbol">i</span><sup>2</sup> = -1.
+				With this imaginary device we now have a solution to the above equation 
+				<span class="symbol">x</span> = √-49
+				and that solution is 7<span class="symbol">i</span>.
+				Let’s inspect that more closely.
 			</p>
 <pre><code>
-𝒊² = −1
-
-𝒊 = √-1
-
-</code></pre>
-			<p>
-				This is what Monty Python’s John Cleese might call the
-				impossible intermediate.
-				And with it we can now <em>sort of</em> solve for 𝒙 in 𝒙² = -49:
-			</p>
-<pre><code>
-𝒙² = -49
-
-𝒙  = √-49
-
-𝒙  = √(49 × -1)
-
-𝒙  = √49 × √-1
-
-𝒙  = 7 × √-1
-
-𝒙  = 7 × 𝒊
-
-𝒙  = 7𝒊
+𝒙 = √-49
+𝒙 = √(49 × -1)
+𝒙 = √49 × √-1
+𝒙 = 7 × √-1
+𝒙 = 7 × 𝒊
+𝒙 = 7𝒊
 
 </code></pre>
 
 
 			<p>
-				Our result, 7𝒊, is an
+				Our result of 7<span class="symbol">i</span> is an
 				<a href="https://en.wikipedia.org/wiki/Imaginary_number" target="_blank">imaginary number</a>
 				that consists of a real number multiplier, 7, and 
-				our special imaginary number 𝒊.
-				Imaginary numbers also exist along an infinite number line—with zero in the middle, negative numbers to the left, and positive to the right:
+				our imaginary solution to √-1, called <span class="symbol">i</span>.
+				Like real numbers, imaginary numbers also exist along an infinite number line.
 			</p>
 <pre><code>
 …  -3𝒊 -2𝒊  -1𝒊  0  +1𝒊 +2𝒊 +3𝒊  …  
 ┄───┴───┴───┴───┴───┴───┴───┴───┄  
 
 </pre></code>
-			<h3 id="Complex_numbers">Complex numbers: ℂ</h3>
+			<h3 id="Complex_numbers">Complex number ℂ</h3>
 			<p>
-				We just saw that multiplying a real number (ℝ) by the imaginary number 𝒊
-				yields a number that is also imaginary (𝕀).
-				But what if you add a real number to an imaginary one?
+				We just saw that multiplying a real number by <span class="symbol">i</span>
+				yields an imaginary number.
+				But what if you <em>add</em> a real number to an imaginary one?
 				Things get <em>complex</em>.
 				A <a href="https://en.wikipedia.org/wiki/Complex_number" target="_blank">complex number</a>
 				is a number that can be expressed in the form 
-				𝒂 + 𝒃𝒊, where 𝒂 is the real component (ℝ) and 𝒃𝒊 is the imaginary 
-				component (𝕀). 
-				Some examples might be 1 + 2𝒊 or 3 - 4𝒊.
-				This is what the <code>ComplexNumber</code> class was built to handle.
+				<span class="symbol">r</span> + <span class="symbol">ri</span>,
+				where <span class="symbol">r</span> is the real component and 
+				<span class="symbol">ri</span> is the imaginary component. 
+				Some examples might be 1 + 2<span class="symbol">i</span> or 3 - 4<span class="symbol">i</span>.
+				This is what the <code>ComplexNumber</code> class was created to handle.
 				Open up your JavaScript console and paste in the following:
 			</p>
 <pre><code>
@@ -115,9 +107,12 @@ var
 a = new Q.ComplexNumber( 1,  2 ),
 b = new Q.ComplexNumber( 3, -4 )
 
+a.toString()<span class="comment">//  Returns '1 + 2i'</span>
+b.toString()<span class="comment">//  Returns '3 - 4i'</span>
+
 </pre></code>
 			<p>
-				Now we have two variables, 𝒂 and 𝒃, that we can operate with. 
+				Now we have two variables, <span class="symbol">a</span> and <span class="symbol">b</span>, that we can operate with. 
 				As you might guess, <code>ComplexNumber</code>
 				includes instance methods for common operations like 
 				addition, subtraction, multiplication, and divion.
@@ -127,13 +122,20 @@ b = new Q.ComplexNumber( 3, -4 )
 				Try the following lines individually in your JavaScript console:
 			</p>
 <pre><code>
-'𝒂 = '+ a.toString()
-'𝒃 = '+ b.toString()
+a.add( b ).toString()     <span class="comment">//  Returns  '4 - 2i'</span>
+a.subtract( b ).toString()<span class="comment">//  Returns '-2 + 6i'</span>
+a.multiply( b ).toString()<span class="comment">//  Returns '11 + 2i'</span>
+a.divide( b ).toString()  <span class="comment">//  Returns '-0.2 + 0.4i'</span>
 
-'𝒂 + 𝒃 = '+ a.add( b ).toString()
-'𝒂 - 𝒃 = '+ a.subtract( b ).toString()
-'𝒂 × 𝒃 = '+ a.multiply( b ).toString()
-'𝒂 ÷ 𝒃 = '+ a.divide( b ).toString()
+</pre></code>
+			<p>
+				We can now verify that <span class="symbol">i</span><sup>2</sup> = -1.
+			</p>
+<pre><code>
+var i = new Q.ComplexNumber( 0, 1 )
+
+i.toString()<span class="comment">//  Returns  'i'</span>
+i.power( 2 ).toString()<span class="comment">//  Returns  '-1'</span>
 
 </pre></code>
 			<p>
@@ -141,22 +143,19 @@ b = new Q.ComplexNumber( 3, -4 )
 				arguments both sibling instances and pure <code>Number</code> instances, though the 
 				value returned is always an instance of <code>Q.ComplexNumber</code>.
 			</p>
-			<h3 id="Reduction">Reduction</h3>
-			<p>
-				We can check that 𝒊² = -1.
-			</p>
-<pre><code>
-var i  = new Q.ComplexNumber( 0,  1 )
-
-'𝒊  = '+ i.toString()
-'𝒊² = '+ i.power( 2 ).toString()
-
-</pre></code>
 			<hr>
 			<h3>Constants</h3>
-			<p>
-				TK
-			</p>
+<pre><code>
+ZERO     = new Q.ComplexNumber( 0, 0 )
+ONE      = new Q.ComplexNumber( 1, 0 )
+E        = new Q.ComplexNumber( Math.E,  0 )
+PI       = new Q.ComplexNumber( Math.PI, 0 )
+I        = new Q.ComplexNumber( 0, 1 )
+EPSILON  = new Q.ComplexNumber( Q.EPSILON, Q.EPSILON )
+INFINITY = new Q.ComplexNumber( Infinity, Infinity )
+NAN      = new Q.ComplexNumber( NaN, NaN )
+
+</pre></code>
 			<h3>Class methods</h3>
 			<p>
 				TK
@@ -165,10 +164,20 @@ var i  = new Q.ComplexNumber( 0,  1 )
 			<p>
 				TK
 			</p>
+			<br>
+			Source:<br>
+			<a href="https://github.com/stewdio/q.js/blob/master/Q/ComplexNumber.js?ts=4" target="_blank">https://github.com/stewdio/q.js/blob/master/Q/ComplexNumber.js</a>
 		</main>
 		<script>
 
+
 console.log( '\n\nQ.ComplexNumber\n', Q.ComplexNumber.help(), '\n\n' )
+
+var 
+a = new Q.ComplexNumber( 1,  2 ),
+b = new Q.ComplexNumber( 3, -4 ),
+i = new Q.ComplexNumber( 0,  1 )
+
 			
 		</script>
 	</body>
