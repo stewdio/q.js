@@ -291,14 +291,17 @@ Q.<a href="Gate.html">Gate</a>.HADAMARD
 			</p>
 			<pre><code>
 var 
-a = new Q.<a href="Matrix.html">Matrix</a>([ 1 ],[ 2 ]),
-b = new Q.<a href="Matrix.html">Matrix</a>([ 3 ],[ 4 ])
+a = new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 1,  2 ),
+b = new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 3, -4 )
 
-a.<strong>add</strong>( b )
-a.toTSV()//  Returns 1, 2.
+a.toString()<span class="comment">//  Returns '1 + 2i'</span>
+b.toString()<span class="comment">//  Returns '3 - 4i'</span>
 
-a.<strong>add$</strong>( b )
-a.toTSV()//  Returns 4, 6.
+a.<strong>add</strong>( b )  <span class="comment">//  Non-destructive.</span>
+a.toString()<span class="comment">//  Still returns '1 + 2i'</span>
+
+a.<strong>add$</strong>( b ) <span class="comment">//  Destructive.</span>
+a.toString()<span class="comment">//  Now returns '4 - 2i'</span>
 
 		</pre></code>
 			<h3 id="Roadmap">Roadmap</h3>
