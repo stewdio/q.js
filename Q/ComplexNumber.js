@@ -516,13 +516,23 @@ Object.assign( Q.ComplexNumber.prototype, {
 		
 		//  Note: this kills function chaining.
 		
-		const reduced = this.reduce()
+		const 
+		reduced = this.reduce(),
+		imaginaryAbsolute = Math.abs( reduced.imaginary )
+		
 		if( Q.ComplexNumber.isNumberLike( reduced )) return ''+ reduced//  Because we promised a String!
 		if( reduced.real === 0 ){
 
-			return ( reduced.imaginary === 1 ? 'i' : reduced.imaginary +'i' )
+			if( reduced.imaginary ===  1 ) return  'i'
+			if( reduced.imaginary === -1 ) return '-i'
+			return reduced.imaginary +'i'
 		}
-		return ''+ reduced.real +' '+ ( reduced.imaginary >= 0 ? '+' : '-' ) +' '+ Math.abs( reduced.imaginary ) +'i'
+		return (
+		
+			''+ reduced.real +' '+ 
+			( reduced.imaginary >= 0 ? '+' : '-' ) +' '+ 
+			( imaginaryAbsolute === 1 ? 'i' : imaginaryAbsolute + 'i' )
+		)
 	},
 
 

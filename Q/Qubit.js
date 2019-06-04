@@ -6,8 +6,8 @@ Q.Qubit = function( a, b, dirac ){
 
 	`
 	A qubit is represented by Q.Matrix([ 𝒂 ],[ 𝒃 ]) where 𝒂 and 𝒃 are “complex 
-	numbers” such that 𝒂 × 𝒂 + 𝒃 × 𝒃 = 1. If brevity’s your thing, that’s the 
-	same as 𝒂² + 𝒃² = 1. https://en.wikipedia.org/wiki/Qubit  
+	numbers” such that |𝒂| × |𝒂| + |𝒃| × |𝒃| = 1. If brevity’s your thing, that’s the 
+	same as |𝒂|² + |𝒃|² = 1. https://en.wikipedia.org/wiki/Qubit  
 
 
 	  EXAMPLE  
@@ -105,17 +105,21 @@ Q.Qubit = function( a, b, dirac ){
 		if( a instanceof Q.ComplexNumber !== true ) a = new Q.ComplexNumber( 1, 0 )
 		if( b instanceof Q.ComplexNumber !== true ){
 
-			b = Q.ComplexNumber.ONE.subtract( a.multiply( a )).squareRoot()
+
+			//  1 - |𝒂|² = |𝒃|²
+			//  So this does NOT account for if 𝒃 ought to be imaginary or not.
+			//  Perhaps for completeness we could randomly decide
+			//  to flip the real and imaginary components of 𝒃 after this line?
+
+			b = Q.ComplexNumber.ONE.subtract( Math.pow( a.absolute(), 2 )).squareRoot()
 		}
 	}
 
 
-	//  Fuzzy math! Thanks floating point numbers...
+	//  Sanity check!
+	//  Does this constraint hold true? |𝒂|² + |𝒃|² = 1
 
-	//  I am DEEPLY WORRIED that for R> and L> we need to take the absolute value.
-	//  Doesn’t that destroy our assertion that 𝒂² + 𝒃² = 1?!?!
-	//  if( a.multiply( a ).add( b.multiply( b )).subtract( 1 ).isEqualTo( 0 ) === false )
-	if( a.multiply( a ).absolute() + b.multiply( b ).absolute() - 1 > Q.EPSILON )
+	if( Math.pow( a.absolute(), 2 ) + Math.pow( b.absolute(), 2 ) - 1 > Q.EPSILON )
 	 	return Q.error( `Q.Qubit could not accept the initialization values of a=${a} and b=${b} because their squares do not add up to 1.` )	
 
 	Q.Matrix.call( this, [ a ],[ b ])
