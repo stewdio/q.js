@@ -131,37 +131,34 @@
 				Things get <em>complex</em>.
 				A <a href="https://en.wikipedia.org/wiki/Complex_number" target="_blank">complex number</a>
 				is a number that can be expressed in the form 
-				<span class="symbol">r</span> + <span class="symbol">ri</span>,
-				where <span class="symbol">r</span> is the real component and 
-				<span class="symbol">ri</span> is the imaginary component. 
+				<span class="symbol">a</span> + <span class="symbol">bi</span>,
+				where <span class="symbol">a</span> is the real component and 
+				<span class="symbol">bi</span> is the imaginary component. 
 				Some examples might be 1 + 2<span class="symbol">i</span> or 3 - 4<span class="symbol">i</span>.
 				This is what the <code>ComplexNumber</code> class was created to handle.
 				Open up your JavaScript console and paste in the following:
 			</p>
 <pre><code>
 var 
-a = new Q.ComplexNumber( 1,  2 ),
-b = new Q.ComplexNumber( 3, -4 )
+cat = new Q.ComplexNumber( 1,  2 ),
+dog = new Q.ComplexNumber( 3, -4 )
 
-a.toString()<span class="comment">//  Returns '1 + 2i'</span>
-b.toString()<span class="comment">//  Returns '3 - 4i'</span>
+cat.toString()<span class="comment">//  Returns '1 + 2i'</span>
+dog.toString()<span class="comment">//  Returns '3 - 4i'</span>
 
 </pre></code>
 			<p>
-				Now we have two variables, <span class="symbol">a</span> and <span class="symbol">b</span>, that we can operate with. 
+				Now we have two variables, <code>cat</code> and <code>dog</code>, that we can operate with. 
 				As you might guess, <code>ComplexNumber</code>
 				includes instance methods for common operations like 
-				addition, subtraction, multiplication, and divion.
-				It also includes a handy <code>toString</code> for expressing
-				a complex number in our familiar way.
-				For example <code>a.toString()</code> will output <samp>1 + 2i</samp>.
+				addition, subtraction, multiplication, and division.
 				Try the following lines individually in your JavaScript console:
 			</p>
 <pre><code>
-a.add( b ).toString()     <span class="comment">//  Returns  '4 - 2i'</span>
-a.subtract( b ).toString()<span class="comment">//  Returns '-2 + 6i'</span>
-a.multiply( b ).toString()<span class="comment">//  Returns '11 + 2i'</span>
-a.divide( b ).toString()  <span class="comment">//  Returns '-0.2 + 0.4i'</span>
+cat.add( dog ).toString()     <span class="comment">//  Returns  '4 - 2i'</span>
+cat.subtract( dog ).toString()<span class="comment">//  Returns '-2 + 6i'</span>
+cat.multiply( dog ).toString()<span class="comment">//  Returns '11 + 2i'</span>
+cat.divide( dog ).toString()  <span class="comment">//  Returns '-0.2 + 0.4i'</span>
 
 </pre></code>
 			<p>
