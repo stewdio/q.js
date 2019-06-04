@@ -58,17 +58,18 @@
 				error if the row lengths are not equal.  
 			</p>
 			<p>
+				Internally converts all its numbers in to <code>Q.<a href="ComplexNumber.html">ComplexNumber</a></code> instances.
+			</p>
+			<p>
 				Limitation: A matrix cannot change its dimensions after initialization 
 				and cannot contain matrices.
 			</p>
 <pre><code>
-const ourMatrix = new Q.Matrix(  
-	
+const a = new Q.Matrix(  
 	[ 1, 0, 0, 0 ],  
 	[ 0, 1, 0, 0 ],  
 	[ 0, 0, 0, 1 ],  
-	[ 0, 0, 1, 0 ]  
-) 
+	[ 0, 0, 1, 0 ]) 
 
 </code></pre>
 			<p>
@@ -77,7 +78,16 @@ const ourMatrix = new Q.Matrix(
 				and 
 				<a href="https://en.wikipedia.org/wiki/Row-_and_column-major_order" target="_blank">https://en.wikipedia.org/wiki/Row-_and_column-major_order</a>
 			</p>
-
+			<h3>Import and export formats</h3>
+			<p>
+				Comma separated values (CSV).
+				Tab separated values (TSV).
+				Arbitrary character separated values (XSV).
+				HTML tables.
+			</p>
+			<hr>
+			Source:
+			<a href="https://github.com/stewdio/q.js/blob/master/Q/Matrix.js?ts=4" target="_blank">https://github.com/stewdio/q.js/blob/master/Q/Matrix.js</a>
 		</main>
 		<script>
 
