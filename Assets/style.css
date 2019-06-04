@@ -44,10 +44,10 @@
 
 :root {
 
-	--text-color: #333;
-	/*--internal-link-color: #0A0;*/
+	--text-color: #444;
 	--internal-link-color: #0366D6;
 	--external-link-color: var( --text-color );
+	--fill-color: var( --text-color );
 }
 * {
 
@@ -127,7 +127,6 @@ li {
 strong {
 
 	font-weight: 600;
-	color: #000;
 }
 pre {
 
@@ -140,7 +139,6 @@ pre {
 }
 pre, code, samp {
 
-	background-color: #FFF;
 	background-color: #F6F6F6;
 	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
 	font-weight: 300;
@@ -240,7 +238,7 @@ header h1 svg {
 
 	width: 64px;
 	height: 64px;
-	fill: #555;
+	fill: var( --fill-color );
 }
 nav ul {
 
@@ -336,7 +334,7 @@ td.highlighted{
 	width:  42px;
 	height: 42px;
 	padding: 0;
-	fill: #555;
+	fill: var( --fill-color );
 }
 #console-open-commands .na {
 
