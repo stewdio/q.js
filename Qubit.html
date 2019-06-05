@@ -50,39 +50,46 @@
 	</head>
 	<body>
 		<main>
+			<h3>Perfect pairs</h3>
 			<p>
 				A <a href="https://en.wikipedia.org/wiki/Qubit" target="_blank">qubit</a>
-				is represented by 
-				<code>Q.<a href="Matrix.html">Matrix</a>([ a ],[ b ])</code>
-				where <span class="symbol">a</span> and <span class="symbol">b</span> are 
-				<a href="ComplexNumber.html">complex numbers</a>
+				is a pair of <a href="ComplexNumber.html">complex numbers</a>, 
+				<span class="symbol">a</span> and <span class="symbol">b</span>,
 				such that |<span class="symbol">a</span>|<sup>2</sup> + |<span class="symbol">b</span>|<sup>2</sup> = 1. 
+				That is to the say, 
+				the absolute value of <span class="symbol">a</span> 
+				multiplied by the absolute value of <span class="symbol">a</span>, 
+				added to the absolute value of <span class="symbol">b</span> 
+				multiplied by absolute value of <span class="symbol">b</span>,
+				equals one.
 			</p>
-			<pre><code>
-const ourQubit = new Q.Qubit( 0, 1 )
-
-</code></pre>
 			<p>
-				Our 𝒂 argument represents our qubit’s “control bit” while our 𝒃 argument 
-				represents our qubit’s “target bit”—the part we are ultimately concerned 
-				with. A qubit may be in <a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>, ie.  its target bit is neither 0 
-				or 1 and computationally exists as both 0 and 1 at the same time. The 
-				probability that the qubit will “collapse” to 0 is 𝒂², while the 
-				probability that the qubit will “collapse” to 1 is 𝒃². 
+				Our <span class="symbol">a</span> argument represents our qubit’s “control bit” 
+				while our <span class="symbol">b</span> argument 
+				represents our qubit’s “target bit”—the part we are ultimately concerned with. 
+				A qubit may be in 
+				<a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>, 
+				ie. its target bit is neither 0 
+				or 1, but somewhere in between.
+				The probability that upon measurement the qubit bit will “collapse” to zero is 
+				|<span class="symbol">a</span>|<sup>2</sup>, while the 
+				probability that the qubit will collapse to one is 
+				|<span class="symbol">b</span>|<sup>2</sup>. 
 			</p>
-			<h3>Examples</h3>
+			<br>
 			<ul>
-				<li><code>Qubit( 1, 0 )</code> has a 100% chance of collapsing to 0.</li>
-				<li><code>Qubit( 0, 1 )</code> has a 100% chance of collapsing to 1.</li>
-				<li><code>Qubit( 1÷√2, 1÷√2 )</code> has a 50% chance of collapsing to 0, and a 50% 
+				<li>A qubit {<span class="symbol">a</span>=1, <span class="symbol">b</span>=0} has a 100% chance of collapsing to 0.</li>
+				<li>A qubit {<span class="symbol">a</span>=0, <span class="symbol">b</span>=1} has a 100% chance of collapsing to 1.</li>
+				<li>A qubit {<span class="symbol">a</span>=1÷√2, <span class="symbol">b</span>=1÷√2} has a 50% chance of collapsing to 0, and a 50% 
 				chance of collapsing to 1.</li>
 			</ul>
-			<br>
 			<h3>Bloch sphere</h3>
 			<p>
-				If we plot all of the possible values for 𝒂 and 𝒃 on a standard graph 
-				it will create a circle with a radius of 1 centered at the origin (0, 0); 
-				ie. a <a href="https://en.wikipedia.org/wiki/Unit_circle)" target="_blank">unit circle</a>. This is the result of our rule that |𝒂|² + |𝒃|² = 1. 
+				Plotting all the possible values for 
+				<span class="symbol">a</span> and <span class="symbol">b</span> on a graph 
+				as <span class="symbol">x</span> and <span class="symbol">y</span> respectively
+				yields a circle with a radius of 1 centered at the origin (0, 0); 
+				ie. a <a href="https://en.wikipedia.org/wiki/Unit_circle)" target="_blank">unit circle</a>.
 			</p>
 
 
@@ -104,15 +111,29 @@ const ourQubit = new Q.Qubit( 0, 1 )
 
 </code></pre>
 			<p>
-				If we allow for complex numbers like 𝒊 then our 2D circle becomes a 3D 
-				<a href="https://en.wikipedia.org/wiki/Bloch_sphere" target="_blank">Bloch sphere</a>. Our unit circle or unit sphere can be used as a state 
-				machine for quantum compuation, though Q.js currently focusses on 
+				By incorporating <a href="ComplexNumber.html">complex numbers</a>
+				we add a third dimension, transforming our circle in to a
+				<a href="https://en.wikipedia.org/wiki/Bloch_sphere" target="_blank">Bloch sphere</a>.
+				If you’re familiar with complex numbers you may expect them to add <em>two</em> dimensions to our unit circle rather than one.
+				By taking the absolute value of <span class="symbol">a</span> or <span class="symbol">b</span>
+				we effectively cancel out this extra dimension.
+			</p>
+			<p>
+				Our unit circle or unit sphere can be used as a state 
+				machine for quantum compuation, though 
+				<a href="index.html">Q</a> currently focusses on 
 				matrices for calculation. 
 			</p>
 			<hr>
 			<h3>Constructor</h3>
 			<p>
-				TK
+				TK.<br>
+				<code>Q.<a href="Matrix.html">Matrix</a>([ a ],[ b ])</code>
+<pre><code>
+const ourQubit = new Q.Qubit( 0, 1 )
+
+</code></pre>
+
 			</p>
 			<h3>Constants</h3>
 			<p>
