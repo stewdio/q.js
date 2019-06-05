@@ -291,17 +291,17 @@ Q.<a href="Gate.html">Gate</a>.HADAMARD
 			</p>
 			<pre><code>
 var 
-a = new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 1,  2 ),
-b = new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 3, -4 )
+cat = new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 1,  2 ),
+dog = new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 3, -4 )
 
-a.toString()<span class="comment">//  Returns '1 + 2i'</span>
-b.toString()<span class="comment">//  Returns '3 - 4i'</span>
+cat.toString() <span class="comment">//  Returns '1 + 2i'</span>
+dog.toString() <span class="comment">//  Returns '3 - 4i'</span>
 
-a.<strong>add</strong>( b )  <span class="comment">//  Non-destructive.</span>
-a.toString()<span class="comment">//  Still returns '1 + 2i'</span>
+cat.<strong>add</strong>( dog ) <span class="comment">//  Non-destructive.</span>
+cat.toString() <span class="comment">//  Still returns '1 + 2i'</span>
 
-a.<strong>add$</strong>( b ) <span class="comment">//  Destructive.</span>
-a.toString()<span class="comment">//  Now returns '4 - 2i'</span>
+cat.<strong>add$</strong>( dog )<span class="comment">//  Destructive.</span>
+cat.toString() <span class="comment">//  Now returns '4 - 2i'</span>
 
 		</pre></code>
 			<h3 id="Roadmap">Roadmap</h3>
