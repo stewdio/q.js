@@ -19,6 +19,8 @@ const Q = (function(){
 Object.assign( Q, {
 
 	verbosity: 0.5,
+	animals: [],
+	colors: [],
 	error: function(){
 
 		`

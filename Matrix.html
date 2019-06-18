@@ -50,40 +50,98 @@
 	</head>
 	<body>
 		<main>
+			<h3 id="Tables_of_numbers">Tables of numbers</h3>
 			<p>
-				Creates a matrix of arbitrary dimensions. Expects an argument list of 
-				equal-length arrays where each array represents a row of column values. 
-				Automatically determines matrix dimensions based on the number of 
-				arguments (rows) and length of each row (number of columns). Throws an 
-				error if the row lengths are not equal.  
-			</p>
-			<p>
-				Internally converts all its numbers in to <code>Q.<a href="ComplexNumber.html">ComplexNumber</a></code> instances.
-			</p>
-			<p>
-				Limitation: A matrix cannot change its dimensions after initialization 
-				and cannot contain matrices.
+				A <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)" target="_blank">matrix</a>
+				is just a table of numbers; rows and columns of values.
+				Matrices can be of any size.
+				Here’s an example of a 3 × 2 matrix. 
+				It’s 3 columns wide and 2 rows tall,
+				containing the values 1 through 6.
 			</p>
 <pre><code>
-const a = new Q.Matrix(  
-	[ 1, 0, 0, 0 ],  
-	[ 0, 1, 0, 0 ],  
-	[ 0, 0, 0, 1 ],  
-	[ 0, 0, 1, 0 ]) 
+┌         ┐
+│ 1  2  3 │
+│ 4  5  6 │
+└         ┘
 
 </code></pre>
 			<p>
-				See also 
-				<a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)" target="_blank">https://en.wikipedia.org/wiki/Matrix_(mathematics)</a>
-				and 
-				<a href="https://en.wikipedia.org/wiki/Row-_and_column-major_order" target="_blank">https://en.wikipedia.org/wiki/Row-_and_column-major_order</a>
+				When describing the dimensions of a matrix 
+				we always specify the number of rows first,
+				then the number of columns. 
+				The above is an example of a 3 × 2 matrix,
+				while below is a matrix containing similar data, but in a 2 × 3 configuration.
 			</p>
+<pre><code>
+┌      ┐
+│ 1  2 │
+│ 3  4 │
+│ 5  6 │
+└      ┘
+
+</code></pre>
+
+			<p>
+				Q thinks about matrices in 
+				<a href="https://en.wikipedia.org/wiki/Row-_and_column-major_order" target="_blank">row-major order</a>.
+				This means we read the values just as they are ordered above,
+				starting with the top-most row, reading values from left to right,
+				then proceeding to the next row down and repeating that process.
+				Our choice of row-major order makes reading and writing matrix values 
+				more akin to reading and writing in English;
+				easier to type and program here.
+				To illustrate the converse, here’s an example of a 3 × 2 matrix in column-major order.
+			</p>
+<pre><code>
+┌         ┐
+│ 1  3  5 │
+│ 2  4  6 │
+└         ┘
+
+</code></pre>
+			<hr>
+			<h3>Constructor</h3>
+			<p>
+				<code>Q.Matrix</code> creates and operates on matrices of arbitrary dimensions. 
+				This is in contrast to many graphics libraries, for example, 
+				which optimize for specific sizes of matrices—with corresponding class names like
+				<code>Matrix3</code> or <code>Matrix4</code>.
+				Q, meanwhile, is much more permissive. 
+				The constructor expects an argument list of 
+				equal-length arrays where each array represents a row of column values. 
+				<code>Q.Matrix</code>  then automatically determines the dimensions based on the number of 
+				arguments (rows) and length of each row (number of columns). 
+				The constructor will throw an error if the row lengths are not equal. 
+			</p>
+			<p>
+				Upon creation <code>Q.Matrix</code> converts all argument values of type <code>Number</code> 
+				to <code>Q.<a href="ComplexNumber.html">ComplexNumber</a></code> instances.
+				Currently <code>Q.Matrix</code> does not support recursion;
+				a matrix cannot contain matrices as values.
+			</p>
+<pre><code>
+var a = new Q.Matrix(  
+
+	[ 1, 2, 3 ],  
+	[ 4, 5, 6 ]
+) 
+
+</code></pre>
 			<h3>Import and export formats</h3>
 			<p>
-				Comma separated values (CSV).
-				Tab separated values (TSV).
-				Arbitrary character separated values (XSV).
-				HTML tables.
+				Comma separated values (CSV).<br>
+				Tab separated values (TSV).<br>
+				Arbitrary character separated values (XSV).<br>
+				HTML tables.<br>
+			</p>
+			<h3>Class properties</h3>
+			<p>
+				TK
+			</p>
+			<h3>Instance properties</h3>
+			<p>
+				TK
 			</p>
 			<hr>
 			Source:
@@ -104,7 +162,11 @@ console.log( '\n\nQ.Matrix\n', Q.Matrix.help(), '\n\n' )
 
 
 
+var a = new Q.Matrix(  
 
+	[ 1, 2, 3 ],  
+	[ 4, 5, 6 ]
+) 
 
 
 //  More complex tensor product.

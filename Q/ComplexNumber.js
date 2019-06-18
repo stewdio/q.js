@@ -152,8 +152,52 @@ Object.assign( Q.ComplexNumber, {
 			else return Q.error( 'Q.ComplexNumber attempted to', name, 'with the complex number', a, 'and something that is neither a Number or Q.ComplexNumber:', b )
 		}
 		else return Q.error( 'Q.ComplexNumber attempted to', name, 'with something that is neither a Number or Q.ComplexNumber:', a )
+	},	
+
+
+
+
+    arcCosine: function( n ){
+    	
+		const
+		a  = n.real,
+		b  = n.imaginary,
+		t1 = Q.ComplexNumber.squareRoot( new Q.ComplexNumber(
+
+			b * b - a * a + 1,
+			a * b * -2
+		
+		)),
+		t2 = Q.ComplexNumber.log( new Q.ComplexNumber(
+			
+			t1.real - b,
+			t1.imaginary + a
+		))
+		return new Q.ComplexNumber( Math.PI / 2 - t2.imaginary, t2.real )
 	},
-	
+	arcTangent: function( n ){
+
+		const
+		a = n.real,
+		b = n.imaginary
+
+		if( a === 0 ){
+
+			if( b ===  1 ) return new Q.ComplexNumber( 0,  Infinity )
+			if( b === -1 ) return new Q.ComplexNumber( 0, -Infinity )
+		}
+
+		const 
+		d = a * a + ( 1 - b ) * ( 1 - b ),
+		t = Q.ComplexNumber.log( new Q.ComplexNumber(
+			
+			( 1 - b * b - a * a ) / d,
+			a / d * -2
+
+		))
+		return new Q.ComplexNumber( t.imaginary / 2, t.real / 2 )
+	},
+
 
 
 
