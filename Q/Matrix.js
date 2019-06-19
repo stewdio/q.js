@@ -117,10 +117,6 @@ Object.assign( Q.Matrix, {
 	constants: {},//  Only holds references; an easy way to look up what constants exist.
 	createConstant:  Q.createConstant,
 	createConstants: Q.createConstants,
-	help: function(){
-
-		return Q.extractDocumentation( this )
-	},
 
 
 	isMatrixLike: function( obj ){
@@ -203,7 +199,7 @@ Object.assign( Q.Matrix, {
 
 		return new Q.Matrix( ...array )
 	},
-	fromXSV: function( input, rowSeparator, valueSeparator ){
+	fromXsv: function( input, rowSeparator, valueSeparator ){
 
 		`
 		Ingest string data organized by row, then by column
@@ -234,17 +230,17 @@ Object.assign( Q.Matrix, {
 		})
 		return new Q.Matrix( ...outputRows )
 	},
-	fromCSV: function( csv ){
+	fromCsv: function( csv ){
 
-		return Q.Matrix.fromXSV( csv.replace( /\r/g, '\n' ), '\n', ',' )
+		return Q.Matrix.fromXsv( csv.replace( /\r/g, '\n' ), '\n', ',' )
 	},
-	fromTSV: function( tsv ){
+	fromTsv: function( tsv ){
 
-		return Q.Matrix.fromXSV( tsv, '\n', '\t' )
+		return Q.Matrix.fromXsv( tsv, '\n', '\t' )
 	},
-	fromHTML: function( html ){
+	fromHtml: function( html ){
 
-		return Q.Matrix.fromXSV(
+		return Q.Matrix.fromXsv(
 
 			html
 				.replace( /\r?\n|\r|<tr>|<td>/g, '' )
@@ -540,17 +536,17 @@ Object.assign( Q.Matrix.prototype, {
 
 		return this.copy$( Q.Matrix.fromArray( array ))
 	},
-	fromCSV$: function( csv ){
+	fromCsv$: function( csv ){
 
-		return this.copy$( Q.Matrix.fromCSV( csv ))
+		return this.copy$( Q.Matrix.fromCsv( csv ))
 	},
-	fromTSV$: function( tsv ){
+	fromTsv$: function( tsv ){
 
-		return this.copy$( Q.Matrix.fromTSV( tsv ))
+		return this.copy$( Q.Matrix.fromTsv( tsv ))
 	},
-	fromHTML$: function( html ){
+	fromHtml$: function( html ){
 
-		return this.copy$( Q.Matrix.fromHTML( html ))
+		return this.copy$( Q.Matrix.fromHtml( html ))
 	},
 
 

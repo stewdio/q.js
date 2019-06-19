@@ -110,6 +110,13 @@ h3 code {
 	font-size:   23px;
 	line-height: 24px;
 }
+h4 {
+
+	display: inline-block;
+	margin-right: 8px;
+	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
+	font-weight: 700;
+}
 p + p {
 
 	text-indent: 24px;
@@ -376,6 +383,17 @@ td.highlighted{
 }
 
 
+
+
+/*
+
+
+	Yes, it is totally possible to use a period in an Id name.
+	You just have to escape the period character!
+
+	#some\.id {}
+
+*/
 
 
 

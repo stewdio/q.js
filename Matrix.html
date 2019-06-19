@@ -56,7 +56,7 @@
 				is just a table of numbers; rows and columns of values.
 				Matrices can be of any size.
 				Here’s an example of a 3 × 2 matrix. 
-				It’s 3 columns wide and 2 rows tall,
+				It is 3 columns wide and 2 rows tall,
 				containing the values 1 through 6.
 			</p>
 <pre><code>
@@ -101,16 +101,16 @@
 
 </code></pre>
 			<hr>
-			<h3>Constructor</h3>
+			<h3 id="Constructor">Constructor</h3>
 			<p>
 				<code>Q.Matrix</code> creates and operates on matrices of arbitrary dimensions. 
 				This is in contrast to many graphics libraries, for example, 
 				which optimize for specific sizes of matrices—with corresponding class names like
-				<code>Matrix3</code> or <code>Matrix4</code>.
-				Q, meanwhile, is much more permissive. 
+				<code>Matrix3</code> (for 3 × 3 matrices) or <code>Matrix4</code> (for 4 × 4 matrices).
+				Q, meanwhile, is much more flexible. 
 				The constructor expects an argument list of 
 				equal-length arrays where each array represents a row of column values. 
-				<code>Q.Matrix</code>  then automatically determines the dimensions based on the number of 
+				<code>Q.Matrix</code> then automatically determines the dimensions based on the number of 
 				arguments (rows) and length of each row (number of columns). 
 				The constructor will throw an error if the row lengths are not equal. 
 			</p>
@@ -128,20 +128,151 @@ var a = new Q.Matrix(
 ) 
 
 </code></pre>
-			<h3>Import and export formats</h3>
+			<h3 id="Import_and_export_formats">Import and export formats</h3>
 			<p>
-				Comma separated values (CSV).<br>
-				Tab separated values (TSV).<br>
-				Arbitrary character separated values (XSV).<br>
-				HTML tables.<br>
+				Getting data in and out of any system can be a laborious. 
+				With that in mind, <code>Q.Matrix</code> comes with helper methods for
+				importing and exporting the following common formats:
 			</p>
-			<h3>Class properties</h3>
+			<ul>
+				<li><a href="#.fromCsv">Comma separated values (CSV)</a></li>
+				<li><a href="#.fromTsv">Tab separated values (TSV)</a></li>
+				<li><a href="#.fromXsv">Arbitrary character separated values (XSV)</a></li>
+				<li><a href="#.fromHtml">HTML tables</a></li>
+			</ul>
+			<h3 id="Constants">Constants</h3>
 			<p>
-				TK
+				The following constant values are attached to <code>Q.Matrix</code>
+				for general convenience
+				<em>and</em> to the <code>Q.Matrix.constants</code> object
+				for lookup convenience in the console
+				or iteration convenience via <code>Object.keys</code>. 
 			</p>
-			<h3>Instance properties</h3>
+<pre><code>
+IDENTITY_2X2 = Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 2 )
+IDENTITY_3X3 = Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 3 )
+IDENTITY_4X4 = Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 4 )
+
+CONSTANT0_2X2 = new Q.Matrix(
+	[ 1, 1 ],
+	[ 0, 0 ])
+
+CONSTANT1_2X2 = new Q.Matrix(
+	[ 0, 0 ],
+	[ 1, 1 ])
+
+NEGATION_2X2 = new Q.Matrix(
+	[ 0, 1 ],
+	[ 1, 0 ])
+
+TEST_MAP_9X9 = new Q.Matrix(
+	[ 11, 21, 31, 41, 51, 61, 71, 81, 91 ],
+	[ 12, 22, 32, 42, 52, 62, 72, 82, 92 ],
+	[ 13, 23, 33, 43, 53, 63, 73, 83, 93 ],
+	[ 14, 24, 34, 44, 54, 64, 74, 84, 94 ],
+	[ 15, 25, 35, 45, 55, 65, 75, 85, 95 ],
+	[ 16, 26, 36, 46, 56, 66, 76, 86, 96 ],
+	[ 17, 27, 37, 47, 57, 67, 77, 87, 97 ],
+	[ 18, 28, 38, 48, 58, 68, 78, 88, 98 ],
+	[ 19, 29, 39, 49, 59, 69, 79, 89, 99 ])
+
+</code></pre>
+			<h3 id="Class_properties">Class properties</h3>			
 			<p>
-				TK
+				<h4 id=".index">index</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".help">help()</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".constants">constants</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".createConstant">createConstant</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".createConstants">createConstants</h4> Description TK. For ganging up multiple constants.
+			</p>
+
+
+
+
+			<p>
+				<h4 id=".isMatrixLike">isMatrixLike</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".isWithinRange">isWithinRange</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".getWidth">getWidth</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".getHeight">getHeight</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".haveEqualDimensions">haveEqualDimensions</h4> Description TK
+			</p>
+
+
+
+
+			<p>
+				<h4 id=".createSquare">createSquare</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".createZero">createZero</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".createOne">createOne</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".createIdentity">createIdentity</h4> Description TK
+			</p>
+
+
+
+
+			<p>
+				<h4 id=".from">from</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".fromArray">fromArray</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".fromXsv">fromXsv</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".fromCsv">fromCsv</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".fromTsv">fromTsv</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".fromHtml">fromHtml</h4> Description TK
+			</p>
+
+
+
+
+			<p>
+				<h4 id=".add">add</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".multiplyScalar">multiplyScalar</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".multiply">multiply</h4> Description TK
+			</p>
+			<p>
+				<h4 id=".multiplyTensor">multiplyTensor</h4> Description TK
+			</p>
+
+
+
+
+			<h3 id="Instance_properties">Instance properties</h3>
+			<p>
+				Description TK
 			</p>
 			<hr>
 			Source:
