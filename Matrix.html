@@ -50,10 +50,10 @@
 	</head>
 	<body>
 		<main>
-			<h3 id="Tables_of_numbers">Tables of numbers</h3>
+			<h3 id="Table_of_numbers">Table of numbers</h3>
 			<p>
 				A <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)" target="_blank">matrix</a>
-				is just a table of numbers; rows and columns of values.
+				is just a table of numbers; rows and columns containing values.
 				Matrices can be of any size.
 				Here’s an example of a 3 × 2 matrix. 
 				It is 3 columns wide and 2 rows tall,
@@ -84,14 +84,14 @@
 
 			<p>
 				Q thinks about matrices in 
-				<a href="https://en.wikipedia.org/wiki/Row-_and_column-major_order" target="_blank">row-major order</a>.
+				<a href="https://en.wikipedia.org/wiki/Row-_and_column-major_order" target="_blank"><strong>row-major</strong> order</a>.
 				This means we read the values just as they are ordered above,
 				starting with the top-most row, reading values from left to right,
 				then proceeding to the next row down and repeating that process.
 				Our choice of row-major order makes reading and writing matrix values 
 				more akin to reading and writing in English;
 				easier to type and program here.
-				To illustrate the converse, here’s an example of a 3 × 2 matrix in column-major order.
+				To illustrate the converse, here’s an example of a 3 × 2 matrix in <strong>column-major</strong> order.
 			</p>
 <pre><code>
 ┌         ┐
@@ -177,103 +177,245 @@ TEST_MAP_9X9 = new Q.Matrix(
 	[ 19, 29, 39, 49, 59, 69, 79, 89, 99 ])
 
 </code></pre>
-			<h3 id="Class_properties">Class properties</h3>			
-			<p>
-				<h4 id=".index">index</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".help">help()</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".constants">constants</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".createConstant">createConstant</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".createConstants">createConstants</h4> Description TK. For ganging up multiple constants.
-			</p>
+			<hr>
+			<h3 id="Class_properties">Class properties</h3>
+			<ul class="properties">
+				<li>
+					<dt id=".index"><a href="#.index">index</a></dt>
+					<dd> Description TK</dd>
+				</li>
+				<li>
+					<dt id=".help"><a href="#.help">help</a></dt>
+					<dd> Description TK</dd>
+				</li>
+				<li>
+					<dt id=".constants"><a href="#.constants">constants</a></dt>
+					<dd>
+						While <code>Q.Matrix</code> <a href="#Constants">constants</a>
+						are appended directly to the <code>Q.Matrix</code> object,
+						they are also appended to a <code>Q.Matrix.constants</code> object
+						to make looking up constants in the JavaScript console trivial,
+						and to make iterating across all constants convenient via
+						functions like 
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
+						and so on.
+					</dd>
+				</li>
+				<li>
+					<dt id=".createConstant"><a href="#.createConstant">createConstant</a></dt>
+					<dd> Description TK</dd>
+				</li>
+				<li>
+					<dt id=".createConstants"><a href="#.createConstants">createConstants</a></dt>
+					<dd> Description TK</dd>
+				</li>
 
 
 
 
-			<p>
-				<h4 id=".isMatrixLike">isMatrixLike</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".isWithinRange">isWithinRange</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".getWidth">getWidth</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".getHeight">getHeight</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".haveEqualDimensions">haveEqualDimensions</h4> Description TK
-			</p>
+				<li>
+					<dt id=".isMatrixLike"><a href="#.isMatrixLike">isMatrixLike</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".isWithinRange"><a href="#.isWithinRange">isWithinRange</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".getWidth"><a href="#.getWidth">getWidth</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".getHeight"><a href="#.getHeight">getHeight</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".haveEqualDimensions"><a href="#.haveEqualDimensions">haveEqualDimensions</a></dt>
+					<dd>Description TK</dd>
+				</li>
 
 
 
 
-			<p>
-				<h4 id=".createSquare">createSquare</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".createZero">createZero</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".createOne">createOne</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".createIdentity">createIdentity</h4> Description TK
-			</p>
+				<li>
+					<dt id=".createSquare"><a href="#.createSquare">createSquare</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".createZero"><a href="#.createZero">createZero</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".createOne"><a href="#.createOne">createOne</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".createIdentity"><a href="#.createIdentity">createIdentity</a></dt>
+					<dd>Description TK</dd>
+				</li>
 
 
 
 
-			<p>
-				<h4 id=".from">from</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".fromArray">fromArray</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".fromXsv">fromXsv</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".fromCsv">fromCsv</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".fromTsv">fromTsv</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".fromHtml">fromHtml</h4> Description TK
-			</p>
+				<li>
+					<dt id=".from"><a href="#.from">from</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".fromArray"><a href="#.fromArray">fromArray</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".fromXsv"><a href="#.fromXsv">fromXsv</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".fromCsv"><a href="#.fromCsv">fromCsv</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".fromTsv"><a href="#.fromTsv">fromTsv</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".fromHtml"><a href="#.fromHtml">fromHtml</a></dt>
+					<dd>Description TK</dd>
+				</li>
 
 
 
 
-			<p>
-				<h4 id=".add">add</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".multiplyScalar">multiplyScalar</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".multiply">multiply</h4> Description TK
-			</p>
-			<p>
-				<h4 id=".multiplyTensor">multiplyTensor</h4> Description TK
-			</p>
-
-
-
-
+				<li>
+					<dt id=".add"><a href="#.add">add</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".multiplyScalar"><a href="#.multiplyScalar">multiplyScalar</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".multiply"><a href="#.multiply">multiply</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".multiplyTensor"><a href="#.multiplyTensor">multiplyTensor</a></dt>
+					<dd>Description TK</dd>
+				</li>
+			</ul>
+			<hr>
 			<h3 id="Instance_properties">Instance properties</h3>
-			<p>
-				Description TK
-			</p>
+			<ul class="properties">
+				<li>
+					<dt id=".protoptype.isValidRow"><a href="#.protoptype.isValidRow">isValidRow</a></dt>
+					<dd> Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.isValidColumn"><a href="#.protoptype.isValidColumn">isValidColumn</a></dt>
+					<dd> Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.isValidAddress"><a href="#.protoptype.isValidAddress">isValidAddress</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.getWidth"><a href="#.protoptype.getWidth">getWidth</a></dt>
+					<dd> Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.getHeight"><a href="#.protoptype.getHeight">getHeight</a></dt>
+					<dd> Description TK</dd>
+				</li>
+			</ul>
+			<h4>Data exports (non-destructive by nature)</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".protoptype.read"><a href="#.protoptype.read">read</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.clone"><a href="#.protoptype.clone">clone</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.toArray"><a href="#.protoptype.toArray">toArray</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.toXsv"><a href="#.protoptype.toXsv">toXsv</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.toCsv"><a href="#.protoptype.toCsv">toCsv</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.toTsv"><a href="#.protoptype.toTsv">toTsv</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.toHtml"><a href="#.protoptype.toHtml">toHtml</a></dt>
+					<dd>Description TK</dd>
+				</li>
+			</ul>
+			<h4>Data imports (destructive)</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".protoptype.write$"><a href="#.protoptype.write$">write$</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.copy$"><a href="#.protoptype.copy$">copy$</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.fromArray$"><a href="#.protoptype.fromArray$">fromArray$</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.fromCsv$"><a href="#.protoptype.fromCsv$">fromCsv$</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.fromTsv$"><a href="#.protoptype.fromTsv$">fromTsv$</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.fromHtml$"><a href="#.protoptype.fromHtml$">fromHtml$</a></dt>
+					<dd>Description TK</dd>
+				</li>
+			</ul>
+			<h4>Maths operations (non-destructive)</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".protoptype.add"><a href="#.protoptype.add">add</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.multiplyScalar"><a href="#.protoptype.multiplyScalar">multiplyScalar</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.multiply"><a href="#.protoptype.multiply">multiply</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.multiplyTensor"><a href="#.protoptype.multiplyTensor">multiplyTensor</a></dt>
+					<dd>Description TK</dd>
+				</li>
+			</ul>
+			<h4>Maths operations (destructive)</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".protoptype.add$"><a href="#.protoptype.add$">add$</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.multiplyScalar$"><a href="#.protoptype.multiplyScalar$">multiplyScalar$</a></dt>
+					<dd>Description TK</dd>
+				</li>
+			</ul>
 			<hr>
 			Source:
 			<a href="https://github.com/stewdio/q.js/blob/master/Q/Matrix.js?ts=4" target="_blank">https://github.com/stewdio/q.js/blob/master/Q/Matrix.js</a>

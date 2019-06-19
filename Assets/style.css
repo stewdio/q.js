@@ -112,11 +112,23 @@ h3 code {
 }
 h4 {
 
-	display: inline-block;
-	margin-right: 8px;
+	margin-top: 36px;
+	font-weight: 700;
+}
+dt {
+
+	display: inline;
+	margin-left: -24px;
+	margin-right:  4px;
 	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
 	font-weight: 700;
 }
+dd {
+
+	display: inline;
+}
+
+
 p + p {
 
 	text-indent: 24px;
@@ -128,9 +140,11 @@ hr {
 	border-top: 1px solid #DDD;
 	padding: 0;
 }
-li {
+ul.properties li {
 
-/*	list-style: none;*/
+	list-style: none;
+	margin-top: 24px;
+	padding-left: 24px;
 }
 strong {
 
@@ -186,8 +200,8 @@ pre, code, samp {
 }
 code, samp {
 
-	margin:  0  -2px;
-	padding: 4px 2px;
+	margin:  0  -1px;
+	padding: 2px 2px;
 }
 samp {}
 pre code {
@@ -322,7 +336,7 @@ main {
 main a {
 
 	margin:  0  -2px;
-	padding: 5px 2px;
+	padding: 3px 2px;
 }
 
 

@@ -446,7 +446,7 @@ Object.assign( Q.Matrix.prototype, {
 
 		return this.rows
 	},
-	toXSV: function( rowSeparator, valueSeparator ){
+	toXsv: function( rowSeparator, valueSeparator ){
 		
 		return this.rows.reduce( function( xsv, row ){
 
@@ -458,23 +458,23 @@ Object.assign( Q.Matrix.prototype, {
 		
 		}, '' )
 	},
-	toCSV: function(){
+	toCsv: function(){
 
 		`
 		Creates a comma-separated-values table and returns it as a string.
 		`
 
-		return this.toXSV( '\n', ',' )
+		return this.toXsv( '\n', ',' )
 	},
-	toTSV: function(){
+	toTsv: function(){
 
 		`
 		Creates a tab-separated-values table and returns it as a string.
 		`
 
-		return this.toXSV( '\n', '\t' )
+		return this.toXsv( '\n', '\t' )
 	},
-	toHTML: function(){
+	toHtml: function(){
 
 		`
 		Creates HTML table code and returns it as a string.
