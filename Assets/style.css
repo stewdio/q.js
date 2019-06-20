@@ -195,6 +195,7 @@ pre {
 	padding:  0  6px 24px  24px;
 	line-height:  20px;
 	tab-size: 4;
+	-moz-tab-size: 4;
 	overflow: auto;
 }
 pre, code, samp {
