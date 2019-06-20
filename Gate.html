@@ -50,47 +50,185 @@
 	</head>
 	<body>
 		<main>
-			<h3>Quantum logic gates</h3>
+			<h3 id="Quantum_logic_gates">Quantum logic gates</h3>
 			<p>
 				Description TK
 			</p>
 			<hr>
-			<h3>Constants</h3>
-			<p>
-				2 × 2 matrices
-			</p>
-<pre><code>
-HADAMARD
-PAULI_X
-PAULI_Y
-PAULI_Z
-PHASE
-PI_8
-
-</pre></code>
-		<p>
-			4 × 4 matrices
-		</p>
-<pre><code>
-CONTROLLED_NOT
-SWAP
-CONTROLLED_Z
-CONTROLLED_PHASE
-
-</pre></code>
-		<p>
-			8 × 8 matrices
-		</p>
-<pre><code>
-TOFFOLI
-CONTROLLED_SWAP
-
-</code></pre>
-			<h3>Class properties</h3>
+			<h3 id="Constructor">Constructor</h3>
 			<p>
 				Description TK
 			</p>
-			<h3>Instance properties</h3>
+			<hr>
+			<h3 id="Constants">Constants</h3>
+			<p>
+				While <code>Q.Gate</code> <a href="#Constants">constants</a>
+				are appended directly to the <code>Q.Gate</code> object,
+				they are also appended to a <code>Q.Gate.constants</code> object
+				to make looking up constants in the JavaScript console trivial,
+				and to make iterating across all constants convenient via
+				functions like 
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
+				and so on.
+			</p>
+			<h4>2 × 2 matrices</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".HADAMARD"><a href="#.HADAMARD">HADAMARD</a></dt>
+					<dd>
+<pre><code>
+new Q.Gate( 'H',
+	[ Math.SQRT1_2,  Math.SQRT1_2 ],
+	[ Math.SQRT1_2, -Math.SQRT1_2 ])
+</code></pre>
+					</dd>
+				</li>
+				<li>
+					<dt id=".PAULI_X"><a href="#.PAULI_X">PAULI_X</a></dt>
+					<dd>
+<pre><code>
+new Q.Gate( 'X',
+	[ 0, 1 ],
+	[ 1, 0 ])
+</code></pre>
+					</dd>
+				</li>
+				<li>
+					<dt id=".PAULI_Y"><a href="#.PAULI_Y">PAULI_Y</a></dt>
+					<dd>
+<pre><code>
+new Q.Gate( 'Y',
+	[ 0, new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, -1 )],
+	[ new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 ),  0 ])
+</code></pre>
+					</dd>
+				</li>
+				<li>
+					<dt id=".PAULI_Z"><a href="#.PAULI_Z">PAULI_Z</a></dt>
+					<dd>
+<pre><code>
+new Q.Gate( 'Z',
+	[ 1,  0 ],
+	[ 0, -1 ])
+</code></pre>
+					</dd>
+				</li>
+				<li>
+					<dt id=".PHASE"><a href="#.PHASE">PHASE</a></dt>
+					<dd>
+<pre><code>
+new Q.Gate( 'S',
+	[ 1, 0 ],
+	[ 0, new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )])
+</code></pre>
+					</dd>
+				</li>
+				<li>
+					<dt id=".PI_8"><a href="#.PI_8">PI_8</a></dt>
+					<dd>
+<pre><code>
+new Q.Gate( 'T',
+	[ 1, 0 ],
+	[ 0, Q.<a href="ComplexNumber.html">ComplexNumber</a>.<a href="ComplexNumber.htmll#.E">E</a>.<a href="ComplexNumber.htmll#.power">power</a>( new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, Math.PI / 4 )) ])
+</code></pre>
+					</dd>
+				</li>
+			</ul>
+			<h4>4 × 4 matrices</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".CONTROLLED_NOT"><a href="#.CONTROLLED_NOT">CONTROLLED_NOT</a></dt>
+					<dd>
+<pre><code>
+new Q.Gate(<span class="comment">//  C-Not</span>
+	[ 1, 0, 0, 0 ],
+	[ 0, 1, 0, 0 ],
+	[ 0, 0, 0, 1 ],
+	[ 0, 0, 1, 0 ])
+</code></pre>
+					</dd>
+				</li>
+				<li>
+					<dt id=".SWAP"><a href="#.SWAP">SWAP</a></dt>
+					<dd>
+<pre><code>
+new Q.Gate(
+	[ 1, 0, 0, 0 ],
+	[ 0, 0, 1, 0 ],
+	[ 0, 1, 0, 0 ],
+	[ 0, 0, 0, 1 ])
+</code></pre>
+					</dd>
+				</li>
+				<li>
+					<dt id=".CONTROLLED_Z"><a href="#.CONTROLLED_Z">CONTROLLED_Z</a></dt>
+					<dd>
+<pre><code>
+new Q.Gate(
+	[ 1, 0, 0,  0 ],
+	[ 0, 1, 0,  0 ],
+	[ 0, 0, 1,  0 ],
+	[ 0, 0, 0, -1 ])
+</code></pre>
+					</dd>
+				</li>
+				<li>
+					<dt id=".CONTROLLED_PHASE"><a href="#.CONTROLLED_PHASE">CONTROLLED_PHASE</a></dt>
+					<dd>
+<pre><code>
+new Q.Gate(
+	[ 1, 0, 0, 0 ],
+	[ 0, 1, 0, 0 ],
+	[ 0, 0, 1, 0 ],
+	[ 0, 0, 0, new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )])
+</code></pre>
+					</dd>
+				</li>
+			</ul>
+			<h4>8 × 8 matrices</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".TOFFOLI"><a href="#.TOFFOLI">TOFFOLI</a></dt>
+					<dd>
+<pre><code>
+new Q.Gate(
+	[ 1, 0, 0, 0, 0, 0, 0, 0 ],
+	[ 0, 1, 0, 0, 0, 0, 0, 0 ],
+	[ 0, 0, 1, 0, 0, 0, 0, 0 ],
+	[ 0, 0, 0, 1, 0, 0, 0, 0 ],
+	[ 0, 0, 0, 0, 1, 0, 0, 0 ],
+	[ 0, 0, 0, 0, 0, 1, 0, 0 ],
+	[ 0, 0, 0, 0, 0, 0, 0, 1 ],
+	[ 0, 0, 0, 0, 0, 0, 1, 0 ])
+</code></pre>
+					</dd>
+				</li>
+				<li>
+					<dt id=".CONTROLLED_SWAP"><a href="#.CONTROLLED_SWAP">CONTROLLED_SWAP</a></dt>
+					<dd>
+<pre><code>
+new Q.Gate(<span class="comment">//  Fredkin</span>
+	[ 1, 0, 0, 0, 0, 0, 0, 0 ],
+	[ 0, 1, 0, 0, 0, 0, 0, 0 ],
+	[ 0, 0, 1, 0, 0, 0, 0, 0 ],
+	[ 0, 0, 0, 1, 0, 0, 0, 0 ],
+	[ 0, 0, 0, 0, 1, 0, 0, 0 ],
+	[ 0, 0, 0, 0, 0, 0, 1, 0 ],
+	[ 0, 0, 0, 0, 0, 1, 0, 0 ],
+	[ 0, 0, 0, 0, 0, 0, 0, 1 ])
+</code></pre>
+					</dd>
+				</li>
+			</ul>
+			<hr>
+			<h3 id="Class_properties">Class properties</h3>
+			<p>
+				Description TK
+			</p>
+			<hr>
+			<h3 id="Instance_properties">Instance properties</h3>
 			<p>
 				Description TK
 			</p>

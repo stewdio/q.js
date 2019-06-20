@@ -60,8 +60,7 @@
 <pre><code>
 …  -3  -2  -1   0  +1  +2  +3   …  
 ┄───┴───┴───┴───┴───┴─┬─┴──┬┴┬──┄  
-                     √2    𝒆 π  
-
+                     √2    𝒆 π
 </pre></code>
 			<p>
 				When a real number is multiplied by itself the product is always positive.
@@ -107,7 +106,6 @@
 𝒙 = 7 × √-1
 𝒙 = 7 × 𝒊
 𝒙 = 7𝒊
-
 </code></pre>
 
 
@@ -120,8 +118,7 @@
 			</p>
 <pre><code>
 …  -3𝒊 -2𝒊  -1𝒊  0  +1𝒊 +2𝒊 +3𝒊  …  
-┄───┴───┴───┴───┴───┴───┴───┴───┄  
-
+┄───┴───┴───┴───┴───┴───┴───┴───┄
 </pre></code>
 			<h3 id="Complex_numbers">Complex numbers ℂ</h3>
 			<p>
@@ -145,7 +142,6 @@ dog = new Q.ComplexNumber( 3, -4 )
 
 cat.toString()<span class="comment">//  Returns '1 + 2i'</span>
 dog.toString()<span class="comment">//  Returns '3 - 4i'</span>
-
 </pre></code>
 			<p>
 				Now we have two variables, <code>cat</code> and <code>dog</code>, that we can operate with. 
@@ -159,7 +155,6 @@ cat.add( dog ).toString()     <span class="comment">//  Returns  '4 - 2i'</span>
 cat.subtract( dog ).toString()<span class="comment">//  Returns '-2 + 6i'</span>
 cat.multiply( dog ).toString()<span class="comment">//  Returns '11 + 2i'</span>
 cat.divide( dog ).toString()  <span class="comment">//  Returns '-0.2 + 0.4i'</span>
-
 </pre></code>
 			<p>
 				We can now verify that <span class="symbol">i</span><sup>2</sup> = -1.
@@ -169,7 +164,6 @@ var i = new Q.ComplexNumber( 0, 1 )
 
 i.toString()<span class="comment">//  Returns  'i'</span>
 i.power( 2 ).toString()<span class="comment">//  Returns  '-1'</span>
-
 </pre></code>
 			<p>
 				Operation functions on <code>Q.ComplexNumber</code> instances generally accept as 
@@ -177,34 +171,65 @@ i.power( 2 ).toString()<span class="comment">//  Returns  '-1'</span>
 				value returned is always an instance of <code>Q.ComplexNumber</code>.
 			</p>
 			<hr>
-			<h3>Constructor</h3>
+			<h3 id="Constructor">Constructor</h3>
 			<p>
-				TK
+				Description TK.
 			</p>
-			<h3>Constants</h3>
+			<hr>
+			<h3 id="Constants">Constants</h3>
 			<p>
-				The following constant values are attached to <code>Q.ComplexNumber</code>
-				for general convenience
-				<em>and</em> to the <code>Q.ComplexNumber.constants</code> object
-				for lookup convenience in the console
-				or iteration convenience via <code>Object.keys</code>. 
+				While <code>Q.ComplexNumber</code> <a href="#Constants">constants</a>
+				are appended directly to the <code>Q.ComplexNumber</code> object,
+				they are also appended to a <code>Q.ComplexNumber.constants</code> object
+				to make looking up constants in the JavaScript console trivial,
+				and to make iterating across all constants convenient via
+				functions like 
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
+				and so on.
 			</p>
-<pre><code>
-ZERO     = new Q.ComplexNumber( 0, 0 )
-ONE      = new Q.ComplexNumber( 1, 0 )
-E        = new Q.ComplexNumber( Math.E,  0 )
-PI       = new Q.ComplexNumber( Math.PI, 0 )
-I        = new Q.ComplexNumber( 0, 1 )
-EPSILON  = new Q.ComplexNumber( Q.EPSILON, Q.EPSILON )
-INFINITY = new Q.ComplexNumber( Infinity, Infinity )
-NAN      = new Q.ComplexNumber( NaN, NaN )
-
-</pre></code>
-			<h3>Class properties</h3>
+			<ul class="properties">
+				<li>
+					<dt id=".ZERO"><a href="#.ZERO">ZERO</a></dt>
+					<dd><code>= new Q.ComplexNumber( 0, 0 )</code></dd>
+				</li>
+				<li>
+					<dt id=".ONE"><a href="#.ONE">ONE</a></dt>
+					<dd><code>= new Q.ComplexNumber( 1, 0 )</code></dd>
+				</li>
+				<li>
+					<dt id=".E"><a href="#.E">E</a></dt>
+					<dd><code>= new Q.ComplexNumber( Math.E, 0 )</code></dd>
+				</li>
+				<li>
+					<dt id=".PI"><a href="#.PI">PI</a></dt>
+					<dd><code>= new Q.ComplexNumber( Math.PI, 0 )</code></dd>
+				</li>
+				<li>
+					<dt id=".I"><a href="#.I">I</a></dt>
+					<dd><code>= new Q.ComplexNumber( 0, 1 )</code></dd>
+				</li>
+				<li>
+					<dt id=".EPSILON"><a href="#.EPSILON">EPSILON</a></dt>
+					<dd><code>= new Q.ComplexNumber( Q.<a href="index.html#.EPSILON">EPSILON</a>, Q.<a href="index.html#.EPSILON">EPSILON</a> )</code></dd>
+				</li>
+				<li>
+					<dt id=".INFINITY"><a href="#.INFINITY">INFINITY</a></dt>
+					<dd><code>= new Q.ComplexNumber( Infinity, Infinity )</code></dd>
+				</li>
+				<li>
+					<dt id=".NAN"><a href="#.NAN">NAN</a></dt>
+					<dd><code>= new Q.ComplexNumber( NaN, NaN )</code></dd>
+				</li>
+			</ul>
+			<hr>
+			<h3 id="Class_properties">Class properties</h3>
 			<p>
 				Description TK
 			</p>
-			<h3>Instance properties</h3>
+			<hr>
+			<h3 id="Instance_properties">Instance properties</h3>
 			<p>
 				Description TK
 			</p>

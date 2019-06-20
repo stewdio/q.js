@@ -240,12 +240,12 @@
 				Just copy and paste the following in to your console:
 			</p>
 			<pre><code>
-Q.<a href="Gate.html">Gate</a>.HADAMARD
-	.applyTo( Q.<a href="Qubit.html">Qubit</a>.HORIZONTAL )
-	.collapse()
-	.targetBit
-	.toString()
-			</pre></code>
+Q.<a href="Gate.html">Gate</a>.<a href="Gate.html#.HADAMARD">HADAMARD</a>
+	.<a href="Gate.html#.applyTo">applyTo</a>( Q.<a href="Qubit.html">Qubit</a>.<a href="Qubit.html#.HORIZONTAL">HORIZONTAL</a> )
+	.<a href="Qubit.html#.prototype.collapse">collapse</a>()
+	.<a href="Qubit.html#.this.targetBit">targetBit</a>
+	.<a href="ComplexNumber.html#.toString">toString</a>()
+</pre></code>
 			<p>
 				Did you try it?
 				You just performed the most superfluous coin flip ever.
@@ -294,14 +294,14 @@ var
 cat = new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 1,  2 ),
 dog = new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 3, -4 )
 
-cat.toString() <span class="comment">//  Returns '1 + 2i'</span>
-dog.toString() <span class="comment">//  Returns '3 - 4i'</span>
+cat.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">//  Returns '1 + 2i'</span>
+dog.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">//  Returns '3 - 4i'</span>
 
-cat.<strong>add</strong>( dog ) <span class="comment">//  Non-destructive.</span>
-cat.toString() <span class="comment">//  Still returns '1 + 2i'</span>
+cat.<a href="ComplexNumber.html#.add"><strong>add</strong></a>( dog ) <span class="comment">//  Non-destructive.</span>
+cat.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">//  Still returns '1 + 2i'</span>
 
-cat.<strong>add$</strong>( dog )<span class="comment">//  Destructive.</span>
-cat.toString() <span class="comment">//  Now returns '4 - 2i'</span>
+cat.<a href="ComplexNumber.html#.add$"><strong>add$</strong></a>( dog )<span class="comment">//  Destructive.</span>
+cat.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">//  Now returns '4 - 2i'</span>
 
 		</pre></code>
 			<h3 id="Roadmap">Roadmap</h3>
@@ -343,6 +343,103 @@ cat.toString() <span class="comment">//  Now returns '4 - 2i'</span>
 				<code>Q</code> provides some convenience functions.
 				(And we’ll detail all of that <em>later</em> when we make another pass on revising these docs!)
 			</p>
+			<hr>
+			<h3 id="Constants">Constants</h3>
+			<ul class="properties">
+				<li>
+					<dt id=".REVISION"><a href="#.REVISION">REVISION</a></dt>
+					<dd>
+						The current revision number of <code>Q</code>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".EPSILON"><a href="#.EPSILON">EPSILON</a></dt>
+					<dd>
+						<code>Number.EPSILON * 6</code>.
+						This higher epsilon value is necessary 
+						for the following equality to be true
+						when using JavaScript’s floating point implementation:
+<pre><code>
+var a = new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 1, 2 )
+a.<a href="ComplexNumber.html#.prototype.multiply">multiply</a>( a )
+	.<a href="ComplexNumber.html#.prototype.multiply">isEqualTo</a>( 
+		a.<a href="ComplexNumber.html#.prototype.power">power</a>( new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 2, 0 )))
+</code></pre>
+						In the future we may wish to incorporate something like 
+						<a href="https://github.com/MikeMcl/bignumber.js" target="_blank">bignumber.js</a> in to Q.
+					</dd>
+				</li>
+			</ul>
+			<hr>
+			<h3 id="Properties">Properties</h3>
+			<ul class="properties">
+				<li>
+					<dt id=".verbosity"><a href="#.verbosity">verbosity</a></dt>
+					<dd>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".animals"><a href="#.animals">animals</a></dt>
+					<dd>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".colors"><a href="#.colors">colors</a></dt>
+					<dd>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".error"><a href="#.error">error</a></dt>
+					<dd>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".extractDocumentation"><a href="#.extractDocumentation">extractDocumentation</a></dt>
+					<dd>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".help"><a href="#.help">help</a></dt>
+					<dd>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".constants"><a href="#.constants">constants</a></dt>
+					<dd>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".createConstant"><a href="#.createConstant">createConstant</a></dt>
+					<dd>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".createConstants"><a href="#.createConstants">createConstants</a></dt>
+					<dd>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".hypotenuse"><a href="#.hypotenuse">hypotenuse</a></dt>
+					<dd>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".logHypotenuse"><a href="#.logHypotenuse">logHypotenuse</a></dt>
+					<dd>
+						Description TK.
+					</dd>
+				</li>
+			</ul>
 			<hr>
 			Source:
 			<a href="https://github.com/stewdio/q.js/blob/master/Q/Q.js?ts=4" target="_blank">https://github.com/stewdio/q.js/blob/master/Q/Q.js</a>

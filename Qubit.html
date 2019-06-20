@@ -50,7 +50,7 @@
 	</head>
 	<body>
 		<main>
-			<h3>Perfect pairs</h3>
+			<h3 id="Perfect_pairs">Perfect pairs</h3>
 			<p>
 				A <a href="https://en.wikipedia.org/wiki/Qubit" target="_blank">qubit</a>
 				is a pair of <a href="ComplexNumber.html">complex numbers</a>, 
@@ -83,7 +83,7 @@
 				<li>A qubit {<span class="symbol">a</span>=1÷√2, <span class="symbol">b</span>=1÷√2} has a 50% chance of collapsing to 0, and a 50% 
 				chance of collapsing to 1.</li>
 			</ul>
-			<h3>Bloch sphere</h3>
+			<h3 id="Bloch_sphere">Bloch sphere</h3>
 			<p>
 				Plotting all the possible values for 
 				<span class="symbol">a</span> and <span class="symbol">b</span> on a graph 
@@ -91,8 +91,6 @@
 				yields a circle with a radius of 1 centered at the origin (0, 0); 
 				ie. a <a href="https://en.wikipedia.org/wiki/Unit_circle)" target="_blank">unit circle</a>.
 			</p>
-
-
 <pre><code>
              ( 0, 1 )  Vertical 
                  │
@@ -108,7 +106,6 @@
                  │
                  │
              ( 0, -1 )
-
 </code></pre>
 			<p>
 				By incorporating <a href="ComplexNumber.html">complex numbers</a>
@@ -125,44 +122,135 @@
 				matrices for calculation. 
 			</p>
 			<hr>
-			<h3>Constructor</h3>
+			<h3 id="Constructor">Constructor</h3>
 			<p>
-				Qubit extends <code><a href="Matrix.html">Matrix</a></code>.
-				TK.<br>
-				<code>Q.<a href="Matrix.html">Matrix</a>([ a ],[ b ])</code>
-<pre><code>
-const ourQubit = new Q.Qubit( 0, 1 )
-
-</code></pre>
-
-			</p>
-			<h3>Constants</h3>
-			<p>
-				Q.Qubit provides the following built-in <a href="https://en.wikipedia.org/wiki/Jones_calculus#Jones_vectors" target="_blank">Jones vectors</a>.
+				<code>Q.Qubit</code>
+				extends the <code>Q.<a href="Matrix.html">Matrix</a></code> class
+				and therefore inherits its class and instance methods.
+				A new qubit may be created like so:
 			</p>
 <pre><code>
-HORIZONTAL = new Q.Qubit( 1, 0 )
-VERTICAL   = new Q.Qubit( 0, 1 )
-
+var a = new Q.Qubit( 0, 1 )
 </code></pre>
-<pre><code>
-DIAGONAL      = new Q.Qubit( 1÷√2,  1÷√2 )
-ANTI_DIAGONAL = new Q.Qubit( 1÷√2, -1÷√2 )
-
-</code></pre>
-<pre><code>
-RIGHT_HAND_CIRCULAR_POLARIZED = new Q.Qubit( 1÷√2, -1÷√2i )
-LEFT_HAND_CIRCULAR_POLARIZED  = new Q.Qubit( 1÷√2,  1÷√2i )
-
-</code></pre>
-			<h3>Class properties</h3>
 			<p>
-				Description TK
+				When a new qubit is created it internally invokes the
+				<code>Q.<a href="Matrix.html">Matrix</a></code> constructor,
+				such that <code>new Q.Qubit( a, b )</code>
+				is similar to
+				<code>new Q.<a href="Matrix.html">Matrix</a>([ a ],[ b ])</code>.
 			</p>
-			<h3>Instance properties</h3>
+			<hr>
+			<h3 id="Constants">Constants</h3>
 			<p>
-				Description TK
+				While <code>Q.Qubit</code> <a href="#Constants">constants</a>
+				are appended directly to the <code>Q.Qubit</code> object,
+				they are also appended to a <code>Q.Qubit.constants</code> object
+				to make looking up constants in the JavaScript console trivial,
+				and to make iterating across all constants convenient via
+				functions like 
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
+				and so on.
+				<code>Q.Qubit</code> provides the following built-in <a href="https://en.wikipedia.org/wiki/Jones_calculus#Jones_vectors" target="_blank">Jones vectors</a>.
 			</p>
+			<ul class="properties">
+				<li>
+					<dt id=".HORIZONTAL"><a href="#.HORIZONTAL">HORIZONTAL</a></dt>
+					<dd><code>= new Q.Qubit( 1, 0 )</code></dd>
+				</li>
+				<li>
+					<dt id=".VERTICAL"><a href="#.VERTICAL">VERTICAL</a></dt>
+					<dd><code>= new Q.Qubit( 0, 1 )</code></dd>
+				</li>
+				<li>
+					<dt id=".DIAGONAL"><a href="#.DIAGONAL">DIAGONAL</a></dt>
+					<dd><code>= new Q.Qubit( 1÷√2,  1÷√2 )</code></dd>
+				</li>
+				<li>
+					<dt id=".ANTI_DIAGONAL"><a href="#.ANTI_DIAGONAL">ANTI_DIAGONAL</a></dt>
+					<dd><code>= new Q.Qubit( 1÷√2, -1÷√2 )</code></dd>
+				</li>
+				<li>
+					<dt id=".RIGHT_HAND_CIRCULAR_POLARIZED"><a href="#.RIGHT_HAND_CIRCULAR_POLARIZED">RIGHT_HAND_CIRCULAR_POLARIZED</a></dt>
+					<dd><code>= new Q.Qubit( 1÷√2, -1÷√2i )</code></dd>
+				</li>
+				<li>
+					<dt id=".LEFT_HAND_CIRCULAR_POLARIZED"><a href="#.LEFT_HAND_CIRCULAR_POLARIZED">LEFT_HAND_CIRCULAR_POLARIZED</a></dt>
+					<dd><code>= new Q.Qubit( 1÷√2,  1÷√2i )</code></dd>
+				</li>
+			</ul>
+			<hr>
+			<h3 id="Class_properties">Class properties</h3>
+			<ul class="properties">
+				<li>
+					<dt id=".index"><a href="#.index">index</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".help"><a href="#.help">help</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".constants"><a href="#.constants">constants</a></dt>
+					<dd>
+						While <code>Q.Qubit</code> <a href="#Constants">constants</a>
+						are appended directly to the <code>Q.Qubit</code> object,
+						they are also appended to a <code>Q.Qubit.constants</code> object
+						to make looking up constants in the JavaScript console trivial,
+						and to make iterating across all constants convenient via
+						functions like 
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
+						and so on.
+					</dd>
+				</li>
+				<li>
+					<dt id=".createConstant"><a href="#.createConstant">createConstant</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".createConstants"><a href="#.createConstants">createConstants</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".collapse"><a href="#.collapse">collapse</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<!--
+
+					toBlochSphere
+					toXYZ
+					fromBlochSphere
+					fromXYZ
+
+				-->
+			</ul>
+			<hr>
+			<h3 id="Instance_properties">Instance properties</h3>
+			<h4>Non-destructive methods</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".protoptype.isEqualTo"><a href="#.protoptype.isEqualTo">isEqualTo</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.collapse"><a href="#.protoptype.collapse">collapse</a></dt>
+					<dd>Description TK</dd>
+				</li>
+			</ul>
+			<h4>Destructive methods</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".protoptype.copy$"><a href="#.protoptype.copy$">copy$</a></dt>
+					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".protoptype.collapse$"><a href="#.protoptype.collapse$">collapse$</a></dt>
+					<dd>Description TK</dd>
+				</li>
+			</ul>
 			<hr>
 			Source:
 			<a href="https://github.com/stewdio/q.js/blob/master/Q/Qubit.js?ts=4" target="_blank">https://github.com/stewdio/q.js/blob/master/Q/Qubit.js</a>

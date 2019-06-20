@@ -145,7 +145,6 @@ Object.assign( Q, {
 Q.createConstants( 
 
 	'REVISION', 1,
-	'ONE_SQRT', 1 / Math.sqrt( 2 ),
 
 
 	//  Yeah... F’ing floating point numbers man!
