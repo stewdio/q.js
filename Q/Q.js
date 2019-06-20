@@ -21,6 +21,11 @@ Object.assign( Q, {
 	verbosity: 0.5,
 	animals: [],
 	colors: [],
+	warn: function(){
+
+		console.warn.apply( console, arguments )
+		return '(warning)'
+	},
 	error: function(){
 
 		`

@@ -37,8 +37,8 @@ Q.ComplexNumber = function( real, imaginary ){
 
 	if( real instanceof Q.ComplexNumber ){
 
-		real = Q.ComplexNumber.real
-		imaginary = Q.ComplexNumber.imaginary
+		imaginary = real.imaginary
+		real = real.real
 		Q.warn( 'Q.ComplexNumber tried to create a new instance with an argument that is already a Q.ComplexNumber — and that’s weird!' )
 	}
 	else if( real === undefined ) real = 0

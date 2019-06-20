@@ -140,8 +140,8 @@ var
 cat = new Q.ComplexNumber( 1,  2 ),
 dog = new Q.ComplexNumber( 3, -4 )
 
-cat.toString()<span class="comment">//  Returns '1 + 2i'</span>
-dog.toString()<span class="comment">//  Returns '3 - 4i'</span>
+cat.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '1 + 2i'</span>
+dog.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '3 - 4i'</span>
 </pre></code>
 			<p>
 				Now we have two variables, <code>cat</code> and <code>dog</code>, that we can operate with. 
@@ -151,10 +151,10 @@ dog.toString()<span class="comment">//  Returns '3 - 4i'</span>
 				Try the following lines individually in your JavaScript console:
 			</p>
 <pre><code>
-cat.add( dog ).toString()     <span class="comment">//  Returns  '4 - 2i'</span>
-cat.subtract( dog ).toString()<span class="comment">//  Returns '-2 + 6i'</span>
-cat.multiply( dog ).toString()<span class="comment">//  Returns '11 + 2i'</span>
-cat.divide( dog ).toString()  <span class="comment">//  Returns '-0.2 + 0.4i'</span>
+cat.<a href="#.prototype.add">add</a>( dog ).<a href="#.prototype.toString">toString</a>()     <span class="comment">//  Returns  '4 - 2i'</span>
+cat.<a href="#.prototype.subtract">subtract</a>( dog ).<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '-2 + 6i'</span>
+cat.<a href="#.prototype.multiply">multiply</a>( dog ).<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '11 + 2i'</span>
+cat.<a href="#.prototype.divide">divide</a>( dog ).<a href="#.prototype.toString">toString</a>()  <span class="comment">//  Returns '-0.2 + 0.4i'</span>
 </pre></code>
 			<p>
 				We can now verify that <span class="symbol">i</span><sup>2</sup> = -1.
@@ -162,8 +162,8 @@ cat.divide( dog ).toString()  <span class="comment">//  Returns '-0.2 + 0.4i'</s
 <pre><code>
 var i = new Q.ComplexNumber( 0, 1 )
 
-i.toString()<span class="comment">//  Returns  'i'</span>
-i.power( 2 ).toString()<span class="comment">//  Returns  '-1'</span>
+i.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns  'i'</span>
+i.<a href="#.prototype.power">power</a>( 2 ).<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns  '-1'</span>
 </pre></code>
 			<p>
 				Operation functions on <code>Q.ComplexNumber</code> instances generally accept as 
@@ -173,8 +173,55 @@ i.power( 2 ).toString()<span class="comment">//  Returns  '-1'</span>
 			<hr>
 			<h3 id="Constructor">Constructor</h3>
 			<p>
-				Description TK.
+				Expects zero to two arguments. 
+				If the first argument is a <code>ComplexNumber</code> 
+				then that value is cloned and any remaining arguments are ignored.
+				If either of the arguments are <code>undefined</code> they are assumed to be zero.
+				If the first argument is not a <code>ComplexNumber</code>
+				and either of the arguments are not <a href="ComplexNumber.html#.isNumberLike">number-like</a>
+				then an error is thrown.
 			</p>
+<pre><code>
+var 
+ant = new Q.ComplexNumber(),
+bat = new Q.ComplexNumber( 1 ),
+cat = new Q.ComplexNumber( 1, 2 ),
+dog = new Q.ComplexNumber( cat )
+
+ant.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '0'</span>
+bat.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '1'</span>
+cat.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '1 + 2i'</span>
+dog.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '1 + 2i'</span>
+
+cat.<a href="#.this.index">index</a> === dog.<a href="#.prototype.index">index</a><span class="comment">//  Returns false</span>
+</pre></code>
+			<ul class="properties">
+				<li>
+					<dt id=".this.real"><a href="#.this.real">real</a></dt>
+					<dd>
+						Traditionally the first argument, 
+						a <a href="ComplexNumber.html#.isNumberLike">number-like</a> value 
+						representing the <em>real</em> component of the 
+						<a href="ComplexNumber.html#Complex_numbers">complex number</a>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".this.imaginary"><a href="#.this.imaginary">imaginary</a></dt>
+					<dd>
+						Traditionally the second argument, 
+						a <a href="ComplexNumber.html#.isNumberLike">number-like</a> value 
+						representing the <em>imaginary</em> component of the
+						<a href="ComplexNumber.html#Complex_numbers">complex number</a>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".this.index"><a href="#.this.index">index</a></dt>
+					<dd>
+						An auto-incrementing identification number assigned to the instance,
+						used for minding the total number of instances created.
+					</dd>
+				</li>
+			</ul>
 			<hr>
 			<h3 id="Constants">Constants</h3>
 			<p>
@@ -224,15 +271,225 @@ i.power( 2 ).toString()<span class="comment">//  Returns  '-1'</span>
 				</li>
 			</ul>
 			<hr>
-			<h3 id="Class_properties">Class properties</h3>
-			<p>
-				Description TK
-			</p>
+			<h3 id="Static_properties">Static properties</h3>
+			<ul class="properties">
+				<li>
+					<dt id=".index"><a href="#.index">index</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".help"><a href="#.help">help</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".constants"><a href="#.constants">constants</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".createConstant"><a href="#.createConstant">createConstant</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".createConstants"><a href="#.createConstants">createConstants</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".isNumberLike"><a href="#.isNumberLike">isNumberLike</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".isNaN"><a href="#.isNaN">isNaN</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".isZero"><a href="#.isZero">isZero</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".isFinite"><a href="#.isFinite">isFinite</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".isInfinite"><a href="#.isInfinite">isInfinite</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".areEqual"><a href="#.areEqual">areEqual</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".absolute"><a href="#.absolute">absolute</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".conjugate"><a href="#.conjugate">conjugate</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".operate"><a href="#.operate">operate</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".arcCosine"><a href="#.arcCosine">arcCosine</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".arcTangent"><a href="#.arcTangent">arcTangent</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".power"><a href="#.power">power</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".squareRoot"><a href="#.squareRoot">squareRoot</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".log"><a href="#.log">log</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".multiply"><a href="#.multiply">multiply</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".divide"><a href="#.divide">divide</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".add"><a href="#.add">add</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".subtract"><a href="#.subtract">subtract</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+			</ul>
 			<hr>
-			<h3 id="Instance_properties">Instance properties</h3>
-			<p>
-				Description TK
-			</p>
+			<h3 id="Prototype_properties">Prototype properties</h3>
+			<h4>Non-destructive methods</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".prototype.clone"><a href="#.prototype.clone">clone</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.reduce"><a href="#.prototype.reduce">reduce</a></dt>
+					<dd>
+						Description TK. May return a <code>Number</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">method chaining</a>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".prototype.isNaN"><a href="#.prototype.isNaN">isNaN</a></dt>
+					<dd>
+						Description TK. Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">method chaining</a>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".prototype.isZero"><a href="#.prototype.isZero">isZero</a></dt>
+					<dd>
+						Description TK. Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">method chaining</a>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".prototype.isFinite"><a href="#.prototype.isFinite">isFinite</a></dt>
+					<dd>
+						Description TK. Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">method chaining</a>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".prototype.isInfinite"><a href="#.prototype.isInfinite">isInfinite</a></dt>
+					<dd>
+						Description TK. Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">method chaining</a>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".prototype.isEqualTo"><a href="#.prototype.isEqualTo">isEqualTo</a></dt>
+					<dd>
+						Description TK. Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">method chaining</a>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".prototype.absolute"><a href="#.prototype.absolute">absolute</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.conjugate"><a href="#.prototype.conjugate">conjugate</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.power"><a href="#.prototype.power">power</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.squareRoot"><a href="#.prototype.squareRoot">squareRoot</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.log"><a href="#.prototype.log">log</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.multiply"><a href="#.prototype.multiply">multiply</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.divide"><a href="#.prototype.divide">divide</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.add"><a href="#.prototype.add">add</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.subtract"><a href="#.prototype.subtract">subtract</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.toString"><a href="#.prototype.toString">toString</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+			</ul>
+			<h4>Destructive methods</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".prototype.copy$"><a href="#.prototype.copy$">copy$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.conjugate$"><a href="#.prototype.conjugate$">conjugate$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.power$"><a href="#.prototype.power$">power$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.squareRoot$"><a href="#.prototype.squareRoot$">squareRoot$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.log$"><a href="#.lprototype.og$">log$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.multiply$"><a href="#.prototype.multiply$">multiply$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.divide$"><a href="#.prototype.divide$">divide$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.add$"><a href="#.prototype.add$">add$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.subtract$"><a href="#.prototype.subtract$">subtract$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+			</ul>
 			<hr>
 			Source:
 			<a href="https://github.com/stewdio/q.js/blob/master/Q/ComplexNumber.js?ts=4" target="_blank">https://github.com/stewdio/q.js/blob/master/Q/ComplexNumber.js</a>
@@ -243,9 +500,11 @@ i.power( 2 ).toString()<span class="comment">//  Returns  '-1'</span>
 console.log( '\n\nQ.ComplexNumber\n', Q.ComplexNumber.help(), '\n\n' )
 
 var 
-a = new Q.ComplexNumber( 1,  2 ),
-b = new Q.ComplexNumber( 3, -4 ),
-i = new Q.ComplexNumber( 0,  1 )
+ant = new Q.ComplexNumber(),
+bat = new Q.ComplexNumber( 1 ),
+cat = new Q.ComplexNumber( 1, 2 ),
+dog = new Q.ComplexNumber( cat ),
+i   = new Q.ComplexNumber( 0,  1 )
 
 			
 		</script>

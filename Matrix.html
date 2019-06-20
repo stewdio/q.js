@@ -116,15 +116,38 @@
 				to <code>Q.<a href="ComplexNumber.html">ComplexNumber</a></code> instances.
 				Currently <code>Q.Matrix</code> does not support recursion;
 				a matrix cannot contain matrices as values.
+				A matrix also cannot change its dimensions, making destructive properties 
+				that yield matrices of a different size (like <code>multiply$</code>, for example) impossible.
 			</p>
 <pre><code>
 var a = new Q.Matrix(  
 	[ 1, 2, 3 ],  
 	[ 4, 5, 6 ])
 </code></pre>
-			<h3 id="Import_and_export_formats">Import and export formats</h3>
+			<ul class="properties">
+				<li>
+					<dt id=".this.rows"><a href="#.this.rows">rows</a></dt>
+					<dd>
+						The <code>Array</code> of the supplied <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments" target="_blank">arguments</a></code>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".this.columns"><a href="#.this.columns">columns</a></dt>
+					<dd>
+						An <code>Array</code> of getters and setters that operate on the <a href="#.this.rows">rows</a> property to appear as if this property contained actual values. 
+					</dd>
+				</li>
+				<li>
+					<dt id=".this.index"><a href="#.this.index">index</a></dt>
+					<dd>
+						An auto-incrementing identification number assigned to the instance,
+						used for minding the total number of instances created.
+					</dd>
+				</li>
+			</ul>
+			<h4 id="Import_and_export_formats">Import and export formats</h4>
 			<p>
-				Getting data in and out of any system can be a laborious. 
+				Getting data in and out of any system can be laborious. 
 				With that in mind, <code>Q.Matrix</code> comes with helper methods for
 				importing and exporting the following common formats:
 			</p>
@@ -134,6 +157,7 @@ var a = new Q.Matrix(
 				<li><a href="#.fromXsv">Arbitrary character separated values (XSV)</a></li>
 				<li><a href="#.fromHtml">HTML tables</a></li>
 			</ul>
+			<hr>
 			<h3 id="Constants">Constants</h3>
 			<p>
 				While <code>Q.Matrix</code> <a href="#Constants">constants</a>
@@ -209,7 +233,7 @@ var a = new Q.Matrix(
 				</li>
 			</ul>
 			<hr>
-			<h3 id="Class_properties">Class properties</h3>
+			<h3 id="Static_properties">Static properties</h3>
 			<ul class="properties">
 				<li>
 					<dt id=".index"><a href="#.index">index</a></dt>
@@ -336,7 +360,7 @@ var a = new Q.Matrix(
 				</li>
 			</ul>
 			<hr>
-			<h3 id="Instance_properties">Instance properties</h3>
+			<h3 id="Prototype_properties">Prototype properties</h3>
 			<ul class="properties">
 				<li>
 					<dt id=".protoptype.isValidRow"><a href="#.protoptype.isValidRow">isValidRow</a></dt>

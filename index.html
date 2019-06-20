@@ -345,18 +345,33 @@ cat.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">
 			</p>
 			<hr>
 			<h3 id="Constants">Constants</h3>
+			<p>
+				While Q <a href="#Constants">constants</a>
+				are appended directly to the <code>Q</code> object,
+				they are also appended to a <code>Q.constants</code> object
+				to make looking up constants in the JavaScript console trivial,
+				and to make iterating across all constants convenient via
+				functions like 
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
+				and so on.
+			</p>
 			<ul class="properties">
 				<li>
 					<dt id=".REVISION"><a href="#.REVISION">REVISION</a></dt>
 					<dd>
-						The current revision number of <code>Q</code>.
+						The code revision number. 
+						The version of <code>Q</code> loaded on this web page is revision #<strong id="q-revision"></strong>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".EPSILON"><a href="#.EPSILON">EPSILON</a></dt>
 					<dd>
 						<code>Number.EPSILON * 6</code>.
-						This higher epsilon value is necessary 
+						In the future we may wish to incorporate something like 
+						<a href="https://github.com/MikeMcl/bignumber.js" target="_blank">bignumber.js</a> in to Q,
+						but for now this higher epsilon value is necessary 
 						for the following equality to be true
 						when using JavaScript’s floating point implementation:
 <pre><code>
@@ -364,9 +379,7 @@ var a = new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 1, 2 )
 a.<a href="ComplexNumber.html#.prototype.multiply">multiply</a>( a )
 	.<a href="ComplexNumber.html#.prototype.multiply">isEqualTo</a>( 
 		a.<a href="ComplexNumber.html#.prototype.power">power</a>( new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 2, 0 )))
-</code></pre>
-						In the future we may wish to incorporate something like 
-						<a href="https://github.com/MikeMcl/bignumber.js" target="_blank">bignumber.js</a> in to Q.
+</code></pre>						
 					</dd>
 				</li>
 			</ul>
@@ -387,6 +400,12 @@ a.<a href="ComplexNumber.html#.prototype.multiply">multiply</a>( a )
 				</li>
 				<li>
 					<dt id=".colors"><a href="#.colors">colors</a></dt>
+					<dd>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".warn"><a href="#.warn">warn</a></dt>
 					<dd>
 						Description TK.
 					</dd>
@@ -452,6 +471,13 @@ a.<a href="ComplexNumber.html#.prototype.multiply">multiply</a>( a )
 console.log( '\n\n\nYou did it! You opened your browser’s JavaScript console!!\n\n\n\n' )
 console.log( '\n\n\nNow try navigating to the other topic pages to learn more and experiment with Q.\n\n\n\n' )
 		
+
+
+
+document.getElementById( 'q-revision' ).innerText = Q.REVISION
+
+
+
 
 //  Enable hover interactions for the compatability table.
 
