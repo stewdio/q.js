@@ -49,6 +49,7 @@
 	--external-link-color: var( --text-color );
 	--fill-color: var( --text-color );
 	--comment-color: #999;
+	--highlight-color: #FD0;
 }
 * {
 
@@ -64,7 +65,7 @@
 }
 ::selection {
 
-	background: #FD0;
+	background: var( --highlight-color );
 	/*color: rgba( 0, 0, 0, 0.8 );*/
 	/*color:  #000;*/
 }
@@ -415,6 +416,19 @@ td.highlighted{
 	#some\.id {}
 
 */
+.hash-target {
+
+	padding: 2px 0;
+	animation-duration: 3s;
+	animation-name: hash-target-blink;
+	animation-iteration-count: infinite;
+}
+@keyframes hash-target-blink {
+
+	  0% { background-color: transparent; }
+	 50% { background-color: var( --highlight-color ); }
+	100% { background-color: transparent; }
+}
 
 
 

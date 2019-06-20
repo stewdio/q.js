@@ -2,6 +2,18 @@
 
 
 
+let hashTarget
+function onHashChange(){
+
+	if( hashTarget ) hashTarget.classList.remove( 'hash-target' )
+	hashTarget = document.getElementById( location.hash.substr( 1 ))
+	if( hashTarget ) hashTarget.classList.add( 'hash-target' )
+}
+window.addEventListener( 'hashchange', onHashChange, false )
+
+
+
+
 document.addEventListener( 'DOMContentLoaded', function(){
 
 
@@ -39,6 +51,9 @@ document.addEventListener( 'DOMContentLoaded', function(){
 			link.classList.add( 'selected' )
 		}
 	})
+
+	
+	onHashChange()
 })
 
 
