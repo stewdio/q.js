@@ -421,7 +421,7 @@ td.highlighted{
 	padding: 2px 0;
 	animation-duration: 3s;
 	animation-name: hash-target-blink;
-	animation-iteration-count: infinite;
+	animation-iteration-count: 2;
 }
 @keyframes hash-target-blink {
 
