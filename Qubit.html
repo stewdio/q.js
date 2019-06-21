@@ -25,13 +25,13 @@
 		<meta name="twitter:site"         content="@stew_rtsmith">
 		<meta name="twitter:creator"      content="@stew_rtsmith">
 		<meta name="twitter:description"  content="Quantum computing in your browser.">
-		<meta name="twitter:title"        content="Q.js">
+		<meta name="twitter:title"        content="Q ⟩ Qubit">
 		<meta name="twitter:image"        content="https://stewdio.github.io/q.js/Assets/q-thumbnail.png">
 		<meta name="twitter:url"          content="https://stewdio.github.io/q.js/">
 		
 		<meta property="og:type"          content="website">
 		<meta property="og:description"   content="Quantum computing in your browser.">
-		<meta property="og:title"         content="Q.js">
+		<meta property="og:title"         content="Q ⟩ Qubit">
 		<meta property="og:image"         content="https://stewdio.github.io/q.js/Assets/q-thumbnail.png">
 		<meta property="og:url"           content="http://stewartsmith.io">
 		
@@ -47,6 +47,9 @@
 		<script src="Q/Gate.js"></script>
 		<script src="Q/Circuit.js"></script>
 		<script src="Assets/navigation.js"></script>
+		<script src="Assets/Three/three.105.min.js"></script>
+		<script src="Assets/Three/OrbitControls.js"></script>
+		<script src="Assets/blochSphere.js"></script>
 	</head>
 	<body>
 		<main>
@@ -83,9 +86,9 @@
 				<li>A qubit {<span class="symbol">a</span>=1÷√2, <span class="symbol">b</span>=1÷√2} has a 50% chance of collapsing to 0, and a 50% 
 				chance of collapsing to 1.</li>
 			</ul>
-			<h3 id="Bloch_sphere">Bloch sphere</h3>
+			<h3 id="Unit_circle">Unit circle</h3>
 			<p>
-				Plotting all the possible values for 
+				Plotting all the possible <em>real</em> values for 
 				<span class="symbol">a</span> and <span class="symbol">b</span> on a graph 
 				as <span class="symbol">x</span> and <span class="symbol">y</span> respectively
 				yields a circle with a radius of 1 centered at the origin (0, 0); 
@@ -107,6 +110,8 @@
                  │
              ( 0, -1 )
 </code></pre>
+
+			<h3 id="Bloch_sphere">Bloch sphere</h3>
 			<p>
 				By incorporating <a href="ComplexNumber.html">complex numbers</a>
 				we add a third dimension, transforming our circle in to a
@@ -120,6 +125,11 @@
 				machine for quantum compuation, though 
 				<a href="index.html">Q</a> currently focusses on 
 				matrices for calculation. 
+			</p>
+			<canvas id="bloch-sphere"></canvas>
+			<p>
+				Select qubit state: <select id="qubit-state-selector"></select><br>
+				(This visualization method is developing rapidly so expect updates to this Bloch Sphere explorer soon.)
 			</p>
 			<hr>
 			<h3 id="Constructor">Constructor</h3>
@@ -182,27 +192,27 @@ var a = new Q.Qubit( 0, 1 )
 			<ul class="properties">
 				<li>
 					<dt id=".HORIZONTAL"><a href="#.HORIZONTAL">HORIZONTAL</a></dt>
-					<dd><code>= new Q.Qubit( 1, 0 )</code></dd>
+					<dd><code>= new Q.Qubit( 1, 0, 'H' )</code></dd>
 				</li>
 				<li>
 					<dt id=".VERTICAL"><a href="#.VERTICAL">VERTICAL</a></dt>
-					<dd><code>= new Q.Qubit( 0, 1 )</code></dd>
+					<dd><code>= new Q.Qubit( 0, 1, 'V' )</code></dd>
 				</li>
 				<li>
 					<dt id=".DIAGONAL"><a href="#.DIAGONAL">DIAGONAL</a></dt>
-					<dd><code>= new Q.Qubit( 1÷√2,  1÷√2 )</code></dd>
+					<dd><code>= new Q.Qubit( 1÷√2,  1÷√2, 'D' )</code></dd>
 				</li>
 				<li>
 					<dt id=".ANTI_DIAGONAL"><a href="#.ANTI_DIAGONAL">ANTI_DIAGONAL</a></dt>
-					<dd><code>= new Q.Qubit( 1÷√2, -1÷√2 )</code></dd>
+					<dd><code>= new Q.Qubit( 1÷√2, -1÷√2, 'A' )</code></dd>
 				</li>
 				<li>
 					<dt id=".RIGHT_HAND_CIRCULAR_POLARIZED"><a href="#.RIGHT_HAND_CIRCULAR_POLARIZED">RIGHT_HAND_CIRCULAR_POLARIZED</a></dt>
-					<dd><code>= new Q.Qubit( 1÷√2, -1÷√2i )</code></dd>
+					<dd><code>= new Q.Qubit( 1÷√2, -1÷√2i, 'R' )</code></dd>
 				</li>
 				<li>
 					<dt id=".LEFT_HAND_CIRCULAR_POLARIZED"><a href="#.LEFT_HAND_CIRCULAR_POLARIZED">LEFT_HAND_CIRCULAR_POLARIZED</a></dt>
-					<dd><code>= new Q.Qubit( 1÷√2,  1÷√2i )</code></dd>
+					<dd><code>= new Q.Qubit( 1÷√2,  1÷√2i, 'L' )</code></dd>
 				</li>
 			</ul>
 			<hr>
@@ -285,9 +295,225 @@ var a = new Q.Qubit( 0, 1 )
 
 
 
+
+
+
+/*
+
+	O M F G
+
+	Please forgive the below hideous code
+	and interaction that goes with it.
+	And the explainer text above that goes with it.
+	This is SUCH A WORK IN PROGRESS RIGHT NOW!
+	Coming back to fix shortly.
+
+*/
+
+
+
+
 //  First, what do the docs have to say?
 
 console.log( '\n\nQ.Qubit\n', Q.Qubit.help(), '\n\n' )
+
+
+
+//  Create our Bloch Sphere explorer.
+
+const
+container = document.getElementById( 'bloch-sphere' ),
+fov    = 30,
+width  =  container.offsetWidth,
+height =  container.offsetHeight,
+aspect =  width / height,
+near   = 1,
+far    = 120,
+scene  = new THREE.Scene(),
+camera = new THREE.PerspectiveCamera( fov, aspect, near, far ),
+renderer = new THREE.WebGLRenderer({ 
+
+	canvas: container,
+	alpha: true,
+	antialias: true
+})
+
+
+camera.position.z = 60
+//scene.background = new THREE.Color( 0xF6F6F6 )
+renderer.setPixelRatio( window.devicePixelRatio )
+renderer.setSize( width, height )
+
+
+
+
+var lights = [];
+lights[ 0 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+lights[ 1 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+lights[ 2 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+
+lights[ 0 ].position.set( 0, 200, 0 );
+lights[ 1 ].position.set( 100, 200, 100 );
+lights[ 2 ].position.set( - 100, - 200, - 100 );
+
+scene.add( lights[ 0 ] );
+scene.add( lights[ 1 ] );
+scene.add( lights[ 2 ] );
+
+
+
+
+
+const controls = new THREE.OrbitControls( camera, renderer.domElement )
+controls.zoomSpeed = 0.2
+
+
+//  Create lines of latitude and longitude.
+//  We’ll also use this as a container to attach other bits to.
+
+const sphere = createQuadSphere({ 
+
+	radius: 10
+})
+sphere.rotation.x = 0.7
+scene.add( sphere )
+
+
+const innards = new THREE.Mesh( 
+
+	new THREE.SphereGeometry( 9.97, 32, 32 ),
+	new THREE.MeshBasicMaterial({ 
+
+		side:  THREE.BackSide,
+		color: 0xF6F6F6,
+		transparent: true,
+		opacity: 0.8
+	}) 
+)
+sphere.add( innards )
+
+
+//  Consider thicker line weights:
+//  https://github.com/mrdoob/three.js/blob/master/examples/webgl_lines_fat.html
+/*
+var axesHelper = new THREE.AxesHelper( 10 )
+axesHelper.material.linewidth = 400
+sphere.add( axesHelper )
+*/
+
+var dir = new THREE.Vector3( 0, 1, 0 )
+var origin = new THREE.Vector3( 0, 10, 0 );
+var length = 5;
+var hex = 0x00CC00;
+var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
+sphere.add( arrowHelper )
+
+var dir = new THREE.Vector3( 1, 0, 0 )
+var origin = new THREE.Vector3( 10, 0, 0 );
+var length = 5;
+var hex = 0xFF0000;
+var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
+sphere.add( arrowHelper )
+
+var dir = new THREE.Vector3( 0, 0, 1 )
+var origin = new THREE.Vector3( 0, 0, 10 );
+var length = 5;
+var hex = 0x0000CC;
+var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
+sphere.add( arrowHelper )
+
+
+
+
+
+
+
+
+
+
+const 
+size = 0.5
+mesh = new THREE.Mesh(
+
+	new THREE.BoxGeometry( size, size, size ),
+	new THREE.MeshBasicMaterial({ color: 0x000000 })
+)
+sphere.add( mesh )
+
+
+const blochVectorLine = new THREE.Line( 
+	
+	new THREE.Geometry(),
+	new THREE.LineBasicMaterial({ color: 0x000000 }) 
+)
+blochVectorLine.geometry.vertices.push( new THREE.Vector3() )
+blochVectorLine.geometry.vertices.push( new THREE.Vector3( 0,20, 0) )
+sphere.add( blochVectorLine )
+
+
+function updateBlochVector( state ){
+
+	if( state === undefined ) state = 'HORIZONTAL'
+	
+	const 
+	bloch = Q.Qubit.toBlochSphere( Q.Qubit[ state ]),
+	blochCorrected = new THREE.Vector3(
+
+		bloch.corrected.x,
+		bloch.corrected.y,
+		bloch.corrected.z
+	)
+
+	mesh.position.copy( blochCorrected.clone().multiplyScalar( 10.1 + size / 2 ))
+
+	blochVectorLine.geometry.vertices[ 1 ].copy( blochCorrected.clone().multiplyScalar( 10.1 ))
+	blochVectorLine.geometry.verticesNeedUpdate = true
+}
+
+
+
+updateBlochVector()
+
+const qubitStateSelector = document.getElementById( 'qubit-state-selector' )
+Object.keys( Q.Qubit.constants ).forEach( function( key ){
+
+	const option = document.createElement( 'option' )
+	option.setAttribute( 'value', key )
+	option.innerText = key
+	qubitStateSelector.appendChild( option )
+})
+
+
+qubitStateSelector.addEventListener( 'change', function( event ){
+
+	console.log( 'event!!!', event.target.value )
+
+	updateBlochVector( event.target.value )
+})
+
+
+
+
+
+
+const render = function(){
+
+	requestAnimationFrame( render )
+	controls.update()
+	sphere.rotation.y += 0.003;
+	renderer.render( scene, camera )
+}
+
+// window.addEventListener( 'resize', function () {
+
+// 	camera.aspect = window.innerWidth / window.innerHeight;
+// 	camera.updateProjectionMatrix();
+
+// 	renderer.setSize( window.innerWidth, window.innerHeight );
+
+// }, false );
+
+render()
 
 
 

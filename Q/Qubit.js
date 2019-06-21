@@ -196,6 +196,78 @@ Object.assign( Q.Qubit, {
 			return new Q.Qubit( 1, 0 )
 		}
 		else return new Q.Qubit( 0, 1 )
+	},
+
+
+
+
+	//  This code was a pain in the ass to figure out.
+	//  I’m not fluent in trigonometry
+	//  and none of the quantum primers actually lay out
+	//  how to convert arbitrary qubit states
+	//  to Bloch Sphere representation.
+	//  Oh, they provide equivalencies for specific states, sure.
+	//  I hope this is useful to you
+	//  unless you are porting this to a terrible language
+	//  like C# or Java or something ;)
+	
+	toBlochSphere: function( qubit ){
+
+		`
+		Based on this qubit’s state return the
+		polar angle ϕ (theta),
+		azimuth θ (phi),
+		Bloch vector,
+		corrected surface coordinate.
+
+		https://en.wikipedia.org/wiki/Bloch_sphere
+		`
+
+
+		//  Polar angle ϕ (theta).
+
+		const theta = Q.ComplexNumber.arcCosine( qubit.controlBit ).multiply( 2 )
+		if( isNaN( theta.real )) theta.real = 0
+		if( isNaN( theta.imaginary )) theta.imaginary = 0
+
+		
+		//  Azimuth θ (phi).
+		
+		const phi = Q.ComplexNumber.log( 
+
+			qubit.targetBit.divide( Q.ComplexNumber.sine( theta.divide( 2 )))
+		)
+		.divide( Q.ComplexNumber.I )
+		if( isNaN( phi.real )) phi.real = 0
+		if( isNaN( phi.imaginary )) phi.imaginary = 0
+
+		
+		//  Bloch vector.
+
+		const vector = {
+				
+			x: Q.ComplexNumber.sine( theta ).multiply( Q.ComplexNumber.cosine( phi )).real,
+			y: Q.ComplexNumber.sine( theta ).multiply( Q.ComplexNumber.sine( phi )).real,
+			z: Q.ComplexNumber.cosine( theta ).real
+		}
+
+
+		//  Bloch vector’s axes are wonked.
+
+		const corrected = {
+
+			x: vector.y,
+			y: vector.z,
+			z: vector.x
+		}
+
+		return {
+
+			theta,
+			phi,
+			vector,
+			corrected
+		}
 	}
 })
 

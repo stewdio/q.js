@@ -141,6 +141,14 @@ Object.assign( Q, {
 			return Math.log( x * x + y * y ) / 2
 		}
 		return Math.log( x / Math.cos( Math.atan2( y, x )))
+	},
+	hyperbolicSine: function( n ){
+
+		return ( Math.exp( n ) - Math.exp( -n )) / 2
+	},
+	hyperbolicCosine: function( n ){
+
+		return ( Math.exp( n ) + Math.exp( -n )) / 2
 	}
 })
 
@@ -149,7 +157,7 @@ Object.assign( Q, {
 
 Q.createConstants( 
 
-	'REVISION', 1,
+	'REVISION', 2,
 
 
 	//  Yeah... F’ing floating point numbers man!

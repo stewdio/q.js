@@ -432,3 +432,16 @@ td.highlighted{
 
 
 
+
+
+canvas {
+
+	margin: 12px 0   12px -24px;
+	width:  calc( 100% + 24px );
+	height: 240px;
+	border-radius: 8px;
+	background-color: #F6F6F6;
+}
+
+
+

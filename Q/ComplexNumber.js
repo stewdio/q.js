@@ -157,6 +157,30 @@ Object.assign( Q.ComplexNumber, {
 
 
 
+	sine: function( n ){
+
+		const
+		a = n.real,
+		b = n.imaginary
+		
+		return new Q.ComplexNumber(
+		
+			Math.sin( a ) * Q.hyperbolicCosine( b ),
+			Math.cos( a ) * Q.hyperbolicSine( b )
+		)
+	},
+	cosine: function( n ){
+
+		const
+		a = n.real,
+		b = n.imaginary
+		
+		return new Q.ComplexNumber(
+		
+			 Math.cos( a ) * Q.hyperbolicCosine( b ),
+			-Math.sin( a ) * Q.hyperbolicSine( b )
+		)
+	},
     arcCosine: function( n ){
     	
 		const
@@ -297,7 +321,7 @@ Object.assign( Q.ComplexNumber, {
 	},
 	log: function( a ){
 
-		return new Complex(
+		return new Q.ComplexNumber(
 		
 			Q.logHypotenuse( a.real, a.imaginary ),
 			Math.atan2( a.imaginary, a.real )
