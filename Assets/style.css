@@ -433,8 +433,31 @@ td.highlighted{
 
 
 
+.interactive-container {
+	
+	position: relative;
+	margin: 12px 0   12px -24px;
+	width:  calc( 100% + 24px );
+	height: 240px;	
+	padding-bottom: calc( 100% + 24px );
+	overflow: hidden;
+}
+.interactive-container canvas {
 
-canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-radius: 16px;
+	width:  100%;
+	height: 100%;
+	background-color: #F6F6F6;
+	overflow: hidden;
+}
+
+
+
+
+.canvas-OLD {
 
 	margin: 12px 0   12px -24px;
 	width:  calc( 100% + 24px );

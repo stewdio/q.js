@@ -47,8 +47,16 @@
 		<script src="Q/Gate.js"></script>
 		<script src="Q/Circuit.js"></script>
 		<script src="Assets/navigation.js"></script>
+		
 		<script src="Assets/Three/three.105.min.js"></script>
 		<script src="Assets/Three/OrbitControls.js"></script>
+		<!--
+		<script src="Assets/Three/LineSegmentsGeometry.js"></script>
+		<script src="Assets/Three/LineGeometry.js"></script>
+		<script src="Assets/Three/LineMaterial.js"></script>
+		<script src="Assets/Three/LineSegments2.js"></script>
+		<script src="Assets/Three/Line2.js"></script>
+		-->
 		<script src="Assets/blochSphere.js"></script>
 	</head>
 	<body>
@@ -126,7 +134,7 @@
 				<a href="index.html">Q</a> currently focusses on 
 				matrices for calculation. 
 			</p>
-			<canvas id="bloch-sphere"></canvas>
+			<div class="interactive-container"><canvas id="bloch-sphere"></canvas></div>
 			<p>
 				Select qubit state: <select id="qubit-state-selector"></select><br>
 				(This visualization method is developing rapidly so expect updates to this Bloch Sphere explorer soon.)
@@ -319,16 +327,22 @@ console.log( '\n\nQ.Qubit\n', Q.Qubit.help(), '\n\n' )
 
 
 
+
+
+
+
+
+
 //  Create our Bloch Sphere explorer.
 
 const
 container = document.getElementById( 'bloch-sphere' ),
-fov    = 30,
+fov    = 45,
 width  =  container.offsetWidth,
 height =  container.offsetHeight,
 aspect =  width / height,
-near   = 1,
-far    = 120,
+near   = 0.1,
+far    = 12,
 scene  = new THREE.Scene(),
 camera = new THREE.PerspectiveCamera( fov, aspect, near, far ),
 renderer = new THREE.WebGLRenderer({ 
@@ -338,54 +352,48 @@ renderer = new THREE.WebGLRenderer({
 	antialias: true
 })
 
-
-camera.position.z = 60
-//scene.background = new THREE.Color( 0xF6F6F6 )
+camera.position.z = 4
 renderer.setPixelRatio( window.devicePixelRatio )
 renderer.setSize( width, height )
+scene.add( camera )
 
 
+//  We’re going to pull a little trick here...
+//  Let’s put our light in the opposite place of where we want it
+//  because we’ll render the back face of the sphere
+//  so light direction will be inverted.
+//  We’ll also attach it to the camera
+//  so the light doesn’t appear to move.
 
 
-var lights = [];
-lights[ 0 ] = new THREE.PointLight( 0xffffff, 1, 0 );
-lights[ 1 ] = new THREE.PointLight( 0xffffff, 1, 0 );
-lights[ 2 ] = new THREE.PointLight( 0xffffff, 1, 0 );
-
-lights[ 0 ].position.set( 0, 200, 0 );
-lights[ 1 ].position.set( 100, 200, 100 );
-lights[ 2 ].position.set( - 100, - 200, - 100 );
-
-scene.add( lights[ 0 ] );
-scene.add( lights[ 1 ] );
-scene.add( lights[ 2 ] );
+const light = new THREE.PointLight( 0xFFFFFF, 0.5, 0 )
+// light.position.set( 2, -6, 0 )
+light.position.set( -2, 6, 0 )
+camera.add( light )
+scene.add( new THREE.AmbientLight( 0xFFFFFF, 0.8 ))
 
 
+//  x
 
-
-
-const controls = new THREE.OrbitControls( camera, renderer.domElement )
-controls.zoomSpeed = 0.2
-
-
-//  Create lines of latitude and longitude.
-//  We’ll also use this as a container to attach other bits to.
-
-const sphere = createQuadSphere({ 
-
-	radius: 10
-})
-sphere.rotation.x = 0.7
+const sphere = new THREE.Group()
 scene.add( sphere )
 
 
+//  Create lines of latitude and longitude.
+
+const grid = createQuadSphere({ radius: 1 })
+sphere.add( grid )
+
+
+//  x
+
 const innards = new THREE.Mesh( 
 
-	new THREE.SphereGeometry( 9.97, 32, 32 ),
-	new THREE.MeshBasicMaterial({ 
+	new THREE.SphereGeometry( 0.995, 32, 32 ),
+	new THREE.MeshPhongMaterial({
 
-		side:  THREE.BackSide,
-		color: 0xF6F6F6,
+		side: THREE.FrontSide,
+		color: 0xE6E6E6,
 		transparent: true,
 		opacity: 0.8
 	}) 
@@ -393,62 +401,117 @@ const innards = new THREE.Mesh(
 sphere.add( innards )
 
 
-//  Consider thicker line weights:
-//  https://github.com/mrdoob/three.js/blob/master/examples/webgl_lines_fat.html
-/*
-var axesHelper = new THREE.AxesHelper( 10 )
-axesHelper.material.linewidth = 400
-sphere.add( axesHelper )
-*/
-
-var dir = new THREE.Vector3( 0, 1, 0 )
-var origin = new THREE.Vector3( 0, 10, 0 );
-var length = 5;
-var hex = 0x00CC00;
-var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
-sphere.add( arrowHelper )
-
-var dir = new THREE.Vector3( 1, 0, 0 )
-var origin = new THREE.Vector3( 10, 0, 0 );
-var length = 5;
-var hex = 0xFF0000;
-var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
-sphere.add( arrowHelper )
-
-var dir = new THREE.Vector3( 0, 0, 1 )
-var origin = new THREE.Vector3( 0, 0, 10 );
-var length = 5;
-var hex = 0x0000CC;
-var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
-sphere.add( arrowHelper )
 
 
+const xAxis = new THREE.Mesh(
 
+	new THREE.BoxGeometry( 2.4, 0.01, 0.01 ),
+	new THREE.MeshBasicMaterial({ color: 0xFF0000 })
+)
+sphere.add( xAxis )
 
+const yAxis = new THREE.Mesh(
 
+	new THREE.BoxGeometry( 0.01, 0.01, 2.4 ),
+	new THREE.MeshBasicMaterial({ color: 0x0000CC })
+)
+sphere.add( yAxis )
 
+const zAxis = new THREE.Mesh(
+
+	new THREE.BoxGeometry( 0.01, 2.4, 0.01 ),
+	new THREE.MeshBasicMaterial({ color: 0x00CC00 })
+)
+sphere.add( zAxis )
 
 
 
 
 const 
-size = 0.5
-mesh = new THREE.Mesh(
+arrowLength     = 0.101,//  I know, weird, right?
+arrowHeadLength = 0.1,
+arrowHeadWidth  = 0.1
 
-	new THREE.BoxGeometry( size, size, size ),
-	new THREE.MeshBasicMaterial({ color: 0x000000 })
+sphere.add( new THREE.ArrowHelper( 
+
+	new THREE.Vector3( 0, 1.0, 0 ), 
+	new THREE.Vector3( 0, 1.2, 0 ), 
+	arrowLength, 
+	0x00CC00, 
+	arrowHeadLength, 
+	arrowHeadWidth
+))
+sphere.add( new THREE.ArrowHelper( 
+
+	new THREE.Vector3( 1.0, 0, 0 ), 
+	new THREE.Vector3( 1.2, 0, 0 ), 
+	arrowLength, 
+	0xFF0000, 
+	arrowHeadLength, 
+	arrowHeadWidth
+))
+sphere.add( new THREE.ArrowHelper( 
+
+	new THREE.Vector3( 0, 0, 1.0 ), 
+	new THREE.Vector3( 0, 0, 1.2 ),
+	arrowLength, 
+	0x0000CC, 
+	arrowHeadLength, 
+	arrowHeadWidth
+))
+
+
+
+
+const blochPointer = new THREE.Mesh(
+
+	new THREE.CylinderBufferGeometry( 0, 0.5, 1, 5, 1 ),
+	new THREE.MeshPhongMaterial({ color: 0xFFCC00 })
 )
-sphere.add( mesh )
+blochPointer.geometry.translate( 0, - 0.5, 0 )
+blochPointer.geometry.rotateX( Math.PI / 2 )
+blochPointer.geometry.scale( 0.3, 0.3, 0.3 )
+blochPointer.lookAt( new THREE.Vector3() )
+sphere.add( blochPointer )
 
+/*
+const blochVector = new THREE.Mesh(
 
-const blochVectorLine = new THREE.Line( 
+	new THREE.BoxGeometry( 0.01, 0.01, 1.2 ),
+	new THREE.MeshBasicMaterial({ color: 0xFFCC00 })
+)
+blochVector.geometry.translate( 0, 0, -0.6 )
+sphere.add( blochVector )
+*/
+
+// const blochVectorLine = new THREE.Line2( 
 	
-	new THREE.Geometry(),
-	new THREE.LineBasicMaterial({ color: 0x000000 }) 
-)
-blochVectorLine.geometry.vertices.push( new THREE.Vector3() )
-blochVectorLine.geometry.vertices.push( new THREE.Vector3( 0,20, 0) )
-sphere.add( blochVectorLine )
+// 	new THREE.LineGeometry(),
+// 	new THREE.LineMaterial({ 
+
+// 		color: 0xFFCC00,
+// 		linewidth: 0.01
+// 	}) 
+// )
+// blochVectorLine.geometry.setPositions([ 
+	
+// 	0, 0, 0,  
+// 	0, 1, 0
+// ])
+// sphere.add( blochVectorLine )
+
+
+
+
+
+
+
+
+const controls = new THREE.OrbitControls( camera, renderer.domElement )
+// const controls = new THREE.OrbitControls( sphere, renderer.domElement )
+controls.zoomSpeed = 0.2
+
+
 
 
 function updateBlochVector( state ){
@@ -464,10 +527,23 @@ function updateBlochVector( state ){
 		bloch.corrected.z
 	)
 
-	mesh.position.copy( blochCorrected.clone().multiplyScalar( 10.1 + size / 2 ))
 
-	blochVectorLine.geometry.vertices[ 1 ].copy( blochCorrected.clone().multiplyScalar( 10.1 ))
-	blochVectorLine.geometry.verticesNeedUpdate = true
+	blochPointer.position.copy( blochCorrected )
+	blochPointer.lookAt( new THREE.Vector3() )
+
+
+	// blochVector.lookAt( blochCorrected )
+
+	// mesh.position.copy( blochCorrected.clone().multiplyScalar( 10.1 + size / 2 ))
+
+	//blochVectorLine.geometry.vertices[ 1 ].copy( blochCorrected.clone().multiplyScalar( 10.1 ))
+	
+	// const a = blochCorrected.clone()//.multiplyScalar( 10.1 )
+	// blochVectorLine.geometry.setPositions([ 
+	
+	// 	0,  0, 0,  
+	// 	a.x, a.y, a.z
+	// ])
 }
 
 
@@ -493,6 +569,8 @@ qubitStateSelector.addEventListener( 'change', function( event ){
 
 
 
+sphere.rotation.x = 0.7
+sphere.rotation.z = 0.2
 
 
 
