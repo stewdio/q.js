@@ -253,8 +253,9 @@ Object.assign( Q.Qubit, {
 
 
 		//  Bloch vector’s axes are wonked.
+		//  Let’s “correct” them for use with Three.js, etc.
 
-		const corrected = {
+		const position = {
 
 			x: vector.y,
 			y: vector.z,
@@ -263,12 +264,16 @@ Object.assign( Q.Qubit, {
 
 		return {
 
-			theta,
-			phi,
+
+			//  Ummm... I’m only returnig the REAL portions. Please forgive me!
+
+			theta: theta.real,
+			phi: phi.real,
 			vector,
-			corrected
+			position
 		}
-	}
+	},
+	
 })
 
 

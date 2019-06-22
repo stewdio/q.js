@@ -57,6 +57,7 @@
 		<script src="Assets/Three/LineSegments2.js"></script>
 		<script src="Assets/Three/Line2.js"></script>
 		-->
+		<script src="Assets/Tween/tween.min.js"></script>
 		<script src="Assets/blochSphere.js"></script>
 	</head>
 	<body>
@@ -96,10 +97,10 @@
 			</ul>
 			<h3 id="Unit_circle">Unit circle</h3>
 			<p>
-				Plotting all the possible <em>real</em> values for 
-				<span class="symbol">a</span> and <span class="symbol">b</span> on a graph 
+				Given the constraints above, if we plot all of the possible <em>real</em> values for 
+				<span class="symbol">a</span>, <span class="symbol">b</span> on a graph 
 				as <span class="symbol">x</span> and <span class="symbol">y</span> respectively
-				yields a circle with a radius of 1 centered at the origin (0, 0); 
+				the outcome is a circle with a radius of 1 centered at the origin (0, 0); 
 				ie. a <a href="https://en.wikipedia.org/wiki/Unit_circle)" target="_blank">unit circle</a>.
 			</p>
 <pre><code>
@@ -121,23 +122,40 @@
 
 			<h3 id="Bloch_sphere">Bloch sphere</h3>
 			<p>
-				By incorporating <a href="ComplexNumber.html">complex numbers</a>
-				we add a third dimension, transforming our circle in to a
+				But a qubit isn’t just a pair of <em>real</em> numbers—it’s a pair of <a href="ComplexNumber.html">complex numbers</a> and plotting those values requires a third dimension.
+				This transforms our unit circle in to a
 				<a href="https://en.wikipedia.org/wiki/Bloch_sphere" target="_blank">Bloch sphere</a>.
+				<!--
+
+				THIS IS A TERRIBLE AND INACCURATE EXPLANATION!
+				MUST COME BACK AND RE-WRITE, FOCUS ON THE MATH!
+
 				If you’re familiar with complex numbers you may expect them to add <em>two</em> dimensions to our unit circle rather than one.
 				By taking the absolute value of <span class="symbol">a</span> or <span class="symbol">b</span>
 				we effectively cancel out this extra dimension.
-			</p>
-			<p>
-				Our unit circle or unit sphere can be used as a state 
+				-->
+
+				Our unit circle or Bloch Sphere could be used as a state 
 				machine for quantum compuation, though 
 				<a href="index.html">Q</a> currently focusses on 
 				matrices for calculation. 
 			</p>
-			<div class="interactive-container"><canvas id="bloch-sphere"></canvas></div>
+			<br>
 			<p>
 				Select qubit state: <select id="qubit-state-selector"></select><br>
-				(This visualization method is developing rapidly so expect updates to this Bloch Sphere explorer soon.)
+			</p>
+			<div class="interactive-container" id="bloch-sphere">
+				<div class="interactive-component" id="bloch-angles">
+					<span class="symbol">a</span> = <span id="bloch-control-bit">—</span><br>
+					<span class="symbol">b</span> = <span id="bloch-target-bit">—</span><br>
+					<br>
+					<span id="bloch-theta">—</span>˚ polar angle ϕ (theta)<br>
+					<span id="bloch-phi">—</span>˚ azimuth θ (phi)
+				</div>
+			</div>
+			<p>
+				Click and drag the Bloch Sphere to rotate it.
+				<em>This visualization method is developing rapidly so expect frequent updates to this Bloch Sphere explorer over the remainder of June and in to July 2019.</em>
 			</p>
 			<hr>
 			<h3 id="Constructor">Constructor</h3>
@@ -261,6 +279,38 @@ var a = new Q.Qubit( 0, 1 )
 					<dt id=".collapse"><a href="#.collapse">collapse</a></dt>
 					<dd>Description TK</dd>
 				</li>
+				<li>
+					<dt id=".toBlochSphere"><a href="#.toBlochSphere">toBlochSphere( qubit )</a></dt>
+					<dd>
+						Returns the following object for a given qubit’s probability state,
+						useful for rendering a <a href="#Bloch_sphere">Bloch Sphere</a> representation.
+<pre><code>
+{
+	theta, <span class="comment">//  Polar angle ϕ.</span>
+	phi,   <span class="comment">//  Azimuth θ.</span>
+
+	
+	<span class="comment">//  Bloch vector,
+	//  the surface point on a Bloch Sphere.</span>
+
+	vector: { x, y, z },
+
+	
+	<span class="comment">//  Bloch vector “corrected”
+	//  for Y-up coordinate systems.</span>
+
+	position: {
+
+		x: vector.y,
+		y: vector.z,
+		z: vector.x
+	}
+}
+</code></pre>					
+					</dd>
+				</li>
+
+
 				<!--
 
 					toBlochSphere
@@ -347,11 +397,12 @@ scene  = new THREE.Scene(),
 camera = new THREE.PerspectiveCamera( fov, aspect, near, far ),
 renderer = new THREE.WebGLRenderer({ 
 
-	canvas: container,
+	// canvas: container,
 	alpha: true,
 	antialias: true
 })
 
+container.appendChild( renderer.domElement )
 camera.position.z = 4
 renderer.setPixelRatio( window.devicePixelRatio )
 renderer.setSize( width, height )
@@ -367,7 +418,6 @@ scene.add( camera )
 
 
 const light = new THREE.PointLight( 0xFFFFFF, 0.5, 0 )
-// light.position.set( 2, -6, 0 )
 light.position.set( -2, 6, 0 )
 camera.add( light )
 scene.add( new THREE.AmbientLight( 0xFFFFFF, 0.8 ))
@@ -405,21 +455,21 @@ sphere.add( innards )
 
 const xAxis = new THREE.Mesh(
 
-	new THREE.BoxGeometry( 2.4, 0.01, 0.01 ),
+	new THREE.BoxGeometry( 2.8, 0.01, 0.01 ),
 	new THREE.MeshBasicMaterial({ color: 0xFF0000 })
 )
 sphere.add( xAxis )
 
 const yAxis = new THREE.Mesh(
 
-	new THREE.BoxGeometry( 0.01, 0.01, 2.4 ),
+	new THREE.BoxGeometry( 0.01, 0.01, 2.8 ),
 	new THREE.MeshBasicMaterial({ color: 0x0000CC })
 )
 sphere.add( yAxis )
 
 const zAxis = new THREE.Mesh(
 
-	new THREE.BoxGeometry( 0.01, 2.4, 0.01 ),
+	new THREE.BoxGeometry( 0.01, 2.8, 0.01 ),
 	new THREE.MeshBasicMaterial({ color: 0x00CC00 })
 )
 sphere.add( zAxis )
@@ -435,7 +485,7 @@ arrowHeadWidth  = 0.1
 sphere.add( new THREE.ArrowHelper( 
 
 	new THREE.Vector3( 0, 1.0, 0 ), 
-	new THREE.Vector3( 0, 1.2, 0 ), 
+	new THREE.Vector3( 0, 1.4, 0 ), 
 	arrowLength, 
 	0x00CC00, 
 	arrowHeadLength, 
@@ -444,7 +494,7 @@ sphere.add( new THREE.ArrowHelper(
 sphere.add( new THREE.ArrowHelper( 
 
 	new THREE.Vector3( 1.0, 0, 0 ), 
-	new THREE.Vector3( 1.2, 0, 0 ), 
+	new THREE.Vector3( 1.4, 0, 0 ), 
 	arrowLength, 
 	0xFF0000, 
 	arrowHeadLength, 
@@ -453,7 +503,7 @@ sphere.add( new THREE.ArrowHelper(
 sphere.add( new THREE.ArrowHelper( 
 
 	new THREE.Vector3( 0, 0, 1.0 ), 
-	new THREE.Vector3( 0, 0, 1.2 ),
+	new THREE.Vector3( 0, 0, 1.4 ),
 	arrowLength, 
 	0x0000CC, 
 	arrowHeadLength, 
@@ -466,39 +516,25 @@ sphere.add( new THREE.ArrowHelper(
 const blochPointer = new THREE.Mesh(
 
 	new THREE.CylinderBufferGeometry( 0, 0.5, 1, 5, 1 ),
-	new THREE.MeshPhongMaterial({ color: 0xFFCC00 })
+	new THREE.MeshPhongMaterial({ color: 0x666666 })
 )
-blochPointer.geometry.translate( 0, - 0.5, 0 )
+blochPointer.geometry.translate( 0, -0.5, 0 )
 blochPointer.geometry.rotateX( Math.PI / 2 )
-blochPointer.geometry.scale( 0.3, 0.3, 0.3 )
+blochPointer.geometry.scale( 0.2, 0.2, 0.2 )
 blochPointer.lookAt( new THREE.Vector3() )
 sphere.add( blochPointer )
 
-/*
+
+
+
+
 const blochVector = new THREE.Mesh(
 
-	new THREE.BoxGeometry( 0.01, 0.01, 1.2 ),
-	new THREE.MeshBasicMaterial({ color: 0xFFCC00 })
+	new THREE.BoxGeometry( 0.04, 0.04, 1 ),
+	new THREE.MeshBasicMaterial({ color: 0x000000 })
 )
-blochVector.geometry.translate( 0, 0, -0.6 )
+blochVector.geometry.translate( 0, 0, 0.5 )
 sphere.add( blochVector )
-*/
-
-// const blochVectorLine = new THREE.Line2( 
-	
-// 	new THREE.LineGeometry(),
-// 	new THREE.LineMaterial({ 
-
-// 		color: 0xFFCC00,
-// 		linewidth: 0.01
-// 	}) 
-// )
-// blochVectorLine.geometry.setPositions([ 
-	
-// 	0, 0, 0,  
-// 	0, 1, 0
-// ])
-// sphere.add( blochVectorLine )
 
 
 
@@ -508,28 +544,111 @@ sphere.add( blochVector )
 
 
 const controls = new THREE.OrbitControls( camera, renderer.domElement )
-// const controls = new THREE.OrbitControls( sphere, renderer.domElement )
-controls.zoomSpeed = 0.2
+controls.enableZoom = false
+controls.enablePan = false
 
 
 
+let blochState = Q.Qubit.toBlochSphere( Q.Qubit.HORIZONTAL )
+function changeBlochVector( state ){
 
-function updateBlochVector( state ){
+
 
 	if( state === undefined ) state = 'HORIZONTAL'
+	if( typeof state === 'string' ) state = Q.Qubit[ state ]
+	//else assume state is an instance of Qubit!
+
+	const blochStateNext = Q.Qubit.toBlochSphere( state )
+
+
+	//document.getElementById( 'qubit-state-matrix' ).innerText = state.toTsv()
+	document.getElementById( 'bloch-control-bit' ).innerText = state.controlBit.toString()
+	document.getElementById( 'bloch-target-bit' ).innerText = state.targetBit.toString()
 	
-	const 
-	bloch = Q.Qubit.toBlochSphere( Q.Qubit[ state ]),
-	blochCorrected = new THREE.Vector3(
 
-		bloch.corrected.x,
-		bloch.corrected.y,
-		bloch.corrected.z
+
+	window.tween = new TWEEN.Tween({
+
+			theta: blochState.theta,
+			phi: blochState.phi
+		
+		})//  Yes, this will be destructive to the blochState object.
+		.to({
+
+			theta: blochStateNext.theta,
+			phi: blochStateNext.phi
+		
+		}, 1000 )
+		.easing( TWEEN.Easing.Quadratic.InOut )
+		.onUpdate( updateBlochVector )
+		.start()
+}
+
+
+
+
+function updateBlochVector( blochStateNow ){
+
+
+	blochState.theta = blochStateNow.theta
+	blochState.phi = blochStateNow.phi
+
+
+
+
+	//  Move the big-ass surface pointer.
+
+	blochPointer.position.set(
+		
+		Math.sin( blochState.theta ) * Math.sin( blochState.phi ),
+		Math.cos( blochState.theta ),
+		Math.sin( blochState.theta ) * Math.cos( blochState.phi )
 	)
-
-
-	blochPointer.position.copy( blochCorrected )
 	blochPointer.lookAt( new THREE.Vector3() )
+
+
+	blochVector.lookAt( blochPointer.getWorldPosition() )
+
+
+	//  Update our angles labels.
+	
+	document.getElementById( 'bloch-theta' ).innerText = ( blochState.theta * Q.RADIANS_TO_DEGREES ).toFixed()
+	document.getElementById( 'bloch-phi' ).innerText = ( blochState.phi * Q.RADIANS_TO_DEGREES ).toFixed()
+
+
+	
+
+
+
+	/*
+	const
+	radius = 1,
+	arcR = radius * Math.sin( bloch.theta ),
+	arcH = radius * Math.cos( bloch.theta ),
+	thetaGeometry = createLatitudeArc( arcR, 64, Math.PI / 2, Math.PI * 2 )
+
+	thetaGeometry.rotateX( Math.PI / 2 )
+	thetaGeometry.rotateY( Math.PI / 2 )
+	thetaGeometry.translate( 0, arcH, 0 )
+	sphere.add( new THREE.Line( 
+
+		thetaGeometry,
+		new THREE.LineBasicMaterial({ color: 0x000000 })
+	))
+
+
+
+	const
+	arc = createLongitudeArc( radius, 64, Math.PI / -2, Math.PI )
+	phiGeometry = arc.clone()
+	
+	phiGeometry.rotateY( bloch.phi )
+	sphere.add( new THREE.Line( 
+
+		phiGeometry,
+		new THREE.LineBasicMaterial({ color: 0x000000 })
+	))
+	*/
 
 
 	// blochVector.lookAt( blochCorrected )
@@ -548,7 +667,15 @@ function updateBlochVector( state ){
 
 
 
-updateBlochVector()
+changeBlochVector()
+//updateBlochVector()
+
+
+
+
+
+
+
 
 const qubitStateSelector = document.getElementById( 'qubit-state-selector' )
 Object.keys( Q.Qubit.constants ).forEach( function( key ){
@@ -562,9 +689,7 @@ Object.keys( Q.Qubit.constants ).forEach( function( key ){
 
 qubitStateSelector.addEventListener( 'change', function( event ){
 
-	console.log( 'event!!!', event.target.value )
-
-	updateBlochVector( event.target.value )
+	changeBlochVector( event.target.value )
 })
 
 
@@ -578,18 +703,22 @@ const render = function(){
 
 	requestAnimationFrame( render )
 	controls.update()
-	sphere.rotation.y += 0.003;
+	sphere.rotation.y += 0.0009;
 	renderer.render( scene, camera )
+	TWEEN.update()
 }
 
-// window.addEventListener( 'resize', function () {
+window.addEventListener( 'resize', function () {
 
-// 	camera.aspect = window.innerWidth / window.innerHeight;
-// 	camera.updateProjectionMatrix();
+	const
+	width  = container.offsetWidth,
+	height = container.offsetHeight
+	
+	camera.aspect = width / height
+	camera.updateProjectionMatrix()
+	renderer.setSize( width, height )
 
-// 	renderer.setSize( window.innerWidth, window.innerHeight );
-
-// }, false );
+}, false )
 
 render()
 

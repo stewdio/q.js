@@ -419,7 +419,7 @@ td.highlighted{
 .hash-target {
 
 	padding: 2px 0;
-	animation-duration: 3s;
+	animation-duration: 1s;
 	animation-name: hash-target-blink;
 	animation-iteration-count: 2;
 }
@@ -453,17 +453,13 @@ td.highlighted{
 	background-color: #F6F6F6;
 	overflow: hidden;
 }
+.interactive-component {
 
-
-
-
-.canvas-OLD {
-
-	margin: 12px 0   12px -24px;
-	width:  calc( 100% + 24px );
-	height: 240px;
-	border-radius: 8px;
-	background-color: #F6F6F6;
+	position: absolute;
+	top:  24px;
+	left: 24px;
+	/*background-color: #FFF;*/
+	z-index: 999;
 }
 
 

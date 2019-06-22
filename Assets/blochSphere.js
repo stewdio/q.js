@@ -43,8 +43,8 @@ function createQuadSphere( options ){
 	if( typeof thetaLength !== 'number' ) thetaLength = Math.PI
 	if( typeof latitudeLinesTotal !== 'number' ) latitudeLinesTotal = 12
 	if( typeof longitudeLinesTotal !== 'number' ) longitudeLinesTotal = 8
-	if( typeof latitudeLineSegments !== 'number' ) latitudeLineSegments = 32
-	if( typeof longitudeLineSegments !== 'number' ) longitudeLineSegments = 32
+	if( typeof latitudeLineSegments !== 'number' ) latitudeLineSegments = 64
+	if( typeof longitudeLineSegments !== 'number' ) longitudeLineSegments = 64
 	if( typeof latitudeLinesAttributes === 'undefined' ) latitudeLinesAttributes = { color: 0xAAAAAA }
 	if( typeof longitudeLinesAttributes === 'undefined' ) longitudeLinesAttributes = { color: 0xAAAAAA}
 

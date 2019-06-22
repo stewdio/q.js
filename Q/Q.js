@@ -166,7 +166,9 @@ Q.createConstants(
 	//  a.multiply(a).isEqualTo( a.power( new Q.ComplexNumber( 2, 0 )))
 	//  That’s only true if Q.EPSILON >= Number.EPSILON * 6
 	
-	'EPSILON', Number.EPSILON * 6
+	'EPSILON', Number.EPSILON * 6,
+
+	'RADIANS_TO_DEGREES', 180 / Math.PI
 )
 
 
