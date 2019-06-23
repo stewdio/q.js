@@ -273,7 +273,7 @@ Object.assign( Q.Qubit, {
 			position
 		}
 	},
-	
+
 })
 
 
@@ -331,6 +331,10 @@ Object.assign( Q.Qubit.prototype, {
 	collapse: function(){
 
 		return Q.Qubit.collapse( this )
+	},
+	toBlochSphere: function(){
+
+		return Q.Qubit.toBlochSphere( this )//  Breaks methong chaining!
 	},
 	collapse$: function(){
 		

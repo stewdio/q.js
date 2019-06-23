@@ -149,6 +149,15 @@ Object.assign( Q, {
 	hyperbolicCosine: function( n ){
 
 		return ( Math.exp( n ) + Math.exp( -n )) / 2
+	},
+	toTitleCase( text ){
+
+		text = text.replace( /_/g, ' ' )
+		return text.toLowerCase().split( ' ' ).map( function( word ){
+		
+			return word.replace( word[ 0 ], word[ 0 ].toUpperCase() )
+		
+		}).join(' ')
 	}
 })
 

@@ -464,3 +464,38 @@ td.highlighted{
 
 
 
+.qubit-container {
+
+	display: inline-block;
+	/*width: 120px; */
+	/*margin: 8px;*/
+	text-align: center;
+}
+.qubit-container p {
+
+	font-size:   12px;
+	line-height: 18px;
+}
+.qubit {
+
+	display: inline-block;
+	margin: 4px;
+	border: 1px solid #DDD;
+	border-radius: 2px;
+	padding: 8px 16px;
+	text-align: center;
+	font-weight: bold;
+	font-style: italic;
+	cursor: pointer;
+	color: var( --internal-link-color );
+}
+.qubit-container.selected .qubit {
+
+	background-color: #EEE;
+	color: #000;
+}
+
+
+
+
+

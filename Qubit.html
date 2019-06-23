@@ -141,8 +141,8 @@
 				matrices for calculation. 
 			</p>
 			<br>
-			<p>
-				Select qubit state: <select id="qubit-state-selector"></select><br>
+			<p id="bloch-sphere-qubits">
+				<!-- Select qubit state: <select id="qubit-state-selector"></select><br>-->
 			</p>
 			<div class="interactive-container" id="bloch-sphere">
 				<div class="interactive-component" id="bloch-angles">
@@ -301,9 +301,9 @@ var a = new Q.Qubit( 0, 1 )
 
 	position: {
 
-		x: vector.y,
-		y: vector.z,
-		z: vector.x
+		x: vector.<strong>y</strong>,<span class="comment">//  Note this Y here.</span>
+		y: vector.<strong>z</strong>,<span class="comment">//  Note this Z here.</span>
+		z: vector.<strong>x</strong> <span class="comment">//  Note this X here.</span>
 	}
 }
 </code></pre>					
@@ -373,7 +373,12 @@ var a = new Q.Qubit( 0, 1 )
 
 //  First, what do the docs have to say?
 
-console.log( '\n\nQ.Qubit\n', Q.Qubit.help(), '\n\n' )
+//console.log( '\n\nQ.Qubit\n', Q.Qubit.help(), '\n\n' )
+
+
+
+
+
 
 
 
@@ -567,6 +572,15 @@ function changeBlochVector( state ){
 	
 
 
+	const blochSphereQubits = document.getElementById( 'bloch-sphere-qubits' )
+	Array.from( blochSphereQubits.children ).forEach( function( child ){
+
+		if( child.getAttribute( 'data-qubit' ) === state.name ) child.classList.add( 'selected' )
+		else child.classList.remove( 'selected' )
+	})
+
+
+
 	window.tween = new TWEEN.Tween({
 
 			theta: blochState.theta,
@@ -607,7 +621,7 @@ function updateBlochVector( blochStateNow ){
 	blochPointer.lookAt( new THREE.Vector3() )
 
 
-	blochVector.lookAt( blochPointer.getWorldPosition() )
+	blochVector.lookAt( blochPointer.getWorldPosition( new THREE.Vector3() ))
 
 
 	//  Update our angles labels.
@@ -667,30 +681,8 @@ function updateBlochVector( blochStateNow ){
 
 
 
-changeBlochVector()
-//updateBlochVector()
 
 
-
-
-
-
-
-
-const qubitStateSelector = document.getElementById( 'qubit-state-selector' )
-Object.keys( Q.Qubit.constants ).forEach( function( key ){
-
-	const option = document.createElement( 'option' )
-	option.setAttribute( 'value', key )
-	option.innerText = key
-	qubitStateSelector.appendChild( option )
-})
-
-
-qubitStateSelector.addEventListener( 'change', function( event ){
-
-	changeBlochVector( event.target.value )
-})
 
 
 
@@ -721,6 +713,54 @@ window.addEventListener( 'resize', function () {
 }, false )
 
 render()
+
+
+
+
+
+
+
+
+
+
+const blochSphereQubits = document.getElementById( 'bloch-sphere-qubits' )
+
+Object.keys( Q.Qubit.constants ).forEach( function( key ){
+
+	
+
+	const 
+	qubit = Q.Qubit[ key ],
+	qubitContainerElement = document.createElement( 'div' )
+	qubitElement = document.createElement( 'div' )
+	qubitNameElement = document.createElement( 'p' )
+	
+	qubitContainerElement.classList.add( 'qubit-container' )
+	qubitContainerElement.setAttribute( 'data-qubit',  qubit.name )
+
+
+	qubitElement.classList.add( 'qubit' )
+	qubitElement.setAttribute( 'title', Q.toTitleCase( qubit.name ))
+	qubitElement.innerText = qubit.dirac
+	qubitElement.addEventListener( 'click', function(){
+
+		changeBlochVector( qubit )
+	})
+	qubitContainerElement.appendChild( qubitElement )
+
+	// qubitNameElement.innerText = Q.toTitleCase( qubit.name )
+	// qubitContainerElement.appendChild( qubitNameElement )
+	
+	blochSphereQubits.appendChild( qubitContainerElement )
+})
+
+
+
+
+
+
+changeBlochVector()
+
 
 
 
