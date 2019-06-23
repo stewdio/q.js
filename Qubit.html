@@ -243,18 +243,34 @@ var a = new Q.Qubit( 0, 1 )
 			</ul>
 			<hr>
 			<h3 id="Static_properties">Static properties</h3>
+			<p>
+				Because <code>Q.Qubit</code> extends <code>Q.<a href="Matrix.html">Matrix</a></code>,
+				the following append or replace the latter’s existing static properties.
+			</p>
 			<ul class="properties">
 				<li>
 					<dt id=".index"><a href="#.index">index</a></dt>
-					<dd>Description TK</dd>
+					<dd>
+						<code>Number</code>.
+						Initialized to zero, this number is then incremented each time an instance is created
+						in order to promote mindfulness of the total number instances in the system.
+						At the time of instance creation the instance is assigned a copy of this value
+						to its own <code><a href="#.this.index">index</a></code> property.
+					</dd>
 				</li>
 				<li>
 					<dt id=".help"><a href="#.help">help</a></dt>
-					<dd>Description TK</dd>
+					<dd>
+						<code>Function</code>.
+						Calls and returns the result of <code>Q.<a href="index.html#.help">help</a>( this )</code>
+						to provide helpful context in the form of a <code>String</code>.
+						Expects no arguments.
+					</dd>
 				</li>
 				<li>
 					<dt id=".constants"><a href="#.constants">constants</a></dt>
 					<dd>
+						<code>Object</code>.
 						While <code>Q.Qubit</code> <a href="#Constants">constants</a>
 						are appended directly to the <code>Q.Qubit</code> object,
 						they are also appended to a <code>Q.Qubit.constants</code> object
@@ -269,19 +285,47 @@ var a = new Q.Qubit( 0, 1 )
 				</li>
 				<li>
 					<dt id=".createConstant"><a href="#.createConstant">createConstant</a></dt>
-					<dd>Description TK</dd>
+					<dd>
+						<code>Function</code>.
+						Expects <code>( key, value )</code> as arguments.
+						Assigns a reference to <code>value</code> to <code>Q.Qubit[ key ]</code>
+						as well as <code>Q.Qubit.<a href="#.constants">constants</a>[ key ]</code>.
+						The former is for coding convenience (short form) while the latter
+						makes iterating across all constants convenient via
+						functions like 
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
+						and so on.
+					</dd>
 				</li>
 				<li>
 					<dt id=".createConstants"><a href="#.createConstants">createConstants</a></dt>
-					<dd>Description TK</dd>
+					<dd>
+						<code>Function</code>.
+						Expects an even number of arguments in the form of
+						<code>( key, value, key, value, key, value … )</code>
+						and with each <code>key</code> / <code>value</code> pair calls 
+						<code><a href="#.createConstant">createConstant</a></code>.
+					</dd>
 				</li>
 				<li>
 					<dt id=".collapse"><a href="#.collapse">collapse</a></dt>
-					<dd>Description TK</dd>
+					<dd>
+						<code>Function</code>.
+						Expects a single <code>Q.Qubit</code> instance as argument.
+						Returns a new <code>Q.Qubit</code> randomly chosen to be either
+						<code>new Qubit( 1, 0 )</code> (<code><a href="#.HORIZONTAL">HORIZONTAL</a></code>)
+						 or
+						 <code>new Qubit( 0, 1 )</code> (<code><a href="#.VERTICAL">VERTICAL</a></code>)
+						 based on the probability of the supplied qubit argument.
+					</dd>
 				</li>
 				<li>
-					<dt id=".toBlochSphere"><a href="#.toBlochSphere">toBlochSphere( qubit )</a></dt>
+					<dt id=".toBlochSphere"><a href="#.toBlochSphere">toBlochSphere</a></dt>
 					<dd>
+						<code>Function</code>.
+						Expects a single <code>Q.Qubit</code> instance as argument.
 						Returns the following object for a given qubit’s probability state,
 						useful for rendering a <a href="#Bloch_sphere">Bloch Sphere</a> representation.
 <pre><code>
@@ -322,6 +366,10 @@ var a = new Q.Qubit( 0, 1 )
 			</ul>
 			<hr>
 			<h3 id="Prototype_properties">Prototype properties</h3>
+			<p>
+				Because <code>Q.Qubit</code> extends <code>Q.<a href="Matrix.html">Matrix</a></code>,
+				the following append or replace the latter’s existing prototype properties.
+			</p>
 			<h4>Non-destructive methods</h4>
 			<ul class="properties">
 				<li>
@@ -331,6 +379,10 @@ var a = new Q.Qubit( 0, 1 )
 				<li>
 					<dt id=".prototype.collapse"><a href="#.prototype.collapse">collapse</a></dt>
 					<dd>Description TK</dd>
+				</li>
+				<li>
+					<dt id=".prototype.toBlochSphere"><a href="#.prototype.toBlochSphere">toBlochSphere</a></dt>
+					<dd>Calls and returns the result of static method <code>Q.Qubit.<a href="#.toBlochSphere">toBlochSphere</a>( this )</code>.</dd>
 				</li>
 			</ul>
 			<h4>Destructive methods</h4>
