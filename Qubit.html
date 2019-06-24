@@ -374,15 +374,27 @@ var a = new Q.Qubit( 0, 1 )
 			<ul class="properties">
 				<li>
 					<dt id=".prototype.isEqualTo"><a href="#.prototype.isEqualTo">isEqualTo</a></dt>
-					<dd>Description TK</dd>
+					<dd>
+						TK: Create create static <code>areEqualTo</code> function that calls <code>ComplexNumber</code>’s
+						<code>areEqualTo</code> function. 
+						Then call our new static method from here.
+					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.collapse"><a href="#.prototype.collapse">collapse</a></dt>
-					<dd>Description TK</dd>
+					<dd>
+						<code>Function</code>.
+						Calls and returns the result of static method 
+						<code>Q.Qubit.<a href="#.collapse">collapse</a>( this )</code>.
+					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.toBlochSphere"><a href="#.prototype.toBlochSphere">toBlochSphere</a></dt>
-					<dd>Calls and returns the result of static method <code>Q.Qubit.<a href="#.toBlochSphere">toBlochSphere</a>( this )</code>.</dd>
+					<dd>
+						<code>Function</code>.
+						Calls and returns the result of static method 
+						<code>Q.Qubit.<a href="#.toBlochSphere">toBlochSphere</a>( this )</code>.
+					</dd>
 				</li>
 			</ul>
 			<h4>Destructive methods</h4>
@@ -397,8 +409,10 @@ var a = new Q.Qubit( 0, 1 )
 				</li>
 			</ul>
 			<hr>
-			Source:
-			<a href="https://github.com/stewdio/q.js/blob/master/Q/Qubit.js?ts=4" target="_blank">https://github.com/stewdio/q.js/blob/master/Q/Qubit.js</a>
+			<p>
+				Source:
+				<a href="https://github.com/stewdio/q.js/blob/master/Q/Qubit.js?ts=4" target="_blank">https://github.com/stewdio/q.js/blob/master/Q/Qubit.js</a>
+			</p>
 		</main>
 		<script>
 
