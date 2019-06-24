@@ -188,7 +188,7 @@ Object.assign( Q.Qubit, {
 			qubit0.controlBit.isEqualTo( qubit0.controlBit ) &&
 			qubit1.targetBit.isEqualTo( qubit1.targetBit )
 		)
-	}
+	},
 	collapse: function( qubit ){
 
 		const 
