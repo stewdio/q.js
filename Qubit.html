@@ -162,7 +162,15 @@
 			<p>
 				<code>Q.Qubit</code>
 				extends the <code>Q.<a href="Matrix.html">Matrix</a></code> class
-				and therefore inherits its class and instance methods.
+				and therefore inherits its static and prototypal properties.
+				The constructor expects two arguments that are each either
+				instances of <code>Number</code> or <code>Q.<a href="ComplexNumber.html">ComplexNumber</a></code>.
+				An optional third argument, expected in the form of a single character <code>String</code>, may be used as a text label for the qubit.
+				If no text label is provided the constructor checks against the list of existing 
+				<code><a href="#.constants">constants</a></code>
+				and if a match is found then that label is applied to this instance.
+			</p>
+			<p>
 				When a new qubit is created it internally invokes the
 				<code>Q.<a href="Matrix.html">Matrix</a></code> constructor,
 				such that <code>new Q.Qubit( <span class="symbol">a</span>, <span class="symbol">b</span> )</code>
@@ -218,27 +226,27 @@ var a = new Q.Qubit( 0, 1 )
 			<ul class="properties">
 				<li>
 					<dt id=".HORIZONTAL"><a href="#.HORIZONTAL">HORIZONTAL</a></dt>
-					<dd><code>= new Q.Qubit( 1, 0, 'H' )</code></dd>
+					<dd><code>new Q.Qubit( 1, 0, 'H' )</code></dd>
 				</li>
 				<li>
 					<dt id=".VERTICAL"><a href="#.VERTICAL">VERTICAL</a></dt>
-					<dd><code>= new Q.Qubit( 0, 1, 'V' )</code></dd>
+					<dd><code>new Q.Qubit( 0, 1, 'V' )</code></dd>
 				</li>
 				<li>
 					<dt id=".DIAGONAL"><a href="#.DIAGONAL">DIAGONAL</a></dt>
-					<dd><code>= new Q.Qubit( 1÷√2,  1÷√2, 'D' )</code></dd>
+					<dd><code>new Q.Qubit( 1÷√2,  1÷√2, 'D' )</code></dd>
 				</li>
 				<li>
 					<dt id=".ANTI_DIAGONAL"><a href="#.ANTI_DIAGONAL">ANTI_DIAGONAL</a></dt>
-					<dd><code>= new Q.Qubit( 1÷√2, -1÷√2, 'A' )</code></dd>
+					<dd><code>new Q.Qubit( 1÷√2, -1÷√2, 'A' )</code></dd>
 				</li>
 				<li>
 					<dt id=".RIGHT_HAND_CIRCULAR_POLARIZED"><a href="#.RIGHT_HAND_CIRCULAR_POLARIZED">RIGHT_HAND_CIRCULAR_POLARIZED</a></dt>
-					<dd><code>= new Q.Qubit( 1÷√2, -1÷√2i, 'R' )</code></dd>
+					<dd><code>new Q.Qubit( 1÷√2, -1÷√2i, 'R' )</code></dd>
 				</li>
 				<li>
 					<dt id=".LEFT_HAND_CIRCULAR_POLARIZED"><a href="#.LEFT_HAND_CIRCULAR_POLARIZED">LEFT_HAND_CIRCULAR_POLARIZED</a></dt>
-					<dd><code>= new Q.Qubit( 1÷√2,  1÷√2i, 'L' )</code></dd>
+					<dd><code>new Q.Qubit( 1÷√2,  1÷√2i, 'L' )</code></dd>
 				</li>
 			</ul>
 			<hr>
