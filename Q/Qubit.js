@@ -150,8 +150,8 @@ Q.Qubit = function( a, b, dirac ){
 
 			return (
 
-				a === qubit.controlBit && 
-				b === qubit.targetBit
+				a.isEqualTo( qubit.controlBit ) && 
+				b.isEqualTo( qubit.targetBit )
 			)
 		})
 		if( found === undefined ) this.dirac = '?'

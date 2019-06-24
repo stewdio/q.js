@@ -269,31 +269,6 @@ code .comment {
 
 
 
-ul.properties li {
-
-	list-style: none;
-	margin-top: 10px;
-}
-ul.properties pre {
-
-	margin-left: 0;
-}
-dt {
-
-	display: inline;
-	margin-left: -20px;
-	margin-right:  5px;
-	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
-	font-weight: 700;
-}
-dd {
-
-	display: inline;
-}
-
-
-
-
     /******************/
    /*                */
   /*   Navigation   */
@@ -463,8 +438,41 @@ td.highlighted{
 @keyframes hash-target-blink {
 
 	  0% { background-color: transparent; }
-	 50% { background-color: var( --highlight-color ); }
+	 50% { background-color: var( --highlight-background-color ); }
 	100% { background-color: transparent; }
+}
+
+
+
+
+main li + li {
+
+	margin-top: 10px;
+}
+
+
+
+
+ul.properties li {
+
+	list-style: none;
+	margin-top: 10px;
+}
+ul.properties pre {
+
+	margin-left: 0;
+}
+dt {
+
+	display: inline;
+	margin-left: -20px;
+	margin-right:  3px;
+	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
+	font-weight: 700;
+}
+dd {
+
+	display: inline;
 }
 
 
