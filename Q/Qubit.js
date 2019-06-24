@@ -181,6 +181,14 @@ Object.assign( Q.Qubit, {
 		Object.freeze( Q.Qubit[ key ])
 	},
 	createConstants: Q.createConstants,
+	areEqual: function( qubit0, qubit1 ){
+
+		return ( 
+
+			qubit0.controlBit.isEqualTo( qubit0.controlBit ) &&
+			qubit1.targetBit.isEqualTo( qubit1.targetBit )
+		)
+	}
 	collapse: function( qubit ){
 
 		const 
@@ -321,12 +329,7 @@ Object.assign( Q.Qubit.prototype, {
 	},
 	isEqualTo: function( otherQubit ){
 
-		return ( 
-
-			otherQubit instanceof Q.Qubit &&
-			this.controlBit === otherQubit.controlBit &&
-			this.targetBit  === otherQubit.targetBit 
-		)
+		return Q.Qubit.areEqual( this, otherQubit )//  This Boolean breaks method chaining!
 	},
 	collapse: function(){
 
@@ -334,7 +337,7 @@ Object.assign( Q.Qubit.prototype, {
 	},
 	toBlochSphere: function(){
 
-		return Q.Qubit.toBlochSphere( this )//  Breaks methong chaining!
+		return Q.Qubit.toBlochSphere( this )//  This object breaks method chaining!
 	},
 	collapse$: function(){
 		

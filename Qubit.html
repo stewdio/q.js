@@ -322,6 +322,18 @@ var a = new Q.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
+					<dt id=".areEqual"><a href="#.areEqual">areEqual</a></dt>
+					<dd>
+						<code>Function</code>.
+						Expects two instances of <code>Q.Qubit</code> as arguments.
+						If the <code><a href="#.controlBit">controlBit</a></code> of each are within 
+						<code>Q.<a href="index.html#.EPSILON">EPSILON</a></code>
+						and the <code><a href="#.targetBit">targetBit</code></a> of each are within 
+						<code>Q.<a href="index.html#.EPSILON">EPSILON</a></code>
+						then returns <code>true</code>, otherwise <code>false</code>.
+					</dd>
+				</li>
+				<li>
 					<dt id=".toBlochSphere"><a href="#.toBlochSphere">toBlochSphere</a></dt>
 					<dd>
 						<code>Function</code>.
@@ -375,9 +387,10 @@ var a = new Q.Qubit( 0, 1 )
 				<li>
 					<dt id=".prototype.isEqualTo"><a href="#.prototype.isEqualTo">isEqualTo</a></dt>
 					<dd>
-						TK: Create create static <code>areEqualTo</code> function that calls <code>ComplexNumber</code>’s
-						<code>areEqualTo</code> function. 
-						Then call our new static method from here.
+						<code>Function</code>.
+						Calls and returns the result of static method 
+						<code>Q.Qubit.<a href="#.areEqual">areEqual</a>( this, otherQubit )</code>.
+						The returned <code>Boolean</code> breaks method chaining.
 					</dd>
 				</li>
 				<li>
@@ -394,6 +407,7 @@ var a = new Q.Qubit( 0, 1 )
 						<code>Function</code>.
 						Calls and returns the result of static method 
 						<code>Q.Qubit.<a href="#.toBlochSphere">toBlochSphere</a>( this )</code>.
+						The returned <code>Object</code> breaks method chaining.
 					</dd>
 				</li>
 			</ul>
@@ -401,11 +415,23 @@ var a = new Q.Qubit( 0, 1 )
 			<ul class="properties">
 				<li>
 					<dt id=".prototype.copy$"><a href="#.prototype.copy$">copy$</a></dt>
-					<dd>Description TK</dd>
+					<dd>
+						<code>Function</code>.
+						Expects a single <code>Q.Qubit</code> instance as argument.
+						Overwrites the internal <code>controlBit</code>
+						and <code>targetBit</code> values
+						with those of the supplied <code>Q.Qubit</code> instance argument.
+					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.collapse$"><a href="#.prototype.collapse$">collapse$</a></dt>
-					<dd>Description TK</dd>
+					<dd>
+						<code>Function</code>.
+						Expects no arguments.
+						Calls the non-destructive <code><a href="#.prototype.collapse">collapse</a></code> method,
+						then uses <code><a href="#.prototype.copy$">copy$</a></code> to overwrite
+						this qubit’s values.
+					</dd>
 				</li>
 			</ul>
 			<hr>

@@ -72,12 +72,12 @@
 }
 ::-moz-selection {
 
-	background: background: var( --highlight-background-color );
+	background: var( --highlight-background-color );
 	color: var( --highlight-color );
 }
 ::selection {
 
-	background: background: var( --highlight-background-color );
+	background: var( --highlight-background-color );
 	color: var( --highlight-color );
 }
 html, body {
