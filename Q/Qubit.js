@@ -223,8 +223,8 @@ Object.assign( Q.Qubit, {
 
 		`
 		Based on this qubit’s state return the
-		polar angle ϕ (theta),
-		azimuth θ (phi),
+		Polar angle θ (theta),
+		azimuth angle ϕ (phi),
 		Bloch vector,
 		corrected surface coordinate.
 
@@ -232,14 +232,14 @@ Object.assign( Q.Qubit, {
 		`
 
 
-		//  Polar angle ϕ (theta).
+		//  Polar angle θ (theta).
 
 		const theta = Q.ComplexNumber.arcCosine( qubit.controlBit ).multiply( 2 )
 		if( isNaN( theta.real )) theta.real = 0
 		if( isNaN( theta.imaginary )) theta.imaginary = 0
 
 		
-		//  Azimuth θ (phi).
+		//  Azimuth angle ϕ (phi).
 		
 		const phi = Q.ComplexNumber.log( 
 
