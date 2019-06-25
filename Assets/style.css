@@ -456,7 +456,8 @@ main li + li {
 ul.properties li {
 
 	list-style: none;
-	margin-top: 10px;
+	/*margin-top: 10px;*/
+	margin-top: 20px;
 }
 ul.properties pre {
 
@@ -465,7 +466,7 @@ ul.properties pre {
 dt {
 
 	display: inline;
-	margin-left: -20px;
+	/*margin-left: -20px;*/
 	margin-right:  3px;
 	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
 	font-weight: 700;
