@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Q ⟩</title>
+		<title>Q ⟩ JS</title>
 		<meta charset="utf-8">
 		<meta name="description"          content="Q.js is quantum computing in your browser.">
 		<meta name="copyright"            content="Stewart Smith 2019">
@@ -9,42 +9,42 @@
 
 			quantum, quantum physics, quantum mechanics, superposition,
 			quantum computer, quantum computing, qubit, qbit, gate, Hadamard,
-
-			Google, Microsoft, IBM, DWave, D-Wave, NASA,
+			Google, IBM, Microsoft, NASA, 
+			DWave, D-Wave,
 			Quil, OpenQASM,
-			ProjectQ, Qiskit, 
-			Quantum Development Kit, Cirq, Strawberry Fields, t|ket>,
-			QCL, Quantum pseudocode, Q#, Q|SI>, Q language, qGCL, QFC, QML, LIQUi|>, Quipper,
-
+				ProjectQ, Qiskit, 
+				Quantum Development Kit, Cirq, Strawberry Fields, t|ket>,
+				QCL, Quantum pseudocode, Q#, Q|SI>, Q language, qGCL, QFC, QML, LIQUi|>, Quipper,
 			Web, Web site, website, Web browser, browser, HTML, HTML5, JavaScript, ES6, CSS,
-
 			Stewart Smith, Stewart, Stew, Stuart, Steven, Steve, Stewdio, stew_rtsmith, @stew_rtsmith,
 			Moar, Moar Technologies Corp, MTC,">
 
 		<meta name="twitter:card"         content="summary">
 		<meta name="twitter:site"         content="@stew_rtsmith">
 		<meta name="twitter:creator"      content="@stew_rtsmith">
+		<meta name="twitter:title"        content="Q ⟩ JS">
 		<meta name="twitter:description"  content="Quantum computing in your browser.">
-		<meta name="twitter:title"        content="Q.js">
 		<meta name="twitter:image"        content="https://stewdio.github.io/q.js/Assets/q-thumbnail.png">
-		<meta name="twitter:url"          content="https://stewdio.github.io/q.js/">
 		
 		<meta property="og:type"          content="website">
+		<meta property="og:title"         content="Q ⟩ JS">
 		<meta property="og:description"   content="Quantum computing in your browser.">
-		<meta property="og:title"         content="Q.js">
 		<meta property="og:image"         content="https://stewdio.github.io/q.js/Assets/q-thumbnail.png">
-		<meta property="og:url"           content="http://stewartsmith.io">
+		<meta property="og:url"           content="https://stewdio.github.io/q.js/">
 		
 		<link rel="canonical"             href="https://stewdio.github.io/q.js/">
 		<link rel="icon" type="image/png" href="Assets/q-favicon-064.png">
 		<link rel="apple-touch-icon"      href="Assets/q-favicon-144.png">
 		<link rel="stylesheet" type="text/css" href="Assets/style.css">
 		
+		<script async src="https://www.googletagmanager.com/gtag/js"></script>
+		<script src="Assets/ga.js"></script>
 		<script src="Q/Q.js"></script>
 		<script src="Q/ComplexNumber.js"></script>
 		<script src="Q/Matrix.js"></script>
 		<script src="Q/Qubit.js"></script>
 		<script src="Q/Gate.js"></script>
+		<script src="Q/Board.js"></script>
 		<script src="Q/Circuit.js"></script>
 		<script src="Assets/navigation.js"></script>
 	</head>
@@ -300,7 +300,7 @@ dog.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">
 cat.<a href="ComplexNumber.html#.add"><strong>add</strong></a>( dog ) <span class="comment">//  Non-destructive.</span>
 cat.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">//  Still returns '1 + 2i'</span>
 
-cat.<a href="ComplexNumber.html#.add$"><strong>add$</strong></a>( dog )<span class="comment">//  Destructive.</span>
+cat.<a href="ComplexNumber.html#.add$"><strong>add$</strong></a>( dog )<span class="comment">//  Destructive. Note the ‘$’ suffix.</span>
 cat.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">//  Now returns '4 - 2i'</span>
 
 		</pre></code>
@@ -323,7 +323,7 @@ cat.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">
 				(Stay tuned.)
 				Full functionality and a <a href="https://en.wikipedia.org/wiki/Graphical_user_interface" target="_blank">graphic user interface</a>—as an alternative to the console’s 
 				<a href="https://en.wikipedia.org/wiki/Command-line_interface" target="_blank">commaind-line interface</a>—are coming.
-				Developing and mainting a consistent tone-of-voice across documentation, code, and code comments is a never-ending marathon, but it’s worth it.
+				Developing and maintaining a consistent tone-of-voice across documentation, code, and code comments is a never-ending marathon, but it’s worth it.
 			</p>
 			<p>
 				Want to get involved? 
@@ -339,9 +339,8 @@ cat.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">
 			<p>
 				The root of Q.js is the <code>Q</code> object.
 				In addition to providing a single object to attach all other building blocks to
-				(and avoid polluting the global namespace)
-				<code>Q</code> provides some convenience functions.
-				(And we’ll detail all of that <em>later</em> when we make another pass on revising these docs!)
+				(and avoiding pollution of the global namespace)
+				the <code>Q</code> object provides some convenience functions.
 			</p>
 			<hr>
 			<h3 id="Constants">Constants</h3>
@@ -465,11 +464,13 @@ a.<a href="ComplexNumber.html#.prototype.multiply">multiply</a>( a )
 					</dd>
 				</li>
 				<li>
-					<dt id=".toTitleCase"><a href="#.toTitleCase">toTitleCase( text )</a></dt>
+					<dt id=".toTitleCase"><a href="#.toTitleCase">toTitleCase</a></dt>
 					<dd>
-						Replaces underscores with spaces, breaks apart string in to words, 
+						<code>Function</code>.
+						Expects one <code>String</code> argument.
+						Replaces underscores with spaces, breaks apart text in to words, 
 						capitalizes the first letter of each word,
-						the returns a new string with these changes.
+						then returns a new <code>String</code> with these changes.
 					</dd>
 				</li>
 			</ul>

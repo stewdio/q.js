@@ -9,42 +9,42 @@
 
 			quantum, quantum physics, quantum mechanics, superposition,
 			quantum computer, quantum computing, qubit, qbit, gate, Hadamard,
-
-			Google, Microsoft, IBM, DWave, D-Wave, NASA,
+			Google, IBM, Microsoft, NASA, 
+			DWave, D-Wave,
 			Quil, OpenQASM,
-			ProjectQ, Qiskit, 
-			Quantum Development Kit, Cirq, Strawberry Fields, t|ket>,
-			QCL, Quantum pseudocode, Q#, Q|SI>, Q language, qGCL, QFC, QML, LIQUi|>, Quipper,
-
+				ProjectQ, Qiskit, 
+				Quantum Development Kit, Cirq, Strawberry Fields, t|ket>,
+				QCL, Quantum pseudocode, Q#, Q|SI>, Q language, qGCL, QFC, QML, LIQUi|>, Quipper,
 			Web, Web site, website, Web browser, browser, HTML, HTML5, JavaScript, ES6, CSS,
-
 			Stewart Smith, Stewart, Stew, Stuart, Steven, Steve, Stewdio, stew_rtsmith, @stew_rtsmith,
 			Moar, Moar Technologies Corp, MTC,">
 
 		<meta name="twitter:card"         content="summary">
 		<meta name="twitter:site"         content="@stew_rtsmith">
 		<meta name="twitter:creator"      content="@stew_rtsmith">
-		<meta name="twitter:description"  content="Quantum computing in your browser.">
 		<meta name="twitter:title"        content="Q ⟩ Matrix">
+		<meta name="twitter:description"  content="Quantum computing in your browser.">
 		<meta name="twitter:image"        content="https://stewdio.github.io/q.js/Assets/q-thumbnail.png">
-		<meta name="twitter:url"          content="https://stewdio.github.io/q.js/">
 		
 		<meta property="og:type"          content="website">
-		<meta property="og:description"   content="Quantum computing in your browser.">
 		<meta property="og:title"         content="Q ⟩ Matrix">
+		<meta property="og:description"   content="Quantum computing in your browser.">
 		<meta property="og:image"         content="https://stewdio.github.io/q.js/Assets/q-thumbnail.png">
-		<meta property="og:url"           content="http://stewartsmith.io">
+		<meta property="og:url"           content="https://stewdio.github.io/q.js/Matrix.html">
 		
 		<link rel="canonical"             href="https://stewdio.github.io/q.js/Matrix.html">
 		<link rel="icon" type="image/png" href="Assets/q-favicon-064.png">
 		<link rel="apple-touch-icon"      href="Assets/q-favicon-144.png">
 		<link rel="stylesheet" type="text/css" href="Assets/style.css">
 		
+		<script async src="https://www.googletagmanager.com/gtag/js"></script>
+		<script src="Assets/ga.js"></script>
 		<script src="Q/Q.js"></script>
 		<script src="Q/ComplexNumber.js"></script>
 		<script src="Q/Matrix.js"></script>
 		<script src="Q/Qubit.js"></script>
 		<script src="Q/Gate.js"></script>
+		<script src="Q/Board.js"></script>
 		<script src="Q/Circuit.js"></script>
 		<script src="Assets/navigation.js"></script>
 	</head>
@@ -151,6 +151,7 @@ var a = new Q.Matrix(
 				With that in mind, <code>Q.Matrix</code> comes with helper methods for
 				importing and exporting the following common formats:
 			</p>
+			<br>
 			<ul>
 				<li><a href="#.fromCsv">Comma separated values (CSV)</a></li>
 				<li><a href="#.fromTsv">Tab separated values (TSV)</a></li>
@@ -174,23 +175,23 @@ var a = new Q.Matrix(
 			<ul class="properties">
 				<li>
 					<dt id=".IDENTITY_2X2"><a href="#.IDENTITY_2X2">IDENTITY_2X2</a></dt>
-					<dd><code>= Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 2 )</code></dd>
+					<dd><code>Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 2 )</code></dd>
 				</li>
 				<li>
 					<dt id=".IDENTITY_3X3"><a href="#.IDENTITY_3X3">IDENTITY_3X3</a></dt>
-					<dd><code>= Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 3 )</code></dd>
+					<dd><code>Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 3 )</code></dd>
 				</li>
 				<li>
 					<dt id=".IDENTITY_4X4"><a href="#.IDENTITY_4X4">IDENTITY_4X4</a></dt>
-					<dd><code>= Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 4 )</code></dd>
+					<dd><code>Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 4 )</code></dd>
 				</li>
 				<li>
 					<dt id=".CONSTANT0_2X2"><a href="#.CONSTANT0_2X2">CONSTANT0_2X2</a></dt>
 					<dd>
 <pre><code>
-= new Q.Matrix(
-[ 1, 1 ],
-[ 0, 0 ])
+new Q.Matrix(
+	[ 1, 1 ],
+	[ 0, 0 ])
 </code></pre>
 					</dd>
 				</li>
@@ -198,9 +199,9 @@ var a = new Q.Matrix(
 					<dt id=".CONSTANT1_2X2"><a href="#.CONSTANT1_2X2">CONSTANT1_2X2</a></dt>
 					<dd>
 <pre><code>
-= new Q.Matrix(
-[ 0, 0 ],
-[ 1, 1 ])
+new Q.Matrix(
+	[ 0, 0 ],
+	[ 1, 1 ])
 </code></pre>
 					</dd>
 				</li>
@@ -208,9 +209,9 @@ var a = new Q.Matrix(
 					<dt id=".NEGATION_2X2"><a href="#.NEGATION_2X2">NEGATION_2X2</a></dt>
 					<dd>
 <pre><code>
-= new Q.Matrix(
-[ 0, 1 ],
-[ 1, 0 ])
+new Q.Matrix(
+	[ 0, 1 ],
+	[ 1, 0 ])
 </code></pre>
 					</dd>
 				</li>
@@ -218,16 +219,16 @@ var a = new Q.Matrix(
 					<dt id=".TEST_MAP_9X9"><a href="#.TEST_MAP_9X9">TEST_MAP_9X9</a></dt>
 					<dd>
 <pre><code>
-= new Q.Matrix(
-[ 11, 21, 31, 41, 51, 61, 71, 81, 91 ],
-[ 12, 22, 32, 42, 52, 62, 72, 82, 92 ],
-[ 13, 23, 33, 43, 53, 63, 73, 83, 93 ],
-[ 14, 24, 34, 44, 54, 64, 74, 84, 94 ],
-[ 15, 25, 35, 45, 55, 65, 75, 85, 95 ],
-[ 16, 26, 36, 46, 56, 66, 76, 86, 96 ],
-[ 17, 27, 37, 47, 57, 67, 77, 87, 97 ],
-[ 18, 28, 38, 48, 58, 68, 78, 88, 98 ],
-[ 19, 29, 39, 49, 59, 69, 79, 89, 99 ])
+new Q.Matrix(
+	[ 11, 21, 31, 41, 51, 61, 71, 81, 91 ],
+	[ 12, 22, 32, 42, 52, 62, 72, 82, 92 ],
+	[ 13, 23, 33, 43, 53, 63, 73, 83, 93 ],
+	[ 14, 24, 34, 44, 54, 64, 74, 84, 94 ],
+	[ 15, 25, 35, 45, 55, 65, 75, 85, 95 ],
+	[ 16, 26, 36, 46, 56, 66, 76, 86, 96 ],
+	[ 17, 27, 37, 47, 57, 67, 77, 87, 97 ],
+	[ 18, 28, 38, 48, 58, 68, 78, 88, 98 ],
+	[ 19, 29, 39, 49, 59, 69, 79, 89, 99 ])
 </code></pre>
 					</dd>
 				</li>

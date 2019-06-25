@@ -45,6 +45,7 @@ document.addEventListener( 'DOMContentLoaded', function(){
 			<li><a href="Matrix.html">Matrix</a></li>
 			<li><a href="Qubit.html">Qubit</a></li>
 			<li><a href="Gate.html">Gate</a></li>
+			<li><a href="Board.html">Board</a></li>
 			<li><a href="Circuit.html">Circuit</a></li>
 		</ul>
 	`

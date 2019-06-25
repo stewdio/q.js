@@ -159,7 +159,7 @@ h1, h2, h3, h4 {
 }
 h3 {
 
-	padding-top:    40px;
+	padding-top:    30px;
 	padding-bottom: 10px;
 	font-size: var( --text-L-size );
 	font-weight: 700;
@@ -348,7 +348,7 @@ main {
 	position: absolute;
 	top: 0;
 	left: 260px;
-	padding: 60px 0 240px 0;
+	padding: 70px 0 240px 0;
 	overflow: auto;
 	max-width: 600px;
 }
@@ -397,7 +397,7 @@ td.highlighted{
 	width:  40px;
 	height: 40px;
 	padding: 0;
-	fill: var( --fill-color );
+	fill: var( --svg-fill-color );
 }
 #console-open-commands .na {
 
