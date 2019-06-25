@@ -16,10 +16,8 @@ window.addEventListener( 'hashchange', onHashChange, false )
 
 document.addEventListener( 'DOMContentLoaded', function(){
 
-
 	const nav = document.createElement( 'nav' )
 	nav.innerHTML = `
-
 		<header>			
 			<h1>
 				<svg viewBox="0 0 1200 600" role="img">

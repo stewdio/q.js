@@ -177,25 +177,44 @@ var a = new Q.Qubit( 0, 1 )
 			<ul class="properties">
 				<li>
 					<dt id="this.controlBit"><a href="#this.controlBit">controlBit</a></dt>
-					<dd>Description TK.</dd>
+					<dd>
+						<code>Q.<a href="ComplexNumber.html">ComplexNumber</a></code>.
+					</dd>
 				</li>
 				<li>
 					<dt id="this.targetBit"><a href="#this.targetBit">targetBit</a></dt>
-					<dd>Description TK.</dd>
+					<dd>
+						<code>Q.<a href="ComplexNumber.html">ComplexNumber</a></code>.
+					</dd>
 				</li>
 				<li>
 					<dt id="this.dirac"><a href="#this.dirac">dirac</a></dt>
-					<dd>Description TK.</dd>
+					<dd>
+						<code>String</code>.
+						Single character representing this qubit state, 
+						for example ‘H’ for <a href="#.HORIZONTAL">horizontal</a>. 
+						This can be passed to the constructor as an optional third argument 
+						or automatically assigned based on existing Q.Qubit <a href="#Constants">constants</a>.
+						If no match is found among existings constants the ‘?’ character is assigned.
+						Note: This property name and behavior expected to change in the near future.
+					</dd>
 				</li>
 				<li>
 					<dt id="this.name"><a href="#this.name">name</a></dt>
-					<dd>Description TK.</dd>
+					<dd>
+						<code>String</code>.
+						The name of the qubit state, assigned based on existing Q.Qubit <a href="#Constants">constants</a>.
+						If no match is found among existings constants the name is left empty.
+						Note: This property name and behavior expected to change in the near future.
+					</dd>
 				</li>
 				<li>
 					<dt id="this.index"><a href="#this.index">index</a></dt>
 					<dd>
-						An auto-incrementing identification number assigned to the instance,
-						used for minding the total number of instances created.
+						<code>Number</code>.
+						An identification number assigned to the instance based on the
+						auto-incrementing static number <code>Q.Qubit.<a href="#.index">index</a></code>.
+						Used for minding the total number of instances created.
 					</dd>
 				</li>
 			</ul>
