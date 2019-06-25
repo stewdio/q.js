@@ -5,9 +5,9 @@
 let hashTarget
 function onHashChange(){
 
-	if( hashTarget ) hashTarget.classList.remove( 'hash-target' )
-	hashTarget = document.getElementById( location.hash.substr( 1 ))
-	if( hashTarget ) hashTarget.classList.add( 'hash-target' )
+	if( hashTarget    ) hashTarget.classList.remove( 'hash-target' )
+	if( location.hash ) hashTarget = document.getElementById( location.hash.substr( 1 ))
+	if( hashTarget    ) hashTarget.classList.add( 'hash-target' )
 }
 window.addEventListener( 'hashchange', onHashChange, false )
 
