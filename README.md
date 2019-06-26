@@ -1,6 +1,6 @@
 
 
-![Q.js](https://github.com/stewdio/q.js/raw/master/Assets/q-mark.png?sanitize=true "Q.js")  
+![Q.js](./Assets/q-mark.svg)  
 
 Q is quantum computing in your browser.
 (What?!)
