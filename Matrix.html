@@ -59,12 +59,20 @@
 				It is 3 columns wide and 2 rows tall,
 				containing the values 1 through 6.
 			</p>
-<pre><code>
-┌         ┐
-│ 1  2  3 │
-│ 4  5  6 │
-└         ┘
-</code></pre>
+			<div class="maths">
+				<div class="matrix">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr>
+							<td>1</td><td>2</td><td>3</td>
+						</tr>
+						<tr>
+							<td>4</td><td>5</td><td>6</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 			<p>
 				When describing the dimensions of a matrix 
 				we always specify the number of rows first,
@@ -72,14 +80,23 @@
 				The above is an example of a 3 × 2 matrix,
 				while below is a matrix containing similar data, but in a 2 × 3 configuration.
 			</p>
-<pre><code>
-┌      ┐
-│ 1  2 │
-│ 3  4 │
-│ 5  6 │
-└      ┘
-</code></pre>
-
+			<div class="maths">
+				<div class="matrix">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr>
+							<td>1</td><td>2</td>
+						</tr>
+						<tr>
+							<td>3</td><td>4</td>
+						</tr>
+						<tr>
+							<td>5</td><td>6</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 			<p>
 				Q thinks about matrices in 
 				<a href="https://en.wikipedia.org/wiki/Row-_and_column-major_order" target="_blank"><strong>row-major</strong> order</a>.
@@ -89,14 +106,37 @@
 				Our choice of row-major order makes reading and writing matrix values 
 				more akin to reading and writing in English;
 				easier to type and program here.
-				To illustrate the converse, here’s an example of a 3 × 2 matrix in <strong>column-major</strong> order.
+				<!-- To illustrate the difference, here’s an example of a 3 × 2 matrix in <strong>column-major</strong> order. -->
 			</p>
-<pre><code>
-┌         ┐
-│ 1  3  5 │
-│ 2  4  6 │
-└         ┘
-</code></pre>
+			<div class="maths">				
+				<div class="matrix" id="row-major-3x2">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr>
+							<td>1</td><td>2</td><td>3</td>
+						</tr>
+						<tr>
+							<td>4</td><td>5</td><td>6</td>
+						</tr>
+					</table>
+				</div>
+				<a href="https://en.wikipedia.org/wiki/Row-_and_column-major_order" target="_blank"><strong>Row-major</strong> order</a>.
+				<br>
+				<div class="matrix" id="column-major-3x2">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr>
+							<td>1</td><td>3</td><td>5</td>
+						</tr>
+						<tr>
+							<td>2</td><td>4</td><td>6</td>
+						</tr>
+					</table>
+				</div>
+				<a href="https://en.wikipedia.org/wiki/Row-_and_column-major_order" target="_blank"><strong>Column-major</strong> order</a>.
+			</div>
 			<hr>
 			<h3 id="Constructor">Constructor</h3>
 			<p>
