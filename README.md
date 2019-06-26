@@ -18,9 +18,9 @@ Ready to perform the most superfluous coin-flip code ever? Load up the Q website
 and paste this in to your JavaScript console:
 ```javascript
 Q.Qubit.HORIZONTAL
-	.applyGate( Q.Gate.HADAMARD )
-	.applyGate( Q.Gate.MEASURE )
-	.ket.toText()
+    .applyGate( Q.Gate.HADAMARD )
+    .applyGate( Q.Gate.MEASURE )
+    .ket.toText()
 ```  
 
 
