@@ -277,14 +277,14 @@ Object.assign( Q.ComplexNumber, {
 
 		const
 		arctangent2 = Math.atan2( a.imaginary, a.real ),
-		logHypotenuse = Q.logHypotenuse( a.real, a.imaginary )
+		logHypotenuse = Q.logHypotenuse( a.real, a.imaginary ),
+		x = Math.exp( b.real * logHypotenuse - b.imaginary * arctangent2 ),
+		y = b.imaginary * logHypotenuse + b.real * arctangent2
 
-		a.real = Math.exp( b.real * logHypotenuse - b.imaginary * arctangent2 )
-		a.imaginary = b.imaginary * logHypotenuse + b.real * arctangent2
 		return new Q.ComplexNumber(
 		
-			a.real * Math.cos( a.imaginary ),
-			a.real * Math.sin( a.imaginary )
+			x * Math.cos( y ),
+			x * Math.sin( y )
 		)
 	},
 	squareRoot: function( a ){
