@@ -207,6 +207,10 @@ hr + h3 {
 
 	padding-top: 5px;
 }
+hr + p {
+
+	padding-top: 10px;
+}
 
 
 
@@ -550,6 +554,15 @@ dd {
 
 	margin: 20px 60px 20px 40px;
 }
+dd .maths {
+
+	margin-top:  0;
+	margin-left: 0;
+}
+
+
+
+
 .symbol {
 
 	padding: 0 0.1em;
@@ -558,6 +571,33 @@ dd {
 	font-weight: bold;
 	letter-spacing: 0.05em;
 }
+
+
+
+
+.division {
+
+	display: inline-block;
+	vertical-align: middle;
+	margin:  10px;
+}
+.division td {
+
+	padding: 10px;
+}
+.dividend {
+
+	border-bottom: 1px solid #CCC;
+	text-align: center;
+}
+.divisor {
+
+	text-align: center;
+}
+
+
+
+
 .matrix {
 
 	display: inline-block;
@@ -572,7 +612,7 @@ dd {
 }
 .matrix td {
 
-	padding: 10px;
+	padding: 5px 10px;
 }
 .matrix-bracket-left, .matrix-bracket-right {
 

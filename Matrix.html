@@ -164,6 +164,20 @@ var a = new Q.Matrix(
 	[ 1, 2, 3 ],  
 	[ 4, 5, 6 ])
 </code></pre>
+			<div class="maths">
+				<div class="matrix">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr>
+							<td>1</td><td>2</td><td>3</td>
+						</tr>
+						<tr>
+							<td>4</td><td>5</td><td>6</td>
+						</tr>
+					</table>
+				</div>
+			</div>
 			<ul class="properties">
 				<li>
 					<dt id="this.rows"><a href="#this.rows">rows</a></dt>
@@ -212,18 +226,76 @@ var a = new Q.Matrix(
 				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
 				and so on.
 			</p>
+			<h4 id="Example_matrices">Example matrices</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".IDENTITY_2X2"><a href="#.IDENTITY_2X2">IDENTITY_2X2</a></dt>
-					<dd><code>Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 2 )</code></dd>
+					<dd>
+						<code>Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 2 )</code>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
 				</li>
 				<li>
 					<dt id=".IDENTITY_3X3"><a href="#.IDENTITY_3X3">IDENTITY_3X3</a></dt>
-					<dd><code>Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 3 )</code></dd>
+					<dd>
+						<code>Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 3 )</code>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>1</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
 				</li>
 				<li>
 					<dt id=".IDENTITY_4X4"><a href="#.IDENTITY_4X4">IDENTITY_4X4</a></dt>
-					<dd><code>Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 4 )</code></dd>
+					<dd>
+						<code>Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 4 )</code>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>1</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
 				</li>
 				<li>
 					<dt id=".CONSTANT0_2X2"><a href="#.CONSTANT0_2X2">CONSTANT0_2X2</a></dt>
@@ -233,6 +305,20 @@ new Q.Matrix(
 	[ 1, 1 ],
 	[ 0, 0 ])
 </code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>1</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td>
+									</tr>
+								</table>
+							</div>
+						</div>
 					</dd>
 				</li>
 				<li>
@@ -243,6 +329,20 @@ new Q.Matrix(
 	[ 0, 0 ],
 	[ 1, 1 ])
 </code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>1</td><td>1</td>
+									</tr>
+								</table>
+							</div>
+						</div>
 					</dd>
 				</li>
 				<li>
@@ -253,6 +353,20 @@ new Q.Matrix(
 	[ 0, 1 ],
 	[ 1, 0 ])
 </code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>0</td><td>1</td>
+									</tr>
+									<tr>
+										<td>1</td><td>0</td>
+									</tr>
+								</table>
+							</div>
+						</div>
 					</dd>
 				</li>
 				<li>
@@ -270,6 +384,495 @@ new Q.Matrix(
 	[ 18, 28, 38, 48, 58, 68, 78, 88, 98 ],
 	[ 19, 29, 39, 49, 59, 69, 79, 89, 99 ])
 </code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>11</td>
+										<td>21</td>
+										<td>31</td>
+										<td>41</td>
+										<td>51</td>
+										<td>61</td>
+										<td>71</td>
+										<td>81</td>
+										<td>91</td>
+									</tr>
+									<tr>
+										<td>12</td>
+										<td>22</td>
+										<td>32</td>
+										<td>42</td>
+										<td>52</td>
+										<td>62</td>
+										<td>72</td>
+										<td>82</td>
+										<td>92</td>
+									</tr>
+									<tr>
+										<td>13</td>
+										<td>23</td>
+										<td>33</td>
+										<td>43</td>
+										<td>53</td>
+										<td>63</td>
+										<td>73</td>
+										<td>83</td>
+										<td>93</td>
+									</tr>
+									<tr>
+										<td>14</td>
+										<td>24</td>
+										<td>34</td>
+										<td>44</td>
+										<td>54</td>
+										<td>64</td>
+										<td>74</td>
+										<td>84</td>
+										<td>94</td>
+									</tr>
+									<tr>
+										<td>15</td>
+										<td>25</td>
+										<td>35</td>
+										<td>45</td>
+										<td>55</td>
+										<td>65</td>
+										<td>75</td>
+										<td>85</td>
+										<td>95</td>
+									</tr>
+									<tr>
+										<td>16</td>
+										<td>26</td>
+										<td>36</td>
+										<td>46</td>
+										<td>56</td>
+										<td>66</td>
+										<td>76</td>
+										<td>86</td>
+										<td>96</td>
+									</tr>
+									<tr>
+										<td>17</td>
+										<td>27</td>
+										<td>37</td>
+										<td>47</td>
+										<td>57</td>
+										<td>67</td>
+										<td>77</td>
+										<td>87</td>
+										<td>97</td>
+									</tr>
+									<tr>
+										<td>18</td>
+										<td>28</td>
+										<td>38</td>
+										<td>48</td>
+										<td>58</td>
+										<td>68</td>
+										<td>78</td>
+										<td>88</td>
+										<td>98</td>
+									</tr>
+									<tr>
+										<td>19</td>
+										<td>29</td>
+										<td>39</td>
+										<td>49</td>
+										<td>59</td>
+										<td>69</td>
+										<td>79</td>
+										<td>89</td>
+										<td>99</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
+				</li>
+			</ul>
+			<h4 id="Quantum_gates_2x2">Quantum gates, 2 × 2</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".HADAMARD"><a href="#.HADAMARD">HADAMARD</a></dt>
+					<dd>
+<pre><code>
+new Q.Matrix(
+	[ Math.SQRT1_2,  Math.SQRT1_2 ],
+	[ Math.SQRT1_2, -Math.SQRT1_2 ])
+</code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>1</td>
+									</tr>
+									<tr>
+										<td>1</td><td>-1</td>
+									</tr>
+								</table>
+							</div>
+							×
+							<table class="division">
+								<tr class="dividend"><td>1</td></tr>
+								<tr class="divisor"><td>√ 2</td></tr>
+							</table>
+						</div>
+					</dd>
+				</li>
+				<li>
+					<dt id=".PAULI_X"><a href="#.PAULI_X">PAULI_X</a></dt>
+					<dd>
+<pre><code>
+new Q.Matrix(
+	[ 0, 1 ],
+	[ 1, 0 ])
+</code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>0</td><td>1</td>
+									</tr>
+									<tr>
+										<td>1</td><td>0</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
+				</li>
+				<li>
+					<dt id=".PAULI_Y"><a href="#.PAULI_Y">PAULI_Y</a></dt>
+					<dd>
+<pre><code>
+new Q.Matrix(
+	[ 0, new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, -1 )],
+	[ new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 ),  0 ])
+</code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>0</td><td class="symbol">-i</td>
+									</tr>
+									<tr>
+										<td class="symbol">i</td><td>0</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
+				</li>
+				<li>
+					<dt id=".PAULI_Z"><a href="#.PAULI_Z">PAULI_Z</a></dt>
+					<dd>
+<pre><code>
+new Q.Matrix(
+	[ 1,  0 ],
+	[ 0, -1 ])
+</code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>-1</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
+				</li>
+				<li>
+					<dt id=".PHASE"><a href="#.PHASE">PHASE</a></dt>
+					<dd>
+<pre><code>
+new Q.Matrix(
+	[ 1, 0 ],
+	[ 0, new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )])
+</code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td class="symbol">i</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
+				</li>
+				<li>
+					<dt id=".PI_8"><a href="#.PI_8">PI_8</a></dt>
+					<dd>
+<pre><code>
+new Q.Matrix(
+	[ 1, 0 ],
+	[ 0, Q.<a href="ComplexNumber.html">ComplexNumber</a>.<a href="ComplexNumber.htmll#.E">E</a>.<a href="ComplexNumber.htmll#.power">power</a>( new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, Math.PI / 4 )) ])
+</code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td class="symbol">e<sup>iπ ÷ 4</sup></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
+				</li>
+			</ul>
+			<h4 id="Quantum_gates_2x2">Quantum gates, 4 × 4</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".CONTROLLED_NOT"><a href="#.CONTROLLED_NOT">CONTROLLED_NOT</a></dt>
+					<dd>
+<pre><code>
+new Q.Matrix(<span class="comment">//  C-Not</span>
+	[ 1, 0, 0, 0 ],
+	[ 0, 1, 0, 0 ],
+	[ 0, 0, 0, 1 ],
+	[ 0, 0, 1, 0 ])
+</code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>1</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>1</td><td>0</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
+				</li>
+				<li>
+					<dt id=".SWAP"><a href="#.SWAP">SWAP</a></dt>
+					<dd>
+<pre><code>
+new Q.Matrix(
+	[ 1, 0, 0, 0 ],
+	[ 0, 0, 1, 0 ],
+	[ 0, 1, 0, 0 ],
+	[ 0, 0, 0, 1 ])
+</code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>1</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
+				</li>
+				<li>
+					<dt id=".CONTROLLED_Z"><a href="#.CONTROLLED_Z">CONTROLLED_Z</a></dt>
+					<dd>
+<pre><code>
+new Q.Matrix(
+	[ 1, 0, 0,  0 ],
+	[ 0, 1, 0,  0 ],
+	[ 0, 0, 1,  0 ],
+	[ 0, 0, 0, -1 ])
+</code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>-1</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
+				</li>
+				<li>
+					<dt id=".CONTROLLED_PHASE"><a href="#.CONTROLLED_PHASE">CONTROLLED_PHASE</a></dt>
+					<dd>
+<pre><code>
+new Q.Matrix(
+	[ 1, 0, 0, 0 ],
+	[ 0, 1, 0, 0 ],
+	[ 0, 0, 1, 0 ],
+	[ 0, 0, 0, new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )])
+</code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td class="symbol">i</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
+				</li>
+			</ul>
+			<h4 id="Quantum_gates_2x2">Quantum gates, 8 × 8</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".TOFFOLI"><a href="#.TOFFOLI">TOFFOLI</a></dt>
+					<dd>
+<pre><code>
+new Q.Matrix(
+	[ 1, 0, 0, 0, 0, 0, 0, 0 ],
+	[ 0, 1, 0, 0, 0, 0, 0, 0 ],
+	[ 0, 0, 1, 0, 0, 0, 0, 0 ],
+	[ 0, 0, 0, 1, 0, 0, 0, 0 ],
+	[ 0, 0, 0, 0, 1, 0, 0, 0 ],
+	[ 0, 0, 0, 0, 0, 1, 0, 0 ],
+	[ 0, 0, 0, 0, 0, 0, 0, 1 ],
+	[ 0, 0, 0, 0, 0, 0, 1, 0 ])
+</code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
+				</li>
+				<li>
+					<dt id=".CONTROLLED_SWAP"><a href="#.CONTROLLED_SWAP">CONTROLLED_SWAP</a></dt>
+					<dd>
+<pre><code>
+new Q.Matrix(<span class="comment">//  Fredkin</span>
+	[ 1, 0, 0, 0, 0, 0, 0, 0 ],
+	[ 0, 1, 0, 0, 0, 0, 0, 0 ],
+	[ 0, 0, 1, 0, 0, 0, 0, 0 ],
+	[ 0, 0, 0, 1, 0, 0, 0, 0 ],
+	[ 0, 0, 0, 0, 1, 0, 0, 0 ],
+	[ 0, 0, 0, 0, 0, 0, 1, 0 ],
+	[ 0, 0, 0, 0, 0, 1, 0, 0 ],
+	[ 0, 0, 0, 0, 0, 0, 0, 1 ])
+</code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td>
+									</tr>
+								</table>
+							</div>
+						</div>
 					</dd>
 				</li>
 			</ul>
@@ -525,7 +1128,7 @@ new Q.Matrix(
 
 //  First, what do the docs have to say?
 
-console.log( '\n\nQ.Matrix\n', Q.Matrix.help(), '\n\n' )
+console.log( '\n\nQ.Matrix\n\n', Q.Matrix.help(), '\n\n' )
 
 
 //  We’re going to use `var` here instead of `let` or `const`

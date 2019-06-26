@@ -201,6 +201,7 @@ bat.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Retur
 cat.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '1 + 2i'</span>
 dog.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '1 + 2i'</span>
 
+cat.<a href="#.prototype.isEqualTo">isEqualTo</a>( dog )   <span class="comment">//  Returns true</span>
 cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a><span class="comment">//  Returns false</span>
 </pre></code>
 			<ul class="properties">
@@ -507,13 +508,13 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 		<script>
 
 
-console.log( '\n\nQ.ComplexNumber\n', Q.ComplexNumber.help(), '\n\n' )
+console.log( '\n\nQ.ComplexNumber\n\n', Q.ComplexNumber.help(), '\n\n' )
 
 var 
 ant = new Q.ComplexNumber(),
 bat = new Q.ComplexNumber( 1 ),
 cat = new Q.ComplexNumber( 1, 2 ),
-dog = new Q.ComplexNumber( cat ),
+dog = cat.clone(),//  We’re avoiding a warning here: new Q.ComplexNumber( cat ),
 i   = new Q.ComplexNumber( 0,  1 )
 
 			

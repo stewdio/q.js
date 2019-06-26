@@ -1,5 +1,20 @@
 
+/*
 
+
+
+Number of inputs
+
+Number of outputs
+
+Formula for application
+	(Usually a matrix to multiply against the inputs)
+	But can also be measurement (collapse) gate
+	or a Bloch Sphere or other visualization gate
+
+
+
+*/
 
 
 Q.Gate = function(){
