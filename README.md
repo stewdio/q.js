@@ -17,11 +17,10 @@ Ready to perform the most superfluous coin-flip code ever? Load up the Q website
 [https://stewdio.github.io/q.js](https://stewdio.github.io/q.js)
 and paste this in to your JavaScript console:
 ```javascript
-Q.Gate.HADAMARD
-  .applyTo( Q.Qubit.HORIZONTAL )
-  .collapse()
-  .targetBit
-  .toString()
+Q.Qubit.HORIZONTAL
+	.applyGate( Q.Gate.HADAMARD )
+	.applyGate( Q.Gate.MEASURE )
+	.ket.toText()
 ```  
 
 

@@ -452,7 +452,7 @@ Object.assign( Q.Matrix.prototype, {
 
 			return xsv + rowSeparator + row.reduce( function( xsv, cell, c ){
 
-				return xsv + ( c > 0 ? valueSeparator : '' ) + cell.toString()
+				return xsv + ( c > 0 ? valueSeparator : '' ) + cell.toText()
 			
 			}, '' )
 		
@@ -484,7 +484,7 @@ Object.assign( Q.Matrix.prototype, {
 
 			return html + row.reduce( function( html, cell ){
 
-				return html +'\n\t\t<td>'+ cell.toString() +'</td>'
+				return html +'\n\t\t<td>'+ cell.toText() +'</td>'
 			
 			}, '\n\t<tr>' ) + '\n\t</tr>'
 		

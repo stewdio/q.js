@@ -129,12 +129,12 @@ Q.Qubit = function( a, b, dirac ){
 	//  Convenience getters and setters for this qubit’s
 	//  controll bit and target bit.
 
-	Object.defineProperty( this, 'controlBit', { 
+	Object.defineProperty( this, 'bra', { 
 
 		get: function(){ return this.rows[ 0 ][ 0 ]},
 		set: function( n ){ this.rows[ 0 ][ 0 ] = n }
 	})
-	Object.defineProperty( this, 'targetBit', { 
+	Object.defineProperty( this, 'ket', { 
 
 		get: function(){ return this.rows[ 1 ][ 0 ]},
 		set: function( n ){ this.rows[ 1 ][ 0 ] = n }
@@ -150,8 +150,8 @@ Q.Qubit = function( a, b, dirac ){
 
 			return (
 
-				a.isEqualTo( qubit.controlBit ) && 
-				b.isEqualTo( qubit.targetBit )
+				a.isEqualTo( qubit.bra ) && 
+				b.isEqualTo( qubit.ket )
 			)
 		})
 		if( found === undefined ) this.dirac = '?'
@@ -181,29 +181,52 @@ Object.assign( Q.Qubit, {
 		Object.freeze( Q.Qubit[ key ])
 	},
 	createConstants: Q.createConstants,
+	
+
+
+
 	areEqual: function( qubit0, qubit1 ){
 
 		return ( 
 
-			qubit0.controlBit.isEqualTo( qubit0.controlBit ) &&
-			qubit1.targetBit.isEqualTo( qubit1.targetBit )
+			qubit0.bra.isEqualTo( qubit0.bra ) &&
+			qubit1.ket.isEqualTo( qubit1.ket )
 		)
 	},
 	collapse: function( qubit ){
 
 		const 
-		a2 = Math.pow( qubit.rows[ 0 ][ 0 ], 2 ),
+		bra2 = Math.pow( qubit.bra.absolute(), 2 ),
+		ket2 = Math.pow( qubit.ket.absolute(), 2 ),
 		randomNumberRange = Math.pow( 2, 32 ) - 1,
 		randomNumber = new Uint32Array( 1 )
-				
+		
+		// console.log( 'bra^2', bra2 )
+		// console.log( 'ket^2', ket2 )
 		window.crypto.getRandomValues( randomNumber )
 		const randomNumberNormalized = randomNumber / randomNumberRange
-
-		if( randomNumberNormalized <= a2 ){
+		if( randomNumberNormalized <= bra2 ){
 
 			return new Q.Qubit( 1, 0 )
 		}
 		else return new Q.Qubit( 0, 1 )
+	},
+	applyGate: function( qubit, gate ){
+
+		`
+		This is means of inverting what comes first:
+		the Gate or the Qubit?
+		If the Gate only operates on a single qubit,
+		then it doesn’t matter and we can do this:
+		`
+
+		if( gate instanceof Q.Gate === false ) return Q.error( `Q.Qubit attempted to apply something that was not a gate to this qubit #${qubit.index}.` )
+		else return gate.applyTo( qubit )
+	},
+	toText: function( qubit ){
+
+		//return `|${qubit.ket.toText()}⟩`
+		return qubit.bra.toText() +'\n'+ qubit.ket.toText()
 	},
 
 
@@ -234,7 +257,7 @@ Object.assign( Q.Qubit, {
 
 		//  Polar angle θ (theta).
 
-		const theta = Q.ComplexNumber.arcCosine( qubit.controlBit ).multiply( 2 )
+		const theta = Q.ComplexNumber.arcCosine( qubit.bra ).multiply( 2 )
 		if( isNaN( theta.real )) theta.real = 0
 		if( isNaN( theta.imaginary )) theta.imaginary = 0
 
@@ -243,7 +266,7 @@ Object.assign( Q.Qubit, {
 		
 		const phi = Q.ComplexNumber.log( 
 
-			qubit.targetBit.divide( Q.ComplexNumber.sine( theta.divide( 2 )))
+			qubit.ket.divide( Q.ComplexNumber.sine( theta.divide( 2 )))
 		)
 		.divide( Q.ComplexNumber.I )
 		if( isNaN( phi.real )) phi.real = 0
@@ -329,21 +352,32 @@ Object.assign( Q.Qubit.prototype, {
 	},
 	isEqualTo: function( otherQubit ){
 
-		return Q.Qubit.areEqual( this, otherQubit )//  This Boolean breaks method chaining!
+		return Q.Qubit.areEqual( this, otherQubit )//  Returns a Boolean, breaks function chaining!
 	},
 	collapse: function(){
 
 		return Q.Qubit.collapse( this )
 	},
+	applyGate: function( gate ){
+
+		return Q.Qubit.applyGate( this, gate )
+	},
+	toText: function(){
+
+		return Q.Qubit.toText( this )//  Returns a String, breaks function chaining!
+	},
 	toBlochSphere: function(){
 
-		return Q.Qubit.toBlochSphere( this )//  This object breaks method chaining!
+		return Q.Qubit.toBlochSphere( this )//  Returns an Object, breaks function chaining!
 	},
 	collapse$: function(){
 		
-		this.copy$( Q.Qubit.collapse( this ))
-		return this
-	}
+		return this.copy$( Q.Qubit.collapse( this ))
+	},
+	applyGate$: function( gate ){
+
+		return this.copy$( Q.Qubit.applyGate( this, gate ))
+	},
 })
 
 

@@ -63,7 +63,7 @@
 				<div class="matrix">
 					<div class="matrix-bracket-left"></div>
 					<div class="matrix-bracket-right"></div>
-					<table>
+					<table id="rows-and-columns-3x2">
 						<tr>
 							<td>1</td><td>2</td><td>3</td>
 						</tr>
@@ -84,7 +84,7 @@
 				<div class="matrix">
 					<div class="matrix-bracket-left"></div>
 					<div class="matrix-bracket-right"></div>
-					<table>
+					<table id="rows-and-columns-2x3">
 						<tr>
 							<td>1</td><td>2</td>
 						</tr>
@@ -1128,7 +1128,7 @@ new Q.Matrix(<span class="comment">//  Fredkin</span>
 
 //  First, what do the docs have to say?
 
-console.log( '\n\nQ.Matrix\n\n', Q.Matrix.help(), '\n\n' )
+// console.log( '\n\nQ.Matrix\n\n', Q.Matrix.help(), '\n\n' )
 
 
 //  We’re going to use `var` here instead of `let` or `const`
@@ -1144,7 +1144,7 @@ var a = new Q.Matrix(
 
 
 //  More complex tensor product.
-
+/*
 var matrixA = new Q.Matrix(
 	[ 1, 2 ],
 	[ 3, 4 ])
@@ -1265,16 +1265,16 @@ var csv = Q.Matrix.fromCsv(`
 	1, 2, 3
 	4, 5, 6
 	7, 8, 9`)
-console.log( 'Matrix from CSV', csv.toTsv(), '\n\n' )
+// console.log( 'Matrix from CSV', csv.toTsv(), '\n\n' )
 
 
 var tsv = Q.Matrix.fromTsv(`1	2	3
 4	5	6
 7	8	9`)
-console.log( 'Matrix from TSV', tsv.toTsv(), '\n\n' )
+// console.log( 'Matrix from TSV', tsv.toTsv(), '\n\n' )
 
 
-const html = `
+var html = `
 <table>
 	<tr>
 		<td>1</td>
@@ -1293,7 +1293,7 @@ const html = `
 	</tr>
 </table> `
 
-console.log( 'Matrix from HTML', Q.Matrix.fromHtml( html ).toTsv(), '\n\n' )
+// console.log( 'Matrix from HTML', Q.Matrix.fromHtml( html ).toTsv(), '\n\n' )
 
 
 

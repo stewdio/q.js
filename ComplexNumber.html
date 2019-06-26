@@ -148,8 +148,8 @@ var
 cat = new Q.ComplexNumber( 1,  2 ),
 dog = new Q.ComplexNumber( 3, -4 )
 
-cat.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '1 + 2i'</span>
-dog.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '3 - 4i'</span>
+cat.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1 + 2i'</span>
+dog.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '3 - 4i'</span>
 </pre></code>
 			<p>
 				Now we have two variables, <code>cat</code> and <code>dog</code>, that we can operate with. 
@@ -159,10 +159,10 @@ dog.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Retur
 				Try the following lines individually in your JavaScript console:
 			</p>
 <pre><code>
-cat.<a href="#.prototype.add">add</a>( dog ).<a href="#.prototype.toString">toString</a>()     <span class="comment">//  Returns  '4 - 2i'</span>
-cat.<a href="#.prototype.subtract">subtract</a>( dog ).<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '-2 + 6i'</span>
-cat.<a href="#.prototype.multiply">multiply</a>( dog ).<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '11 + 2i'</span>
-cat.<a href="#.prototype.divide">divide</a>( dog ).<a href="#.prototype.toString">toString</a>()  <span class="comment">//  Returns '-0.2 + 0.4i'</span>
+cat.<a href="#.prototype.add">add</a>( dog ).<a href="#.prototype.toText">toText</a>()     <span class="comment">//  Returns  '4 - 2i'</span>
+cat.<a href="#.prototype.subtract">subtract</a>( dog ).<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '-2 + 6i'</span>
+cat.<a href="#.prototype.multiply">multiply</a>( dog ).<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '11 + 2i'</span>
+cat.<a href="#.prototype.divide">divide</a>( dog ).<a href="#.prototype.toText">toText</a>()  <span class="comment">//  Returns '-0.2 + 0.4i'</span>
 </pre></code>
 			<p>
 				We can now verify that <span class="symbol">i</span><sup>2</sup> = -1.
@@ -170,8 +170,8 @@ cat.<a href="#.prototype.divide">divide</a>( dog ).<a href="#.prototype.toString
 <pre><code>
 var i = new Q.ComplexNumber( 0, 1 )
 
-i.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns  'i'</span>
-i.<a href="#.prototype.power">power</a>( 2 ).<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns  '-1'</span>
+i.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns  'i'</span>
+i.<a href="#.prototype.power">power</a>( 2 ).<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns  '-1'</span>
 </pre></code>
 			<p>
 				Operation functions on <code>Q.ComplexNumber</code> instances generally accept as 
@@ -196,10 +196,10 @@ bat = new Q.ComplexNumber( 1 ),
 cat = new Q.ComplexNumber( 1, 2 ),
 dog = new Q.ComplexNumber( cat )
 
-ant.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '0'</span>
-bat.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '1'</span>
-cat.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '1 + 2i'</span>
-dog.<a href="#.prototype.toString">toString</a>()<span class="comment">//  Returns '1 + 2i'</span>
+ant.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '0'</span>
+bat.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1'</span>
+cat.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1 + 2i'</span>
+dog.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1 + 2i'</span>
 
 cat.<a href="#.prototype.isEqualTo">isEqualTo</a>( dog )   <span class="comment">//  Returns true</span>
 cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a><span class="comment">//  Returns false</span>
@@ -456,7 +456,7 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 					<dd>Description TK.</dd>
 				</li>
 				<li>
-					<dt id=".prototype.toString"><a href="#.prototype.toString">toString</a></dt>
+					<dt id=".prototype.toText"><a href="#.prototype.toText">toText</a></dt>
 					<dd>Description TK.</dd>
 				</li>
 			</ul>
@@ -508,7 +508,7 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 		<script>
 
 
-console.log( '\n\nQ.ComplexNumber\n\n', Q.ComplexNumber.help(), '\n\n' )
+// console.log( '\n\nQ.ComplexNumber\n\n', Q.ComplexNumber.help(), '\n\n' )
 
 var 
 ant = new Q.ComplexNumber(),

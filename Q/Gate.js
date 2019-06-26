@@ -17,7 +17,10 @@ Formula for application
 */
 
 
-Q.Gate = function(){
+Q.Gate = function( operation, label, name ){
+
+
+
 
 	`
 	
@@ -26,33 +29,24 @@ Q.Gate = function(){
 	https://en.wikipedia.org/wiki/Quantum_logic_gate
 	`
 
-	const args = [ ...arguments ]
-	if( typeof args[ 0 ] === 'string' ){
 
-		this.label = args.shift()
-	}
-	Q.Matrix.apply( this, args )
 	this.index = Q.Gate.index ++
 	
+	this.label = 
+		typeof label === 'string'
+		? label 
+		: 'g'
 
-	//  We need to be able to see and interact with this thing.
+	this.name =
+		typeof name === 'string'
+		? name
+		: 'Unlabeled'
 
-	// const domElement = document.createElement( 'div' )
-	// domElement.classList.add( 'qc-gate' )
-	// domElement.innerHTML = '[]'
-	// Q.domElement.appendChild( domElement )
-	// this.domElement = domElement
-
-	/*
-
-	Gate needs to have a location! 
-	inputs!
-	outputs!
-
-	*/
+	this.applyTo = 
+		typeof operation === 'function' 
+		? operation 
+		: function(){ Q.warn( `Gate #${this.index} (“${this.name}”) has no operation function.` )}
 }
-Q.Gate.prototype = Q.Matrix.prototype
-Q.Gate.constructor = Q.Gate
 
 
 
@@ -71,80 +65,79 @@ Object.assign( Q.Gate, {
 
 Q.Gate.createConstants(
 
+	'IDENTITY', new Q.Gate( 
 
-	//  Hadamard
-	//   ┌───┐
-	//  ─┤ H ├─
-	//   └───┘
+		function( qubit ){
 
-	'HADAMARD', new Q.Gate( 'H',
-		
-		[ Math.SQRT1_2,  Math.SQRT1_2 ],
-		[ Math.SQRT1_2, -Math.SQRT1_2 ]),
+			return qubit//  No need to even multiply by identity matrix ;)
+		},
+		'I', 'Identity'
+	),
+	'MEASURE', new Q.Gate( 
+
+		function( qubit ){
+
+			return qubit.collapse()
+		},
+		'M', 'Measure'
+	),
 
 
-	//  Pauli X
-	//   ┌───┐
-	//  ─┤ X ├─
-	//   └───┘
 
-	'PAULI_X', new Q.Gate( 'X',
+
+	'HADAMARD', new Q.Gate( function( qubit ){
+
+			return new Q.Qubit( Q.Matrix.HADAMARD.multiply( qubit ))
+		},
+		'H', 'Hadamard' ),
 	
-		[ 0, 1 ],
-		[ 1, 0 ]),
+	'PAULI_X', new Q.Gate( function( qubit ){
+
+			return new Q.Qubit( Q.Matrix.PAULI_X.multiply( qubit ))
+		},
+		'X', 'Pauli X' ),
 	
+	'PAULI_Y', new Q.Gate( function( qubit ){
 
-	//  Pauli Y
-	//   ┌───┐
-	//  ─┤ Y ├─
-	//   └───┘
+			return new Q.Qubit( Q.Matrix.PAULI_Y.multiply( qubit ))
+		},
+		'Y', 'Pauli Y' ),
+	
+	'PAULI_Z', new Q.Gate( function( qubit ){
 
-	'PAULI_Y', new Q.Gate( 'Y',
-		
-		[ 0, new Q.ComplexNumber( 0, -1 )],
-		[ new Q.ComplexNumber( 0, 1 ),  0 ]),
+			return new Q.Qubit( Q.Matrix.PAULI_Z.multiply( qubit ))
+		},
+		'Z', 'Pauli Z' ),
+	
+	'PHASE', new Q.Gate( function( qubit ){
 
+			return new Q.Qubit( Q.Matrix.PHASE.multiply( qubit ))
+		},
+		'S', 'Phase' ),
+	
+	'PI_8', new Q.Gate( function( qubit ){
 
-	//  Pauli Z
-	//   ┌───┐
-	//  ─┤ Z ├─
-	//   └───┘
-
-	'PAULI_Z', new Q.Gate( 'Z',
-		
-		[ 1,  0 ],
-		[ 0, -1 ]),
-
-
-	//  Phase
-	//   ┌───┐
-	//  ─┤ S ├─
-	//   └───┘
-
-	'PHASE', new Q.Gate( 'S',
-		
-		[ 1, 0 ],
-		[ 0, new Q.ComplexNumber( 0, 1 )]),
-
-
-	//  π / 8
-	//   ┌───┐
-	//  ─┤ T ├─
-	//   └───┘
-
-	'PI_8', new Q.Gate( 'T',
-		
-		[ 1, 0 ],
-		[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, Math.PI / 4 )) ]),
+			return new Q.Qubit( Q.Matrix.PI_8.multiply( qubit ))
+		},
+		'T', 'π ÷ 8' ),
 
 
 
 
-	'CONTROLLED_NOT', new Q.Gate(//  C-NOT
-		[ 1, 0, 0, 0 ],
-		[ 0, 1, 0, 0 ],
-		[ 0, 0, 0, 1 ],
-		[ 0, 0, 1, 0 ]),
+	'CONTROLLED_NOT', new Q.Gate( function( controlQubit, targetQubit ){
+
+			return Q.Matrix.CONTROLLED_NOT.multiply( controlQubit.multiplyTensor( targetQubit ))
+		},
+		'C', 'Controlled Not (C-Not)' ),
+
+
+
+
+	/*
+
+
+
+
 
 	'SWAP', new Q.Gate(
 		[ 1, 0, 0, 0 ],
@@ -163,6 +156,9 @@ Q.Gate.createConstants(
 		[ 0, 1, 0, 0 ],
 		[ 0, 0, 1, 0 ],
 		[ 0, 0, 0, new Q.ComplexNumber( 0, 1 )]),
+
+
+
 
 	'TOFFOLI', new Q.Gate(
 		[ 1, 0, 0, 0, 0, 0, 0, 0 ],
@@ -183,6 +179,20 @@ Q.Gate.createConstants(
 		[ 0, 0, 0, 0, 0, 0, 1, 0 ],
 		[ 0, 0, 0, 0, 0, 1, 0, 0 ],
 		[ 0, 0, 0, 0, 0, 0, 0, 1 ])
+	*/
+
+
+
+
+	'BLOCH_SPHERE',
+	new Q.Gate( 
+
+		function( qubit ){
+
+			//  Make a new Bloch Sphere visualizer!
+		},
+		'B', 'Bloch Sphere visualizer'
+	)
 )
 
 
@@ -190,16 +200,21 @@ Q.Gate.createConstants(
 
 Object.assign( Q.Gate.prototype, {
 
-	destroy: function(){
+	toText: function(){
 
-		// this.domElement.parent.removeChild( this.domElement )
+		return `-${this.label}-`
 	},
-	applyTo: function( qubit ){
+	toDiagram: function(){
 
-		//Array.from( arguments ).forEach( function(){})
-		return new Q.Qubit( this.multiply( qubit ))
+
+		//  Hadamard
+		//   ┌───┐
+		//  ─┤ H ├─
+		//   └───┘
+
+	},
+	toHtml: function(){
+
+		return `<div class="gate">${this.label}</div>`
 	}
 })
-
-
-

@@ -68,9 +68,11 @@
 				equals one.
 			</p>
 			<p>
-				Our <span class="symbol">a</span> argument represents our qubit’s “control bit” 
+				Qubits are represented by
+				<a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket notation</a>. 
+				Our <span class="symbol">a</span> argument represents our qubit’s “bra” 
 				while our <span class="symbol">b</span> argument 
-				represents our qubit’s “target bit”—the part we are ultimately concerned with. 
+				represents our qubit’s “ket”—the part we are ultimately concerned with. 
 				A qubit may be in 
 				<a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>, 
 				ie. its target bit is neither 0 
@@ -132,9 +134,14 @@
 				matrices for calculation. 
 			</p>
 			<br>
-			<p id="bloch-sphere-qubits">
-				<!-- Select qubit state: <select id="qubit-state-selector"></select><br>-->
-			</p>
+			<p id="bloch-sphere-qubits"></p>
+			<!-- p id="bloch-sphere-gates">
+
+				Identity
+				Measure
+				Hadamard
+
+			</p -->
 			<div class="interactive-container" id="bloch-sphere">
 				<div class="interactive-component" id="bloch-angles">
 					<span class="symbol">a</span> = <span id="bloch-control-bit">—</span><br>
@@ -176,13 +183,13 @@ var a = new Q.Qubit( 0, 1 )
 </code></pre>
 			<ul class="properties">
 				<li>
-					<dt id="this.controlBit"><a href="#this.controlBit">controlBit</a></dt>
+					<dt id="this.bra"><a href="#this.bra">bra</a></dt>
 					<dd>
 						<code>Q.<a href="ComplexNumber.html">ComplexNumber</a></code>.
 					</dd>
 				</li>
 				<li>
-					<dt id="this.targetBit"><a href="#this.targetBit">targetBit</a></dt>
+					<dt id="this.ket"><a href="#this.ket">ket</a></dt>
 					<dd>
 						<code>Q.<a href="ComplexNumber.html">ComplexNumber</a></code>.
 					</dd>
@@ -344,9 +351,9 @@ var a = new Q.Qubit( 0, 1 )
 					<dd>
 						<code>Function</code>.
 						Expects two instances of <code>Q.Qubit</code> as arguments.
-						If the <code><a href="#.controlBit">controlBit</a></code> of each are within 
+						If the <code><a href="#.bra">bra</a></code> of each are within 
 						<code>Q.<a href="Q.html#.EPSILON">EPSILON</a></code>
-						and the <code><a href="#.targetBit">targetBit</code></a> of each are within 
+						and the <code><a href="#.ket">ket</code></a> of each are within 
 						<code>Q.<a href="Q.html#.EPSILON">EPSILON</a></code>
 						then returns <code>true</code>, otherwise <code>false</code>.
 					</dd>
@@ -436,8 +443,8 @@ var a = new Q.Qubit( 0, 1 )
 					<dd>
 						<code>Function</code>.
 						Expects a single <code>Q.Qubit</code> instance as argument.
-						Overwrites the internal <code>controlBit</code>
-						and <code>targetBit</code> values
+						Overwrites the internal <code>bra</code>
+						and <code>ket</code> values
 						with those of the supplied <code>Q.Qubit</code> instance argument.
 					</dd>
 				</li>
@@ -463,7 +470,7 @@ var a = new Q.Qubit( 0, 1 )
 
 //  First, what do the docs have to say?
 
-console.log( '\n\nQ.Qubit\n\n', Q.Qubit.help(), '\n\n' )
+// console.log( '\n\nQ.Qubit\n\n', Q.Qubit.help(), '\n\n' )
 
 
 
@@ -633,7 +640,7 @@ sphere.add( new THREE.ArrowHelper(
 
 const blochPointer = new THREE.Mesh(
 
-	new THREE.CylinderBufferGeometry( 0, 0.5, 1, 5, 1 ),
+	new THREE.CylinderBufferGeometry( 0, 0.5, 1, 32, 1 ),
 	new THREE.MeshPhongMaterial({ color: 0x666666 })
 )
 blochPointer.geometry.translate( 0, -0.5, 0 )
@@ -680,8 +687,8 @@ function changeBlochVector( state ){
 
 
 	//document.getElementById( 'qubit-state-matrix' ).innerText = state.toTsv()
-	document.getElementById( 'bloch-control-bit' ).innerText = state.controlBit.toString()
-	document.getElementById( 'bloch-target-bit' ).innerText = state.targetBit.toString()
+	document.getElementById( 'bloch-control-bit' ).innerText = state.bra.toText()
+	document.getElementById( 'bloch-target-bit' ).innerText = state.ket.toText()
 	
 
 

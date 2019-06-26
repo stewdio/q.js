@@ -50,23 +50,61 @@
 	</head>
 	<body>
 		<main>
-			<h3 id="Quantum_logic_gates">Quantum logic gates</h3>
+			<h3>Operations, not just matrices</h3>
 			<p>
-				Description TK
+				Traditionally, a 
+				<a href="https://en.wikipedia.org/wiki/Quantum_logic_gate" target="_blank">quantum logic gate</a>
+				is a matrix that can be multiplied against a qubit’s matrix.
+				For our purposes we need a broad definition.
+				Let’s consider a <code>Gate</code> to be an <em>operation</em>.
+				That operation can be the multiplication of a logic gate matrix against a qubit matrix.
+				Or it can be a measurement operation that collapses a qubit.
+				It can also be a visualization operation, such as a Bloch Sphere visualization of a qubit state. When gates are attached to a <code>Board</code>
+				they are placed in both space and time. 
 			</p>
 			<hr>
 			<h3 id="Constructor">Constructor</h3>
 			<p>
-				Description TK
+				Expects a function as a first argument that will become the operation invoked by <code>.<a href="#this.applyTo">applyTo</a>()</code>. 
+				Accepts a string as an optional second argument (expected to be a single character) for use as a label.
+				Accepts a string as an optional third argument for use as a name / longer label.
 			</p>
+<pre><code>
+var g = new Q.Gate( 
+
+	function( input ){
+
+		console.log( 'You input this:', input )
+	},
+	'?', 'Input mystery!'
+)
+</code></pre>			
 			<ul class="properties">
 				<li>
 					<dt id="this.label"><a href="#this.label">label</a></dt>
-					<dd>Description TK.</dd>
+					<dd>
+						<code>String</code>.
+						A single character used as a label in visual representations of this <code>Gate</code> in circuit diagrams.
+					</dd>
+				</li>
+				<li>
+					<dt id="this.name"><a href="#this.name">name</a></dt>
+					<dd>
+						<code>String</code>.
+						The full name of this <code>Gate</code> to be used as a title or long label in a visual representation.
+					</dd>
+				</li>
+				<li>
+					<dt id="this.applyTo"><a href="#this.applyTo">applyTo</a></dt>
+					<dd>
+						<code>Function</code>.
+						The main operation of this <code>Gate</code>.
+					</dd>
 				</li>
 				<li>
 					<dt id="this.index"><a href="#this.index">index</a></dt>
 					<dd>
+						<code>Number</code>.
 						An auto-incrementing identification number assigned to the instance,
 						used for minding the total number of instances created.
 					</dd>
@@ -86,15 +124,45 @@
 				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
 				and so on.
 			</p>
-			<h4>2 × 2 matrices</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".IDENTITY"><a href="#.IDENTITY">IDENTITY</a></dt>
+					<dd>
+<pre><code>
+new Q.Gate( function( qubit ){ 
+
+		return qubit 
+	},
+	'I', 'Identity' )
+</code></pre>
+					</dd>
+				</li>
+				<li>
+					<dt id=".MEASURE"><a href="#.MEASURE">MEASURE</a></dt>
+					<dd>
+<pre><code>
+new Q.Gate( function( qubit ){ 
+
+		return qubit.collapse() 
+	},
+	'M', 'Measure' )
+</code></pre>
+					</dd>
+				</li>
+			</ul>
+
+
+			<h4>Operations with 2 × 2 matrices</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".HADAMARD"><a href="#.HADAMARD">HADAMARD</a></dt>
 					<dd>
 <pre><code>
-new Q.Gate( 'H',
-	[ Math.SQRT1_2,  Math.SQRT1_2 ],
-	[ Math.SQRT1_2, -Math.SQRT1_2 ])
+new Q.Gate( function( qubit ){
+
+		return new Q.Qubit( Q.Matrix.HADAMARD.multiply( qubit ))
+	},
+	'H', 'Hadamard' )
 </code></pre>
 					</dd>
 				</li>
@@ -102,9 +170,11 @@ new Q.Gate( 'H',
 					<dt id=".PAULI_X"><a href="#.PAULI_X">PAULI_X</a></dt>
 					<dd>
 <pre><code>
-new Q.Gate( 'X',
-	[ 0, 1 ],
-	[ 1, 0 ])
+new Q.Gate( function( qubit ){
+
+		return new Q.Qubit( Q.Matrix.PAULI_X.multiply( qubit ))
+	},
+	'X', 'Pauli X' )
 </code></pre>
 					</dd>
 				</li>
@@ -112,9 +182,11 @@ new Q.Gate( 'X',
 					<dt id=".PAULI_Y"><a href="#.PAULI_Y">PAULI_Y</a></dt>
 					<dd>
 <pre><code>
-new Q.Gate( 'Y',
-	[ 0, new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, -1 )],
-	[ new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 ),  0 ])
+new Q.Gate( function( qubit ){
+
+		return new Q.Qubit( Q.Matrix.PAULI_Y.multiply( qubit ))
+	},
+	'Y', 'Pauli Y' )
 </code></pre>
 					</dd>
 				</li>
@@ -122,9 +194,11 @@ new Q.Gate( 'Y',
 					<dt id=".PAULI_Z"><a href="#.PAULI_Z">PAULI_Z</a></dt>
 					<dd>
 <pre><code>
-new Q.Gate( 'Z',
-	[ 1,  0 ],
-	[ 0, -1 ])
+new Q.Gate( function( qubit ){
+
+		return new Q.Qubit( Q.Matrix.PAULI_Z.multiply( qubit ))
+	},
+	'Z', 'Pauli Z' )
 </code></pre>
 					</dd>
 				</li>
@@ -132,9 +206,11 @@ new Q.Gate( 'Z',
 					<dt id=".PHASE"><a href="#.PHASE">PHASE</a></dt>
 					<dd>
 <pre><code>
-new Q.Gate( 'S',
-	[ 1, 0 ],
-	[ 0, new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )])
+new Q.Gate( function( qubit ){
+
+		return new Q.Qubit( Q.Matrix.PHASE.multiply( qubit ))
+	},
+	'S', 'Phase' )
 </code></pre>
 					</dd>
 				</li>
@@ -142,97 +218,43 @@ new Q.Gate( 'S',
 					<dt id=".PI_8"><a href="#.PI_8">PI_8</a></dt>
 					<dd>
 <pre><code>
-new Q.Gate( 'T',
-	[ 1, 0 ],
-	[ 0, Q.<a href="ComplexNumber.html">ComplexNumber</a>.<a href="ComplexNumber.htmll#.E">E</a>.<a href="ComplexNumber.htmll#.power">power</a>( new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, Math.PI / 4 )) ])
+new Q.Gate( function( qubit ){
+
+		return new Q.Qubit( Q.Matrix.PI_8.multiply( qubit ))
+	},
+	'T', 'π ÷ 8' )
 </code></pre>
 					</dd>
 				</li>
 			</ul>
-			<h4>4 × 4 matrices</h4>
+			<h4>Operations with 4 × 4 matrices</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".CONTROLLED_NOT"><a href="#.CONTROLLED_NOT">CONTROLLED_NOT</a></dt>
-					<dd>
-<pre><code>
-new Q.Gate(<span class="comment">//  C-Not</span>
-	[ 1, 0, 0, 0 ],
-	[ 0, 1, 0, 0 ],
-	[ 0, 0, 0, 1 ],
-	[ 0, 0, 1, 0 ])
-</code></pre>
-					</dd>
+					<dd>Arriving soon.</dd>
 				</li>
 				<li>
 					<dt id=".SWAP"><a href="#.SWAP">SWAP</a></dt>
-					<dd>
-<pre><code>
-new Q.Gate(
-	[ 1, 0, 0, 0 ],
-	[ 0, 0, 1, 0 ],
-	[ 0, 1, 0, 0 ],
-	[ 0, 0, 0, 1 ])
-</code></pre>
-					</dd>
+					<dd>Arriving soon.</dd>
 				</li>
 				<li>
 					<dt id=".CONTROLLED_Z"><a href="#.CONTROLLED_Z">CONTROLLED_Z</a></dt>
-					<dd>
-<pre><code>
-new Q.Gate(
-	[ 1, 0, 0,  0 ],
-	[ 0, 1, 0,  0 ],
-	[ 0, 0, 1,  0 ],
-	[ 0, 0, 0, -1 ])
-</code></pre>
-					</dd>
+					<dd>Arriving soon.</dd>
 				</li>
 				<li>
 					<dt id=".CONTROLLED_PHASE"><a href="#.CONTROLLED_PHASE">CONTROLLED_PHASE</a></dt>
-					<dd>
-<pre><code>
-new Q.Gate(
-	[ 1, 0, 0, 0 ],
-	[ 0, 1, 0, 0 ],
-	[ 0, 0, 1, 0 ],
-	[ 0, 0, 0, new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )])
-</code></pre>
-					</dd>
+					<dd>Arriving soon.</dd>
 				</li>
 			</ul>
-			<h4>8 × 8 matrices</h4>
+			<h4>Operations with 8 × 8 matrices</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".TOFFOLI"><a href="#.TOFFOLI">TOFFOLI</a></dt>
-					<dd>
-<pre><code>
-new Q.Gate(
-	[ 1, 0, 0, 0, 0, 0, 0, 0 ],
-	[ 0, 1, 0, 0, 0, 0, 0, 0 ],
-	[ 0, 0, 1, 0, 0, 0, 0, 0 ],
-	[ 0, 0, 0, 1, 0, 0, 0, 0 ],
-	[ 0, 0, 0, 0, 1, 0, 0, 0 ],
-	[ 0, 0, 0, 0, 0, 1, 0, 0 ],
-	[ 0, 0, 0, 0, 0, 0, 0, 1 ],
-	[ 0, 0, 0, 0, 0, 0, 1, 0 ])
-</code></pre>
-					</dd>
+					<dd>Arriving soon.</dd>
 				</li>
 				<li>
 					<dt id=".CONTROLLED_SWAP"><a href="#.CONTROLLED_SWAP">CONTROLLED_SWAP</a></dt>
-					<dd>
-<pre><code>
-new Q.Gate(<span class="comment">//  Fredkin</span>
-	[ 1, 0, 0, 0, 0, 0, 0, 0 ],
-	[ 0, 1, 0, 0, 0, 0, 0, 0 ],
-	[ 0, 0, 1, 0, 0, 0, 0, 0 ],
-	[ 0, 0, 0, 1, 0, 0, 0, 0 ],
-	[ 0, 0, 0, 0, 1, 0, 0, 0 ],
-	[ 0, 0, 0, 0, 0, 0, 1, 0 ],
-	[ 0, 0, 0, 0, 0, 1, 0, 0 ],
-	[ 0, 0, 0, 0, 0, 0, 0, 1 ])
-</code></pre>
-					</dd>
+					<dd>Arriving soon.</dd>
 				</li>
 			</ul>
 			<hr>
@@ -249,9 +271,9 @@ new Q.Gate(<span class="comment">//  Fredkin</span>
 				<li>
 					<dt id=".constants"><a href="#.constants">constants</a></dt>
 					<dd>
-						While <code>Q.Qubit</code> <a href="#Constants">constants</a>
-						are appended directly to the <code>Q.Qubit</code> object,
-						they are also appended to a <code>Q.Qubit.constants</code> object
+						While <code>Q.Gate</code> <a href="#Constants">constants</a>
+						are appended directly to the <code>Q.Gate</code> object,
+						they are also appended to a <code>Q.Gate.constants</code> object
 						to make looking up constants in the JavaScript console trivial,
 						and to make iterating across all constants convenient via
 						functions like 
@@ -274,8 +296,19 @@ new Q.Gate(<span class="comment">//  Fredkin</span>
 			<h3 id="Prototype_properties">Prototype properties</h3>
 			<ul class="properties">
 				<li>
-					<dt id=".prototype.applyTo"><a href="#.prototype.applyTo">applyTo</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.toText"><a href="#.prototype.toText">toText</a></dt>
+					<dd>
+						<code>Function</code>.
+						Returns a <code>String</code> of text to represent this <code>Gate</code>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".prototype.toHtml"><a href="#.prototype.toHtml">toHtml</a></dt>
+					<dd>
+						<code>Function</code>.
+						Returns a <code>String</code> of HTML code to represent this <code>Gate</code>.
+						(In the future should this return a collection of actual DOM elements instead?)
+					</dd>
 				</li>
 			</ul>
 			<hr>
@@ -286,9 +319,9 @@ new Q.Gate(<span class="comment">//  Fredkin</span>
 		</main>
 		<script>
 			
-console.log( '\n\nQ.Gate\n', Q.Gate.help(), '\n\n' )
+// console.log( '\n\nQ.Gate\n', Q.Gate.help(), '\n\n' )
 
-console.log( '\n\nCONSTANTS:\n', Q.Gate.constants, '\n\n' )
+// console.log( '\n\nCONSTANTS:\n', Q.Gate.constants, '\n\n' )
 
 		</script>
 	</body>

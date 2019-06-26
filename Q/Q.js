@@ -110,6 +110,11 @@ Object.assign( Q, {
 			this.createConstant( arguments[ i ], arguments[ i + 1 ])
 		}
 	},
+	loop: function(){},
+
+
+
+
 	hypotenuse: function( x, y ){
 		
 		let
@@ -166,7 +171,7 @@ Object.assign( Q, {
 
 Q.createConstants( 
 
-	'REVISION', 2,
+	'REVISION', 3,
 
 
 	//  Yeah... F’ing floating point numbers man!

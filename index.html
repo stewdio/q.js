@@ -69,6 +69,7 @@
 				<a href="https://stewdio.github.io/q.js">https://stewdio.github.io/q.js</a>,
 				which is probably where you’re viewing it from now, eh?
 			</p>
+			<h3 id="Open_your_JavaScript_console">Open your JavaScript console</h3>
 			<p>
 				In the future, Q will take advantage of the browser
 				as a graphic user interface, 
@@ -239,12 +240,11 @@
 				to launch your first qubit in to <a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>!
 				Just copy and paste the following in to your console:
 			</p>
-			<pre><code>
-<a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.HADAMARD">HADAMARD</a>
-	.<a href="Gate.html#.prototype.applyTo">applyTo</a>( <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>.<a href="Qubit.html#.HORIZONTAL">HORIZONTAL</a> )
-	.<a href="Qubit.html#.prototype.collapse">collapse</a>()
-	.<a href="Qubit.html#this.targetBit">targetBit</a>
-	.<a href="ComplexNumber.html#.prototype.toString">toString</a>()
+<pre><code>
+<a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>.<a href="Qubit.html#.HORIZONTAL">HORIZONTAL</a>
+	.<a href="Qubit.html#.prototype.applyGate">applyGate</a>( <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.HADAMARD">HADAMARD</a> )
+	.<a href="Qubit.html#.prototype.applyGate">applyGate</a>( <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.HADAMARD">MEASURE</a> )
+	.<a href="Qubit.html#this.ket">ket</a>.<a href="ComplexNumber.html#.prototype.toText">toText</a>()
 </pre></code>
 			<p>
 				Did you try it?
@@ -259,51 +259,8 @@
 				You haven’t installed or configured any fancy software, 
 				yet you’re already doing quantum computation.
 				You must be a genius!
-			</p>		
-			<h3 id="Style">Style</h3>
-			<p>
-				Q’s source code is verbose, heavily commented, and there’s great empathy for fellow learners.
-				<a href="https://en.wikipedia.org/wiki/Visual_hierarchy" target="_blank">Visual hierarchy</a> is key when facing a brick of monospace code gibberish. 
-				<a href="https://en.wikipedia.org/wiki/White_space_(visual_arts)" target="_blank">White space</a> helps; white space around variables, between conceptually different blocks of code.
-				(You’ve got to let code breathe.)
-				Semicolons as line-enders are avoided unless absolutely necessary. 
-				(They’re just visual clutter otherwise; <a href="https://en.wikipedia.org/wiki/Typography" target="_blank">typographic</a> noise in the signal.)
-				Q is meant to be flexible and expressive to adapt to your style.
-				<a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">Function chaining</a> is prized, but Q often uses static class methods as a foundation for instance methods, so you’re free to use either approach.
-				Some ES6 syntax is preferred, but the bits that disfigure JavaScript to look more like Java are weeded out, bagged, and tossed in the river.
 			</p>
-			<p>
-				While Q’s internal code uses <code>let</code> and <code>const</code> when declaring variables,
-				the examples here often use <code>var</code> instead.  
-				This is to make free-form experimenting in the console a bit friendlier.
-				Redeclare and overwrite variables to your heart’s content.
-			</p>
-			<p>
-				Q pays particular attention to <em>destructive</em> versus <em>non-destructive</em> instance methods. 
-				For example, the archetypal <em>non-destructive</em> method is <code>.clone()</code>
-				which returns a new sibling instance of the object it was called from 
-				and by its nature makes no alterations to that original object.
-				In contrast, <code>.copy$(&nbsp;sibling&nbsp;)</code> is the archetypal <em>destructive</em> method
-				which causes an instance to alter itself by overwriting its own properties’ values with values from a sibling instance, then returns itself.
-				The dollar sign suffix is similar to 
-				<a href="https://en.wikipedia.org/wiki/Ruby_(programming_language)" target="_blank">Ruby</a>’s
-				exclamation point suffix and is a reminder that the operation is destructive; will alter the instance.
-			</p>
-			<pre><code>
-var 
-cat = new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 1,  2 ),
-dog = new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 3, -4 )
-
-cat.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">//  Returns '1 + 2i'</span>
-dog.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">//  Returns '3 - 4i'</span>
-
-cat.<a href="ComplexNumber.html#.add"><strong>add</strong></a>( dog ) <span class="comment">//  Non-destructive.</span>
-cat.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">//  Still returns '1 + 2i'</span>
-
-cat.<a href="ComplexNumber.html#.add$"><strong>add$</strong></a>( dog )<span class="comment">//  Destructive. Note the ‘$’ suffix.</span>
-cat.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">//  Now returns '4 - 2i'</span>
-
-		</pre></code>
+			<hr>
 			<h3 id="Roadmap">Roadmap</h3>
 			<p>
 				This is a work-in-progress.
@@ -334,6 +291,49 @@ cat.<a href="ComplexNumber.html#.toString">toString</a>() <span class="comment">
 				Help us by <a href="https://github.com/stewdio/q.js/issues" target="_blank">creating (or resolving) issues</a> on <a href="https://github.com/stewdio/q.js" target="_blank">Q’s GitHub repository</a>.
 				Let’s make quantum accessible!
 			</p>
+			<h3 id="Style">Style</h3>
+			<p>
+				Q’s source code is verbose, heavily commented, and there’s great empathy for fellow learners.
+				<a href="https://en.wikipedia.org/wiki/Visual_hierarchy" target="_blank">Visual hierarchy</a> is key when facing a brick of monospace code gibberish. 
+				<a href="https://en.wikipedia.org/wiki/White_space_(visual_arts)" target="_blank">White space</a> helps; white space around variables, between conceptually different blocks of code.
+				(You’ve got to let code breathe.)
+				Semicolons as line-enders are avoided unless absolutely necessary. 
+				(They’re just visual clutter otherwise; <a href="https://en.wikipedia.org/wiki/Typography" target="_blank">typographic</a> noise in the signal.)
+				Q is meant to be flexible and expressive to adapt to your style.
+				<a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">Function chaining</a> is prized, but Q often uses static class methods as a foundation for instance methods, so you’re free to use either approach.
+				Some ES6 syntax is preferred, but the bits that disfigure JavaScript to look more like Java are weeded out, bagged, and tossed in the river.
+			</p>
+			<p>
+				While Q’s internal code uses <code>let</code> and <code>const</code> when declaring variables,
+				the examples here often use <code>var</code> instead.  
+				This is to make free-form experimenting in the console a bit friendlier.
+				Redeclare and overwrite variables to your heart’s content.
+			</p>
+			<p>
+				Q pays particular attention to <em>destructive</em> versus <em>non-destructive</em> instance methods. 
+				For example, the archetypal <em>non-destructive</em> method is <code>.clone()</code>
+				which returns a new sibling instance of the object it was called from 
+				and by its nature makes no alterations to that original object.
+				In contrast, <code>.copy$(&nbsp;sibling&nbsp;)</code> is the archetypal <em>destructive</em> method
+				which causes an instance to alter itself by overwriting its own properties’ values with values from a sibling instance, then returns itself.
+				The dollar sign suffix is similar to 
+				<a href="https://en.wikipedia.org/wiki/Ruby_(programming_language)" target="_blank">Ruby</a>’s
+				exclamation point suffix and is a reminder that the operation is destructive; will alter the instance.
+			</p>
+<pre><code>
+var 
+cat = new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 1,  2 ),
+dog = new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 3, -4 )
+
+cat.<a href="ComplexNumber.html#.toText">toText</a>() <span class="comment">//  Returns '1 + 2i'</span>
+dog.<a href="ComplexNumber.html#.toText">toText</a>() <span class="comment">//  Returns '3 - 4i'</span>
+
+cat.<a href="ComplexNumber.html#.add"><strong>add</strong></a>( dog ) <span class="comment">//  Non-destructive.</span>
+cat.<a href="ComplexNumber.html#.toText">toText</a>() <span class="comment">//  Still returns '1 + 2i'</span>
+
+cat.<a href="ComplexNumber.html#.add$"><strong>add$</strong></a>( dog )<span class="comment">//  Destructive. Note the ‘$’ suffix.</span>
+cat.<a href="ComplexNumber.html#.toText">toText</a>() <span class="comment">//  Now returns '4 - 2i'</span>
+</pre></code>			
 		</main>
 		<script>
 

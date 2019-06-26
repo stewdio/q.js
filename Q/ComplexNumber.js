@@ -579,7 +579,7 @@ Object.assign( Q.ComplexNumber.prototype, {
 	},
 
 
-	toString: function(){
+	toText: function(){
 
 		
 		//  Note: this kills function chaining.
