@@ -61,6 +61,8 @@
 	--highlight-color: #000;
 	--highlight-background-color: #FD0;
 
+	--background-callout-color: #F9F9F9;
+
 	--svg-fill-color: var( --text-color );
 }
 * {
@@ -89,6 +91,9 @@ body {
 
 	margin: 0;
 	background-color: #FFF;
+	background-image: url( 'q-background.png' );
+	background-size: 60px 60px;
+	background-attachment: fixed;
 	padding: 0;
 	color: var( --text-color );
 	font-size:   var( --text-M-size );
@@ -245,7 +250,7 @@ pre {
 
 	margin: 10px 0;
 	border-radius: 10px;
-	background-color: #F6F6F6;
+	background-color: var( --background-callout-color );
 	padding:  0  5px 20px 20px;
 	tab-size: 4;
 	-moz-tab-size: 4;
@@ -289,9 +294,11 @@ nav {
 	position: fixed;
 	top:  0;
 	left: 0;
-	width: 240px;
+	width: 260px;
 	height: 100%;
-	padding: 0 0 180px 0;
+	min-height: 100vh;
+	background-color: #FFF;
+	padding: 0 20px 180px 0;
 	overflow: auto;
 }
 nav, h2 {
@@ -365,9 +372,11 @@ main {
 	position: absolute;
 	top: 0;
 	left: 260px;
-	padding: 75px 0 240px 0;
+	min-height: 100vh;
+	background-color: #FFF;
+	padding: 75px 20px 240px 0;
 	overflow: auto;
-	max-width: 600px;
+	max-width: 620px;
 }
 main p, main h2, main h3, main h4, main ul {
 
@@ -482,7 +491,7 @@ dd {
 	border-radius: 16px;
 	width:  100%;
 	height: 100%;
-	background-color: #F6F6F6;
+	background-color: var( --background-callout-color );
 	overflow: hidden;
 }
 .interactive-component {
@@ -664,11 +673,12 @@ dd {
 table#console-open-commands {
 
 	margin: 20px 0 20px 0;
+	overflow: hidden;
 }
 table#console-open-commands td {
 
 	border: 1px solid #FFF;
-	padding: 20px 30px;
+	padding: 15px 20px;
 	transition: background-color 0.5s;
 }
 table#console-open-commands td.highlighted{
@@ -680,7 +690,7 @@ table#console-open-commands {
 	
 	width: 100%;
 	border-radius: 16px;
-	background-color: #F6F6F6;
+	background-color: var( --background-callout-color );
 }
 table#console-open-commands td {
 
