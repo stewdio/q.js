@@ -579,27 +579,29 @@ Object.assign( Q.ComplexNumber.prototype, {
 	},
 
 
-	toText: function(){
+	toText: function( roundToDecimal ){
 
 		
 		//  Note: this kills function chaining.
+		
+		if( typeof roundToDecimal !== 'number' ) roundToDecimal = 16
 		
 		const 
 		reduced = this.reduce(),
 		imaginaryAbsolute = Math.abs( reduced.imaginary )
 		
-		if( Q.ComplexNumber.isNumberLike( reduced )) return ''+ reduced//  Because we promised a String!
+		if( Q.ComplexNumber.isNumberLike( reduced )) return Q.round( reduced, roundToDecimal )
 		if( reduced.real === 0 ){
 
 			if( reduced.imaginary ===  1 ) return  'i'
 			if( reduced.imaginary === -1 ) return '-i'
-			return reduced.imaginary +'i'
+			return reduced.imaginary.toFixed( roundToDecimal ) +'i'
 		}
 		return (
 		
-			''+ reduced.real +' '+ 
+			''+ reduced.real.toFixed( roundToDecimal ) +' '+ 
 			( reduced.imaginary >= 0 ? '+' : '-' ) +' '+ 
-			( imaginaryAbsolute === 1 ? 'i' : imaginaryAbsolute + 'i' )
+			( imaginaryAbsolute === 1 ? 'i' : Q.round( imaginaryAbsolute, roundToDecimal ) + 'i' )
 		)
 	},
 

@@ -134,18 +134,18 @@
 				matrices for calculation. 
 			</p>
 			<br>
-			<p id="bloch-sphere-qubits"></p>
-			<!-- p id="bloch-sphere-gates">
-
-				Identity
-				Measure
-				Hadamard
-
-			</p -->
+			<p>
+				Select a qubit state:
+			</p>
+			<div id="bloch-sphere-qubits"></div>
+			<p>
+				Select a gate to apply:
+			</p>
+			<div id="bloch-sphere-gates"></div>
 			<div class="interactive-container" id="bloch-sphere">
 				<div class="interactive-component" id="bloch-angles">
-					<span class="symbol">a</span> = <span id="bloch-control-bit">—</span><br>
-					<span class="symbol">b</span> = <span id="bloch-target-bit">—</span><br>
+					<span class="symbol">a</span> = <span id="bloch-bra">—</span><br>
+					<span class="symbol">b</span> = <span id="bloch-ket">—</span><br>
 					<br>
 					<span id="bloch-theta">—</span>˚ polar angle θ (theta)<br>
 					<span id="bloch-phi">—</span>˚ azimuth angle ϕ (phi)
@@ -507,7 +507,6 @@ var a = new Q.Qubit( 0, 1 )
 
 
 
-
 //  Create our Bloch Sphere explorer.
 
 const
@@ -674,69 +673,100 @@ controls.enablePan = false
 
 
 
-let blochState = Q.Qubit.toBlochSphere( Q.Qubit.HORIZONTAL )
-function changeBlochVector( state ){
 
 
-
-	if( state === undefined ) state = 'HORIZONTAL'
-	if( typeof state === 'string' ) state = Q.Qubit[ state ]
-	//else assume state is an instance of Qubit!
-
-	const blochStateNext = Q.Qubit.toBlochSphere( state )
+function changeBlochVector(){
 
 
-	//document.getElementById( 'qubit-state-matrix' ).innerText = state.toTsv()
-	document.getElementById( 'bloch-control-bit' ).innerText = state.bra.toText()
-	document.getElementById( 'bloch-target-bit' ).innerText = state.ket.toText()
-	
+	//  Are we ready for a change?
+
+	if( qubitCurrent !== qubitTarget ||
+		gateCurrent  !== gateTarget ){
 
 
-	const blochSphereQubits = document.getElementById( 'bloch-sphere-qubits' )
-	Array.from( blochSphereQubits.children ).forEach( function( child ){
+		//  Deselect all buttons -- except the one in use!
 
-		if( child.getAttribute( 'data-qubit' ) === state.name ) child.classList.add( 'selected' )
-		else child.classList.remove( 'selected' )
-	})
+		Array.from( document.getElementById( 'bloch-sphere-qubits' ).children )
+		.forEach( function( child ){
+
+			if( child.getAttribute( 'data-qubit' ) === qubitTarget.name ){
+
+				child.classList.add( 'selected' )
+			}
+			else child.classList.remove( 'selected' )
+		})
+		Array.from( document.getElementById( 'bloch-sphere-gates' ).children )
+		.forEach( function( child ){
+
+			if( child.getAttribute( 'data-gate' ) === gateTarget.name ){
+
+				child.classList.add( 'selected' )
+			}
+			else child.classList.remove( 'selected' )
+		})
 
 
+		//  x
 
-	window.tween = new TWEEN.Tween({
+		if( qubitCurrent === undefined ) qubitCurrent = qubitTarget
+		if( gateCurrent  === undefined ) gateCurrent  = gateTarget
 
-			theta: blochState.theta,
-			phi: blochState.phi
-		
-		})//  Yes, this will be destructive to the blochState object.
-		.to({
+		const 
+		currentState = qubitCurrent.applyGate( gateCurrent ), 
+		currentBloch = currentState.toBlochSphere()
+		targetState  = qubitTarget.applyGate( gateTarget ),
+		targetBloch  = targetState.toBlochSphere()
 
-			theta: blochStateNext.theta,
-			phi: blochStateNext.phi
-		
-		}, 1000 )
-		.easing( TWEEN.Easing.Quadratic.InOut )
-		.onUpdate( updateBlochVector )
-		.start()
+
+		//  Update our bra-ket readout.
+
+		document.getElementById( 'bloch-bra' ).innerText = targetState.bra.toText( 4 )
+		document.getElementById( 'bloch-ket' ).innerText = targetState.ket.toText( 4 )
+
+
+		//  Tween our indicator to the target state.
+
+		window.tween = new TWEEN.Tween({
+
+				theta: currentBloch.theta,
+				phi:   currentBloch.phi
+			
+			})//  Yes, this will be destructive to the blochState object.
+			.to({
+
+				theta: targetBloch.theta,
+				phi:   targetBloch.phi
+			
+			}, 1000 )
+			.easing( TWEEN.Easing.Quadratic.InOut )
+			.onUpdate( updateBlochVector )
+			.start()
+
+
+		//  Make it ready to go for next time.
+
+		qubitCurrent = qubitTarget
+		gateCurrent  = gateTarget
+	}
 }
 
 
 
 
-function updateBlochVector( blochStateNow ){
 
 
-	blochState.theta = blochStateNow.theta
-	blochState.phi = blochStateNow.phi
 
 
+function updateBlochVector( input ){
 
 
 	//  Move the big-ass surface pointer.
 
 	blochPointer.position.set(
 		
-		Math.sin( blochState.theta ) * Math.sin( blochState.phi ),
-		Math.cos( blochState.theta ),
-		Math.sin( blochState.theta ) * Math.cos( blochState.phi )
+		Math.sin( input.theta ) * Math.sin( input.phi ),
+		Math.cos( input.theta ),
+		Math.sin( input.theta ) * Math.cos( input.phi )
 	)
 	blochPointer.lookAt( new THREE.Vector3() )
 
@@ -746,8 +776,8 @@ function updateBlochVector( blochStateNow ){
 
 	//  Update our angles labels.
 	
-	document.getElementById( 'bloch-theta' ).innerText = ( blochState.theta * Q.RADIANS_TO_DEGREES ).toFixed()
-	document.getElementById( 'bloch-phi' ).innerText = ( blochState.phi * Q.RADIANS_TO_DEGREES ).toFixed()
+	document.getElementById( 'bloch-theta' ).innerText = ( input.theta * Q.RADIANS_TO_DEGREES ).toFixed()
+	document.getElementById( 'bloch-phi' ).innerText = ( input.phi * Q.RADIANS_TO_DEGREES ).toFixed()
 
 
 	
@@ -806,6 +836,105 @@ function updateBlochVector( blochStateNow ){
 
 
 
+
+
+
+//  Create the qubit buttons.
+
+let 
+qubitTarget = Q.Qubit.HORIZONTAL,
+qubitCurrent
+
+const blochSphereQubits = document.getElementById( 'bloch-sphere-qubits' )
+Object.keys( Q.Qubit.constants ).forEach( function( key ){
+
+	const 
+	qubit = Q.Qubit[ key ],
+	qubitContainerElement = document.createElement( 'div' ),
+	qubitElement = document.createElement( 'div' ),
+	qubitNameElement = document.createElement( 'p' )
+	
+	qubitContainerElement.classList.add( 'qubit-container' )
+	qubitContainerElement.setAttribute( 'data-qubit', qubit.name )
+	qubitContainerElement.addEventListener( 'click', function(){
+
+		qubitTarget = qubit
+		changeBlochVector()
+	})
+	
+	qubitElement.classList.add( 'qubit' )
+	qubitElement.setAttribute( 'title', Q.toTitleCase( qubit.name ))
+	qubitElement.innerText = qubit.dirac
+	qubitContainerElement.appendChild( qubitElement )
+
+	qubitNameElement.innerText = Q.toTitleCase( qubit.name )
+	qubitContainerElement.appendChild( qubitNameElement )
+	
+	blochSphereQubits.appendChild( qubitContainerElement )
+})
+
+
+
+
+//  Create the gate buttons.
+
+let 
+gateTarget = Q.Gate.IDENTITY,
+gateCurrent
+
+const blochSphereGates = document.getElementById( 'bloch-sphere-gates' )
+;[
+	'IDENTITY',
+	'HADAMARD',
+	'PAULI_X',
+	'PAULI_Y',
+	'PAULI_Z',
+	'PHASE',
+	'PI_8'
+
+].forEach( function( gateName ){
+
+	const 
+	gate = Q.Gate[ gateName ],
+	gateContainerElement = document.createElement( 'div' ),
+	gateElement = document.createElement( 'div' ),
+	gateNameElement = document.createElement( 'p' )
+
+	gateContainerElement.classList.add( 'gate-container' )
+	gateContainerElement.setAttribute( 'data-gate',  gate.name )
+	gateContainerElement.addEventListener( 'click', function(){
+
+		gateTarget = gate
+		changeBlochVector()
+	})
+
+	gateElement.classList.add( 'gate' )
+
+	gateElement.setAttribute( 'title', gate.name )
+	gateElement.innerText = gate.label
+	gateContainerElement.appendChild( gateElement )
+
+	gateNameElement.innerText = gate.name
+	gateContainerElement.appendChild( gateNameElement )
+	
+	blochSphereGates.appendChild( gateContainerElement )
+})
+
+
+
+
+
+
+
+
+
+
+
+changeBlochVector()
+
+
+
+
 sphere.rotation.x = 0.7
 sphere.rotation.z = 0.2
 
@@ -834,52 +963,6 @@ window.addEventListener( 'resize', function () {
 
 render()
 
-
-
-
-
-
-
-
-
-
-const blochSphereQubits = document.getElementById( 'bloch-sphere-qubits' )
-
-Object.keys( Q.Qubit.constants ).forEach( function( key ){
-
-	
-
-	const 
-	qubit = Q.Qubit[ key ],
-	qubitContainerElement = document.createElement( 'div' )
-	qubitElement = document.createElement( 'div' )
-	qubitNameElement = document.createElement( 'p' )
-	
-	qubitContainerElement.classList.add( 'qubit-container' )
-	qubitContainerElement.setAttribute( 'data-qubit',  qubit.name )
-
-
-	qubitElement.classList.add( 'qubit' )
-	qubitElement.setAttribute( 'title', Q.toTitleCase( qubit.name ))
-	qubitElement.innerText = qubit.dirac
-	qubitElement.addEventListener( 'click', function(){
-
-		changeBlochVector( qubit )
-	})
-	qubitContainerElement.appendChild( qubitElement )
-
-	// qubitNameElement.innerText = Q.toTitleCase( qubit.name )
-	// qubitContainerElement.appendChild( qubitNameElement )
-	
-	blochSphereQubits.appendChild( qubitContainerElement )
-})
-
-
-
-
-
-
-changeBlochVector()
 
 
 

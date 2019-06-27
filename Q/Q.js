@@ -155,6 +155,12 @@ Object.assign( Q, {
 
 		return ( Math.exp( n ) + Math.exp( -n )) / 2
 	},
+	round: function( n, d ){
+
+		if( typeof d !== 'number' ) d = 0
+		const f = Math.pow( 10, d )
+		return Math.round( n * f ) / f
+	},
 	toTitleCase( text ){
 
 		text = text.replace( /_/g, ' ' )
