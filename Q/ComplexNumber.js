@@ -590,7 +590,7 @@ Object.assign( Q.ComplexNumber.prototype, {
 		reduced = this.reduce(),
 		imaginaryAbsolute = Math.abs( reduced.imaginary )
 		
-		if( Q.ComplexNumber.isNumberLike( reduced )) return Q.round( reduced, roundToDecimal )
+		if( Q.ComplexNumber.isNumberLike( reduced )) return ''+ Q.round( reduced, roundToDecimal )
 		if( reduced.real === 0 ){
 
 			if( reduced.imaginary ===  1 ) return  'i'
