@@ -637,6 +637,8 @@ sphere.add( new THREE.ArrowHelper(
 
 
 
+//  The cone that points to the surface of the sphere.
+
 const blochPointer = new THREE.Mesh(
 
 	new THREE.CylinderBufferGeometry( 0, 0.5, 1, 32, 1 ),
@@ -649,8 +651,7 @@ blochPointer.lookAt( new THREE.Vector3() )
 sphere.add( blochPointer )
 
 
-
-
+//  The line from the sphere’s origin to its surface.
 
 const blochVector = new THREE.Mesh(
 
@@ -659,6 +660,43 @@ const blochVector = new THREE.Mesh(
 )
 blochVector.geometry.translate( 0, 0, 0.5 )
 sphere.add( blochVector )
+
+
+//  x
+
+const
+radius = 1.01,
+// arcR = radius * Math.sin( bloch.theta ),
+// arcH = radius * Math.cos( bloch.theta ),
+arcR = radius * Math.sin( Math.PI / 2 ),
+arcH = radius * Math.cos( Math.PI / 2 ),
+thetaGeometry = createLatitudeArc( arcR, 64, Math.PI / 2, Math.PI * 2 )
+
+thetaGeometry.rotateX( Math.PI / 2 )
+thetaGeometry.rotateY( Math.PI / 2 )
+thetaGeometry.translate( 0, arcH, 0 )
+const thetaRing = new THREE.Line( 
+
+	thetaGeometry,
+	new THREE.LineBasicMaterial({ color: 0x000000 })
+)
+sphere.add( thetaRing )
+
+
+//  x
+
+const
+//arc = createLongitudeArc( radius, 64, Math.PI / -2, Math.PI ),
+arc = createLongitudeArc( radius, 64, 0, Math.PI * 2 ),
+phiGeometry = arc.clone()
+
+// phiGeometry.rotateY( bloch.phi )
+const phiArc = new THREE.Line( 
+
+	phiGeometry,
+	new THREE.LineBasicMaterial({ color: 0x000000 })
+)
+sphere.add( phiArc )
 
 
 
@@ -780,7 +818,20 @@ function updateBlochVector( input ){
 	document.getElementById( 'bloch-phi' ).innerText = ( input.phi * Q.RADIANS_TO_DEGREES ).toFixed()
 
 
+	const thetaSafe = Math.max( input.theta, 0.01 )
+	thetaRing.scale.set(
+
+		Math.sin( thetaSafe ),
+		1,
+		Math.sin( thetaSafe )
+	)
+	thetaRing.position.y = Math.cos( input.theta )
+
+
 	
+	//phiArc.rotateY( Math.PI - input.phi )
+	phiArc.rotation.y = input.phi - Math.PI / 2
+
 
 
 

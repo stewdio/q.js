@@ -6,6 +6,14 @@ function createLongitudeArc( radius, segments, thetaStart, thetaLength ){
 
 	const geometry = new THREE.CircleGeometry( radius, segments, thetaStart, thetaLength )
 	geometry.vertices.shift()
+	
+	//  This is not NORMALLY necessary because we expect this to only be between 
+	//  PI/2  and PI*2 (so the length is ) only Math.PI instead of PI*2.
+
+	if( thetaLength >= 2 * Math.PI ){
+
+		geometry.vertices.push( geometry.vertices[ 0 ].clone() )
+	}
 	return geometry
 }
 function createLatitudeArc( radius, segments, phiStart, phiLength ){
@@ -42,11 +50,11 @@ function createQuadSphere( options ){
 	if( typeof thetaStart !== 'number' ) thetaStart = 0
 	if( typeof thetaLength !== 'number' ) thetaLength = Math.PI
 	if( typeof latitudeLinesTotal !== 'number' ) latitudeLinesTotal = 12
-	if( typeof longitudeLinesTotal !== 'number' ) longitudeLinesTotal = 8
+	if( typeof longitudeLinesTotal !== 'number' ) longitudeLinesTotal = 12
 	if( typeof latitudeLineSegments !== 'number' ) latitudeLineSegments = 64
 	if( typeof longitudeLineSegments !== 'number' ) longitudeLineSegments = 64
-	if( typeof latitudeLinesAttributes === 'undefined' ) latitudeLinesAttributes = { color: 0xAAAAAA }
-	if( typeof longitudeLinesAttributes === 'undefined' ) longitudeLinesAttributes = { color: 0xAAAAAA}
+	if( typeof latitudeLinesAttributes === 'undefined' ) latitudeLinesAttributes = { color: 0xDDDDDD }
+	if( typeof longitudeLinesAttributes === 'undefined' ) longitudeLinesAttributes = { color: 0xDDDDDD }
 
 	const
 	sphere = new THREE.Group(),
