@@ -818,6 +818,8 @@ table#console-open-commands .na {
 
 
 
+
+
 .unit-circle {
 
 	position: relative;
@@ -826,6 +828,96 @@ table#console-open-commands .na {
 	top:   50%;
 	width: 60%;
 	padding-bottom: 60%;
+}
+
+
+.unit-circle-outline {
+
+	position: absolute;
+	top:  0;
+	left: 0;
+	border: 1px solid #EEE;
+	border-radius: 100%;
+	width:  100%;
+	height: 100%;
+}
+
+
+
+
+.unit-circle-spoke {
+
+	position: absolute;
+	top:    50%;
+	left:    0;
+	width: 100%;
+	height:  1px;
+	background-color: #F3F3F3;
+}
+.unit-circle-spoke-45 {
+
+	/*transform: rotate( 45deg );*/
+	transform: rotate( 0.125turn );
+}
+.unit-circle-spoke-90 {
+
+	/*transform: rotate( 90deg );*/
+	transform: rotate( 0.25turn );
+}
+.unit-circle-spoke-135 {
+
+	/*transform: rotate( 135deg );*/
+	transform: rotate( 0.375turn );
+}
+
+
+
+
+.unit-circle-spoke-label {
+
+	position: absolute;
+	margin-top: 50%;
+	width: 100%;
+	/*padding-right: 12%;*/
+	padding-right: 15%;
+	text-align: right;
+	transform: translate( 0, -50% );
+	color: #CCC;
+}
+.unit-circle-spoke-label-45 {
+
+	transform: translate( 0, -50% ) rotate( -45deg );
+}
+.unit-circle-spoke-label-90 {
+
+	transform: translate( 0, -50% ) rotate( -90deg );
+}
+.unit-circle-spoke-label-315 {
+
+	transform: translate( 0, -50% ) rotate( -315deg );
+}
+
+
+
+
+@keyframes unit-circle-label-keyframes {
+
+	  0% { opacity: 0; }
+	  5% { opacity: 1; }
+	 66% { opacity: 1; }
+	 71% { opacity: 0; }
+}
+.unit-circle-label {
+
+	position: absolute;
+	margin: 50% 0 0 50%;
+	transform: translate( -50%, -50% );
+	white-space: nowrap;
+	animation-duration: 12s;
+	animation-name: unit-circle-label-keyframes;
+	animation-iteration-count: infinite;
+	opacity: 0;
+
 
 	/*
 
@@ -864,115 +956,110 @@ table#console-open-commands .na {
 	--cosine-270deg:  0;
 	--cosine-315deg:  0.7071;
 
-	--radius: 50%;
+	--radius-label-angle: 12%;
+	--radius-label-point: 50%;
 }
 
 
-.unit-circle-outline {
+.unit-circle-label-angle-0 {
 
-	position: absolute;
-	top:  0;
-	left: 0;
-	border: 1px solid #DDD;
-	border-radius: 100%;
-	width:  100%;
-	height: 100%;
+	top:  calc( var( --radius-label-angle ) * var( --sine-0deg ) * -1 );
+	left: calc( var( --radius-label-angle ) * var( --cosine-0deg ));
+	animation-delay: 0.0s;
 }
-.unit-circle-spoke {
+.unit-circle-label-angle-45 {
 
-	position: absolute;
-	top:    50%;
-	left:    0;
-	width: 100%;
-	height:  1px;
-	background-color: #EEE;
+	top:  calc( var( --radius-label-angle ) * var( --sine-45deg ) * -1 );
+	left: calc( var( --radius-label-angle ) * var( --cosine-45deg ));
+	animation-delay: 0.5s;
 }
-.unit-circle-spoke-45 {
+.unit-circle-label-angle-90 {
 
-	/*transform: rotate( 45deg );*/
-	transform: rotate( 0.125turn );
+	top:  calc( var( --radius-label-angle ) * var( --sine-90deg ) * -1 );
+	left: calc( var( --radius-label-angle ) * var( --cosine-90deg ));
+	animation-delay: 1.0s;
 }
-.unit-circle-spoke-90 {
+.unit-circle-label-angle-135 {
 
-	/*transform: rotate( 90deg );*/
-	transform: rotate( 0.25turn );
+	top:  calc( var( --radius-label-angle ) * var( --sine-135deg ) * -1 );
+	left: calc( var( --radius-label-angle ) * var( --cosine-135deg ));
+	animation-delay: 1.5s;
 }
-.unit-circle-spoke-135 {
+.unit-circle-label-angle-180 {
 
-	/*transform: rotate( 135deg );*/
-	transform: rotate( 0.375turn );
+	top:  calc( var( --radius-label-angle ) * var( --sine-180deg ) * -1 );
+	left: calc( var( --radius-label-angle ) * var( --cosine-180deg ));
+	animation-delay: 2.0s;
 }
+.unit-circle-label-angle-225 {
 
-
-.unit-circle-spoke-label {
-
-	position: absolute;
-	margin-top: 50%;
-	width: 100%;
-	padding-right: 15%;
-	text-align: right;
-	transform: translate( 0, -50% );
+	top:  calc( var( --radius-label-angle ) * var( --sine-225deg ) * -1 );
+	left: calc( var( --radius-label-angle ) * var( --cosine-225deg ));
+	animation-delay: 2.5s;
 }
-.unit-circle-spoke-label-45 {
+.unit-circle-label-angle-270 {
 
-	transform: translate( 0, -50% ) rotate( -45deg );
+	top:  calc( var( --radius-label-angle ) * var( --sine-270deg ) * -1 );
+	left: calc( var( --radius-label-angle ) * var( --cosine-270deg ));
+	animation-delay: 3.0s;
 }
-.unit-circle-spoke-label-90 {
+.unit-circle-label-angle-315 {
 
-	transform: translate( 0, -50% ) rotate( -90deg );
-}
-.unit-circle-spoke-label-315 {
-
-	transform: translate( 0, -50% ) rotate( -315deg );
+	top:  calc( var( --radius-label-angle ) * var( --sine-315deg ) * -1 );
+	left: calc( var( --radius-label-angle ) * var( --cosine-315deg ));
+	animation-delay: 3.5s;
 }
 
 
-.unit-circle-label {
 
-	position: absolute;
-	margin: 50% 0 0 50%;
-	transform: translate( -50%, -50% );
-	white-space: nowrap;
+
+.unit-circle-label-point-0 {
+
+	top:  calc( var( --radius-label-point ) * var( --sine-0deg ) * -1 );
+	left: calc( var( --radius-label-point ) * var( --cosine-0deg ));
+	animation-delay: 0.0s;
 }
-.unit-circle-label-0 {
+.unit-circle-label-point-45 {
 
-	top:  calc( var( --radius ) * var( --sine-0deg ) * -1 );
-	left: calc( var( --radius ) * var( --cosine-0deg ));
+	top:  calc( var( --radius-label-point ) * var( --sine-45deg ) * -1 );
+	left: calc( var( --radius-label-point ) * var( --cosine-45deg ));
+	animation-delay: 0.5s;
 }
-.unit-circle-label-45 {
+.unit-circle-label-point-90 {
 
-	top:  calc( var( --radius ) * var( --sine-45deg ) * -1 );
-	left: calc( var( --radius ) * var( --cosine-45deg ));
+	top:  calc( var( --radius-label-point ) * var( --sine-90deg ) * -1 );
+	left: calc( var( --radius-label-point ) * var( --cosine-90deg ));
+	animation-delay: 1.0s;
 }
-.unit-circle-label-90 {
+.unit-circle-label-point-135 {
 
-	top:  calc( var( --radius ) * var( --sine-90deg ) * -1 );
-	left: calc( var( --radius ) * var( --cosine-90deg ));
+	top:  calc( var( --radius-label-point ) * var( --sine-135deg ) * -1 );
+	left: calc( var( --radius-label-point ) * var( --cosine-135deg ));
+	animation-delay: 1.5s;
 }
-.unit-circle-label-135 {
+.unit-circle-label-point-180 {
 
-	top:  calc( var( --radius ) * var( --sine-135deg ) * -1 );
-	left: calc( var( --radius ) * var( --cosine-135deg ));
+	top:  calc( var( --radius-label-point ) * var( --sine-180deg ) * -1 );
+	left: calc( var( --radius-label-point ) * var( --cosine-180deg ));
+	animation-delay: 2.0s;
 }
-.unit-circle-label-180 {
+.unit-circle-label-point-225 {
 
-	top:  calc( var( --radius ) * var( --sine-180deg ) * -1 );
-	left: calc( var( --radius ) * var( --cosine-180deg ));
+	top:  calc( var( --radius-label-point ) * var( --sine-225deg ) * -1 );
+	left: calc( var( --radius-label-point ) * var( --cosine-225deg ));
+	animation-delay: 2.5s;
 }
-.unit-circle-label-225 {
+.unit-circle-label-point-270 {
 
-	top:  calc( var( --radius ) * var( --sine-225deg ) * -1 );
-	left: calc( var( --radius ) * var( --cosine-225deg ));
+	top:  calc( var( --radius-label-point ) * var( --sine-270deg ) * -1 );
+	left: calc( var( --radius-label-point ) * var( --cosine-270deg ));
+	animation-delay: 3.0s;
 }
-.unit-circle-label-270 {
+.unit-circle-label-point-315 {
 
-	top:  calc( var( --radius ) * var( --sine-270deg ) * -1 );
-	left: calc( var( --radius ) * var( --cosine-270deg ));
-}
-.unit-circle-label-315 {
-
-	top:  calc( var( --radius ) * var( --sine-315deg ) * -1 );
-	left: calc( var( --radius ) * var( --cosine-315deg ));
+	top:  calc( var( --radius-label-point ) * var( --sine-315deg ) * -1 );
+	left: calc( var( --radius-label-point ) * var( --cosine-315deg ));
+	animation-delay: 3.5s;
 }
 
 .unit-circle .division {
