@@ -97,22 +97,63 @@
 				the outcome is a circle with a radius of 1 centered at the origin (0, 0); 
 				ie. a <a href="https://en.wikipedia.org/wiki/Unit_circle)" target="_blank">unit circle</a>.
 			</p>
-<pre><code>
-             ( 0, 1 )  Vertical 
-                 │
- ( -1÷√2, 1÷√2 ) │ ( 1÷√2, 1÷√2 )  Diagonal
-              ╲  │  ╱
-               ╲ │ ╱
-                ╲│╱ 
-( -1, 0 )────────╳────────( 1, 0 )  Horizontal
-                ╱│╲
-               ╱ │ ╲ 
-              ╱  │  ╲
-( -1÷√2, -1÷√2 ) │ ( 1÷√2, -1÷√2 )  Anti-diagonal
-                 │
-                 │
-             ( 0, -1 )
-</code></pre>
+			<div class="unit-circle">
+				<div class="unit-circle-outline"></div>
+				<div class="unit-circle-spoke unit-circle-spoke-0"></div>
+				<div class="unit-circle-spoke unit-circle-spoke-45"></div>
+				<div class="unit-circle-spoke unit-circle-spoke-90"></div>
+				<div class="unit-circle-spoke unit-circle-spoke-135"></div>
+				
+				<div class="unit-circle-spoke-label unit-circle-spoke-label-90">Vertical</div>
+				<div class="unit-circle-spoke-label unit-circle-spoke-label-45">Diagonal</div>
+				<div class="unit-circle-spoke-label unit-circle-spoke-label-0">Horizontal</div>
+				<div class="unit-circle-spoke-label unit-circle-spoke-label-315">Anti-diagonal</div>
+				
+				<div class="unit-circle-label unit-circle-label-0">1, 0</div>
+				<div class="unit-circle-label unit-circle-label-45">
+					<table class="division">
+						<tr class="dividend"><td>1</td></tr>
+						<tr class="divisor"><td>√ 2</td></tr>
+					</table>,
+					<table class="division">
+						<tr class="dividend"><td>1</td></tr>
+						<tr class="divisor"><td>√ 2</td></tr>
+					</table>
+				</div>
+				<div class="unit-circle-label unit-circle-label-90">0, 1</div>
+				<div class="unit-circle-label unit-circle-label-135">
+					<table class="division">
+						<tr class="dividend"><td>-1</td></tr>
+						<tr class="divisor"><td>√ 2</td></tr>
+					</table>,
+					<table class="division">
+						<tr class="dividend"><td>1</td></tr>
+						<tr class="divisor"><td>√ 2</td></tr>
+					</table>
+				</div>
+				<div class="unit-circle-label unit-circle-label-180">-1, 0</div>
+				<div class="unit-circle-label unit-circle-label-225">
+					<table class="division">
+						<tr class="dividend"><td>-1</td></tr>
+						<tr class="divisor"><td>√ 2</td></tr>
+					</table>,
+					<table class="division">
+						<tr class="dividend"><td>-1</td></tr>
+						<tr class="divisor"><td>√ 2</td></tr>
+					</table>
+				</div>
+				<div class="unit-circle-label unit-circle-label-270">0, -1</div>
+				<div class="unit-circle-label unit-circle-label-315">
+					<table class="division">
+						<tr class="dividend"><td>1</td></tr>
+						<tr class="divisor"><td>√ 2</td></tr>
+					</table>,
+					<table class="division">
+						<tr class="dividend"><td>-1</td></tr>
+						<tr class="divisor"><td>√ 2</td></tr>
+					</table>
+				</div>
+			</div>
 			<h3 id="Bloch_sphere">Bloch sphere</h3>
 			<p>
 				But a qubit isn’t just a pair of <em>real</em> numbers—it’s a pair of <a href="ComplexNumber.html">complex numbers</a> and plotting those values requires a third dimension.
@@ -665,7 +706,7 @@ sphere.add( blochVector )
 //  x
 
 const
-radius = 1.01,
+radius = 1.005,
 // arcR = radius * Math.sin( bloch.theta ),
 // arcH = radius * Math.cos( bloch.theta ),
 arcR = radius * Math.sin( Math.PI / 2 ),
