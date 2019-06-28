@@ -51,6 +51,7 @@
 		<script src="Assets/Three/OrbitControls.js"></script>
 		<script src="Assets/Tween/tween.min.js"></script>
 		<script src="Assets/blochSphere.js"></script>
+		<script src="Assets/SurfaceText.js"></script>
 	</head>
 	<body>
 		<main>
@@ -629,26 +630,27 @@ sphere.add( innards )
 
 
 
-const xAxis = new THREE.Mesh(
-
-	new THREE.BoxGeometry( 2.8, 0.01, 0.01 ),
-	new THREE.MeshBasicMaterial({ color: 0xFF0000 })
-)
-sphere.add( xAxis )
-
 const yAxis = new THREE.Mesh(
 
-	new THREE.BoxGeometry( 0.01, 0.01, 2.8 ),
-	new THREE.MeshBasicMaterial({ color: 0x0000CC })
+	new THREE.BoxGeometry( 2.5, 0.01, 0.01 ),
+	new THREE.MeshBasicMaterial({ color: 0xFF0000 })
 )
 sphere.add( yAxis )
 
+const xAxis = new THREE.Mesh(
+
+	new THREE.BoxGeometry( 0.01, 0.01, 2.5 ),
+	new THREE.MeshBasicMaterial({ color: 0x0000CC })
+)
+sphere.add( xAxis )
+
 const zAxis = new THREE.Mesh(
 
-	new THREE.BoxGeometry( 0.01, 2.8, 0.01 ),
+	new THREE.BoxGeometry( 0.01, 2.5, 0.01 ),
 	new THREE.MeshBasicMaterial({ color: 0x00CC00 })
 )
 sphere.add( zAxis )
+
 
 
 
@@ -661,7 +663,7 @@ arrowHeadWidth  = 0.1
 sphere.add( new THREE.ArrowHelper( 
 
 	new THREE.Vector3( 0, 1.0, 0 ), 
-	new THREE.Vector3( 0, 1.4, 0 ), 
+	new THREE.Vector3( 0, 1.25, 0 ), 
 	arrowLength, 
 	0x00CC00, 
 	arrowHeadLength, 
@@ -670,7 +672,7 @@ sphere.add( new THREE.ArrowHelper(
 sphere.add( new THREE.ArrowHelper( 
 
 	new THREE.Vector3( 1.0, 0, 0 ), 
-	new THREE.Vector3( 1.4, 0, 0 ), 
+	new THREE.Vector3( 1.25, 0, 0 ), 
 	arrowLength, 
 	0xFF0000, 
 	arrowHeadLength, 
@@ -679,12 +681,43 @@ sphere.add( new THREE.ArrowHelper(
 sphere.add( new THREE.ArrowHelper( 
 
 	new THREE.Vector3( 0, 0, 1.0 ), 
-	new THREE.Vector3( 0, 0, 1.4 ),
+	new THREE.Vector3( 0, 0, 1.25 ),
 	arrowLength, 
 	0x0000CC, 
 	arrowHeadLength, 
 	arrowHeadWidth
 ))
+
+
+
+
+
+const axesLabelStyle = {
+
+	width:   128,
+	height:  128,
+	fillStyle: '#000',
+	font: 'bold italic 64px Georgia, "Times New Roman", serif'
+}
+const xAxisLabel = new SurfaceText( axesLabelStyle )
+xAxisLabel.print( 'x' )
+xAxisLabel.position.set( 0, 0, 1.45 )
+xAxisLabel.scale.set( 0.002, 0.002, 0.002 )
+xAxis.add( xAxisLabel )
+
+const yAxisLabel = new SurfaceText( axesLabelStyle )
+yAxisLabel.print( 'y' )
+yAxisLabel.position.set( 1.45, 0, 0 )
+yAxisLabel.scale.set( 0.002, 0.002, 0.002 )
+yAxis.add( yAxisLabel )
+
+
+const zAxisLabel = new SurfaceText( axesLabelStyle )
+zAxisLabel.print( 'z' )
+zAxisLabel.position.set( 0, 1.45, 0 )
+zAxisLabel.scale.set( 0.002, 0.002, 0.002 )
+zAxis.add( zAxisLabel )
+
 
 
 
@@ -1048,6 +1081,12 @@ const render = function(){
 	requestAnimationFrame( render )
 	controls.update()
 	sphere.rotation.y += 0.0009;
+	
+	cameraWorldPosition = camera.getWorldPosition( new THREE.Vector3() )
+	xAxisLabel.lookAt( cameraWorldPosition )
+	yAxisLabel.lookAt( cameraWorldPosition )
+	zAxisLabel.lookAt( cameraWorldPosition )
+
 	renderer.render( scene, camera )
 	TWEEN.update()
 }
