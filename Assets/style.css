@@ -429,7 +429,7 @@ td:hover {
 */
 .hash-target {
 
-	padding: 2px 0;
+	/*padding: 2px 0;*/
 	animation-duration: 1s;
 	animation-name: hash-target-blink;
 	animation-iteration-count: 2;
