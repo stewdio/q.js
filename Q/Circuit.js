@@ -2,7 +2,7 @@
 
 
 
-
+/*
 
 
 //  THE SIMPLIST FORM OF CIRCUIT!
@@ -31,8 +31,7 @@ var result = c.run()
 console.log( 'result', result.ket.toText() )
 
 
-
-
+*/
 
 
 
