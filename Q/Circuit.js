@@ -2,32 +2,135 @@
 
 
 
+
+
+
+//  THE SIMPLIST FORM OF CIRCUIT!
+//  Just take a lineup of gates
+//  and applies them sequentially and accumulatively
+//  to a horizontal qubit.
+
+Q.Circuit = function(  ){
+
+	this.gates = []
+}
+Q.Circuit.prototype.run = function( x ){
+
+	return this.gates.reduce( function( state, gate ){
+
+		return gate.applyTo( state )
+
+	}, Q.Qubit.HORIZONTAL )
+}
+
+var c = new Q.Circuit()
+c.gates.push( Q.Gate.HADAMARD )
+c.gates.push( Q.Gate.MEASURE )
+
+var result = c.run()
+console.log( 'result', result.ket.toText() )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 
 
-Let’s just make a suuuuuper freeform version to start with.
-Can fix later.
+|0⟩ ───○─────○─────○─────○─────○─────○───
+
+     ┌───┐ ┌───┐             ┌───┐ ╭───╮
+|0⟩ ─┤ H ├─┤   ├───○─────○───┤ M ├─┤ B ├─
+     └───┘ │ C │             └───┘ ╰───╯
+     ┌───┐ │   │             ┌───┐ ╭───╮
+|0⟩ ─┤ X ├─┤   ├───○─────○───┤ M ├─┤ B ├─
+     └───┘ └───┘             └───┘ ╰───╯
+
+|0⟩ ───○─────○─────○─────○─────○─────○───
+
+
+|0⟩ ───○─────○─────○─────○─────○─────○───
+
+
+
+
+─────  Wire
+
+┤  Slot left
+
+├  Slot right
+
+
+┌───┐  Gate top
+
+└───┘  Gate bottom
+
+
+╭───╮  Vizualization top (rounded)
+
+╰───╯  Visualization bottom (rounded)
+
+
+○  Indentity gate (empty slot)
+
 
 
 */
 
 
+
+
+
+
+
+
+
+/*
+//  This is the “almost Matrix” version.
+//  Q.Matrix is geared to handle Q.ComplexNumber instances,
+//  not arbitrary values and/or Q.Gate instances
+//  so... would take serious retooling to be able to re-use Q.Matrix here.
+
 Q.Circuit = function(  ){
 
-	this.starters = []
-
+	this.rows = []
 }
+Q.Circuit.prototype.addGate = function( gate, location, to ){
 
-
-
-
+	//x
+}
 Q.Circuit.prototype.run = function( x ){
-	
-	this.starters.forEach( function( gate ){
 
+	return this.gates.reduce( function( state, gate ){
 
-	})
+		return gate.applyTo( state )
+
+	}, Q.Qubit.HORIZONTAL )
 }
+
+var c = new Q.Circuit()
+c.gates.push( Q.Gate.HADAMARD )
+c.gates.push( Q.Gate.MEASURE )
+
+var result = c.run()
+console.log( 'result', result.ket.toText() )
+
+*/
+
+
+
+
+
+
 
 
 
