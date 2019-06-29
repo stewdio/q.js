@@ -878,8 +878,7 @@ table#console-open-commands .na {
 	position: absolute;
 	margin-top: 50%;
 	width: 100%;
-	/*padding-right: 12%;*/
-	padding-right: 15%;
+	padding-right: 11%;
 	text-align: right;
 	transform: translate( 0, -50% );
 	color: #CCC;
@@ -904,8 +903,8 @@ table#console-open-commands .na {
 
 	  0% { opacity: 0; }
 	  5% { opacity: 1; }
-	 66% { opacity: 1; }
-	 71% { opacity: 0; }
+	 80% { opacity: 1; }
+	 85% { opacity: 0; }
 }
 .unit-circle-label {
 
@@ -913,7 +912,7 @@ table#console-open-commands .na {
 	margin: 50% 0 0 50%;
 	transform: translate( -50%, -50% );
 	white-space: nowrap;
-	animation-duration: 12s;
+	animation-duration: 8s;
 	animation-name: unit-circle-label-keyframes;
 	animation-iteration-count: infinite;
 	opacity: 0;
@@ -958,6 +957,9 @@ table#console-open-commands .na {
 
 	--radius-label-angle: 12%;
 	--radius-label-point: 50%;
+
+
+	--label-angle-delay-factor: 0.1s;
 }
 
 
@@ -965,49 +967,49 @@ table#console-open-commands .na {
 
 	top:  calc( var( --radius-label-angle ) * var( --sine-0deg ) * -1 );
 	left: calc( var( --radius-label-angle ) * var( --cosine-0deg ));
-	animation-delay: 0.0s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 0 );
 }
 .unit-circle-label-angle-45 {
 
 	top:  calc( var( --radius-label-angle ) * var( --sine-45deg ) * -1 );
 	left: calc( var( --radius-label-angle ) * var( --cosine-45deg ));
-	animation-delay: 0.5s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 1 );
 }
 .unit-circle-label-angle-90 {
 
 	top:  calc( var( --radius-label-angle ) * var( --sine-90deg ) * -1 );
 	left: calc( var( --radius-label-angle ) * var( --cosine-90deg ));
-	animation-delay: 1.0s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 2 );
 }
 .unit-circle-label-angle-135 {
 
 	top:  calc( var( --radius-label-angle ) * var( --sine-135deg ) * -1 );
 	left: calc( var( --radius-label-angle ) * var( --cosine-135deg ));
-	animation-delay: 1.5s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 3 );
 }
 .unit-circle-label-angle-180 {
 
 	top:  calc( var( --radius-label-angle ) * var( --sine-180deg ) * -1 );
 	left: calc( var( --radius-label-angle ) * var( --cosine-180deg ));
-	animation-delay: 2.0s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 4 );
 }
 .unit-circle-label-angle-225 {
 
 	top:  calc( var( --radius-label-angle ) * var( --sine-225deg ) * -1 );
 	left: calc( var( --radius-label-angle ) * var( --cosine-225deg ));
-	animation-delay: 2.5s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 5 );
 }
 .unit-circle-label-angle-270 {
 
 	top:  calc( var( --radius-label-angle ) * var( --sine-270deg ) * -1 );
 	left: calc( var( --radius-label-angle ) * var( --cosine-270deg ));
-	animation-delay: 3.0s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 6 );
 }
 .unit-circle-label-angle-315 {
 
 	top:  calc( var( --radius-label-angle ) * var( --sine-315deg ) * -1 );
 	left: calc( var( --radius-label-angle ) * var( --cosine-315deg ));
-	animation-delay: 3.5s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 7 );
 }
 
 
@@ -1017,49 +1019,49 @@ table#console-open-commands .na {
 
 	top:  calc( var( --radius-label-point ) * var( --sine-0deg ) * -1 );
 	left: calc( var( --radius-label-point ) * var( --cosine-0deg ));
-	animation-delay: 0.0s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 8 );
 }
 .unit-circle-label-point-45 {
 
 	top:  calc( var( --radius-label-point ) * var( --sine-45deg ) * -1 );
 	left: calc( var( --radius-label-point ) * var( --cosine-45deg ));
-	animation-delay: 0.5s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 9 );
 }
 .unit-circle-label-point-90 {
 
 	top:  calc( var( --radius-label-point ) * var( --sine-90deg ) * -1 );
 	left: calc( var( --radius-label-point ) * var( --cosine-90deg ));
-	animation-delay: 1.0s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 10 );
 }
 .unit-circle-label-point-135 {
 
 	top:  calc( var( --radius-label-point ) * var( --sine-135deg ) * -1 );
 	left: calc( var( --radius-label-point ) * var( --cosine-135deg ));
-	animation-delay: 1.5s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 11 );
 }
 .unit-circle-label-point-180 {
 
 	top:  calc( var( --radius-label-point ) * var( --sine-180deg ) * -1 );
 	left: calc( var( --radius-label-point ) * var( --cosine-180deg ));
-	animation-delay: 2.0s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 12 );
 }
 .unit-circle-label-point-225 {
 
 	top:  calc( var( --radius-label-point ) * var( --sine-225deg ) * -1 );
 	left: calc( var( --radius-label-point ) * var( --cosine-225deg ));
-	animation-delay: 2.5s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 13 );
 }
 .unit-circle-label-point-270 {
 
 	top:  calc( var( --radius-label-point ) * var( --sine-270deg ) * -1 );
 	left: calc( var( --radius-label-point ) * var( --cosine-270deg ));
-	animation-delay: 3.0s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 14 );
 }
 .unit-circle-label-point-315 {
 
 	top:  calc( var( --radius-label-point ) * var( --sine-315deg ) * -1 );
 	left: calc( var( --radius-label-point ) * var( --cosine-315deg ));
-	animation-delay: 3.5s;
+	animation-delay: calc( var( --label-angle-delay-factor ) * 15 );
 }
 
 .unit-circle .division {
