@@ -2,7 +2,7 @@
 
 
 
-Q.Qubit = function( a, b, dirac ){
+Q.Qubit = function( a, b, label, name ){
 
 	`
 	A qubit is represented by Q.Matrix([ 𝒂 ],[ 𝒃 ]) where 𝒂 and 𝒃 are “complex 
@@ -143,8 +143,9 @@ Q.Qubit = function( a, b, dirac ){
 
 	//  Used for Dirac notation: |?⟩
 
-	if( typeof dirac === 'string' ) this.dirac = dirac
-	else {
+	if( typeof label === 'string' ) this.label = label
+	if( typeof name  === 'string' ) this.name  = name
+	if( this.label === undefined || this.name === undefined ){
 
 		const found = Object.values( Q.Qubit.constants ).find( function( qubit ){
 
@@ -154,11 +155,15 @@ Q.Qubit = function( a, b, dirac ){
 				b.isEqualTo( qubit.ket )
 			)
 		})
-		if( found === undefined ) this.dirac = '?'
+		if( found === undefined ){
+
+			this.label = '?'
+			this.name  = 'Unnamed'
+		}
 		else {
 
-			this.dirac = found.dirac
-			this.name  = found.name
+			if( this.label === undefined ) this.label = found.label
+			if( this.name  === undefined ) this.name  = found.name
 		}
 	}
 }
@@ -173,13 +178,14 @@ Object.assign( Q.Qubit, {
 	index: 0,
 	help: function(){ return Q.help( this )},
 	constants: {},
-	createConstant: function( key, value ){
+	createConstant: Q.createConstant,
+	// createConstant: function( key, value ){
 
-		Q.Qubit[ key ] = value
-		Q.Qubit[ key ].name = key
-		Q.Qubit.constants[ key ] = Q.Qubit[ key ]
-		Object.freeze( Q.Qubit[ key ])
-	},
+	// 	Q.Qubit[ key ] = value
+	// 	Q.Qubit[ key ].name = key
+	// 	Q.Qubit.constants[ key ] = Q.Qubit[ key ]
+	// 	Object.freeze( Q.Qubit[ key ])
+	// },
 	createConstants: Q.createConstants,
 	
 
@@ -318,12 +324,12 @@ Q.Qubit.createConstants(
 	//  |D⟩ and |A⟩
 	//  |R⟩ and |L⟩
 
-	'HORIZONTAL', new Q.Qubit( 1, 0, 'H' ),//  ZERO.
-	'VERTICAL',   new Q.Qubit( 0, 1, 'V' ),//  ONE.
-	'DIAGONAL',      new Q.Qubit( Math.SQRT1_2,  Math.SQRT1_2, 'D' ),
-	'ANTI_DIAGONAL', new Q.Qubit( Math.SQRT1_2, -Math.SQRT1_2, 'A' ),
-	'RIGHT_HAND_CIRCULAR_POLARIZED', new Q.Qubit( Math.SQRT1_2, new Q.ComplexNumber( 0, -Math.SQRT1_2 ), 'R' ),//  RHCP
-	'LEFT_HAND_CIRCULAR_POLARIZED',  new Q.Qubit( Math.SQRT1_2, new Q.ComplexNumber( 0,  Math.SQRT1_2 ), 'L' ) //  LHCP
+	'HORIZONTAL', new Q.Qubit( 1, 0, 'H', 'Horizontal' ),//  ZERO.
+	'VERTICAL',   new Q.Qubit( 0, 1, 'V', 'Vertical' ),//  ONE.
+	'DIAGONAL',      new Q.Qubit( Math.SQRT1_2,  Math.SQRT1_2, 'D', 'Diagonal' ),
+	'ANTI_DIAGONAL', new Q.Qubit( Math.SQRT1_2, -Math.SQRT1_2, 'A', 'Anti-diagonal' ),
+	'RIGHT_HAND_CIRCULAR_POLARIZED', new Q.Qubit( Math.SQRT1_2, new Q.ComplexNumber( 0, -Math.SQRT1_2 ), 'R', 'Right-hand Circular Polarized' ),//  RHCP
+	'LEFT_HAND_CIRCULAR_POLARIZED',  new Q.Qubit( Math.SQRT1_2, new Q.ComplexNumber( 0,  Math.SQRT1_2 ), 'L', 'Left-hand Circular Polarized' ) //  LHCP
 )
 
 

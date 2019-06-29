@@ -2,7 +2,23 @@
 
 
 
-Q.Board = function(){}
+Q.Board = function(){
+
+
+	this.moments = []
+}
+
+
+
+Q.Board.prototype.run = function(){
+
+	moments.forEach( function( moment ){
+
+		
+	})
+}
+
+
 
 
 /*

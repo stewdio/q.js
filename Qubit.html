@@ -243,7 +243,7 @@ var a = new Q.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id="this.dirac"><a href="#this.dirac">dirac</a></dt>
+					<dt id="this.label"><a href="#this.label">label</a></dt>
 					<dd>
 						<code>String</code>.
 						Single character representing this qubit state, 
@@ -994,11 +994,11 @@ Object.keys( Q.Qubit.constants ).forEach( function( key ){
 	})
 	
 	qubitElement.classList.add( 'qubit' )
-	qubitElement.setAttribute( 'title', Q.toTitleCase( qubit.name ))
-	qubitElement.innerText = qubit.dirac
+	qubitElement.setAttribute( 'title', qubit.name )
+	qubitElement.innerText = qubit.label
 	qubitContainerElement.appendChild( qubitElement )
 
-	qubitNameElement.innerText = Q.toTitleCase( qubit.name )
+	qubitNameElement.innerText = qubit.name
 	qubitContainerElement.appendChild( qubitNameElement )
 	
 	blochSphereQubits.appendChild( qubitContainerElement )
