@@ -291,27 +291,117 @@ var a = new Q.Qubit( 0, 1 )
 			<ul class="properties">
 				<li>
 					<dt id=".HORIZONTAL"><a href="#.HORIZONTAL">HORIZONTAL</a></dt>
-					<dd><code>new Q.Qubit( 1, 0, 'H' )</code></dd>
+					<dd>
+						<code>new Q.Qubit( 1, 0, 'H', 'Horizontal' )</code><br>
+						<div class="matrix">
+							<div class="matrix-bracket-left"></div>
+							<div class="matrix-bracket-right"></div>
+							<table>
+								<tr><td>1</td></tr>
+								<tr><td>0</td></tr>
+							</table>
+						</div>
+					</dd>
 				</li>
 				<li>
 					<dt id=".VERTICAL"><a href="#.VERTICAL">VERTICAL</a></dt>
-					<dd><code>new Q.Qubit( 0, 1, 'V' )</code></dd>
+					<dd>
+						<code>new Q.Qubit( 0, 1, 'V', 'Vertical' )</code><br>
+						<div class="matrix">
+							<div class="matrix-bracket-left"></div>
+							<div class="matrix-bracket-right"></div>
+							<table>
+								<tr><td>0</td></tr>
+								<tr><td>1</td></tr>
+							</table>
+						</div>
+					</dd>
 				</li>
 				<li>
 					<dt id=".DIAGONAL"><a href="#.DIAGONAL">DIAGONAL</a></dt>
-					<dd><code>new Q.Qubit( 1÷√2,  1÷√2, 'D' )</code></dd>
+					<dd>
+						<code>new Q.Qubit( Math.SQRT1_2, Math.SQRT1_2, 'D', 'Diagonal' )</code>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr><td>1</td></tr>
+									<tr><td>1</td></tr>
+								</table>
+							</div>
+							×
+							<table class="division">
+								<tr class="dividend"><td>1</td></tr>
+								<tr class="divisor"><td>√ 2</td></tr>
+							</table>
+						</div>
+					</dd>
 				</li>
 				<li>
 					<dt id=".ANTI_DIAGONAL"><a href="#.ANTI_DIAGONAL">ANTI_DIAGONAL</a></dt>
-					<dd><code>new Q.Qubit( 1÷√2, -1÷√2, 'A' )</code></dd>
+					<dd>
+						<code>new Q.Qubit( Math.SQRT1_2, -Math.SQRT1_2, 'A', 'Anti-diagonal' )</code>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr><td>1</td></tr>
+									<tr><td>-1</td></tr>
+								</table>
+							</div>
+							×
+							<table class="division">
+								<tr class="dividend"><td>1</td></tr>
+								<tr class="divisor"><td>√ 2</td></tr>
+							</table>
+						</div>
+					</dd>
 				</li>
 				<li>
 					<dt id=".RIGHT_HAND_CIRCULAR_POLARIZED"><a href="#.RIGHT_HAND_CIRCULAR_POLARIZED">RIGHT_HAND_CIRCULAR_POLARIZED</a></dt>
-					<dd><code>new Q.Qubit( 1÷√2, -1÷√2i, 'R' )</code></dd>
+					<dd>
+						<code>new Q.Qubit( Math.SQRT1_2, new Q.ComplexNumber( 0, -Math.SQRT1_2 ), 'R', 'Right-hand Circular Polarized' )</code>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr><td>1</td></tr>
+									<tr><td>-<span class="symbol">i</span></td></tr>
+								</table>
+							</div>
+							×
+							<table class="division">
+								<tr class="dividend"><td>1</td></tr>
+								<tr class="divisor"><td>√ 2</td></tr>
+							</table>
+						</div>
+					</dd>
 				</li>
+
+
 				<li>
 					<dt id=".LEFT_HAND_CIRCULAR_POLARIZED"><a href="#.LEFT_HAND_CIRCULAR_POLARIZED">LEFT_HAND_CIRCULAR_POLARIZED</a></dt>
-					<dd><code>new Q.Qubit( 1÷√2,  1÷√2i, 'L' )</code></dd>
+					<dd>
+						<code>new Q.Qubit( Math.SQRT1_2, new Q.ComplexNumber( 0, Math.SQRT1_2 ), 'L', 'Left-hand Circular Polarized' )</code>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr><td>1</td></tr>
+									<tr><td><span class="symbol">i</span></td></tr>
+								</table>
+							</div>
+							×
+							<table class="division">
+								<tr class="dividend"><td>1</td></tr>
+								<tr class="divisor"><td>√ 2</td></tr>
+							</table>
+						</div>
+					</dd>
 				</li>
 			</ul>
 			<hr>

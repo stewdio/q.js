@@ -178,14 +178,7 @@ Object.assign( Q.Qubit, {
 	index: 0,
 	help: function(){ return Q.help( this )},
 	constants: {},
-	createConstant: Q.createConstant,
-	// createConstant: function( key, value ){
-
-	// 	Q.Qubit[ key ] = value
-	// 	Q.Qubit[ key ].name = key
-	// 	Q.Qubit.constants[ key ] = Q.Qubit[ key ]
-	// 	Object.freeze( Q.Qubit[ key ])
-	// },
+	createConstant:  Q.createConstant,
 	createConstants: Q.createConstants,
 	
 

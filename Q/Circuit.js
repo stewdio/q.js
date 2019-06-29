@@ -2,7 +2,36 @@
 
 
 
-Q.Circuit = function(){
+/*
+
+
+Let’s just make a suuuuuper freeform version to start with.
+Can fix later.
+
+
+*/
+
+
+Q.Circuit = function(  ){
+
+	this.starters = []
+
+}
+
+
+
+
+Q.Circuit.prototype.run = function( x ){
+	
+	this.starters.forEach( function( gate ){
+
+
+	})
+}
+
+
+
+
 
 
 /*
@@ -45,7 +74,7 @@ TWO measureers:
 
 */
 
-}
+
 
 
 
@@ -69,9 +98,9 @@ https://en.wikipedia.org/wiki/Box-drawing_character
   ┌───┐
 ──┤ H ├──────────────
   └───┘
-         ┌───┐
+		 ┌───┐
 ─────────┤ H ├───────
-         └───┘
+		 └───┘
 
 
 
