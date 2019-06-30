@@ -264,7 +264,8 @@ pre, code, samp {
 
 	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
 	font-weight: 300;
-	font-size: 13.5px;
+	font-size:   13.5px;
+	line-height: 17.5px;
 }
 code, samp {
 
@@ -276,7 +277,7 @@ pre code {
 
 	margin:  0;
 	padding: 0;
-	line-height: 20px;
+	/*line-height: 20px;*/
 }
 code .comment {
 

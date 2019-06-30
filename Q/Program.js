@@ -164,7 +164,7 @@ Q.Program.prototype.toDiagram = function(){
 
 					first  += '┌───┐'
 					second += '┤ '+ node.label +' '
-					third  += '╰───╯'
+					third  += '└───┘'
 					if( m < that.moments.length - 1 ) second +='├'
 					else second += '│'
 				}
