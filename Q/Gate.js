@@ -200,6 +200,10 @@ Q.Gate.createConstants(
 
 Object.assign( Q.Gate.prototype, {
 
+	clone: function(){
+
+		return new Q.Gate( this.applyTo, this.label, this.name )
+	},
 	toText: function(){
 
 		return `-${this.label}-`

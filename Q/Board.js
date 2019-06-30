@@ -15,7 +15,6 @@ Q.Board = function( rowSetup, resolveNext ){
 
 	this.rows = rowSetup()
 	this.resolveNext = resolveNext()
-
 	this.domElement = document.createElement( 'div' )
 	this.domElement.classList.add( 'q-board' )
 }
@@ -96,7 +95,7 @@ Q.Board.prototype.toDiagram = function(){
 		}, '\n    ' ) +' '
 		return rowText//.substr( 1 )
 
-	}, '' )
+	}, '' ).substr( 1 )
 }
 
 
