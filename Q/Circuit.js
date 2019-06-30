@@ -178,7 +178,7 @@ p.set( 0, 1, Q.Qubit.VERTICAL )
 p.set( 0, 2, Q.Qubit.VERTICAL )
 
 p.set( 1, 2, Q.Gate.HADAMARD )
-p.set( 3, 0, Q.Gate.PAULI_X )
+p.set( 3, 1, Q.Gate.PAULI_X )
 
 
 
