@@ -118,10 +118,15 @@ Q.Program.prototype.toDiagram = function(){
 
 	const 
 	that = this,
-	graph = new Array( this.bandwidth * 3 ).fill( '' )
+	graph = new Array( this.bandwidth * 3 + 1 ).fill( '' )
 
 	this.moments.forEach( function( moment, m ){
 
+		if( m === 0 ){
+
+			graph[ 0 ] = '\n '
+		}
+		graph[ 0 ] += '   T'+ m
 		moment.forEach( function( node, n ){
 
 			let 
@@ -129,6 +134,12 @@ Q.Program.prototype.toDiagram = function(){
 			second = '',
 			third  = ''
 
+			if( m === 0 ){
+
+				first  = '    ' ,
+				second = 'Q'+ n  +'  ',
+				third  = '    '
+			}
 			if( node instanceof Q.Qubit ){
 
 				first  += '    '
@@ -157,10 +168,10 @@ Q.Program.prototype.toDiagram = function(){
 					if( m < that.moments.length - 1 ) second +='├'
 					else second += '│'
 				}
-			}
-			graph[ n * 3 ] += first
-			graph[ n * 3 + 1 ] += second
-			graph[ n * 3 + 2 ] += third
+			}			
+			graph[ n * 3 + 1 ] += first
+			graph[ n * 3 + 2 ] += second
+			graph[ n * 3 + 3 ] += third
 		})
 	})
 	return  graph.join( '\n' )
@@ -173,12 +184,24 @@ Q.Program.prototype.toDiagram = function(){
 
 
 var p = new Q.Program()
+
 p.set( 0, 0, Q.Qubit.HORIZONTAL )
 p.set( 0, 1, Q.Qubit.VERTICAL )
 p.set( 0, 2, Q.Qubit.VERTICAL )
 
+p.set( 1, 0, Q.Gate.HADAMARD )
+p.set( 2, 0, Q.Gate.PAULI_X )
+p.set( 3, 0, Q.Gate.PAULI_Y )
+p.set( 4, 0, Q.Gate.PAULI_Z )
+// p.set( 5, 0, Q.Gate.MEASURE )
+
+p.set( 1, 1, Q.Gate.HADAMARD )
+p.set( 2, 1, Q.Gate.PHASE )
+p.set( 3, 1, Q.Gate.PI_8 )
+// p.set( 5, 1, Q.Gate.MEASURE )
+
 p.set( 1, 2, Q.Gate.HADAMARD )
-p.set( 3, 1, Q.Gate.PAULI_X )
+// p.set( 5, 2, Q.Gate.MEASURE )
 
 
 
@@ -270,56 +293,11 @@ Q4  |0⟩───●────●────●────●────�
 
 
 
-/*
-
-//  This is the “almost Matrix” version.
-//  Q.Matrix is geared to handle Q.ComplexNumber instances,
-//  not arbitrary values and/or Q.Gate instances
-//  so... would take serious retooling to be able to re-use Q.Matrix here.
-
-Q.Circuit = function(  ){
-
-	this.moment = []
-}
-Q.Circuit.prototype.addGate = function( gate, location, to ){
-
-	//x
-}
-Q.Circuit.prototype.run = function( x ){
-
-	return this.gates.reduce( function( state, gate ){
-
-		return gate.applyTo( state )
-
-	}, Q.Qubit.HORIZONTAL )
-}
-
-var c = new Q.Circuit()
-c.gates.push( Q.Gate.HADAMARD )
-c.gates.push( Q.Gate.MEASURE )
-
-var result = c.run()
-console.log( 'result', result.ket.toText() )
-
-*/
-
-
-
-
-
-
-
-
-
 
 
 /*
 
-rename to Q.Program ??
 
-
-should also extend Matrix?
-and then program flows from rows[0] to rows[ row.length-1 ]
 
 maybe name each qubit [row] with an animal / color combo?
 	that way we can label each bit that comes out!
@@ -354,58 +332,6 @@ TWO measureers:
 */
 
 
-
-/*V
-
-
-Q.Program.prototype.toDiagram = function(){
-
-	return this.moments.reduce( function( text, moment, t ){
-
-		text += '\n'+ moment.reduce( function( text, value, i ){
-
-			let label = ''
-			if( value instanceof Q.Qubit || value.label === 'I' ) label = '    '
-			else label = '┌───┐'
-			return text + label
-
-		}, '' )
-		text += '\n'+ moment.reduce( function( text, value, i ){
-
-			let label = ''
-			if( value instanceof Q.Qubit ) label = '|'+ value.ket.toText() +'⟩─'
-			else {
-
-				if( value.label === 'I' ){
-
-					label += '──○'
-					if( i < moment.length - 1 ) label +='──'
-				}
-				else {
-
-					label = '┤ '+ value.label
-					if( i < moment.length - 1 ) label +=' ├'
-					else label += '│'
-				}
-			}
-			return text + label
-
-		}, '' )
-		text += '\n'+ moment.reduce( function( text, value, i ){
-
-			let label = ''
-			if( value instanceof Q.Qubit || value.label === 'I' ) label = '    '
-			else label = '└───┘'
-			return text + label
-
-		}, '' )
-		return text
-
-	}, '' ).substr( 1 )
-}
-
-
-*/
 
 
 
@@ -460,6 +386,73 @@ Let’s go hopping around the unit circle.
 CONSTANTS
 
 SHOR!
+
+
+*/
+
+
+
+
+
+/*
+
+
+
+https://en.wikipedia.org/wiki/List_of_quantum_processors
+
+
+
+
+simple 5 x 2 board:
+
+
+|0⟩ -- 1 -- 2 -- 3 -- M
+
+|0⟩ -- 1 -- 2 -- 3 -- M
+
+Can drop whatever Q.Gate.constants has on those spots!
+
+
+
+
+
+
+google bristlecone (staggered) 6  x 12 lattice
+
+|0⟩ ---- 1 -- 2 -- 3 -- 4 -- M
+
+|0⟩ -- 1 -- 2 -- 3 -- 4 -- M
+
+|0⟩ ---- 1 -- 2 -- 3 -- 4 -- M
+
+|0⟩ -- 1 -- 2 -- 3 -- 4 -- M
+
+|0⟩ -- 1 -- 2 -- 3 -- 4 -- M
+
+|0⟩ ---- 1 -- 2 -- 3 -- 4 -- M
+
+|0⟩ -- 1 -- 2 -- 3 -- 4 -- M
+
+|0⟩ ---- 1 -- 2 -- 3 -- 4 -- M
+
+|0⟩ -- 1 -- 2 -- 3 -- 4 -- M
+
+|0⟩ ---- 1 -- 2 -- 3 -- 4 -- M
+
+|0⟩ -- 1 -- 2 -- 3 -- 4 -- M
+
+|0⟩ ---- 1 -- 2 -- 3 -- 4 -- M
+
+
+
+continuous run!
+constantly cycling the circuit.
+
+with each change to the board reset the history
+	and start cycling immediately
+	and keep track of all results
+
+cannot wait to get this running on WebGPU!
 
 
 */

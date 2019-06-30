@@ -44,17 +44,17 @@
 		<script src="Q/Matrix.js"></script>
 		<script src="Q/Qubit.js"></script>
 		<script src="Q/Gate.js"></script>
-		<script src="Q/Board.js"></script>
-		<script src="Q/Circuit.js"></script>
+		<script src="Q/Program.js"></script>
 		<script src="Assets/navigation.js"></script>
 	</head>
 	<body>
 		<main>
 			<h3>Quantum programs—Coming soon</h3>
 			<p>
-				A circuit is an assembly of gates on a board that operate on qubits;
-				it’s a quantum program.
-				But we’re not  <em>quite</em> ready to program yet. 
+				A quantum program is a series of moments in time.
+				During each moment a gate operation can be applied to a qubit.
+				But we’re not <em>quite</em> ready to program yet. 
+				For a sneak peak, open your JavaScript console and use the below as a guide.
 			</p>
 			<br>
 			<p>
@@ -62,19 +62,40 @@
 			</p>
 			<br><br>
 <pre><code>
-|0⟩ ───○─────○─────○─────○─────○─────○───
+    T0   T1   T2   T3   T4   T5
+        ┌───┐┌───┐┌───┐┌───┐   
+Q0  |0⟩─┤ H ├┤ X ├┤ Y ├┤ Z ├──○
+        ╰───╯╰───╯╰───╯╰───╯   
+        ┌───┐┌───┐┌───┐        
+Q1  |1⟩─┤ H ├┤ S ├┤ T ├──○────○
+        ╰───╯╰───╯╰───╯        
+        ┌───┐                  
+Q2  |1⟩─┤ H ├──○────○────○────○
+        ╰───╯
+</code></pre>
+<br><br>
+<pre><code>
+var p = new Q.Program()
 
-     ┌───┐ ┌───┐             ┌───┐ ╭───╮
-|0⟩ ─┤ H ├─┤   ├───○─────○───┤ M ├─┤ B ├─
-     └───┘ │ C │             └───┘ ╰───╯
-     ┌───┐ │   │             ┌───┐ ╭───╮
-|0⟩ ─┤ X ├─┤   ├───○─────○───┤ M ├─┤ B ├─
-     └───┘ └───┘             └───┘ ╰───╯
+p.set( 0, 0, Q.Qubit.HORIZONTAL )
+p.set( 0, 1, Q.Qubit.VERTICAL )
+p.set( 0, 2, Q.Qubit.VERTICAL )
 
-|0⟩ ───○─────○─────○─────○─────○─────○───
+p.set( 1, 0, Q.Gate.HADAMARD )
+p.set( 2, 0, Q.Gate.PAULI_X )
+p.set( 3, 0, Q.Gate.PAULI_Y )
+p.set( 4, 0, Q.Gate.PAULI_Z )
 
+p.set( 1, 1, Q.Gate.HADAMARD )
+p.set( 2, 1, Q.Gate.PHASE )
+p.set( 3, 1, Q.Gate.PI_8 )
 
-|0⟩ ───○─────○─────○─────○─────○─────○───
+p.set( 1, 2, Q.Gate.HADAMARD )
+</code></pre>
+<br><br>
+<pre><code>
+p.toDiagram()
+p.run()
 </code></pre>
 
 
