@@ -57,7 +57,21 @@ Object.assign( Q.Gate, {
 	help: function(){ return Q.help( this )},
 	constants: {},
 	createConstant: Q.createConstant,
-	createConstants: Q.createConstants
+	createConstants: Q.createConstants,
+	findByLabel: function( label ){
+
+		return Object.values( Q.Gate.constants ).find( function( element ){
+
+			return element.label.toUpperCase() === label.toUpperCase()
+		})
+	},
+	findByName: function( label ){
+
+		return Object.values( Q.Gate.constants ).find( function( element ){
+
+			return element.name.toUpperCase() === name.toUpperCase()
+		})
+	}
 })
 
 
