@@ -23,5 +23,8 @@ Q.Qubit.HORIZONTAL
     .ket.toText()
 ```  
 
-
+Or if brevity is more your thing, try this version:
+```javascript
+Q.Program.fromText( '|0>-H' ).run()
+```  
 
