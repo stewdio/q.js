@@ -94,8 +94,12 @@ p.set( 1, 2, Q.Gate.HADAMARD )
 </code></pre>
 <br><br>
 <pre><code>
+p.toText()
 p.toDiagram()
 p.run()
+
+var p2 = Q.Program.fromText( p.toText() )//  Yes!
+p2.toText() === p.toText()
 </code></pre>
 
 
