@@ -25,6 +25,6 @@ Q.Qubit.HORIZONTAL
 
 Or if brevity is more your thing, try this version:
 ```javascript
-Q.Program.fromText( '|0>-H' ).run()
+Q( '|0>-H' ).run()
 ```  
 

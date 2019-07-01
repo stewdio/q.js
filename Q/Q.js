@@ -2,7 +2,7 @@
 
 
 
-const Q = (function(){
+const Q = (function( programText ){
 
 	`
 	Hi. Do you need help with something? 
@@ -11,6 +11,8 @@ const Q = (function(){
 
 	Q.Qubit.help()
 	`
+
+	return Q.Program.fromText( programText )
 })
 
 
