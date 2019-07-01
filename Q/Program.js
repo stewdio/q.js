@@ -57,7 +57,16 @@ Object.assign( Q.Program, {
 			line.forEach( function( moment, m ){
 
 				let node
-				if( moment.substr( 0, 1 ) === '|' ) node = new Q.Qubit( undefined, node )
+				if( moment.substr( 0, 1 ) === '|' ){
+
+
+					//  Well this isn’t very robust!
+					//  It’s expecting either 0 or 1.
+					//  What if we were trying to force a curveball qubit in there??
+
+					moment = +moment.substr( 1, moment.length - 2 )
+					node = Q.Qubit.findByKet( moment )
+				}
 				else node = new Q.Gate.findByLabel( moment )
 				p.set( m, l, node )
 			})

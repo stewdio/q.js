@@ -184,6 +184,17 @@ Object.assign( Q.Qubit, {
 
 
 
+	findByKet: function( ket ){
+
+		if( ket instanceof Q.ComplexNumber === false ){
+
+			ket = new Q.ComplexNumber( ket )
+		}
+		return Object.values( Q.Qubit.constants ).find( function( qubit ){
+
+			return qubit.ket.isEqualTo( ket )
+		})
+	},	
 	areEqual: function( qubit0, qubit1 ){
 
 		return ( 
