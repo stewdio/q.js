@@ -205,11 +205,11 @@
 			<hr>
 			<h3 id="Constructor">Constructor</h3>
 			<p>
-				<code>Q.Qubit</code>
-				extends the <code>Q.<a href="Matrix.html">Matrix</a></code> class
+				<code>Qubit</code>
+				extends the <code><a href="Matrix.html">Matrix</a></code> class
 				and therefore inherits its static and prototypal properties.
 				The constructor expects two arguments that are each either
-				instances of <code>Number</code> or <code>Q.<a href="ComplexNumber.html">ComplexNumber</a></code>.
+				instances of <code>Number</code> or <code><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code>.
 				An optional third argument, expected in the form of a single character <code>String</code>, may be used as a text label for the qubit.
 				If no text label is provided the constructor checks against the list of existing 
 				<code><a href="#.constants">constants</a></code>
@@ -217,28 +217,28 @@
 			</p>
 			<p>
 				When a new qubit is created it internally invokes the
-				<code>Q.<a href="Matrix.html">Matrix</a></code> constructor,
-				such that <code>new Q.Qubit( <span class="symbol">a</span>, <span class="symbol">b</span> )</code>
+				<code><a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a></code> constructor,
+				such that <code>new <a href="Q.html">Q</a>.Qubit( <span class="symbol">a</span>, <span class="symbol">b</span> )</code>
 				is similar to
-				<code>new Q.<a href="Matrix.html">Matrix</a>([ <span class="symbol">a</span> ],[ <span class="symbol">b</span> ])</code>.
+				<code>new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>([ <span class="symbol">a</span> ],[ <span class="symbol">b</span> ])</code>.
 				If the two supplied values do not satisfy the assertion that
 				|<span class="symbol">a</span>|<sup>2</sup> + |<span class="symbol">b</span>|<sup>2</sup> = 1 
 				then an error is thrown.
 			</p>
 <pre><code>
-var a = new Q.Qubit( 0, 1 )
+var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 </code></pre>
 			<ul class="properties">
 				<li>
 					<dt id="this.bra"><a href="#this.bra">bra</a></dt>
 					<dd>
-						<code>Q.<a href="ComplexNumber.html">ComplexNumber</a></code>.
+						<code><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code>.
 					</dd>
 				</li>
 				<li>
 					<dt id="this.ket"><a href="#this.ket">ket</a></dt>
 					<dd>
-						<code>Q.<a href="ComplexNumber.html">ComplexNumber</a></code>.
+						<code><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code>.
 					</dd>
 				</li>
 				<li>
@@ -248,7 +248,7 @@ var a = new Q.Qubit( 0, 1 )
 						Single character representing this qubit state, 
 						for example ‘H’ for <a href="#.HORIZONTAL">horizontal</a>. 
 						This can be passed to the constructor as an optional third argument 
-						or automatically assigned based on existing Q.Qubit <a href="#Constants">constants</a>.
+						or automatically assigned based on existing <code><a href="Q.html">Q</a>.Qubit.<a href="#Constants">constants</a></code>.
 						If no match is found among existings constants the ‘?’ character is assigned.
 						Note: This property name and behavior expected to change in the near future.
 					</dd>
@@ -267,7 +267,7 @@ var a = new Q.Qubit( 0, 1 )
 					<dd>
 						<code>Number</code>.
 						An identification number assigned to the instance based on the
-						auto-incrementing static number <code>Q.Qubit.<a href="#.index">index</a></code>.
+						auto-incrementing static number <code><a href="Q.html">Q</a>.Qubit.<a href="#.index">index</a></code>.
 						Used for minding the total number of instances created.
 					</dd>
 				</li>
@@ -275,7 +275,7 @@ var a = new Q.Qubit( 0, 1 )
 			<hr>
 			<h3 id="Constants">Constants</h3>
 			<p>
-				While <code>Q.Qubit</code> <a href="#Constants">constants</a>
+				While <code><a href="Q.html">Q</a>.Qubit</code> <a href="#Constants">constants</a>
 				are appended directly to the <code>Q.Qubit</code> object,
 				they are also appended to a <code>Q.Qubit.constants</code> object
 				to make looking up constants in the JavaScript console trivial,

@@ -31,6 +31,11 @@ Object.assign( Q.Program, {
 
 	fromText: function( text ){
 
+
+		//  Is this a String template?
+		
+		if( text.raw !== undefined ) text = ''+text.raw
+
 		const 
 		linesRaw = text.split( '\n' ),
 		lines = linesRaw.reduce( function( cleaned, line ){
@@ -46,6 +51,7 @@ Object.assign( Q.Program, {
 		bandwidth = lines.length
 
 		
+		//  ADD VALIDATION:
 		//  should check for equal moments length for all qubits!
 		//  #%^#$^&$%&*%^*(%&*)^&(*%^&*$^&*%^*()&*&_&(^*&%^$#%@$$^%&^*(&%$#&%$%@#%^#)))
 		const timewidth = lines[ 0 ].length

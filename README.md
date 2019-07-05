@@ -13,7 +13,8 @@ Learn more at [https://stewdio.github.io/q.js](https://stewdio.github.io/q.js).
 
 It’s easy
 ------------------------------------------------------------------------------
-Ready to perform the most superfluous coin-flip code ever? Load up the Q website at
+Ready to perform the most superfluous coin-flip code ever? Load up the Q 
+website at
 [https://stewdio.github.io/q.js](https://stewdio.github.io/q.js)
 and paste this in to your JavaScript console:
 ```javascript
@@ -23,8 +24,9 @@ Q.Qubit.HORIZONTAL
     .ket.toText()
 ```  
 
-Or if brevity is more your thing, try this version:
+Or if brevity is more your thing, try this version. (Note those are backticks, 
+not quotes.)
 ```javascript
-Q( '|0>-H' ).run()
+Q`|0>-H`.run()
 ```  
 

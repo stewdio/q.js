@@ -139,27 +139,27 @@
 			<hr>
 			<h3 id="Constructor">Constructor</h3>
 			<p>
-				<code>Q.Matrix</code> creates and operates on matrices of arbitrary dimensions. 
-				This is in contrast to many graphics libraries, for example, 
+				The <code>Matrix</code> class creates and operates on matrices of arbitrary dimensions. 
+				This is in contrast to some popular graphics libraries
 				which optimize for specific sizes of matrices—with corresponding class names like
 				<code>Matrix3</code> (for 3 × 3 matrices) or <code>Matrix4</code> (for 4 × 4 matrices).
 				Q, meanwhile, is much more flexible. 
 				The constructor expects an argument list of 
 				equal-length arrays where each array represents a row of column values. 
-				<code>Q.Matrix</code> then automatically determines the dimensions based on the number of 
+				<code>Matrix</code> then automatically determines the dimensions based on the number of 
 				arguments (rows) and length of each row (number of columns). 
 				The constructor will throw an error if the row lengths are not equal. 
 			</p>
 			<p>
-				Upon creation <code>Q.Matrix</code> converts all argument values of type <code>Number</code> 
-				to <code>Q.<a href="ComplexNumber.html">ComplexNumber</a></code> instances.
-				Currently <code>Q.Matrix</code> does not support recursion;
+				Upon creation <code>Matrix</code> converts all argument values of type <code>Number</code> 
+				to <code><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code> instances.
+				Currently <code>Matrix</code> does not support recursion;
 				a matrix cannot contain matrices as values.
 				A matrix also cannot change its dimensions, making destructive properties 
 				that yield matrices of a different size (like <code>multiply$</code>, for example) impossible.
 			</p>
 <pre><code>
-var a = new Q.Matrix(  
+var a = new <a href="Q.html">Q</a>.Matrix(  
 	[ 1, 2, 3 ],  
 	[ 4, 5, 6 ])
 </code></pre>
@@ -214,9 +214,9 @@ var a = new Q.Matrix(
 			<hr>
 			<h3 id="Constants">Constants</h3>
 			<p>
-				While <code>Q.Matrix</code> <a href="#Constants">constants</a>
-				are appended directly to the <code>Q.Matrix</code> object,
-				they are also appended to a <code>Q.Matrix.constants</code> object
+				While <code>Matrix</code> <a href="#Constants">constants</a>
+				are appended directly to the <code>Matrix</code> object,
+				they are also appended to a <code>Matrix.constants</code> object
 				to make looking up constants in the JavaScript console trivial,
 				and to make iterating across all constants convenient via
 				functions like 
@@ -230,7 +230,7 @@ var a = new Q.Matrix(
 				<li>
 					<dt id=".IDENTITY_2X2"><a href="#.IDENTITY_2X2">IDENTITY_2X2</a></dt>
 					<dd>
-						<code>Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 2 )</code>
+						<code><a href="Q.html">Q</a>.Matrix.<a href="#.createIdentity">createIdentity</a>( 2 )</code>
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -250,7 +250,7 @@ var a = new Q.Matrix(
 				<li>
 					<dt id=".IDENTITY_3X3"><a href="#.IDENTITY_3X3">IDENTITY_3X3</a></dt>
 					<dd>
-						<code>Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 3 )</code>
+						<code><a href="Q.html">Q</a>.Matrix.<a href="#.createIdentity">createIdentity</a>( 3 )</code>
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -273,7 +273,7 @@ var a = new Q.Matrix(
 				<li>
 					<dt id=".IDENTITY_4X4"><a href="#.IDENTITY_4X4">IDENTITY_4X4</a></dt>
 					<dd>
-						<code>Q.Matrix.<a href="#.createIdentity">createIdentity</a>( 4 )</code>
+						<code><a href="Q.html">Q</a>.Matrix.<a href="#.createIdentity">createIdentity</a>( 4 )</code>
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -300,7 +300,7 @@ var a = new Q.Matrix(
 					<dt id=".CONSTANT0_2X2"><a href="#.CONSTANT0_2X2">CONSTANT0_2X2</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(
+new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 1 ],
 	[ 0, 0 ])
 </code></pre>
@@ -324,7 +324,7 @@ new Q.Matrix(
 					<dt id=".CONSTANT1_2X2"><a href="#.CONSTANT1_2X2">CONSTANT1_2X2</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(
+new <a href="Q.html">Q</a>.Matrix(
 	[ 0, 0 ],
 	[ 1, 1 ])
 </code></pre>
@@ -348,7 +348,7 @@ new Q.Matrix(
 					<dt id=".NEGATION_2X2"><a href="#.NEGATION_2X2">NEGATION_2X2</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(
+new <a href="Q.html">Q</a>.Matrix(
 	[ 0, 1 ],
 	[ 1, 0 ])
 </code></pre>
@@ -372,7 +372,7 @@ new Q.Matrix(
 					<dt id=".TEST_MAP_9X9"><a href="#.TEST_MAP_9X9">TEST_MAP_9X9</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(
+new <a href="Q.html">Q</a>.Matrix(
 	[ 11, 21, 31, 41, 51, 61, 71, 81, 91 ],
 	[ 12, 22, 32, 42, 52, 62, 72, 82, 92 ],
 	[ 13, 23, 33, 43, 53, 63, 73, 83, 93 ],
@@ -499,7 +499,7 @@ new Q.Matrix(
 					<dt id=".HADAMARD"><a href="#.HADAMARD">HADAMARD</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(
+new <a href="Q.html">Q</a>.Matrix(
 	[ Math.SQRT1_2,  Math.SQRT1_2 ],
 	[ Math.SQRT1_2, -Math.SQRT1_2 ])
 </code></pre>
@@ -528,7 +528,7 @@ new Q.Matrix(
 					<dt id=".PAULI_X"><a href="#.PAULI_X">PAULI_X</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(
+new <a href="Q.html">Q</a>.Matrix(
 	[ 0, 1 ],
 	[ 1, 0 ])
 </code></pre>
@@ -552,9 +552,9 @@ new Q.Matrix(
 					<dt id=".PAULI_Y"><a href="#.PAULI_Y">PAULI_Y</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(
-	[ 0, new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, -1 )],
-	[ new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 ),  0 ])
+new <a href="Q.html">Q</a>.Matrix(
+	[ 0, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, -1 )],
+	[ new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 ),  0 ])
 </code></pre>
 						<div class="maths">
 							<div class="matrix">
@@ -576,7 +576,7 @@ new Q.Matrix(
 					<dt id=".PAULI_Z"><a href="#.PAULI_Z">PAULI_Z</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(
+new <a href="Q.html">Q</a>.Matrix(
 	[ 1,  0 ],
 	[ 0, -1 ])
 </code></pre>
@@ -600,9 +600,9 @@ new Q.Matrix(
 					<dt id=".PHASE"><a href="#.PHASE">PHASE</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(
+new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 0 ],
-	[ 0, new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )])
+	[ 0, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )])
 </code></pre>
 						<div class="maths">
 							<div class="matrix">
@@ -624,9 +624,9 @@ new Q.Matrix(
 					<dt id=".PI_8"><a href="#.PI_8">PI_8</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(
+new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 0 ],
-	[ 0, Q.<a href="ComplexNumber.html">ComplexNumber</a>.<a href="ComplexNumber.htmll#.E">E</a>.<a href="ComplexNumber.htmll#.power">power</a>( new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, Math.PI / 4 )) ])
+	[ 0, Q.<a href="ComplexNumber.html">ComplexNumber</a>.<a href="ComplexNumber.htmll#.E">E</a>.<a href="ComplexNumber.htmll#.power">power</a>( new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, Math.PI / 4 )) ])
 </code></pre>
 						<div class="maths">
 							<div class="matrix">
@@ -651,7 +651,7 @@ new Q.Matrix(
 					<dt id=".CONTROLLED_NOT"><a href="#.CONTROLLED_NOT">CONTROLLED_NOT</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(<span class="comment">//  C-Not</span>
+new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  C-Not</span>
 	[ 1, 0, 0, 0 ],
 	[ 0, 1, 0, 0 ],
 	[ 0, 0, 0, 1 ],
@@ -683,7 +683,7 @@ new Q.Matrix(<span class="comment">//  C-Not</span>
 					<dt id=".SWAP"><a href="#.SWAP">SWAP</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(
+new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 0, 0, 0 ],
 	[ 0, 0, 1, 0 ],
 	[ 0, 1, 0, 0 ],
@@ -715,7 +715,7 @@ new Q.Matrix(
 					<dt id=".CONTROLLED_Z"><a href="#.CONTROLLED_Z">CONTROLLED_Z</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(
+new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 0, 0,  0 ],
 	[ 0, 1, 0,  0 ],
 	[ 0, 0, 1,  0 ],
@@ -747,11 +747,11 @@ new Q.Matrix(
 					<dt id=".CONTROLLED_PHASE"><a href="#.CONTROLLED_PHASE">CONTROLLED_PHASE</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(
+new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 0, 0, 0 ],
 	[ 0, 1, 0, 0 ],
 	[ 0, 0, 1, 0 ],
-	[ 0, 0, 0, new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )])
+	[ 0, 0, 0, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )])
 </code></pre>
 						<div class="maths">
 							<div class="matrix">
@@ -782,7 +782,7 @@ new Q.Matrix(
 					<dt id=".TOFFOLI"><a href="#.TOFFOLI">TOFFOLI</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(
+new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 0, 0, 0, 0, 0, 0, 0 ],
 	[ 0, 1, 0, 0, 0, 0, 0, 0 ],
 	[ 0, 0, 1, 0, 0, 0, 0, 0 ],
@@ -830,7 +830,7 @@ new Q.Matrix(
 					<dt id=".CONTROLLED_SWAP"><a href="#.CONTROLLED_SWAP">CONTROLLED_SWAP</a></dt>
 					<dd>
 <pre><code>
-new Q.Matrix(<span class="comment">//  Fredkin</span>
+new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 	[ 1, 0, 0, 0, 0, 0, 0, 0 ],
 	[ 0, 1, 0, 0, 0, 0, 0, 0 ],
 	[ 0, 0, 1, 0, 0, 0, 0, 0 ],
@@ -1135,7 +1135,7 @@ new Q.Matrix(<span class="comment">//  Fredkin</span>
 
 
 
-var a = new Q.Matrix(  
+var a = new <a href="Q.html">Q</a>.Matrix(  
 
 	[ 1, 2, 3 ],  
 	[ 4, 5, 6 ]
@@ -1144,12 +1144,12 @@ var a = new Q.Matrix(
 
 //  More complex tensor product.
 /*
-var matrixA = new Q.Matrix(
+var matrixA = new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 2 ],
 	[ 3, 4 ])
 console.log( 'Matrix A =', matrixA.toTsv(), '\n\n' )
 
-var matrixB = new Q.Matrix(
+var matrixB = new <a href="Q.html">Q</a>.Matrix(
 	[ 0, 5 ],
 	[ 6, 7 ])
 console.log( 'Matrix B =', matrixB.toTsv(), '\n\n' )
@@ -1180,12 +1180,12 @@ console.log( 'How many matrices have we created?', Q.Matrix.index )
 
 
 /*
-var a = new Q.Matrix(
+var a = new <a href="Q.html">Q</a>.Matrix(
 	[ 2, 2, 2 ],
 	[ 2, 2, 2 ],
 	[ 2, 2, 2 ])
 
-var b = new Q.Matrix(
+var b = new <a href="Q.html">Q</a>.Matrix(
 	[ 3 ],
 	[ 3 ],
 	[ 3 ])
@@ -1195,12 +1195,12 @@ console.log( 'a.multiply( b ).toTsv()', a.multiply( b ).toTsv() )
 
 
 
-var c = new Q.Matrix(
+var c = new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 2, 3 ],
 	[ 4, 5, 6 ],
 	[ 7, 8, 9 ])
 
-var d = new Q.Matrix(
+var d = new <a href="Q.html">Q</a>.Matrix(
 	[ 1 ],
 	[ 2 ],
 	[ 3 ])
@@ -1209,11 +1209,11 @@ console.log( 'c.multiply( d ).toTsv()', c.multiply( d ).toTsv() )
 
 
 
-var e = new Q.Matrix(
+var e = new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 2 ],
 	[ 3, 4 ])
 
-var f = new Q.Matrix(
+var f = new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 2 ],
 	[ 3, 4 ])
 
@@ -1223,12 +1223,12 @@ console.log( 'e.multiply( df ).toTsv()', e.multiply( f ).toTsv() )
 
 
 
-var twos = new Q.Matrix(
+var twos = new <a href="Q.html">Q</a>.Matrix(
 	[ 2, 2, 2 ],
 	[ 2, 2, 2 ],
 	[ 2, 2, 2 ])
 
-var threes = new Q.Matrix(
+var threes = new <a href="Q.html">Q</a>.Matrix(
 	[ 3, 3, 3 ],
 	[ 3, 3, 3 ],
 	[ 3, 3, 3 ])
@@ -1242,11 +1242,11 @@ console.log( 'Q.Matrix.IDENTITY_3X3.multiply( c ).toTsv()', Q.Matrix.IDENTITY_3X
 
 /*
 
-var a = new Q.Matrix(
+var a = new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 2 ],
 	[ 3, 4 ])
 
-var b = new Q.Matrix(
+var b = new <a href="Q.html">Q</a>.Matrix(
 	[ 0, 5 ],
 	[ 6, 7 ])
 

@@ -144,8 +144,8 @@ https://youtu.be/pBh7Xqbh5JQ?t=352
 			</p>
 <pre><code>
 var 
-cat = new Q.ComplexNumber( 1,  2 ),
-dog = new Q.ComplexNumber( 3, -4 )
+cat = new <a href="Q.html">Q</a>.ComplexNumber( 1,  2 ),
+dog = new <a href="Q.html">Q</a>.ComplexNumber( 3, -4 )
 
 cat.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1 + 2i'</span>
 dog.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '3 - 4i'</span>
@@ -167,7 +167,7 @@ cat.<a href="#.prototype.divide">divide</a>( dog ).<a href="#.prototype.toText">
 				We can now verify that <span class="symbol">i</span><sup>2</sup> = -1.
 			</p>
 <pre><code>
-var i = new Q.ComplexNumber( 0, 1 )
+var i = new <a href="Q.html">Q</a>.ComplexNumber( 0, 1 )
 
 i.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns  'i'</span>
 i.<a href="#.prototype.power">power</a>( 2 ).<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns  '-1'</span>
@@ -190,10 +190,10 @@ i.<a href="#.prototype.power">power</a>( 2 ).<a href="#.prototype.toText">toText
 			</p>
 <pre><code>
 var 
-ant = new Q.ComplexNumber(),
-bat = new Q.ComplexNumber( 1 ),
-cat = new Q.ComplexNumber( 1, 2 ),
-dog = new Q.ComplexNumber( cat )
+ant = new <a href="Q.html">Q</a>.ComplexNumber(),
+bat = new <a href="Q.html">Q</a>.ComplexNumber( 1 ),
+cat = new <a href="Q.html">Q</a>.ComplexNumber( 1, 2 ),
+dog = new <a href="Q.html">Q</a>.ComplexNumber( cat )
 
 ant.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '0'</span>
 bat.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1'</span>
@@ -247,35 +247,35 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 			<ul class="properties">
 				<li>
 					<dt id=".ZERO"><a href="#.ZERO">ZERO</a></dt>
-					<dd><code>new Q.ComplexNumber( 0, 0 )</code></dd>
+					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( 0, 0 )</code></dd>
 				</li>
 				<li>
 					<dt id=".ONE"><a href="#.ONE">ONE</a></dt>
-					<dd><code>new Q.ComplexNumber( 1, 0 )</code></dd>
+					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( 1, 0 )</code></dd>
 				</li>
 				<li>
 					<dt id=".E"><a href="#.E">E</a></dt>
-					<dd><code>new Q.ComplexNumber( Math.E, 0 )</code></dd>
+					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( Math.E, 0 )</code></dd>
 				</li>
 				<li>
 					<dt id=".PI"><a href="#.PI">PI</a></dt>
-					<dd><code>new Q.ComplexNumber( Math.PI, 0 )</code></dd>
+					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( Math.PI, 0 )</code></dd>
 				</li>
 				<li>
 					<dt id=".I"><a href="#.I">I</a></dt>
-					<dd><code>new Q.ComplexNumber( 0, 1 )</code></dd>
+					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( 0, 1 )</code></dd>
 				</li>
 				<li>
 					<dt id=".EPSILON"><a href="#.EPSILON">EPSILON</a></dt>
-					<dd><code>new Q.ComplexNumber( Q.<a href="Q.html#.EPSILON">EPSILON</a>, Q.<a href="Q.html#.EPSILON">EPSILON</a> )</code></dd>
+					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( <a href="Q.html">Q</a>.<a href="Q.html#.EPSILON">EPSILON</a>, <a href="Q.html">Q</a>.<a href="Q.html#.EPSILON">EPSILON</a> )</code></dd>
 				</li>
 				<li>
 					<dt id=".INFINITY"><a href="#.INFINITY">INFINITY</a></dt>
-					<dd><code>new Q.ComplexNumber( Infinity, Infinity )</code></dd>
+					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( Infinity, Infinity )</code></dd>
 				</li>
 				<li>
 					<dt id=".NAN"><a href="#.NAN">NAN</a></dt>
-					<dd><code>new Q.ComplexNumber( NaN, NaN )</code></dd>
+					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( NaN, NaN )</code></dd>
 				</li>
 			</ul>
 			<hr>
@@ -510,11 +510,11 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 // console.log( '\n\nQ.ComplexNumber\n\n', Q.ComplexNumber.help(), '\n\n' )
 
 var 
-ant = new Q.ComplexNumber(),
-bat = new Q.ComplexNumber( 1 ),
-cat = new Q.ComplexNumber( 1, 2 ),
-dog = cat.clone(),//  We’re avoiding a warning here: new Q.ComplexNumber( cat ),
-i   = new Q.ComplexNumber( 0,  1 )
+ant = new <a href="Q.html">Q</a>.ComplexNumber(),
+bat = new <a href="Q.html">Q</a>.ComplexNumber( 1 ),
+cat = new <a href="Q.html">Q</a>.ComplexNumber( 1, 2 ),
+dog = cat.clone(),//  We’re avoiding a warning here: new <a href="Q.html">Q</a>.ComplexNumber( cat ),
+i   = new <a href="Q.html">Q</a>.ComplexNumber( 0,  1 )
 
 			
 		</script>

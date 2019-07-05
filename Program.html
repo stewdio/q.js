@@ -101,8 +101,26 @@ p.run()
 var p2 = Q.Program.fromText( p.toText() )//  Yes!
 p2.toText() === p.toText()
 </code></pre>
-
-
+			<p>
+				How about a coinflip using Q’s super compressed syntax?
+				(Note those are backticks, not quotes.)
+			</p>
+<pre><code>
+Q`|0>-H`.run()
+</code></pre>
+			<p>
+				Or double your pleasure.
+			</p>
+<pre><code>
+Q`
+|0>-H
+|0>-H`.run()
+</code></pre>			
+			<hr>
+			<p>
+				Source:
+				<a href="https://github.com/stewdio/q.js/blob/master/Q/Program.js?ts=4" target="_blank">https://github.com/stewdio/q.js/blob/master/Q/Program.js</a>
+			</p>
 		</main>
 	</body>
 </html>
