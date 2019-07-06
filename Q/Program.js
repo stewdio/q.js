@@ -7,6 +7,7 @@ Q.Program = function( bandwidth, timewidth ){
 	if( typeof bandwidth !== 'number' ) bandwidth = 3
 	this.bandwidth = bandwidth//  How many qubits do we use?
 	if( typeof timewidth !== 'number' ) timewidth = 6
+	timewidth += 1//  This is so qubit initialization can be at #0.
 	this.timewidth = timewidth
 	this.moments = new Array( timewidth )
 		.fill( new Array( bandwidth ).fill( Q.Qubit.HORIZONTAL, 0, bandwidth ), 0, 1 )
@@ -29,7 +30,64 @@ Q.Program = function( bandwidth, timewidth ){
 
 Object.assign( Q.Program, {
 
+
+
+
+
 	fromText: function( text ){
+
+
+		//  Is this a String Template? (As opposed to a regular String.)
+
+		if( text.raw !== undefined ) text = ''+text.raw
+
+
+		//  Break this text up in to qubit operations (by line returns)
+		//  and then each qubit by moments (char by char).
+
+		const 
+		linesRaw = text.split( '\n' ),
+		lines = linesRaw.reduce( function( cleaned, line ){
+
+			const trimmed = line.trim()			
+			if( trimmed.length ) cleaned.push( trimmed.toUpperCase().split( '' ))
+			return cleaned
+
+		}, [] ),
+		bandwidth = lines.length
+	
+
+		//  Validate the program’s moments.
+		//  They should be equal for each series of qubit operations.
+
+		const timewidth = lines[ 0 ].length
+		lines.forEach( function( line, l ){
+
+			if( line.length !== timewidth ) return Q.error( `Q.Program attempted to create a new program from text input but the amount of time implied in the submitted text is not consistent.` )
+		})
+
+
+		//  Create the new program to populate
+		//  and attempt to flesh it out with actual gates.
+
+		const p = new Q.Program( bandwidth, timewidth )
+		lines.forEach( function( line, l ){
+
+			line.forEach( function( moment, m ){
+
+				const node = new Q.Gate.findByLabel( moment )
+				if( node instanceof Q.Gate !== true ) return Q.error( `Q.Program attempted to create a new program from text input but could not identify this submitted gate: ${ moment }.` )
+				p.set( m + 1, l, node )
+			})
+		})
+		return p
+	},
+
+
+
+
+
+	fromTextOLD: function( text ){
 
 
 		//  Is this a String template?
@@ -78,9 +136,22 @@ Object.assign( Q.Program, {
 			})
 		})
 		return p
+	},
+
+
+
+
+	copy: function(){},
+	cut: function(){},
+	paste: function(){},
+
+	getMoment: function(){
+
+		return {
+
+			to: function( moment ){}
+		}
 	}
-
-
 })
 
 

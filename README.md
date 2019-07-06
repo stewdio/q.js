@@ -27,6 +27,6 @@ Q.Qubit.HORIZONTAL
 Or if brevity is more your thing, try this version. (Note those are backticks, 
 not quotes.)
 ```javascript
-Q`|0>-H`.run()
+Q`H`.run()
 ```  
 
