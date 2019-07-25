@@ -56,7 +56,7 @@ Object.assign( Q.Gate, {
 	index: 0,
 	help: function(){ return Q.help( this )},
 	constants: {},
-	createConstant: Q.createConstant,
+	createConstant:  Q.createConstant,
 	createConstants: Q.createConstants,
 	findByLabel: function( label ){
 
@@ -138,9 +138,24 @@ Q.Gate.createConstants(
 
 
 
+
+//  https://cs.stackexchange.com/questions/10616/controlled-not-gate-a-type-of-measurement
+
+
+
 	'CONTROLLED_NOT', new Q.Gate( function( controlQubit, targetQubit ){
 
-			return Q.Matrix.CONTROLLED_NOT.multiply( controlQubit.multiplyTensor( targetQubit ))
+			const result = Q.Matrix.CONTROLLED_NOT.multiply( targetQubit.multiplyTensor( controlQubit ))
+
+
+			//  IS THIS CORRECT OUTPUT????? 
+			//  check truth table
+			//  and if this is reversable 
+			return [
+
+				new Q.Qubit( result.rows[ 0 ][ 0 ], result.rows[ 1 ][ 0 ]),
+				new Q.Qubit( result.rows[ 2 ][ 0 ], result.rows[ 3 ][ 0 ])
+			]
 		},
 		'C', 'Controlled Not (C-Not)' ),
 
@@ -174,7 +189,7 @@ Q.Gate.createConstants(
 
 
 
-	'TOFFOLI', new Q.Gate(
+	'TOFFOLI', new Q.Gate(//  “Controlled-controlled Not” (Simulates NAND and DUPE gates.)
 		[ 1, 0, 0, 0, 0, 0, 0, 0 ],
 		[ 0, 1, 0, 0, 0, 0, 0, 0 ],
 		[ 0, 0, 1, 0, 0, 0, 0, 0 ],

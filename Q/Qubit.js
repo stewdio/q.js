@@ -314,6 +314,11 @@ Object.assign( Q.Qubit, {
 			position
 		}
 	},
+	fromBlochVector: function( x, y, z ){
+
+
+		//basically  from a Pauli  Rotation
+	}
 
 })
 

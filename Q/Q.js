@@ -2,7 +2,7 @@
 
 
 
-const Q = (function( programText ){
+const Q = function( programText ){
 
 	`
 	Hi. Do you need help with something? 
@@ -13,7 +13,7 @@ const Q = (function( programText ){
 	`
 
 	return Q.Program.fromText( programText )
-})
+}
 
 
 
@@ -25,17 +25,12 @@ Object.assign( Q, {
 	colors: [],
 	warn: function(){
 
-		console.warn.apply( console, arguments )
+		console.warn( ...arguments )
 		return '(warning)'
 	},
 	error: function(){
 
-		`
-		Right now we’re returning a String when we encounter an error.
-		But is it better to return _null_ or _undefined_ instead?
-		Or even return the console.error.apply( console, arguments )?
-		`
-		console.error.apply( console, arguments )
+		console.error( ...arguments )
 		return '(error)'
 	},
 	extractDocumentation: function( f ){

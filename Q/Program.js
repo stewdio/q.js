@@ -30,8 +30,11 @@ Q.Program = function( bandwidth, timewidth ){
 
 Object.assign( Q.Program, {
 
-
-
+	index: 0,
+	help: function(){ return Q.help( this )},
+	constants: {},
+	createConstant:  Q.createConstant,
+	createConstants: Q.createConstants,
 
 
 	fromText: function( text ){
@@ -332,12 +335,42 @@ Next step:
 q0  |0⟩───●────●────●────●────●
 
         ┌───┐┌───┐     ┌───┐╭───╮
-q1  |0⟩─┤ H ├┤   ├──●──┤ M ├┤ B │
-        └───┘│ C │     └───┘╰───╯
+q1  |0⟩─┤ H ├┤ C ├──●──┤ M ├┤ B │
+        └───┘│   │     └───┘╰───╯
         ┌───┐│   │┌───┐╭───╮
-q2  |0⟩─┤ X ├┤   ├┤ M ├┤ B ├──●
+q2  |0⟩─┤ X ├┤ N ├┤ M ├┤ B ├──●
         └───┘└───┘└───┘╰───╯
 
+
+
+
+    t0   t1   t2   t3   t4   t5
+
+q0  |0⟩───●────●────●────●────●
+                    │
+        ┌───┐       │  ┌───┐╭───╮
+q1  |0⟩─┤ H ├──●────●──┤ M ├┤ B │
+        └───┘  │    │  └───┘╰───╯
+        ┌───┐  │    │  ╭───╮
+q2  |0⟩─┤ X ├──⊕────⊕──┤ B ├──●
+        └───┘          ╰───╯
+
+               CNot Toffoli
+
+
+
+
+I  I  T0 I  I
+H  C0 T1 M  B
+X  C1 T3 B  I
+
+
+
+
+
+
+
+['/', null]
 
 
 
