@@ -231,7 +231,15 @@ Object.assign( Q.Qubit, {
 		`
 
 		if( gate instanceof Q.Gate === false ) return Q.error( `Q.Qubit attempted to apply something that was not a gate to this qubit #${qubit.index}.` )
-		else return gate.applyTo( qubit )
+		
+
+		//  If we’re calling gate.applyTo on a single qubit,
+		//  which in this case we always are,
+		//  then the output will always be a single qubit
+		//  and never an array of them. 
+		//  So just return results[0] instead of the whole thing.
+
+		else return gate.applyTo( qubit )[ 0 ]
 	},
 	toText: function( qubit ){
 
@@ -364,6 +372,10 @@ Object.assign( Q.Qubit.prototype, {
 		})
 		this.dirac = matrix.dirac
 		return this
+	},
+	clone: function(){
+
+		return new Q.Qubit( this.bra, this.ket )
 	},
 	isEqualTo: function( otherQubit ){
 

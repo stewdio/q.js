@@ -2,7 +2,7 @@
 
 
 
-const Q = function( programText ){
+const Q = function( circuitText ){
 
 	`
 	Hi. Do you need help with something? 
@@ -12,7 +12,7 @@ const Q = function( programText ){
 	Q.Qubit.help()
 	`
 
-	return Q.Program.fromText( programText )
+	return Q.Circuit.fromText( circuitText )
 }
 
 
@@ -23,6 +23,17 @@ Object.assign( Q, {
 	verbosity: 0.5,
 	animals: [],
 	colors: [],
+	animals3: [
+
+		'ape',
+		'bee',
+		'cat',
+		'dog',
+		'elk',
+		'fox',
+		'gup',
+		'hen'
+	],
 	warn: function(){
 
 		console.warn( ...arguments )
@@ -53,7 +64,7 @@ Object.assign( Q, {
 		function countPrefixTabs( text ){
 		
 			`
-			Is counting tabs “manually” is actually more performant than regex?
+			Is counting tabs “manually” actually more performant than regex?
 			`
 
 			let count = index = 0
@@ -174,10 +185,10 @@ Object.assign( Q, {
 
 Q.createConstants( 
 
-	'REVISION', 3,
+	'REVISION', 4,
 
 
-	//  Yeah... F’ing floating point numbers man!
+	//  Yeah... F’ing floating point numbers, Man!
 	//  Here’s the issue:
 	//  var a = new Q.ComplexNumber( 1, 2 )
 	//  a.multiply(a).isEqualTo( a.power( new Q.ComplexNumber( 2, 0 )))
@@ -187,6 +198,27 @@ Q.createConstants(
 
 	'RADIANS_TO_DEGREES', 180 / Math.PI
 )
+
+
+
+
+console.log( `
+
+
+  QQQQQQ
+QQ      QQ
+QQ      QQ
+QQ      QQ
+QQ  QQ  QQ
+QQ    QQ 
+  QQQQ  R${Q.REVISION}    
+
+
+
+Q.help() for more information.
+
+
+` )
 
 
 

@@ -44,9 +44,8 @@
 		<script src="Q/Matrix.js"></script>
 		<script src="Q/Qubit.js"></script>
 		<script src="Q/Gate.js"></script>
-		<script src="Q/Program.js"></script>
-		<script src="Assets/navigation.js"></script>
-	</head>
+		<script src="Q/Circuit.js"></script>
+		<script src="Assets/navigation.js"></script>	</head>
 	<body>
 		<main>
 			<h3 id="Real_numbers">Real numbers ℝ</h3>
@@ -190,13 +189,13 @@ i.<a href="#.prototype.power">power</a>( 2 ).<a href="#.prototype.toText">toText
 			</p>
 <pre><code>
 var 
-ant = new <a href="Q.html">Q</a>.ComplexNumber(),
-bat = new <a href="Q.html">Q</a>.ComplexNumber( 1 ),
+ape = new <a href="Q.html">Q</a>.ComplexNumber(),
+bee = new <a href="Q.html">Q</a>.ComplexNumber( 1 ),
 cat = new <a href="Q.html">Q</a>.ComplexNumber( 1, 2 ),
 dog = new <a href="Q.html">Q</a>.ComplexNumber( cat )
 
-ant.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '0'</span>
-bat.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1'</span>
+ape.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '0'</span>
+bee.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1'</span>
 cat.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1 + 2i'</span>
 dog.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1 + 2i'</span>
 
@@ -510,8 +509,8 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 // console.log( '\n\nQ.ComplexNumber\n\n', Q.ComplexNumber.help(), '\n\n' )
 
 var 
-ant = new Q.ComplexNumber(),
-bat = new Q.ComplexNumber( 1 ),
+ape = new Q.ComplexNumber(),
+bee = new Q.ComplexNumber( 1 ),
 cat = new Q.ComplexNumber( 1, 2 ),
 dog = cat.clone(),//  We’re avoiding a warning here: new <a href="Q.html">Q</a>.ComplexNumber( cat ),
 i   = new Q.ComplexNumber( 0,  1 )

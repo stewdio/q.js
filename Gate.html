@@ -44,7 +44,7 @@
 		<script src="Q/Matrix.js"></script>
 		<script src="Q/Qubit.js"></script>
 		<script src="Q/Gate.js"></script>
-		<script src="Q/Program.js"></script>
+		<script src="Q/Circuit.js"></script>
 		<script src="Assets/navigation.js"></script>
 	</head>
 	<body>
@@ -69,14 +69,16 @@
 				Accepts a string as an optional third argument for use as a name / longer label.
 			</p>
 <pre><code>
-var g = new Q.Gate( 
+var fox = new Q.Gate({
 
-	function( input ){
+	name:  'What input?',
+	label: '?',
+	operation: function( qubit ){
 
-		console.log( 'You input this:', input )
-	},
-	'?', 'Input mystery!'
-)
+		console.log( 'You input this:', qubit )
+		return qubit
+	}
+})
 </code></pre>			
 			<ul class="properties">
 				<li>
@@ -94,10 +96,18 @@ var g = new Q.Gate(
 					</dd>
 				</li>
 				<li>
+					<dt id="this.operation"><a href="#this.operation">operation</a></dt>
+					<dd>
+						<code>Function</code>.
+						The supplied <code>operation</code> function.
+						Not intended to be directly called.
+					</dd>
+				</li>
+				<li>
 					<dt id="this.applyTo"><a href="#this.applyTo">applyTo</a></dt>
 					<dd>
 						<code>Function</code>.
-						The main operation of this <code>Gate</code>.
+						Calls the supplied <code>operation</code> function and ensures the result is an array.
 					</dd>
 				</li>
 				<li>
@@ -128,11 +138,11 @@ var g = new Q.Gate(
 					<dt id=".IDENTITY"><a href="#.IDENTITY">IDENTITY</a></dt>
 					<dd>
 <pre><code>
-new Q.Gate( function( qubit ){ 
-
-		return qubit 
-	},
-	'I', 'Identity' )
+new Q.Gate({
+	
+	name:  'Identity',
+	label: 'I'
+})
 </code></pre>
 					</dd>
 				</li>
@@ -140,11 +150,15 @@ new Q.Gate( function( qubit ){
 					<dt id=".MEASURE"><a href="#.MEASURE">MEASURE</a></dt>
 					<dd>
 <pre><code>
-new Q.Gate( function( qubit ){ 
+new Q.Gate({
+	
+	name:  'Measure',
+	label: 'M', 
+	operation: function( qubit ){
 
-		return qubit.collapse() 
-	},
-	'M', 'Measure' )
+		return qubit.collapse()
+	}
+})
 </code></pre>
 					</dd>
 				</li>
@@ -157,11 +171,15 @@ new Q.Gate( function( qubit ){
 					<dt id=".HADAMARD"><a href="#.HADAMARD">HADAMARD</a></dt>
 					<dd>
 <pre><code>
-new Q.Gate( function( qubit ){
+new Q.Gate({
+
+	name:  'Hadamard',
+	label: 'H',
+	operation: function( qubit ){
 
 		return new Q.Qubit( Q.Matrix.HADAMARD.multiply( qubit ))
-	},
-	'H', 'Hadamard' )
+	}
+})
 </code></pre>
 					</dd>
 				</li>
@@ -169,11 +187,15 @@ new Q.Gate( function( qubit ){
 					<dt id=".PAULI_X"><a href="#.PAULI_X">PAULI_X</a></dt>
 					<dd>
 <pre><code>
-new Q.Gate( function( qubit ){
+new Q.Gate({//  Rπ
+
+	name:  'Pauli X',
+	label: 'X',
+	operation: function( qubit ){
 
 		return new Q.Qubit( Q.Matrix.PAULI_X.multiply( qubit ))
-	},
-	'X', 'Pauli X' )
+	}
+})
 </code></pre>
 					</dd>
 				</li>
@@ -181,11 +203,15 @@ new Q.Gate( function( qubit ){
 					<dt id=".PAULI_Y"><a href="#.PAULI_Y">PAULI_Y</a></dt>
 					<dd>
 <pre><code>
-new Q.Gate( function( qubit ){
+new Q.Gate({
+
+	name:  'Pauli Y',
+	label: 'Y', 
+	operation: function( qubit ){
 
 		return new Q.Qubit( Q.Matrix.PAULI_Y.multiply( qubit ))
-	},
-	'Y', 'Pauli Y' )
+	}
+})
 </code></pre>
 					</dd>
 				</li>
@@ -193,11 +219,15 @@ new Q.Gate( function( qubit ){
 					<dt id=".PAULI_Z"><a href="#.PAULI_Z">PAULI_Z</a></dt>
 					<dd>
 <pre><code>
-new Q.Gate( function( qubit ){
+new Q.Gate({
+
+	name:  'Pauli Z',
+	label: 'Z', 
+	operation: function( qubit ){
 
 		return new Q.Qubit( Q.Matrix.PAULI_Z.multiply( qubit ))
-	},
-	'Z', 'Pauli Z' )
+	}
+})
 </code></pre>
 					</dd>
 				</li>
@@ -205,11 +235,15 @@ new Q.Gate( function( qubit ){
 					<dt id=".PHASE"><a href="#.PHASE">PHASE</a></dt>
 					<dd>
 <pre><code>
-new Q.Gate( function( qubit ){
+new Q.Gate({
+
+	name:  'Phase',
+	label: 'S',
+	operation: function( qubit ){
 
 		return new Q.Qubit( Q.Matrix.PHASE.multiply( qubit ))
-	},
-	'S', 'Phase' )
+	}
+})
 </code></pre>
 					</dd>
 				</li>
@@ -217,11 +251,15 @@ new Q.Gate( function( qubit ){
 					<dt id=".PI_8"><a href="#.PI_8">PI_8</a></dt>
 					<dd>
 <pre><code>
-new Q.Gate( function( qubit ){
+new Q.Gate({
+
+	name:  'π ÷ 8',
+	label: 'T',
+	operation: function( qubit ){
 
 		return new Q.Qubit( Q.Matrix.PI_8.multiply( qubit ))
-	},
-	'T', 'π ÷ 8' )
+	}
+})
 </code></pre>
 					</dd>
 				</li>

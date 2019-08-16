@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Q ⟩ Circuit</title>
+		<meta charset="utf-8">
+		<meta name="description"          content="Q.js is quantum computing in your browser.">
+		<meta name="copyright"            content="Stewart Smith 2019">
+		<meta name="keywords"             content="
+
+			quantum, quantum physics, quantum mechanics, superposition,
+			quantum computer, quantum computing, qubit, qbit, gate, Hadamard,
+			Google, IBM, Microsoft, NASA, 
+			DWave, D-Wave,
+			Quil, OpenQASM,
+				ProjectQ, Qiskit, 
+				Quantum Development Kit, Cirq, Strawberry Fields, t|ket>,
+				QCL, Quantum pseudocode, Q#, Q|SI>, Q language, qGCL, QFC, QML, LIQUi|>, Quipper,
+			Web, Web site, website, Web browser, browser, HTML, HTML5, JavaScript, ES6, CSS,
+			Stewart Smith, Stewart, Stew, Stuart, Steven, Steve, Stewdio, stew_rtsmith, @stew_rtsmith,
+			Moar, Moar Technologies Corp, MTC,">
+
+		<meta name="twitter:card"         content="summary">
+		<meta name="twitter:site"         content="@stew_rtsmith">
+		<meta name="twitter:creator"      content="@stew_rtsmith">
+		<meta name="twitter:title"        content="Q ⟩ Circuit">
+		<meta name="twitter:description"  content="Quantum computing in your browser.">
+		<meta name="twitter:image"        content="https://stewdio.github.io/q.js/Assets/q-thumbnail.png">
+		
+		<meta property="og:type"          content="website">
+		<meta property="og:title"         content="Q ⟩ Circuit">
+		<meta property="og:description"   content="Quantum computing in your browser.">
+		<meta property="og:image"         content="https://stewdio.github.io/q.js/Assets/q-thumbnail.png">
+		<meta property="og:url"           content="https://stewdio.github.io/q.js/Circuit.html">
+		
+		<link rel="canonical"             href="https://stewdio.github.io/q.js/Circuit.html">
+		<link rel="icon" type="image/png" href="Assets/q-favicon-064.png">
+		<link rel="apple-touch-icon"      href="Assets/q-favicon-144.png">
+		<link rel="stylesheet" type="text/css" href="Assets/style.css">
+		
+		<script async src="https://www.googletagmanager.com/gtag/js"></script>
+		<script src="Assets/ga.js"></script>
+		<script src="Q/Q.js"></script>
+		<script src="Q/ComplexNumber.js"></script>
+		<script src="Q/Matrix.js"></script>
+		<script src="Q/Qubit.js"></script>
+		<script src="Q/Gate.js"></script>
+		<script src="Q/Circuit.js"></script>
+		<script src="Assets/navigation.js"></script>
+	</head>
+	<body>
+		<main>
+			<h3 id="Quantum_circuits">Quantum circuits</h3>
+			<p>
+				A quantum circuit is a series of moments in time.
+				During each moment, gate operations can be applied to qubits.
+				<code>Q.Circuit</code> now supports basic functionality,
+				but beware:
+				<strong><em>
+					Gates that use multi-qubit inputs are not yet supported.
+					Check back in September 2019.
+				</em></strong>
+				This is, after-all, a work in progress.
+				You can join the effort <a href="https://github.com/stewdio/q.js" target="_blank">here on GitHub</a>.
+			</p>
+			<p>
+				Let’s look at a simple text circuit that will output a zero, a one, 
+				and then the result of a coin toss between zero and one.
+				We’ll name it “Ape.”
+				For this circuit we’ll need three qubits to operate on 
+				and two moments’ worth of compute time.
+			</p>
+<pre><code>
+<span class="comment">//  Create a circuit 
+//  that operates on 3 qubits
+//  and lasts for 2 moments.</span>
+
+var ape = new <a href="Q.html">Q</a>.Circuit( 3, 2 )
+</code></pre>
+			<p>
+				We can inspect our empty circuit in different useful ways.
+				First, let’s look at a descriptive output with <code>ape.<a href="#.prototype.toDiagram">toDiagram</a>()</code>.
+			</p>
+<pre><samp>
+    t0   t1   t2  
+                
+q0  |0⟩───○────○
+                
+                
+q1  |0⟩───○────○
+                
+                
+q2  |0⟩───○────○
+</samp></pre>
+			<p>
+				We can see that our circuit begins on the left with a column of 3 qubits initialized to zero.
+				This initialization exists at moment zero (<code>t0</code>).
+				Our circuit design begins at the first moment (<code>t1</code>) and proceeds to the right.
+				Currently, each moment of our circuit design contains an instance of
+				<code><a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.IDENTITY">IDENTITY</a></code>
+				per qubit, 
+				which is equivalent to “no operation.”
+				These are represented by the small empty circles.
+			</p>
+			<p>
+				We can also inspect our empty circuit using <code>ape.<a href="#.prototype.toText">toText</a>()</code>.
+				(The idea of a simpler text representation of our circuit will appear again further below
+				when we explore other ways to create new circuits.)
+			</p>
+<pre><samp>
+I-I
+I-I
+I-I
+</samp></pre>
+			<p>
+				Now it’s time to add some gates to our circuit. 
+				We’re going to leave qubit #0 untouched 
+				so that its final output value remains zero.
+				In order to set qubit #1 to one we need to flip its value using a 
+				<a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Pauli-X_gate" target="_blank">Pauli X gate</a>.
+			</p>
+
+<pre><code>
+<span class="comment">//  At moment #1 (the first moment we can operate),
+//  we’ll use a Pauli X gate
+//  to flip the value of qubit #1.</span>
+
+ape.<a href="#.prototype.add$">add$</a>( 1, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.PAULI_X">PAULI_X</a>, [ 1 ])
+</code></pre>
+			<p>
+				Finally, we want to put qubit #2 in to superposition 
+				and subsequently collapse it—creating a coinflip effect.
+				Sometimes its measured value will be zero,
+				and sometimes it will be one.
+			</p>
+<pre><code>
+<span class="comment">//  At moment #1 (the first moment we can operate),
+//  we’ll use a Hadamard gate
+//  to put qubit #2 in to superposition.</span>
+
+ape.<a href="#.prototype.add$">add$</a>( 1, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.HADAMARD">HADAMARD</a>, [ 2 ])
+
+
+<span class="comment">//  At moment #2 (the next moment),
+//  we’ll use a measurement gate
+//  to collpase qubit #2 in to a definite value.</span>
+
+ape.<a href="#.prototype.add$">add$</a>( 2, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.MEASURE">MEASURE</a>, [ 2 ])
+</code></pre>
+			<p>
+				Now that we’ve added some gates to our circuit
+				let’s look at it again with <code>ape.<a href="#.prototype.toDiagram">toDiagram</a>()</code>.
+			</p>
+<pre><code>
+    t0   t1   t2  
+                
+q0  |0⟩───○────○
+                
+        ┌───┐   
+q1  |0⟩─┤ X ├──○
+        └───┘   
+        ┌───┐┌───┐
+q2  |0⟩─┤ H ├┤ M │
+        └───┘└───┘
+</code></pre>
+			<p>
+				As we look at qubit #0’s flow from left to right 
+				we can see that its value of zero remains undisturbed.
+				Each of its moments contains an instance of
+				<code><a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.IDENTITY">IDENTITY</a></code>,
+				represented by a small empty circle.
+				Meanwhile, qubit #1’s value is flipped from zero to one during the first moment of operation.
+				Finally, qubit #2’s value is put in to superposition during moment #1,
+				then collpased by measurement during moment #2.
+			</p>
+			<p>
+				Again, we can also look at this circuit as text with
+				<code>ape.<a href="#.prototype.toText">toText</a>()</code>.
+			</p>
+<pre><code>
+I-I
+X-I
+H-M
+</code></pre>
+			<p>
+				Now what good is a quantum circuit that you cannot run?
+				Let’s do it!
+			</p>
+<pre><code>
+ape.<a href="#.prototype.run$">run$</a>()  <span class="comment">//  Runs our circuit.</span>
+ape.<a href="#.prototype.results">results</a> <span class="comment">//  Outputs the results Array.
+            //  Expecting [ 0, 1, 0 ]
+            //         or [ 0, 1, 1 ].</span>
+</code></pre>
+			<p>
+				But of course running a quantum circuit one single time
+				doesn’t tell us much about the curve of probabilities.
+				Let’s try running our circuit one thousand times
+				and output the results array immediately.
+				The first two elements of the results array will still be <code>0</code> and <code>1</code>,
+				but now the final value should be closer to <code>0.5</code>.
+			</p>
+<pre><code>
+ape.<a href="#.prototype.run$">run$</a>( 1000 ).<a href="#.prototype.results">results</a>
+</code></pre>
+			<h3 id="Shorter_and_simpler">Shorter and simpler</h3>
+			<p>
+				Now that you know how <code>Circuit</code> operates under the hood,
+				let’s build that example circuit again—this time using text instead of JavaScript commands.
+				Note that those are backticks you see, not single quotes;
+				the relatively new
+				<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals" target="_blank">JavaScript Template literals</a>.
+				You’ll also discover that <code><a href="#.fromText">fromText</a></code> is rather forgiving when it comes to whitespace.
+			</p>
+<pre><code>
+var bee = <a href="Q.html">Q</a>.Circuit.<a href="#.fromText">fromText</a>(`
+	I-I
+	X-I
+	H-M`)
+
+bee.<a href="#.prototype.toText">toText</a>() === ape.<a href="#.prototype.toText">toText</a>() <span class="comment">//  true.</span>
+</code></pre>
+			<p>
+				In this way circuits and be described and created much more succinctly. 
+				But wait—it gets even better!
+				The <code><a href="Q.html">Q</a></code> object itself is a function that calls 
+				<code><a href="Q.html">Q</a>.Circuit.<a href="#.fromText">fromText</a></code> with any passed arguments.
+				And when passing Template literals to a function, parentheses are implied and therefore <em>not</em> required. 
+				That means the above can be re-written like this:
+			</p>
+<pre><code>
+var cat = <a href="Q.html">Q</a>`
+	I-I
+	X-I
+	H-M`
+
+cat.<a href="#.prototype.toText">toText</a>() === ape.<a href="#.prototype.toText">toText</a>() <span class="comment">//  true.</span>
+</code></pre>
+			<p>
+				Now that’s compact!
+				And again, because <code><a href="#.fromText">fromText</a></code> is flexible with whitespace and “wire” characters,
+				you can find a format that best suits you.
+			</p>
+<pre><code>
+var dog = <a href="Q.html">Q</a>`
+
+I  I
+X  I
+H  M
+
+`
+dog.<a href="#.prototype.toText">toText</a>() === ape.<a href="#.prototype.toText">toText</a>() <span class="comment">//  true.
+</code></pre>
+			<p>
+				And here’s proof that <code><a href="#.fromText">fromText</a></code>
+				and <code><a href="#.prototype.toText">toText</a></code>
+				are reciprocals of each other.
+			</p>
+<pre><code>
+var elk = <a href="Q.html">Q</a>( ape.<a href="#.prototype.toText">toText</a>() )
+
+elk.<a href="#.prototype.toText">toText</a>() === ape.<a href="#.prototype.toText">toText</a>() <span class="comment">//  true.
+</code></pre>
+			<h3 id="Just_a_coin_flip">Just a coin flip</h3>
+			<p>
+				Looking to get really terse with the syntax? Here we go.
+			</p>
+<pre><code>
+<a href="Q.html">Q</a>`H-M`
+</code></pre>
+			<p>
+				For good measure, let’s see what <code><a href="Q.html">Q</a>`H-M`.<a href="#.prototype.toDiagram">toDiagram</a>()</code> yields.
+			</p>
+
+<pre><samp>
+    t0   t1   t2  
+        ┌───┐┌───┐
+q0  |0⟩─┤ H ├┤ M │
+        └───┘└───┘
+</samp></pre>
+			<p>
+				Looks like everything checks out. 
+				Let’s give it a whirl.
+			</p>
+<pre><code>
+<a href="Q.html">Q</a>`H-M`.<a href="#.prototype.run$">run$</a>( 1000 ).<a href="#.prototype.results">results</a>
+</code></pre>
+			<p>
+				How close do your results come to <code>0.5</code>?
+			</p>
+			<hr>
+			<h3 id="Constructor">Constructor</h3>
+			<p>
+				Description TK.
+			</p>
+			<hr>
+			<h3 id="Constants">Constants</h3>
+			<p>
+				Description TK.
+			</p>
+			<hr>
+			<h3 id="Static_properties">Static properties</h3>
+			<ul class="properties">
+				<li>
+					<dt id=".index"><a href="#.index">index</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".help"><a href="#.help">help</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".constants"><a href="#.constants">constants</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".createConstant"><a href="#.createConstant">createConstant</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".createConstants"><a href="#.createConstants">createConstants</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".fromText"><a href="#.fromText">fromText</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+			</ul>
+			<hr>
+			<h3 id="Prototype_properties">Prototype properties</h3>
+			<h4>Non-destructive methods</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".prototype.toText"><a href="#.prototype.toText">toText</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.toDiagram"><a href="#.prototype.toDiagram">toDiagram</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.results"><a href="#.prototype.results">results</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+			</ul>
+			<h4>Destructive methods</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".prototype.add$"><a href="#.prototype.add$">add$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.run$"><a href="#.prototype.run$">run$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+			</ul>
+			<hr>
+			<p>
+				Source:
+				<a href="https://github.com/stewdio/q.js/blob/master/Q/Circuit.js?ts=4" target="_blank">https://github.com/stewdio/q.js/blob/master/Q/Circuit.js</a>
+			</p>
+		</main>
+		<script>
+
+
+var ape = new Q.Circuit( 3, 2 )
+ape.add$( 1, Q.Gate.PAULI_X,  [ 1 ])
+ape.add$( 1, Q.Gate.HADAMARD, [ 2 ])
+ape.add$( 2, Q.Gate.MEASURE,  [ 2 ])
+
+var bee = Q.Circuit.fromText(`
+	I-I
+	X-I
+	H-M`)
+
+var cat = Q`
+	I-I
+	X-I
+	H-M`
+
+
+var dog = Q`
+
+I  I
+X  I
+H  M
+
+`
+
+var elk = Q( ape.toText() )
+
+
+
+
+
+
+
+
+//  C-NOT TEST
+//
+//  Currently CNOT gates (and possibly all multi-qubit gates?)
+//  do not yield the correct outputs. 100% sure it’s my fault.
+//  Also, multi-qubit gates are not fully supported by toText(),
+//  toDiagram(), and fromText() -- which is a problem!
+//  But I’m making progress :)
+
+
+var cnotTest = new Q.Circuit( 2, 3 )
+cnotTest.add$( 1, Q.Gate.HADAMARD,       [ 0 ])
+cnotTest.add$( 2, Q.Gate.CONTROLLED_NOT, [ 0, 1 ])
+cnotTest.add$( 3, Q.Gate.MEASURE,        [ 0 ])
+cnotTest.add$( 3, Q.Gate.MEASURE,        [ 1 ])
+
+
+//  The C-NOT text circuit above diagrammed below shows that
+//  the actual C-NOT gate does not properly indicate that it 
+//  spans both qubits, nor does it truly identify which is the
+//  control bit and which is the target bit. (Though here the
+//  control just happens to be qubit #0.)
+
+//  cnotTest.toDiagram()
+
+;`
+    t0   t1   t2   t3  
+        ┌───┐┌───┐┌───┐
+q0  |0⟩─┤ H ├┤ C ├┤ M │
+        └───┘└───┘└───┘
+             ┌───┐┌───┐
+q1  |0⟩───○──┤ C ├┤ M │
+             └───┘└───┘
+`
+
+/*
+
+Possible text-based resolutions.
+Rounded corners for multi-qubit gates?
+Naming:
+	Gate type, gate index for this moment, qubit index for this gate.
+	C, 1, 0 = CNOT, first CNOT of this moment, 0=control bit.
+
+
+    t0   t1   t2   t3  
+        ┌───┐╭───╮┌───┐
+q0  |0⟩─┤ H ├┤C10├┤ M │
+        └───┘╰┬──╯└───┘
+              │   ┌───┐
+q1  |0⟩───○────○──┤ M │
+              │   └───┘
+             ╭┴──╮┌───┐
+q2  |0⟩───○──┤C11├┤ M │
+             ╰───╯└───┘
+
+
+
+Overlapping C-Not gates.
+Use up to 3 different positions for vertical connection.
+
+
+    t0   t1   t2   t3  
+        ┌───┐╭───╮┌───┐
+q0  |0⟩─┤ H ├┤C10├┤ M │
+        └───┘╰┬──╯└───┘
+             ╭───╮┌───┐
+q2  |0⟩───○──┤C20├┤ M │
+             ╰──┬╯└───┘
+             ╭┴──╮┌───┐
+q2  |0⟩───○──┤C11├┤ M │
+             ╰───╯└───┘
+             ╭──┴╮┌───┐
+q3  |0⟩───○──┤C21├┤ M │
+             ╰───╯└───┘
+
+
+What about gate names that are more than 1 character?
+
+
+*/
+
+
+		</script>
+	</body>
+</html>

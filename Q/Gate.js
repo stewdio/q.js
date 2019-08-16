@@ -1,26 +1,8 @@
 
-/*
 
 
 
-Number of inputs
-
-Number of outputs
-
-Formula for application
-	(Usually a matrix to multiply against the inputs)
-	But can also be measurement (collapse) gate
-	or a Bloch Sphere or other visualization gate
-
-
-
-*/
-
-
-Q.Gate = function( operation, label, name ){
-
-
-
+Q.Gate = function( params ){
 
 	`
 	
@@ -29,23 +11,26 @@ Q.Gate = function( operation, label, name ){
 	https://en.wikipedia.org/wiki/Quantum_logic_gate
 	`
 
-
+	Object.assign( this, params )
 	this.index = Q.Gate.index ++
-	
-	this.label = 
-		typeof label === 'string'
-		? label 
-		: 'g'
+	if( typeof this.name  !== 'string' ) this.name  = 'Unknown'
+	if( typeof this.label !== 'string' ) this.label = '?'
+	if( typeof this.bandwidth !== 'number' ) this.bandwidth = 1
+	if( typeof this.operation !== 'function' ) this.operation = function(){
 
-	this.name =
-		typeof name === 'string'
-		? name
-		: 'Unlabeled'
+		return Array.from( arguments )//  Equal to an indentity operator.
+	}
+	const scope = this
+	this.applyTo = function(){
 
-	this.applyTo = 
-		typeof operation === 'function' 
-		? operation 
-		: function(){ Q.warn( `Gate #${this.index} (“${this.name}”) has no operation function.` )}
+		//  TO DO:
+		//  make sure arguments are all instances of Q.Qubit!
+		//  Q.error if not.
+
+		let result = scope.operation( ...arguments )
+		if( result instanceof Array !== true ) result = [ result ]
+		return result
+	}
 }
 
 
@@ -79,100 +64,145 @@ Object.assign( Q.Gate, {
 
 Q.Gate.createConstants(
 
-	'IDENTITY', new Q.Gate( 
+	'IDENTITY', new Q.Gate({//  No operation required!
 
-		function( qubit ){
+		name:  'Identity',
+		label: 'I' }),
+	
+	'MEASURE', new Q.Gate({
 
-			return qubit//  No need to even multiply by identity matrix ;)
-		},
-		'I', 'Identity'
-	),
-	'MEASURE', new Q.Gate( 
-
-		function( qubit ){
+		name:  'Measure',
+		label: 'M', 
+		operation: function( qubit ){
 
 			return qubit.collapse()
-		},
-		'M', 'Measure'
-	),
+		}}),
 
 
 
 
-	'HADAMARD', new Q.Gate( function( qubit ){
+	'HADAMARD', new Q.Gate({
+
+		name:  'Hadamard',
+		label: 'H',
+		operation: function( qubit ){
 
 			return new Q.Qubit( Q.Matrix.HADAMARD.multiply( qubit ))
-		},
-		'H', 'Hadamard' ),
+		}}),
 	
-	'PAULI_X', new Q.Gate( function( qubit ){
+	'PAULI_X', new Q.Gate({//  Rπ
+
+		name:  'Pauli X',
+		label: 'X',
+		operation: function( qubit ){
 
 			return new Q.Qubit( Q.Matrix.PAULI_X.multiply( qubit ))
-		},
-		'X', 'Pauli X' ),
+		}}),
 	
-	'PAULI_Y', new Q.Gate( function( qubit ){
+	'PAULI_Y', new Q.Gate({
+
+		name:  'Pauli Y',
+		label: 'Y', 
+		operation: function( qubit ){
 
 			return new Q.Qubit( Q.Matrix.PAULI_Y.multiply( qubit ))
-		},
-		'Y', 'Pauli Y' ),
+		}}),
 	
-	'PAULI_Z', new Q.Gate( function( qubit ){
+	'PAULI_Z', new Q.Gate({
+
+		name:  'Pauli Z',
+		label: 'Z', 
+		operation: function( qubit ){
 
 			return new Q.Qubit( Q.Matrix.PAULI_Z.multiply( qubit ))
-		},
-		'Z', 'Pauli Z' ),
+		}}),
 	
-	'PHASE', new Q.Gate( function( qubit ){
+	'PHASE', new Q.Gate({
+
+		name:  'Phase',
+		label: 'S',
+		operation: function( qubit ){
 
 			return new Q.Qubit( Q.Matrix.PHASE.multiply( qubit ))
-		},
-		'S', 'Phase' ),
+		}}),
 	
-	'PI_8', new Q.Gate( function( qubit ){
+	'PI_8', new Q.Gate({
+
+		name:  'π ÷ 8',
+		label: 'T',
+		operation: function( qubit ){
 
 			return new Q.Qubit( Q.Matrix.PI_8.multiply( qubit ))
-		},
-		'T', 'π ÷ 8' ),
+		}}),
 
 
 
 
 
-//  https://cs.stackexchange.com/questions/10616/controlled-not-gate-a-type-of-measurement
+	//  https://qiskit.org/documentation/terra/summary_of_quantum_operations.html#multi-qubit-gates
+
+
+	'CONTROLLED_NOT', new Q.Gate({
+
+		//  https://cs.stackexchange.com/questions/10616/controlled-not-gate-a-type-of-measurement
+
+/*
+
+what i’m seeing here:
+
+const result = Q.Matrix.CONTROLLED_NOT.multiply( targetQubit.multiplyTensor( controlQubit ))
+|0> * |0> = 1000
+|0> * |1> = 0001
+|1> * |0> = 0100
+|1> * |1> = 0010
+
+
+const result = Q.Matrix.CONTROLLED_NOT.multiply( controlQubit.multiplyTensor( targetQubit ))
+|0> * |0> = 1000
+|0> * |1> = 0100
+|1> * |0> = 0001
+|1> * |1> = 0010
 
 
 
-	'CONTROLLED_NOT', new Q.Gate( function( controlQubit, targetQubit ){
-
-			const result = Q.Matrix.CONTROLLED_NOT.multiply( targetQubit.multiplyTensor( controlQubit ))
 
 
-			//  IS THIS CORRECT OUTPUT????? 
-			//  check truth table
-			//  and if this is reversable 
+
+*/
+		name:  'Controlled Not (C-Not)',
+		label: 'C', 
+		bandwidth: 2,
+		operation: function( controlQubit, targetQubit ){
+
+// console.log('controlQubit', controlQubit )
+// console.log('targetQubit', targetQubit )
+
+			//const result = Q.Matrix.CONTROLLED_NOT.multiply( targetQubit.multiplyTensor( controlQubit ))
+			const result = Q.Matrix.CONTROLLED_NOT.multiply( controlQubit.multiplyTensor( targetQubit ))
+
+// console.log( 'result!', result.toTsv() )
+
 			return [
 
 				new Q.Qubit( result.rows[ 0 ][ 0 ], result.rows[ 1 ][ 0 ]),
 				new Q.Qubit( result.rows[ 2 ][ 0 ], result.rows[ 3 ][ 0 ])
 			]
-		},
-		'C', 'Controlled Not (C-Not)' ),
-
-
-
-
-	/*
+		}}),
 
 
 
 
 
-	'SWAP', new Q.Gate(
-		[ 1, 0, 0, 0 ],
-		[ 0, 0, 1, 0 ],
-		[ 0, 1, 0, 0 ],
-		[ 0, 0, 0, 1 ]),
+
+/*
+
+//2!
+
+	'SWAP', new Q.Gate({
+
+		name: 'Swap',
+
+	}),
 
 	'CONTROLLED_Z', new Q.Gate(
 		[ 1, 0, 0,  0 ],
@@ -187,7 +217,9 @@ Q.Gate.createConstants(
 		[ 0, 0, 0, new Q.ComplexNumber( 0, 1 )]),
 
 
+/*
 
+//3!
 
 	'TOFFOLI', new Q.Gate(//  “Controlled-controlled Not” (Simulates NAND and DUPE gates.)
 		[ 1, 0, 0, 0, 0, 0, 0, 0 ],
@@ -212,7 +244,7 @@ Q.Gate.createConstants(
 
 
 
-
+	/*
 	'BLOCH_SPHERE',
 	new Q.Gate( 
 
@@ -221,7 +253,7 @@ Q.Gate.createConstants(
 			//  Make a new Bloch Sphere visualizer!
 		},
 		'B', 'Bloch Sphere visualizer'
-	)
+	)*/
 )
 
 

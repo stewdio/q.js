@@ -4,21 +4,17 @@
 
 #  Minify and pack Q.js from the command line with:
 #  . build.sh
-#  This requires that you have Minify installed.
-#  See: https://www.npmjs.com/package/minify
+#  Requires that Webpack is installed.
+#  See: https://webpack.js.org/api/cli/
 
-minify \
+webpack \
 	../../Q/Q.js \
 	../../Q/ComplexNumber.js \
 	../../Q/Matrix.js \
 	../../Q/Qubit.js \
 	../../Q/Gate.js \
-	../../Q/Program.js \
-	> Q.min.js
-
-
-#  Q: Uglify’s real popular, why not use that?
-#  A: Because Uglify doesn’t handle backticks! 
+	../../Q/Circuit.js \
+	-o Q-R4-webpack.js
 
 
 
