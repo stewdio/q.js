@@ -124,9 +124,108 @@ Object.assign( Q.Circuit, {
 
 			line.forEach( function( moment, m ){
 
-				const node = new Q.Gate.findByLabel( moment )
-				if( node instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to create a new circuit from text input but could not identify this submitted gate: ${ moment }.` )
-				p.add$( m + 1, node, [ l ])
+				let
+				letters = moment.match( /^[A-Za-z]+/ ),
+				numbers = moment.match( /\d+$/ )
+
+
+				//  Hopefully the operation listed for this moment
+				//  began with some letters that we can use
+				//  to look up gates by label!
+
+				if( letters !== null ) letters = letters[ 0 ]
+				const gate = new Q.Gate.findByLabel( letters )
+				if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to create a new circuit from text input but could not identify this submitted gate: ${ moment }.` )
+
+
+				//  If this gate only accepts a single qubit input
+				//  then we are done and DONE :)
+
+				if( gate.bandwidth == 1 ){
+
+					p.add$( m + 1, gate, [ l ])
+				}
+
+
+				//  But if this gate accepts more than one input
+				//  we need to do some fancy footwork.
+
+				else if( gate.bandwidth > 1 ){
+
+					let operation, gateId, inputIndex
+
+					if( numbers !== null ) numbers = numbers[ 0 ]
+					
+
+					//  If we receive a single digit number
+					//  then we know this digital is just an input index.
+					//  (And NOT a gateId.)
+
+					if( numbers.length === 1 ){
+
+						inputIndex = numbers.substr( 0, 1 )
+
+
+						//  We may already have this gate on file.
+						//  If so, we’d better find it!
+
+						operation = p.moments[ m ].find( function( operation ){
+
+							return operation.gate.label === gate.label
+						})
+					}
+
+					
+					//  If we received a double digit number
+					//  then the first number is a gate id
+					//  and the second one is an input index.
+					
+					else if( numbers.length === 2 ){
+
+						gateId = numbers.substr( 0, 1 )
+						inputIndex = numbers.substr( 1, 1 )
+
+
+						//  Similar to above, 
+						//  but there might be more than one gate of this type
+						//  so we need to check IDs.
+
+						operation = p.moments[ m ].find( function( operation ){
+
+							console.log( 'gateId', gateId, 'operation.gateId',  operation.gateId )
+							return operation.gate.label === gate.label && operation.gateId === gateId
+						})
+						console.log( 'gateId?', gateId )
+						console.log( 'found this gate!', operation )
+					}
+				
+
+					//  If we’ve found this gate for this moment already
+					//  all we need to do is set this input index to this qubit index.
+
+					if( operation !== undefined ){
+
+						p.clearThisInput$( p.moments[ m ], [ l ])
+						operation.qubitIndices[ inputIndex ] = l						
+					}
+					else {
+					
+						
+						//  Looks like this gate isn’t attached to this moment yet
+						//  so we’ll attach it,
+						//  but we’ll only supply this particular qubit’s index
+						//  for the gate’s input indices.
+
+						const inputIndices = []
+						inputIndices[ inputIndex ] = l
+						// if( gateId !== undefined ){
+
+						// 	console.log( 'setting gate.id to gateId', gateId )
+						// 	gate.id = gateId
+						// }
+						p.add$( m + 1, gate, inputIndices, gateId )
+					}
+				}
 			})
 		})
 		return p
@@ -162,7 +261,28 @@ Object.assign( Q.Circuit, {
 
 Object.assign( Q.Circuit.prototype, {
 
-	add$: function( momentIndex, gate, qubitIndices ){
+	clearThisInput$: function( moment, qubitIndices ){
+
+		let gatesToRemove = 0
+		while( gatesToRemove >= 0 ){
+		
+			gatesToRemove = moment.findIndex( function( gate, o ){
+
+				const shouldRemoveThisGate = gate.qubitIndices.some( function( qubitIndex ){
+
+					return qubitIndices.includes( qubitIndex )
+				})
+				return shouldRemoveThisGate
+			})
+			
+
+			//  NOTE: Should we call remove$() here instead?
+			//  and within there add that to an UNDO stack!
+
+			if( gatesToRemove >= 0 ) moment.splice( gatesToRemove, 1 )
+		}
+	},
+	add$: function( momentIndex, gate, qubitIndices, gateId ){
 
 		const scope = this
 
@@ -189,7 +309,7 @@ Object.assign( Q.Circuit.prototype, {
 
 		if( qubitIndices instanceof Array !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an invalid qubit indices array:`, qubitIndices )
 		if( qubitIndices.length === 0 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an empty input qubit array:`, qubitIndices )
-		if( qubitIndices.length !== gate.bandwidth ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} but the number of qubit indices (${qubitIndices}) did not match the gate’s bandwidth (${gate.bandwidth}).` )
+		//if( qubitIndices.length !== gate.bandwidth ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} but the number of qubit indices (${qubitIndices}) did not match the gate’s bandwidth (${gate.bandwidth}).` )
 		if( qubitIndices.reduce( function( accumulator, qubitIndex ){
 
 			return accumulator && qubitIndex >= 0 && qubitIndex < scope.bandwidth
@@ -200,6 +320,14 @@ Object.assign( Q.Circuit.prototype, {
 		}
 
 
+
+		this.clearThisInput$( moment, qubitIndices )
+
+
+		//  NEED TO EXTRACT THIS OUT SO CAN CALL IT INDEPENDENTLY!!
+		//  WHY? CAUSE WHEN ADDING 2ND INPUT FOR AN EXISTING GATE
+		//  NEED TO MAKE SURE THAT INPUT INDEX IS CLEARED FIRST!
+		/*
 		let gatesToRemove = 0
 		while( gatesToRemove >= 0 ){
 		
@@ -218,9 +346,16 @@ Object.assign( Q.Circuit.prototype, {
 
 			if( gatesToRemove >= 0 ) moment.splice( gatesToRemove, 1 )
 		}
+		*/
+
+
+
+
+
 		moment.push({ 
 
 			gate,
+			gateId,
 			qubitIndices
 		})
 	},
@@ -325,31 +460,98 @@ Object.assign( Q.Circuit.prototype, {
 
 	toText: function(){
 
-		`
-		Right now this function can’t distinguish between inputs for multi-qubit gates
-		or multiple multi-qubit gates per moment!
-		Gimme a hot minute here ;)
-		`
+
+		//  First, let’s create a list of empty Strings.
+		//  Each String will be a line of our output.
 
 		const 
-		scope = this,
-		graph = new Array( this.bandwidth ).fill( '' )
+		graph = new Array( this.bandwidth ).fill( '' ),
+		scope = this
+
+
+		//  Let’s progress from left to right,
+		//  moment to moment,
+		//  building up our list of Strings.
 
 		this.moments.forEach( function( moment, m ){
 
+
+			//  For human legibility 
+			//  we ought to make each entry in a moment
+			//  a consistent width.
+			//  Note that does not make ALL moments the same width.
+			//  But each moment will be a self-consistent width.
+
+			let momentWidth = moment.reduce( function( maximum, operation ){
+
+				return Math.max( maximum, operation.qubitIndices.length )
+
+			}, 0 )
+
+
+/*******
+
+	ALSO NEED TO CHECK IF MULTIPLE OF THIS KIND OF GATE PER MOMENT!!
+	IF SO, GATE  NEEDS AN ID LABEL TOO!!!!
+	THIS WILL CHANGE THE MOMENT WIDTH BY +1
+
+*/
+
+
+			//  Now we can look through our list of qubits,
+			//  looking for any gate that uses 
+			//  a specific qubit index as an input index.
+
 			scope.inputs.forEach( function( qubit, q ){
 
-				let label = ''
-				if( m > 0 ) label += '-'
-				label += moment.find( function( operation ){
+				const 
+				operation = moment.find( function( operation ){
 
 					return operation.qubitIndices.includes( q )
-				
-				}).gate.label
-				graph[ q ] += label
+				}),
+				inputIndex = operation.qubitIndices.findIndex( function( index ){
+
+					return index === q
+				}),
+				label = operation.gate.label,
+				labelWidth = label.length + operation.qubitIndices.length,
+				sameGatesThisMoment = moment.reduce( function( sameGates, operation ){
+
+					if( operation.gate.bandwidth > 1 && operation.gate.label === label ) sameGates.push( operation.gate )
+					return sameGates
+
+				}, []),
+				thisGateId = sameGatesThisMoment.findIndex( function( gate ){
+
+					return gate === operation.gate
+				})
+
+
+console.log( 'sameGatesThisMoment', sameGatesThisMoment )
+console.log( 'thisGateId', thisGateId )
+
+				let output = label
+
+				if( sameGatesThisMoment.length > 1 ){
+
+					momentWidth += 1
+					output += thisGateId
+				}
+
+
+				if( operation.qubitIndices.length > 1 ){
+
+					output += inputIndex
+				}
+				while( output.length < momentWidth ){
+
+					output += '-'
+				}
+				if( m > 0 ) output = '-' + output
+				graph[ q ] += output
 			})
 		})
-		return  graph.join( '\n' )
+		return  '\n'+ graph.join( '\n' )
 	},
 	toDiagram: function(){
 
@@ -377,11 +579,13 @@ Object.assign( Q.Circuit.prototype, {
 			graph[ 0 ] += ' t'+ (m+1) +'  '
 			scope.inputs.forEach( function( qubit, q ){
 
-				const label = moment.find( function( operation ){
+				const 
+				operation = moment.find( function( operation ){
 
 					return operation.qubitIndices.includes( q )
 				
-				}).gate.label
+				}),
+				label = operation.gate.label
 			
 				let 
 				first  = '',
@@ -402,11 +606,18 @@ Object.assign( Q.Circuit.prototype, {
 				}
 				else {
 
-					first  += '┌───┐'
-					second += '┤ '+ label +' '
-					third  += '└───┘'
-					if( m < scope.moments.length - 1 ) second +='├'
-					else second += '│'
+					if( operation.qubitIndices.length === 1 ){
+					
+						first  += '┌───┐'
+						second += '┤ '+ label +' '
+						third  += '└───┘'
+						if( m < scope.moments.length - 1 ) second +='├'
+						else second += '│'
+					}
+					else {
+
+						//x	
+					}
 				}
 
 				const y = q * 3
