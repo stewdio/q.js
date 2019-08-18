@@ -397,37 +397,24 @@ var elk = Q( ape.toText() )
 
 //  C-NOT TEST
 //
-//  Currently CNOT gates (and possibly all multi-qubit gates?)
-//  do not yield the correct outputs. 100% sure it’s my fault.
-//  Also, multi-qubit gates are not fully supported by toText(),
-//  toDiagram(), and fromText() -- which is a problem!
-//  But I’m making progress :)
+//  Q now supports multi-qubit gates in circuits
+//  with .add$(), .fromText(), .toTable(), and .toText().
+//  About to rewrite .toDiagram() to support it as well.
+//  But my CNOT gate -- and perhaps all multi-qubit gates? --
+//  themselves seem to be broken. So working on that now....
 
+var cnotTest = Q`
 
-var cnotTest = new Q.Circuit( 2, 3 )
-cnotTest.add$( 1, Q.Gate.HADAMARD,       [ 0 ])
-cnotTest.add$( 2, Q.Gate.CONTROLLED_NOT, [ 0, 1 ])
-cnotTest.add$( 3, Q.Gate.MEASURE,        [ 0 ])
-cnotTest.add$( 3, Q.Gate.MEASURE,        [ 1 ])
-
-
-//  The C-NOT text circuit above diagrammed below shows that
-//  the actual C-NOT gate does not properly indicate that it 
-//  spans both qubits, nor does it truly identify which is the
-//  control bit and which is the target bit. (Though here the
-//  control just happens to be qubit #0.)
-
-//  cnotTest.toDiagram()
-
-;`
-    t0   t1   t2   t3  
-        ┌───┐┌───┐┌───┐
-q0  |0⟩─┤ H ├┤ C ├┤ M │
-        └───┘└───┘└───┘
-             ┌───┐┌───┐
-q1  |0⟩───○──┤ C ├┤ M │
-             └───┘└───┘
+	H C00 M
+	I C10 M
+	I C01 M
+	I C11 M
+	I X   M
 `
+cnotTest.toText()
+
+
+
 
 /*
 
@@ -469,17 +456,6 @@ q2  |0⟩───○──┤C11├┤ M │
 q3  |0⟩───○──┤C21├┤ M │
              ╰───╯└───┘
 
-
-.toText()
-
-H  C00  M
-I  C10  M
-I  C01  M
-I  C11  M
-
-
-
-What about gate names that are more than 1 character?
 
 
 */

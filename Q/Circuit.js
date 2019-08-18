@@ -192,11 +192,11 @@ Object.assign( Q.Circuit, {
 
 						operation = p.moments[ m ].find( function( operation ){
 
-							console.log( 'gateId', gateId, 'operation.gateId',  operation.gateId )
+							// console.log( 'gateId', gateId, 'operation.gateId',  operation.gateId )
 							return operation.gate.label === gate.label && operation.gateId === gateId
 						})
-						console.log( 'gateId?', gateId )
-						console.log( 'found this gate!', operation )
+						// console.log( 'gateId?', gateId )
+						// console.log( 'found this gate!', operation )
 					}
 				
 
@@ -458,50 +458,40 @@ Object.assign( Q.Circuit.prototype, {
 
 
 
-	toText: function(){
+	//  Our circuit already exists as an Array of moments.
+	//  But within each moment is an Array of gates, NOT qubits.
+	//  If a moment contains a multi-qubit gate 
+	//  then the number of elements in that moment will be LESS
+	//  than the number of qubits being operated on.
+	//  Yet when we draw a diagram of our circuit we do
+	//  need to draw a token for each moment of a qubit’s path.
+	//  Here’s how we do that translation.
 
-
-		//  First, let’s create a list of empty Strings.
-		//  Each String will be a line of our output.
+	toTable: function(){
 
 		const 
-		graph = new Array( this.bandwidth ).fill( '' ),
+		table = new Array( this.bandwidth )
 		scope = this
 
 
-		//  Let’s progress from left to right,
-		//  moment to moment,
-		//  building up our list of Strings.
+		//  Sure, this is equal to table.length
+		//  but isn’t legibility and convenience everything?
+
+		table.timewidth = this.timewidth
+		
+
+		//  Similarly, this should be equal to table[ 0 ].length
+		//  or really table[ i >= 0; i < table.length ].length,
+		//  but again, least cognitive barrier is key.
+
+		table.bandwidth = this.bandwidth
+		
+
+		//  
 
 		this.moments.forEach( function( moment, m ){
 
-
-			//  For human legibility 
-			//  we ought to make each entry in a moment
-			//  a consistent width.
-			//  Note that does not make ALL moments the same width.
-			//  But each moment will be a self-consistent width.
-
-			let momentWidth = moment.reduce( function( maximum, operation ){
-
-				return Math.max( maximum, operation.qubitIndices.length )
-
-			}, 0 )
-
-
-/*******
-
-	ALSO NEED TO CHECK IF MULTIPLE OF THIS KIND OF GATE PER MOMENT!!
-	IF SO, GATE  NEEDS AN ID LABEL TOO!!!!
-	THIS WILL CHANGE THE MOMENT WIDTH BY +1
-
-*/
-
-
-			//  Now we can look through our list of qubits,
-			//  looking for any gate that uses 
-			//  a specific qubit index as an input index.
-
+			table[ m ] = new Array( scope.timewidth )
 			scope.inputs.forEach( function( qubit, q ){
 
 				const 
@@ -514,45 +504,110 @@ Object.assign( Q.Circuit.prototype, {
 					return index === q
 				}),
 				label = operation.gate.label,
-				labelWidth = label.length + operation.qubitIndices.length,
-				sameGatesThisMoment = moment.reduce( function( sameGates, operation ){
+				operationsWithSameGatesThisMoment = moment.reduce( function( siblings, operation ){
 
-					if( operation.gate.bandwidth > 1 && operation.gate.label === label ) sameGates.push( operation.gate )
-					return sameGates
+					if( operation.gate.bandwidth > 1 && operation.gate.label === label ) siblings.push( operation )
+					return siblings
 
 				}, []),
-				thisGateId = sameGatesThisMoment.findIndex( function( gate ){
+				thisGateId = operationsWithSameGatesThisMoment.findIndex( function( operation ){
 
-					return gate === operation.gate
+					return operation.qubitIndices.includes( q )
 				})
 
 
-console.log( 'sameGatesThisMoment', sameGatesThisMoment )
-console.log( 'thisGateId', thisGateId )
+				//  Compile a String output for this qubit at this moment.
 
 				let output = label
-
-				if( sameGatesThisMoment.length > 1 ){
-
-					momentWidth += 1
-					output += thisGateId
-				}
-
-
-				if( operation.qubitIndices.length > 1 ){
-
-					output += inputIndex
-				}
-				while( output.length < momentWidth ){
-
-					output += '-'
-				}
-				if( m > 0 ) output = '-' + output
-				graph[ q ] += output
+				if( operationsWithSameGatesThisMoment.length > 1 ) output += thisGateId
+				if( operation.qubitIndices.length > 1 ) output += inputIndex
+				table[ m ][ q ] = output
 			})
 		})
-		return  '\n'+ graph.join( '\n' )
+
+
+		//  Now we can easily read down each moment
+		//  and establish the moment’s character width.
+		//  Very useful for text-based diagrams ;)
+
+		table.forEach( function( moment ){
+
+			const maximumWidth = moment.reduce( function( maximumWidth, operationString ){
+
+				return Math.max( maximumWidth, operationString.length )
+			
+			}, 1 )
+			moment.maximumCharacterWidth = maximumWidth
+		})
+
+
+		//  We can also do this for the table as a whole.
+		
+
+		table.maximumMomentCharacterWidth = table.reduce( function( maximumWidth, moment ){
+
+			return Math.max( maximumWidth, moment.maximumCharacterWidth )
+		
+		}, 1 )
+		return table
 	},
+
+
+
+	toText: function( makeAllMomentsEqualWidth ){
+
+		const 
+		table  = this.toTable(),
+		output = new Array( table.bandwidth ).fill( '' )
+
+		for( let x = 0; x < table.timewidth; x ++ ){
+
+			for( let y = 0; y < table.bandwidth; y ++ ){
+
+				let cellString = table[ x ][ y ]
+				while( cellString.length < table[ x ].maximumCharacterWidth ){
+
+					cellString += '-'
+				}
+				if( makeAllMomentsEqualWidth && x < table.timewidth - 1 ){
+
+					while( cellString.length < table.maximumMomentCharacterWidth ){
+
+						cellString += '-'
+					}
+				}
+				if( x > 0 ) cellString = '-'+ cellString
+				output[ y ] += cellString
+			}
+		}
+		return '\n'+ output.join( '\n' )
+	},
+
+
+
+
+
+
+
+	toTextOOPS: function(){
+
+		return this.toTable().reduce( function( rowString, moment, m ){
+
+			rowString.push( moment.reduce( function( columnString, operationString ){
+
+				if( m > 0 ) columnString += '-'
+				return columnString + operationString
+
+			}, '' ))
+			return rowString
+
+		}, [] ).join( '\n' )
+	},
+
+
+
+
+
 	toDiagram: function(){
 
 		`
