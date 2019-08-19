@@ -521,7 +521,11 @@ Object.assign( Q.Circuit.prototype, {
 				let output = label
 				if( operationsWithSameGatesThisMoment.length > 1 ) output += thisGateId
 				if( operation.qubitIndices.length > 1 ) output += inputIndex
-				table[ m ][ q ] = output
+				table[ m ][ q ] = {
+
+					label: output,
+					bandwidth: operation.qubitIndices.length
+				}
 			})
 		})
 
@@ -532,9 +536,9 @@ Object.assign( Q.Circuit.prototype, {
 
 		table.forEach( function( moment ){
 
-			const maximumWidth = moment.reduce( function( maximumWidth, operationString ){
+			const maximumWidth = moment.reduce( function( maximumWidth, operation ){
 
-				return Math.max( maximumWidth, operationString.length )
+				return Math.max( maximumWidth, operation.label.length )
 			
 			}, 1 )
 			moment.maximumCharacterWidth = maximumWidth
@@ -554,6 +558,7 @@ Object.assign( Q.Circuit.prototype, {
 
 
 
+
 	toText: function( makeAllMomentsEqualWidth ){
 
 		const 
@@ -564,17 +569,10 @@ Object.assign( Q.Circuit.prototype, {
 
 			for( let y = 0; y < table.bandwidth; y ++ ){
 
-				let cellString = table[ x ][ y ]
-				while( cellString.length < table[ x ].maximumCharacterWidth ){
-
-					cellString += '-'
-				}
+				let cellString = table[ x ][ y ].label.padEnd( table[ x ].maximumCharacterWidth, '-' )
 				if( makeAllMomentsEqualWidth && x < table.timewidth - 1 ){
 
-					while( cellString.length < table.maximumMomentCharacterWidth ){
-
-						cellString += '-'
-					}
+					cellString = table[ x ][ y ].label.padEnd( table.maximumMomentCharacterWidth, '-' )
 				}
 				if( x > 0 ) cellString = '-'+ cellString
 				output[ y ] += cellString
@@ -586,73 +584,50 @@ Object.assign( Q.Circuit.prototype, {
 
 
 
-
-
-
-	toTextOOPS: function(){
-
-		return this.toTable().reduce( function( rowString, moment, m ){
-
-			rowString.push( moment.reduce( function( columnString, operationString ){
-
-				if( m > 0 ) columnString += '-'
-				return columnString + operationString
-
-			}, '' ))
-			return rowString
-
-		}, [] ).join( '\n' )
-	},
-
-
-
-
-
-	toDiagram: function(){
-
-		`
-		Right now this function can’t distinguish between inputs for multi-qubit gates
-		or multiple multi-qubit gates per moment!
-		Gimme a hot minute here ;)
-		`
+	toDiagram: function( makeAllMomentsEqualWidth ){
 
 		const 
-		scope = this,
-		graph = new Array( this.bandwidth * 3 + 1 ).fill( '' )
+		table  = this.toTable(),
+		output = new Array( table.bandwidth * 3 + 1 ).fill( '' )
 
-		graph[ 0 ] = '\n    t0  '
+
+		output[ 0 ] = '    t0  '
 		scope.inputs.forEach( function( qubit, q ){
 
-			const y = q * 3
-			graph[ y + 1 ] += '        '
-			graph[ y + 2 ] += 'q'+ q +'  |'+ qubit.ket.toText() +'⟩─'
-			graph[ y + 3 ] += '        '
+			const y3 = q * 3
+			output[ y3 + 1 ] += '        '
+			output[ y3 + 2 ] += 'q'+ q +'  |'+ qubit.ket.toText() +'⟩─'
+			output[ y3 + 3 ] += '        '
 		})
 
-		this.moments.forEach( function( moment, m ){
 
-			graph[ 0 ] += ' t'+ (m+1) +'  '
-			scope.inputs.forEach( function( qubit, q ){
+		for( let x = 0; x < table.timewidth; x ++ ){
 
-				const 
-				operation = moment.find( function( operation ){
 
-					return operation.qubitIndices.includes( q )
-				
-				}),
-				label = operation.gate.label
-			
+			const padToLength = makeAllMomentsEqualWidth 
+				? table.maximumMomentCharacterWidth
+				: table[ x ].maximumCharacterWidth
+
+			output[ 0 ] += Q.centerText( 't'+ ( x + 1 ), padToLength + 4 )
+			for( let y = 0; y < table.bandwidth; y ++ ){
+
 				let 
+				operation = table[ x ][ y ],
 				first  = '',
 				second = '',
 				third  = ''
 
-				if( label === 'I' ){
+				if( operation.label === 'I' ){
 
-					first  += '   '
-					second += '──○'
-					third  += '   '
-					if( m < scope.moments.length - 1 ){
+					first  += '  '
+					second += '──'
+					third  += '  '
+					
+					first  += ' '.padEnd( padToLength )
+					second += Q.centerText( '○', padToLength, '─' )
+					third  += ' '.padEnd( padToLength )
+
+					if( x < table.timewidth - 1 ){
 
 						first  += '  '
 						second += '──'
@@ -661,28 +636,47 @@ Object.assign( Q.Circuit.prototype, {
 				}
 				else {
 
-					if( operation.qubitIndices.length === 1 ){
+					first  += '┌─'
+					second += '┤ '
+					third  += '└─'
 					
-						first  += '┌───┐'
-						second += '┤ '+ label +' '
-						third  += '└───┘'
-						if( m < scope.moments.length - 1 ) second +='├'
-						else second += '│'
-					}
-					else {
+					first  += '─'.padEnd( padToLength, '─' )
+					second += Q.centerText( operation.label, padToLength )
+					third  += '─'.padEnd( padToLength, '─' )
+				
+					first  += '─┐'
+					second += x < table.timewidth - 1 ? ' ├' : ' │'
+					third  += '─┘'
 
-						//x	
+					if( operation.bandwidth > 1 ){
+
+						//  need to know how many multi-qubit gates in this moment total
+						//  of those, what index is this?
+						//  let n = thatIndex % table[ x ].maximumCharacterWidth + 4
+						//  that’s the x coord where we will stick a vertical pipe
+
+						//  should that vertical go up or down?
+						//  need to know what the input index of this is
+						//  if it’s 0 then down
+						//  if it’s inputIndices.length-1 then up
+						//  otherwise BOTH
+
+						//  first = first.substring( 0, x ) +'┴'+ first.substring( X + 1 )
+						//  last = last.substring( 0, x ) +'┬'+ last.substring( X + 1 )						
 					}
 				}
-
-				const y = q * 3
-				graph[ y + 1 ] += first
-				graph[ y + 2 ] += second
-				graph[ y + 3 ] += third
-			})
-		})
-		return  graph.join( '\n' )
+				const y3 = y * 3				
+				output[ y3 + 1 ] += first
+				output[ y3 + 2 ] += second
+				output[ y3 + 3 ] += third
+			}
+		}
+		return '\n'+ output.join( '\n' )
 	},
+
+
+
+
 	toDom: function(){
 
 		const circuitElement = document.createElement( 'div' )

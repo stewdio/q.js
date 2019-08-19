@@ -169,7 +169,7 @@ Object.assign( Q, {
 		const f = Math.pow( 10, d )
 		return Math.round( n * f ) / f
 	},
-	toTitleCase( text ){
+	toTitleCase: function ( text ){
 
 		text = text.replace( /_/g, ' ' )
 		return text.toLowerCase().split( ' ' ).map( function( word ){
@@ -177,6 +177,22 @@ Object.assign( Q, {
 			return word.replace( word[ 0 ], word[ 0 ].toUpperCase() )
 		
 		}).join(' ')
+	},
+	centerText: function( text, length, filler ){
+
+		if( length > text.length ){
+			
+			if( typeof filler !== 'string' ) filler = ' '
+
+			const 
+			padLengthLeft  = Math.floor(( length - text.length ) / 2 ),
+			padLengthRight = length - text.length - padLengthLeft
+
+			return text
+				.padStart( padLengthLeft + text.length, filler )
+				.padEnd( length, filler )
+		}
+		else return text
 	}
 })
 
