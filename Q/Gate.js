@@ -177,8 +177,17 @@ const result = Q.Matrix.CONTROLLED_NOT.multiply( controlQubit.multiplyTensor( ta
 // console.log('controlQubit', controlQubit )
 // console.log('targetQubit', targetQubit )
 
-			//const result = Q.Matrix.CONTROLLED_NOT.multiply( targetQubit.multiplyTensor( controlQubit ))
-			const result = Q.Matrix.CONTROLLED_NOT.multiply( controlQubit.multiplyTensor( targetQubit ))
+
+			const tensor = controlQubit.multiplyTensor( targetQubit )
+			// console.log( 'tensor', tensor.toTsv() )
+
+			const result = Q.Matrix.CONTROLLED_NOT.multiply( tensor )
+
+
+//  actually this seems to describe it well:
+//  http://www.ijoart.org/docs/Design-and-realization-of-a-quantum-Controlled-NOT-gate-using-optical-implementation.pdf
+
+//  so replace all this w that!
 
 // console.log( 'result!', result.toTsv() )
 

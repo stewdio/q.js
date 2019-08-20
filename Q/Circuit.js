@@ -491,7 +491,14 @@ Object.assign( Q.Circuit.prototype, {
 
 		this.moments.forEach( function( moment, m ){
 
-			table[ m ] = new Array( scope.timewidth )
+			table[ m ] = new Array( scope.timewidth )			
+			const multiQubitGates = moment.reduce( function( accumulation, operation ){
+
+				if( operation.qubitIndices.length > 1 ) accumulation.push( operation )
+				return accumulation
+
+			}, [] )
+			table[ m ].multiQubitGatesTotal = multiQubitGates.length
 			scope.inputs.forEach( function( qubit, q ){
 
 				const 
@@ -513,18 +520,44 @@ Object.assign( Q.Circuit.prototype, {
 				thisGateId = operationsWithSameGatesThisMoment.findIndex( function( operation ){
 
 					return operation.qubitIndices.includes( q )
+				}),
+				thisGateAmongMultiQubitGatesIndex = multiQubitGates.findIndex( function( op ){
+
+					return op === operation
 				})
 
 
 				//  Compile a String output for this qubit at this moment.
 
-				let output = label
-				if( operationsWithSameGatesThisMoment.length > 1 ) output += thisGateId
-				if( operation.qubitIndices.length > 1 ) output += inputIndex
+				let 
+				output = label,
+				aSiblingIsAbove = false,
+				aSiblingIsBelow = false
+
+				if( operation.qubitIndices.length > 1 ){ 
+				
+					if( operationsWithSameGatesThisMoment.length > 1 ) output += thisGateId
+					output += inputIndex
+
+					//  need to know—are the sibling qubits for  this qubit; their q# lower or higher than q
+
+					aSiblingIsAbove = operation.qubitIndices.some( function( siblingQubitIndex ){
+
+						return siblingQubitIndex < q
+					})
+					aSiblingIsBelow = operation.qubitIndices.some( function( siblingQubitIndex ){
+
+						return siblingQubitIndex > q
+					})
+				}
 				table[ m ][ q ] = {
 
 					label: output,
-					bandwidth: operation.qubitIndices.length
+					gateInputIndex: inputIndex,              //  This is #n
+					bandwidth: operation.qubitIndices.length,//  of this many inputs.
+					thisGateAmongMultiQubitGatesIndex,
+					aSiblingIsAbove,
+					aSiblingIsBelow
 				}
 			})
 		})
@@ -590,7 +623,6 @@ Object.assign( Q.Circuit.prototype, {
 		table  = this.toTable(),
 		output = new Array( table.bandwidth * 3 + 1 ).fill( '' )
 
-
 		output[ 0 ] = '    t0  '
 		scope.inputs.forEach( function( qubit, q ){
 
@@ -599,12 +631,9 @@ Object.assign( Q.Circuit.prototype, {
 			output[ y3 + 2 ] += 'q'+ q +'  |'+ qubit.ket.toText() +'⟩─'
 			output[ y3 + 3 ] += '        '
 		})
-
-
 		for( let x = 0; x < table.timewidth; x ++ ){
 
-
-			const padToLength = makeAllMomentsEqualWidth 
+			const padToLength = makeAllMomentsEqualWidth
 				? table.maximumMomentCharacterWidth
 				: table[ x ].maximumCharacterWidth
 
@@ -650,19 +679,15 @@ Object.assign( Q.Circuit.prototype, {
 
 					if( operation.bandwidth > 1 ){
 
-						//  need to know how many multi-qubit gates in this moment total
-						//  of those, what index is this?
-						//  let n = thatIndex % table[ x ].maximumCharacterWidth + 4
-						//  that’s the x coord where we will stick a vertical pipe
+						let n = operation.thisGateAmongMultiQubitGatesIndex % ( table[ x ].maximumCharacterWidth + 1 ) + 1
+						if( operation.aSiblingIsAbove ){						
 
-						//  should that vertical go up or down?
-						//  need to know what the input index of this is
-						//  if it’s 0 then down
-						//  if it’s inputIndices.length-1 then up
-						//  otherwise BOTH
+							first = first.substring( 0, n ) +'┴'+ first.substring( n + 1 )
+						}
+						if( operation.aSiblingIsBelow ){
 
-						//  first = first.substring( 0, x ) +'┴'+ first.substring( X + 1 )
-						//  last = last.substring( 0, x ) +'┬'+ last.substring( X + 1 )						
+							third = third.substring( 0, n ) +'┬'+ third.substring( n + 1 )
+						}					
 					}
 				}
 				const y3 = y * 3				

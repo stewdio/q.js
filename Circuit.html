@@ -403,7 +403,7 @@ var elk = Q( ape.toText() )
 //  But my CNOT gate -- and perhaps all multi-qubit gates? --
 //  themselves seem to be broken. So working on that now....
 
-var cnotTest = Q`
+var overlappingCNotTest = Q`
 
 	H C00 M
 	I C10 M
@@ -411,8 +411,33 @@ var cnotTest = Q`
 	I C11 M
 	I X   M
 `
-cnotTest.toText()
+overlappingCNotTest.toText()
+overlappingCNotTest.toDiagram()
 
+
+
+
+//  C-NOT TRUTH TABLE TESTS
+/*
+console.log( 'Expecting 0, 0',
+Q`I C0
+I C1`.run$().results )
+
+
+console.log( 'Expecting 0, 1',
+Q`I C0
+X C1`.run$().results )
+
+
+console.log( 'Expecting 1, 1',
+Q`X C0
+I C1`.run$().results )
+
+
+console.log( 'Expect 1, 0',
+Q`X C0
+X C1`.run$().results )
+*/
 
 
 
