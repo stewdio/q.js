@@ -332,63 +332,78 @@ Object.assign( Q.Circuit.prototype, {
 			table[ m ].multiQubitGatesTotal = multiQubitGates.length
 			scope.inputs.forEach( function( qubit, q ){
 
-				const 
-				operation = moment.find( function( operation ){
+				const operation = moment.find( function( operation ){
 
 					return operation.qubitIndices.includes( q )
-				}),
-				inputIndex = operation.qubitIndices.findIndex( function( index ){
-
-					return index === q
-				}),
-				label = operation.gate.label,
-				operationsWithSameGatesThisMoment = moment.reduce( function( siblings, operation ){
-
-					if( operation.gate.bandwidth > 1 && operation.gate.label === label ) siblings.push( operation )
-					return siblings
-
-				}, []),
-				thisGateId = operationsWithSameGatesThisMoment.findIndex( function( operation ){
-
-					return operation.qubitIndices.includes( q )
-				}),
-				thisGateAmongMultiQubitGatesIndex = multiQubitGates.findIndex( function( op ){
-
-					return op === operation
 				})
-
-
-				//  Compile a String output for this qubit at this moment.
-
-				let 
-				output = label,
-				aSiblingIsAbove = false,
-				aSiblingIsBelow = false
-
-				if( operation.qubitIndices.length > 1 ){ 
+				if( operation !== undefined ){
 				
-					if( operationsWithSameGatesThisMoment.length > 1 ) output += thisGateId
-					output += inputIndex
+					const
+					inputIndex = operation.qubitIndices.findIndex( function( index ){
 
-					//  need to know—are the sibling qubits for  this qubit; their q# lower or higher than q
+						return index === q
+					}),
+					label = operation.gate.label,
+					operationsWithSameGatesThisMoment = moment.reduce( function( siblings, operation ){
 
-					aSiblingIsAbove = operation.qubitIndices.some( function( siblingQubitIndex ){
+						if( operation.gate.bandwidth > 1 && operation.gate.label === label ) siblings.push( operation )
+						return siblings
 
-						return siblingQubitIndex < q
+					}, []),
+					thisGateId = operationsWithSameGatesThisMoment.findIndex( function( operation ){
+
+						return operation.qubitIndices.includes( q )
+					}),
+					thisGateAmongMultiQubitGatesIndex = multiQubitGates.findIndex( function( op ){
+
+						return op === operation
 					})
-					aSiblingIsBelow = operation.qubitIndices.some( function( siblingQubitIndex ){
 
-						return siblingQubitIndex > q
-					})
+
+					//  Compile a String output for this qubit at this moment.
+
+					let 
+					output = label,
+					aSiblingIsAbove = false,
+					aSiblingIsBelow = false
+
+					if( operation.qubitIndices.length > 1 ){ 
+					
+						if( operationsWithSameGatesThisMoment.length > 1 ) output += thisGateId
+						output += inputIndex
+
+						//  need to know—are the sibling qubits for  this qubit; their q# lower or higher than q
+
+						aSiblingIsAbove = operation.qubitIndices.some( function( siblingQubitIndex ){
+
+							return siblingQubitIndex < q
+						})
+						aSiblingIsBelow = operation.qubitIndices.some( function( siblingQubitIndex ){
+
+							return siblingQubitIndex > q
+						})
+					}
+					table[ m ][ q ] = {
+
+						label: output,
+						gateInputIndex: inputIndex,              //  This is #n
+						bandwidth: operation.qubitIndices.length,//  of this many inputs.
+						thisGateAmongMultiQubitGatesIndex,
+						aSiblingIsAbove,
+						aSiblingIsBelow
+					}
 				}
-				table[ m ][ q ] = {
+				else {
 
-					label: output,
-					gateInputIndex: inputIndex,              //  This is #n
-					bandwidth: operation.qubitIndices.length,//  of this many inputs.
-					thisGateAmongMultiQubitGatesIndex,
-					aSiblingIsAbove,
-					aSiblingIsBelow
+					table[ m ][ q ] = {
+
+						label: '?',
+						gateInputIndex: q,
+						bandwidth: 0,
+						thisGateAmongMultiQubitGatesIndex: 0,
+						aSiblingIsAbove: false,
+						aSiblingIsBelow: false
+					}
 				}
 			})
 		})
@@ -561,7 +576,7 @@ Object.assign( Q.Circuit.prototype, {
 	//////////////
 
 
-	clean$: function(){
+	removeHangingOperations$: function(){
 
 		`
 		Step through each moment of this circuit
@@ -586,6 +601,40 @@ Object.assign( Q.Circuit.prototype, {
 		})
 		return this
 	},
+	fillEmptyOperations$: function(){
+
+		`
+		Step through each moment of this circuit,
+		find any qubits that have no assigned operations
+		and add an IDENTITY operation 
+		for that qubit at that moment.
+		`
+
+		const scope = this
+		this.moments.forEach( function( moment ){
+
+			scope.inputs.forEach( function( qubit, q ){
+
+				const qubitHasOperation = moment.find( function( operation ){
+
+					return operation.qubitIndices.includes( q )
+				})
+				if( qubitHasOperation === undefined ){
+
+					moment.push({ 
+
+						gate: Q.Gate.IDENTITY,
+						qubitIndices: [ q ]
+					})
+				}
+			})
+		})
+		return this
+	},
+	
+
+
+
 	clearThisInput$: function( moment, qubitIndices ){
 
 		let gatesToRemove = 0
@@ -823,13 +872,13 @@ Object.assign( Q.Circuit.prototype, {
 
 	tricky part: if there are hanging gate indices!
 	just do a valdation cleanup at the end??
-	.clean$()
+	.removeHangingOperations$()
 			
 		*/
 
 		//
 
-		if( shouldClean ) this.clean$()
+		if( shouldClean ) this.removeHangingOperations$()
 
 		return this
 	},
@@ -837,12 +886,15 @@ Object.assign( Q.Circuit.prototype, {
 
 
 
-	//  We could have implemented trim$() as a wrapper around copy$(),
-	//  similar to how cut$ is a wrapper around copy$().
-	//  But this operates on the existing circuit 
-	//  instead of returning a new one and returning that.
-
 	trim$: function( options ){
+
+		`
+		Edit this circuit by trimming off moments, qubits, or both.
+		We could have implemented trim$() as a wrapper around copy$(),
+		similar to how cut$ is a wrapper around copy$().
+		But this operates on the existing circuit 
+		instead of returning a new one and returning that.
+		`
 
 		let {
 
@@ -858,21 +910,23 @@ Object.assign( Q.Circuit.prototype, {
 
 		//  First, trim the moments down to desired size.
 
-		this.moments.slice( momentFirstIndex,momentLastIndex )
+		this.moments = this.moments.slice( momentFirstIndex, momentLastIndex )
 		this.timewidth = momentRange
 
 
 		//  Then, trim the bandwidth down.
 
-		this.inputs.slice( qubitFirstIndex,qubitLastIndex )
+		this.inputs = this.inputs.slice( qubitFirstIndex, qubitLastIndex )
 		this.bandwidth = qubitRange
 
 
-		//  Finally,  remove all gates where
+		//  Finally, remove all gates where
 		//  gate’s qubit indices contain an index < qubitFirstIndex,
-		//  gate’s qubit indices contain an index > qubitLastIndex
+		//  gate’s qubit indices contain an index > qubitLastIndex,
+		//  and fill those holes with Identity gates.
 		
-		this.clean$()
+		this.removeHangingOperations$()
+		this.fillEmptyOperations$()
 
 		return this
 	},
