@@ -282,7 +282,7 @@ Object.assign( Q.Circuit.prototype, {
 			if( gatesToRemove >= 0 ) moment.splice( gatesToRemove, 1 )
 		}
 	},
-	add$: function( momentIndex, gate, qubitIndices, gateId ){
+	add$: function( momentIndex, gate, qubitIndices, gateId, allowOverrun ){
 
 		const scope = this
 
@@ -307,51 +307,30 @@ Object.assign( Q.Circuit.prototype, {
 
 		//  Are these valid input indices?
 
-		if( qubitIndices instanceof Array !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an invalid qubit indices array:`, qubitIndices )
-		if( qubitIndices.length === 0 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an empty input qubit array:`, qubitIndices )
-		//if( qubitIndices.length !== gate.bandwidth ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} but the number of qubit indices (${qubitIndices}) did not match the gate’s bandwidth (${gate.bandwidth}).` )
-		if( qubitIndices.reduce( function( accumulator, qubitIndex ){
-
-			return accumulator && qubitIndex >= 0 && qubitIndex < scope.bandwidth
-
-		}, false )){
-
-			return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with some out of range qubit indices:`, qubitIndices )
-		}
-
-
-
-		this.clearThisInput$( moment, qubitIndices )
-
-
-		//  NEED TO EXTRACT THIS OUT SO CAN CALL IT INDEPENDENTLY!!
-		//  WHY? CAUSE WHEN ADDING 2ND INPUT FOR AN EXISTING GATE
-		//  NEED TO MAKE SURE THAT INPUT INDEX IS CLEARED FIRST!
-		/*
-		let gatesToRemove = 0
-		while( gatesToRemove >= 0 ){
+		if( allowOverrun !== true ){
 		
-			gatesToRemove = moment.findIndex( function( gate, o ){
+			if( qubitIndices instanceof Array !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an invalid qubit indices array:`, qubitIndices )
+			if( qubitIndices.length === 0 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an empty input qubit array:`, qubitIndices )
+			
+			
+			//  We’ve had to comment this check out because 
+			//  we can’t know in a single pass 
+			//  if we have all the indices needed
+			//  for a multi-qubit gate:
 
-				const shouldRemoveThisGate = gate.qubitIndices.some( function( qubitIndex ){
-
-					return qubitIndices.includes( qubitIndex )
-				})
-				return shouldRemoveThisGate
-			})
+			//if( qubitIndices.length !== gate.bandwidth ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} but the number of qubit indices (${qubitIndices}) did not match the gate’s bandwidth (${gate.bandwidth}).` )
 			
 
-			//  NOTE: Should we call remove$() here instead?
-			//  and within there add that to an UNDO stack!
+			if( qubitIndices.reduce( function( accumulator, qubitIndex ){
 
-			if( gatesToRemove >= 0 ) moment.splice( gatesToRemove, 1 )
+				return accumulator && qubitIndex >= 0 && qubitIndex < scope.bandwidth
+
+			}, false )){
+
+				return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with some out of range qubit indices:`, qubitIndices )
+			}
 		}
-		*/
-
-
-
-
-
+		this.clearThisInput$( moment, qubitIndices )
 		moment.push({ 
 
 			gate,
@@ -487,7 +466,7 @@ Object.assign( Q.Circuit.prototype, {
 		table.bandwidth = this.bandwidth
 		
 
-		//  
+		//  Walk through this circuit moment-by-moment. 
 
 		this.moments.forEach( function( moment, m ){
 
@@ -706,6 +685,158 @@ Object.assign( Q.Circuit.prototype, {
 
 		const circuitElement = document.createElement( 'div' )
 		circuitElement.classList.add( 'circuit' )
+	},
+
+
+
+
+	copy: function( options, isACutOperation ){
+
+		const original = this
+		if( options === undefined ) options = {}
+		let {
+
+			qubitFirstIndex,
+			qubitRange,
+			qubitLastIndex,
+			momentFirstIndex,
+			momentRange,
+			momentLastIndex
+
+		} = options
+
+		if( typeof qubitFirstIndex !== 'number' ) qubitFirstIndex = 0
+		if( typeof qubitLastIndex  !== 'number' && typeof qubitRange !== 'number' ) qubitLastIndex = original.bandwidth
+		if( typeof qubitLastIndex  !== 'number' && typeof qubitRange === 'number' ) qubitLastIndex = qubitFirstIndex + qubitRange
+		else if( typeof qubitLastIndex === 'number' && typeof qubitRange !== 'number' ) qubitRange = qubitLastIndex - qubitFirstIndex
+		else return Q.error( `Q.Circuit attempted to copy a circuit but could not understand what qubits to copy.` )
+
+		if( typeof momentFirstIndex !== 'number' ) momentFirstIndex = 0
+		if( typeof momentLastIndex  !== 'number' && typeof momentRange !== 'number' ) momentLastIndex = original.timewidth
+		if( typeof momentLastIndex  !== 'number' && typeof momentRange === 'number' ) momentLastIndex = momentFirstIndex + momentRange
+		else if( typeof momentLastIndex === 'number' && typeof momentRange !== 'number' ) momentRange = momentLastIndex - momentFirstIndex
+		else return Q.error( `Q.Circuit attempted to copy a circuit but could not understand what moments to copy.` )
+
+		Q.log( 0.8, 
+		
+			'\nQ.Circuit copy operation:',
+			'\n\n  qubitFirstIndex', qubitFirstIndex,
+			'\n  qubitLastIndex ', qubitLastIndex,
+			'\n  qubitRange     ', qubitRange,
+			'\n\n  momentFirstIndex', momentFirstIndex,
+			'\n  momentLastIndex ', momentLastIndex,
+			'\n  momentRange     ', momentRange,
+			'\n\n'
+		)
+
+		const copy = new Q.Circuit( qubitRange, momentRange )
+		for( let m = momentFirstIndex; m < momentLastIndex; m ++ ){
+
+			original.moments[ m ]
+			.filter( function( operation ){
+
+				return ( operation.qubitIndices.every( function( qubitIndex ){
+
+					return qubitIndex >= qubitFirstIndex && qubitIndex < qubitLastIndex
+				}))
+			})			
+			.forEach( function( operation ){
+
+				const adjustedQubitIndices = operation.qubitIndices.map( function( qubitIndex ){
+
+					return qubitIndex - qubitFirstIndex
+				})
+				copy.add$(
+
+					1 + m - momentFirstIndex, 
+					operation.gate, 
+					adjustedQubitIndices, 
+					operation.gateId,
+					true//  Allow overrun; ghost indices.
+				)
+			})
+		}
+
+
+		//  The cut$() operation just calls copy()
+		//  with the following boolean set to true.
+		//  If this is a cut we need to 
+		//  replace all gates in this area with identity gates.
+		
+		if( isACutOperation === true ){
+
+			for( let m = momentFirstIndex; m < momentLastIndex; m ++ ){
+
+				original.moments[ m ] = new Array( original.bandwidth )
+				.fill( 0 )
+				.map( function( qubit, q ){
+
+					return { 
+
+						gate: Q.Gate.IDENTITY,
+						qubitIndices: [ q ]
+					}
+				})
+			}
+		}
+		return copy
+	},
+	cut$: function( options ){
+
+		return this.copy( options, true )
+	},
+	clean$: function(){
+
+		
+	},
+	paste$: function( circuit, atMoment, atQubit ){
+
+		/*
+
+			
+			begnning t from atMoment to atMoment + circuit.timewidth
+
+				if t > this.timewidth
+
+					increase this.timewidth
+
+				q from atQubit to atQubit + circuit.bandwidth
+
+					if q > this.bandwidth
+
+						increase this.bandwidth
+
+			now go through whole 'this'
+			and make sure every moment,qubit has at least an identity gate.
+
+
+	tricky part: if there are hanging gate indices!
+	just do a valdation cleanup at the end??
+	.clean$()
+
+
+			
+		*/
+
+		//
+
+		return this
+	},
+	trim$: function(){
+
+		//  Need to trim off moments? Will change this.timewidth
+		//  Need to trim off qubits? Will change this.bandwidth
+	},
+	clone: function(){
+
+		const 
+		original = this,
+		clone    = original.copy()
+
+		clone.results = original.results.slice()
+		clone.inputs  = original.inputs.slice()
+		
+		return clone
 	}
 })
 

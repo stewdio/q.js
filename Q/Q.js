@@ -34,10 +34,15 @@ Object.assign( Q, {
 		'gup',
 		'hen'
 	],
+	log: function( verbosityThreshold, ...remainingArguments ){
+
+		if( Q.verbosity >= verbosityThreshold ) console.log( ...remainingArguments )
+		return '(log)'
+	},
 	warn: function(){
 
 		console.warn( ...arguments )
-		return '(warning)'
+		return '(warn)'
 	},
 	error: function(){
 
