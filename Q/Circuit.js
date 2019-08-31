@@ -259,194 +259,46 @@ Object.assign( Q.Circuit, {
 
 
 
+
+
+
+
 Object.assign( Q.Circuit.prototype, {
 
-	clearThisInput$: function( moment, qubitIndices ){
+	clone: function(){
 
-		let gatesToRemove = 0
-		while( gatesToRemove >= 0 ){
+		const 
+		original = this,
+		clone    = original.copy()
+
+		clone.results = original.results.slice()
+		clone.inputs  = original.inputs.slice()
 		
-			gatesToRemove = moment.findIndex( function( gate, o ){
-
-				const shouldRemoveThisGate = gate.qubitIndices.some( function( qubitIndex ){
-
-					return qubitIndices.includes( qubitIndex )
-				})
-				return shouldRemoveThisGate
-			})
-			
-
-			//  NOTE: Should we call remove$() here instead?
-			//  and within there add that to an UNDO stack!
-
-			if( gatesToRemove >= 0 ) moment.splice( gatesToRemove, 1 )
-		}
-	},
-	add$: function( momentIndex, gate, qubitIndices, gateId, allowOverrun ){
-
-		const scope = this
-
-
-		//  We’re pretending that this Array is ONE-indexed, 
-		//  rather than ZERO-indexed.
-		//  This is because “moment 0” is the raw input state.
-
-		momentIndex --
-
-
-		//  Is this a valid moment index?
-		
-		if( momentIndex < 0 || momentIndex > this.moments.length - 1 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at a moment index that is not valid:`, momentIndex )
-		const moment = this.moments[ momentIndex ]
-
-
-		//  Is this a valid gate?
-
-		if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} that is not a gate:`, gate )
-
-
-		//  Are these valid input indices?
-
-		if( allowOverrun !== true ){
-		
-			if( qubitIndices instanceof Array !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an invalid qubit indices array:`, qubitIndices )
-			if( qubitIndices.length === 0 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an empty input qubit array:`, qubitIndices )
-			
-			
-			//  We’ve had to comment this check out because 
-			//  we can’t know in a single pass 
-			//  if we have all the indices needed
-			//  for a multi-qubit gate:
-
-			//if( qubitIndices.length !== gate.bandwidth ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} but the number of qubit indices (${qubitIndices}) did not match the gate’s bandwidth (${gate.bandwidth}).` )
-			
-
-			if( qubitIndices.reduce( function( accumulator, qubitIndex ){
-
-				return accumulator && qubitIndex >= 0 && qubitIndex < scope.bandwidth
-
-			}, false )){
-
-				return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with some out of range qubit indices:`, qubitIndices )
-			}
-		}
-		this.clearThisInput$( moment, qubitIndices )
-		moment.push({ 
-
-			gate,
-			gateId,
-			qubitIndices
-		})
-	},
-	remove$: function(){
-
-		//  TO DO: Replace removed gate with Q.Gate.IDENTITY(s).
-		//  Also consider creating an UNDO stack.
-		return this
+		return clone
 	},
 
 
 
 
-	run$: function( n ){
+	    ////////////////
+	   //            //
+	  //   Output   //
+	 //            //
+	////////////////
 
-		`
-		Ok, right now this is a really simple, contained “run” solution.
-		But we probably want threading and a Q{} render queue, yeah?
-		Also likely need a “run$” solution that mutates circuit state
-		to keep track of averages always -- unless circuit is modified.
-		(Even then, do we track averages / state across UNDO branches??)
-
-		`
-		
-
-		//  Quantum circuits deal in probabilities.
-		//  Running a circuit once doesn’t mean all that much.
-		//  We ought to run it many, many times.
-
-		const states = []
-		if( n === undefined ) n = 1
-		for( let i = 0; i < n; i ++ ){
-
-			const state = this.inputs.slice()
-
-
-			//  Step through this quantum circuit one step at a time,
-			//  applying each moment’s operation to our state.
-
-			this.moments.forEach( function( moment ){
-
-				moment.forEach( function( operation ){
-
-					operation.gate.applyTo(
-
-						...operation.qubitIndices.reduce( function( accumulation, qubitIndex ){
-
-							accumulation.push( state[ qubitIndex ])
-							return accumulation
-
-						}, [] )
-					
-					).forEach( function( outputQubit, qubitIndex ){
-
-						state[ operation.qubitIndices[ qubitIndex ]] = outputQubit
-					})
-				})
-			})
-
-
-			//  We have our result for this run. 
-			//  Push it to the stack.
-
-			states.push( state.map( function( qubit ){
-				
-				return qubit.ket.real
-			}))
-		}
-		
-
-		//  This averages operation may need to be in the loop itself,
-		//  possibly on a clutch so it only executes every X number of loops.
-		//  This way we can set n = Infinity so it runs 
-		//  until we tell it to stop :)
-
-		const results = states
-			.reduce( function( accumulation, state, s ){
-
-				state.forEach( function( qubit, q ){
-
-					accumulation[ q ] += qubit
-				})
-				return accumulation
-
-			}, new Array( this.bandwidth ).fill( 0 ))
-			.map( function( qubit ){
-
-				return qubit / n
-			})
-
-
-		//console.log( 'Ran circuit', n, 'times with average result of:', results )
-		
-		//  ***** Def come back and clean this idea up!! threading??
-		this.results = results
-
-		return this
-	},
-
-
-
-
-	//  Our circuit already exists as an Array of moments.
-	//  But within each moment is an Array of gates, NOT qubits.
-	//  If a moment contains a multi-qubit gate 
-	//  then the number of elements in that moment will be LESS
-	//  than the number of qubits being operated on.
-	//  Yet when we draw a diagram of our circuit we do
-	//  need to draw a token for each moment of a qubit’s path.
-	//  Here’s how we do that translation.
 
 	toTable: function(){
+
+		`
+		Our circuit already exists as an Array of moments.
+		But within each moment is an Array of gates, NOT qubits.
+		If a moment contains a multi-qubit gate 
+		then the number of elements in that moment will be LESS
+		than the number of qubits being operated on.
+		Yet when we draw a diagram of our circuit we do
+		need to draw a token for each moment of a qubit’s path.
+		Here’s how we do that translation.
+		`
 
 		const 
 		table = new Array( this.bandwidth )
@@ -567,11 +419,14 @@ Object.assign( Q.Circuit.prototype, {
 		}, 1 )
 		return table
 	},
-
-
-
-
 	toText: function( makeAllMomentsEqualWidth ){
+
+		`
+		Create a text representation of this circuit
+		using only common characters,
+		ie. no fancy box-drawing characters.
+		This is the complement of Circuit.fromText()
+		`
 
 		const 
 		table  = this.toTable(),
@@ -592,11 +447,12 @@ Object.assign( Q.Circuit.prototype, {
 		}
 		return '\n'+ output.join( '\n' )
 	},
-
-
-
-
 	toDiagram: function( makeAllMomentsEqualWidth ){
+
+		`
+		Create a text representation of this circuit
+		using fancy box-drawing characters.
+		`
 
 		const 
 		table  = this.toTable(),
@@ -677,22 +533,152 @@ Object.assign( Q.Circuit.prototype, {
 		}
 		return '\n'+ output.join( '\n' )
 	},
-
-
-
-
 	toDom: function(){
+
+		`
+		Create a functioning document object model fragment
+		that can uses CSS and responds to user interaction events
+		to manifest a graphic user interface for this circuit.
+
+		OBVIOUSLY THIS IS NOT COMPLETE !
+		`
 
 		const circuitElement = document.createElement( 'div' )
 		circuitElement.classList.add( 'circuit' )
+
+		//  Magic needs to happen HERE.
+
+		return circuitElement
 	},
 
 
 
 
-	copy: function( options, isACutOperation ){
+	    //////////////
+	   //          //
+	  //   Edit   //
+	 //          //
+	//////////////
 
-		const original = this
+
+	clean$: function(){
+
+		`
+		Step through each moment of this circuit
+		and remove any “hanging” gate operations
+		that contain qubit indices outside the expected range.
+		This is useful after a copy() command
+		that may contain stray qubit indices from multi-qubit gates
+		or after a trim$() command with a similar result.
+		`
+
+		const bandwidth = this.bandwidth
+		this.moments = this.moments.map( function( moment ){
+
+			moment = moment.filter( function( operation ){
+
+				return operation.qubitIndices.every( function( index ){
+
+					return index >= 0 && index < bandwidth
+				})
+			})
+			return moment
+		})
+		return this
+	},
+	clearThisInput$: function( moment, qubitIndices ){
+
+		let gatesToRemove = 0
+		while( gatesToRemove >= 0 ){
+		
+			gatesToRemove = moment.findIndex( function( gate, o ){
+
+				const shouldRemoveThisGate = gate.qubitIndices.some( function( qubitIndex ){
+
+					return qubitIndices.includes( qubitIndex )
+				})
+				return shouldRemoveThisGate
+			})
+			
+
+			//  NOTE: Should we call remove$() here instead?
+			//  and within there add that to an UNDO stack!
+
+			if( gatesToRemove >= 0 ) moment.splice( gatesToRemove, 1 )
+		}
+	},
+	add$: function( momentIndex, gate, qubitIndices, gateId, allowOverrun ){
+
+		const scope = this
+
+
+		//  We’re pretending that this Array is ONE-indexed, 
+		//  rather than ZERO-indexed.
+		//  This is because “moment 0” is the raw input state.
+
+		momentIndex --
+
+
+		//  Is this a valid moment index?
+		
+		if( momentIndex < 0 || momentIndex > this.moments.length - 1 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at a moment index that is not valid:`, momentIndex )
+		const moment = this.moments[ momentIndex ]
+
+
+		//  Is this a valid gate?
+
+		if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} that is not a gate:`, gate )
+
+
+		//  Are these valid input indices?
+
+		if( allowOverrun !== true ){
+		
+			if( qubitIndices instanceof Array !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an invalid qubit indices array:`, qubitIndices )
+			if( qubitIndices.length === 0 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an empty input qubit array:`, qubitIndices )
+			
+			
+			//  We’ve had to comment this check out because 
+			//  we can’t know in a single pass 
+			//  if we have all the indices needed
+			//  for a multi-qubit gate:
+
+			//if( qubitIndices.length !== gate.bandwidth ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} but the number of qubit indices (${qubitIndices}) did not match the gate’s bandwidth (${gate.bandwidth}).` )
+			
+
+			if( qubitIndices.reduce( function( accumulator, qubitIndex ){
+
+				return accumulator && qubitIndex >= 0 && qubitIndex < scope.bandwidth
+
+			}, false )){
+
+				return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with some out of range qubit indices:`, qubitIndices )
+			}
+		}
+		this.clearThisInput$( moment, qubitIndices )
+		moment.push({ 
+
+			gate,
+			gateId,
+			qubitIndices
+		})
+	},
+	remove$: function(){
+
+		//  TO DO: Replace removed gate with Q.Gate.IDENTITY(s).
+		//  Also consider creating an UNDO stack.
+		return this
+	},
+
+
+
+
+
+
+
+
+	determineRanges: function( options ){
+
 		if( options === undefined ) options = {}
 		let {
 
@@ -706,13 +692,13 @@ Object.assign( Q.Circuit.prototype, {
 		} = options
 
 		if( typeof qubitFirstIndex !== 'number' ) qubitFirstIndex = 0
-		if( typeof qubitLastIndex  !== 'number' && typeof qubitRange !== 'number' ) qubitLastIndex = original.bandwidth
+		if( typeof qubitLastIndex  !== 'number' && typeof qubitRange !== 'number' ) qubitLastIndex = this.bandwidth
 		if( typeof qubitLastIndex  !== 'number' && typeof qubitRange === 'number' ) qubitLastIndex = qubitFirstIndex + qubitRange
 		else if( typeof qubitLastIndex === 'number' && typeof qubitRange !== 'number' ) qubitRange = qubitLastIndex - qubitFirstIndex
 		else return Q.error( `Q.Circuit attempted to copy a circuit but could not understand what qubits to copy.` )
 
 		if( typeof momentFirstIndex !== 'number' ) momentFirstIndex = 0
-		if( typeof momentLastIndex  !== 'number' && typeof momentRange !== 'number' ) momentLastIndex = original.timewidth
+		if( typeof momentLastIndex  !== 'number' && typeof momentRange !== 'number' ) momentLastIndex = this.timewidth
 		if( typeof momentLastIndex  !== 'number' && typeof momentRange === 'number' ) momentLastIndex = momentFirstIndex + momentRange
 		else if( typeof momentLastIndex === 'number' && typeof momentRange !== 'number' ) momentRange = momentLastIndex - momentFirstIndex
 		else return Q.error( `Q.Circuit attempted to copy a circuit but could not understand what moments to copy.` )
@@ -728,6 +714,32 @@ Object.assign( Q.Circuit.prototype, {
 			'\n  momentRange     ', momentRange,
 			'\n\n'
 		)
+
+		return {
+
+			qubitFirstIndex,
+			qubitRange,
+			qubitLastIndex,
+			momentFirstIndex,
+			momentRange,
+			momentLastIndex
+		}
+	},
+
+
+	copy: function( options, isACutOperation ){
+
+		const original = this
+		let {
+
+			qubitFirstIndex,
+			qubitRange,
+			qubitLastIndex,
+			momentFirstIndex,
+			momentRange,
+			momentLastIndex
+
+		} = this.determineRanges( options )
 
 		const copy = new Q.Circuit( qubitRange, momentRange )
 		for( let m = momentFirstIndex; m < momentLastIndex; m ++ ){
@@ -785,11 +797,11 @@ Object.assign( Q.Circuit.prototype, {
 
 		return this.copy( options, true )
 	},
-	clean$: function(){
+	
 
-		
-	},
-	paste$: function( circuit, atMoment, atQubit ){
+
+
+	paste$: function( circuit, atMoment, atQubit, shouldClean = true ){
 
 		/*
 
@@ -809,34 +821,159 @@ Object.assign( Q.Circuit.prototype, {
 			now go through whole 'this'
 			and make sure every moment,qubit has at least an identity gate.
 
-
 	tricky part: if there are hanging gate indices!
 	just do a valdation cleanup at the end??
 	.clean$()
-
-
 			
 		*/
 
 		//
 
+		if( shouldClean ) this.clean$()
+
 		return this
 	},
-	trim$: function(){
 
-		//  Need to trim off moments? Will change this.timewidth
-		//  Need to trim off qubits? Will change this.bandwidth
-	},
-	clone: function(){
 
-		const 
-		original = this,
-		clone    = original.copy()
 
-		clone.results = original.results.slice()
-		clone.inputs  = original.inputs.slice()
+
+	//  We could have implemented trim$() as a wrapper around copy$(),
+	//  similar to how cut$ is a wrapper around copy$().
+	//  But this operates on the existing circuit 
+	//  instead of returning a new one and returning that.
+
+	trim$: function( options ){
+
+		let {
+
+			qubitFirstIndex,
+			qubitRange,
+			qubitLastIndex,
+			momentFirstIndex,
+			momentRange,
+			momentLastIndex
+
+		} = this.determineRanges( options )
+
+
+		//  First, trim the moments down to desired size.
+
+		this.moments.slice( momentFirstIndex,momentLastIndex )
+		this.timewidth = momentRange
+
+
+		//  Then, trim the bandwidth down.
+
+		this.inputs.slice( qubitFirstIndex,qubitLastIndex )
+		this.bandwidth = qubitRange
+
+
+		//  Finally,  remove all gates where
+		//  gate’s qubit indices contain an index < qubitFirstIndex,
+		//  gate’s qubit indices contain an index > qubitLastIndex
 		
-		return clone
+		this.clean$()
+
+		return this
+	},
+	
+
+
+
+
+
+
+	    /////////////////
+	   //             //
+	  //   Execute   //
+	 //             //
+	/////////////////
+
+
+	run$: function( n ){
+
+		`
+		Ok, right now this is a really simple, contained “run” solution.
+		But we probably want threading and a Q{} render queue, yeah?
+		Also likely need a “run$” solution that mutates circuit state
+		to keep track of averages always -- unless circuit is modified.
+		(Even then, do we track averages / state across UNDO branches??)
+
+		`
+		
+
+		//  Quantum circuits deal in probabilities.
+		//  Running a circuit once doesn’t mean all that much.
+		//  We ought to run it many, many times.
+
+		const states = []
+		if( n === undefined ) n = 1
+		for( let i = 0; i < n; i ++ ){
+
+			const state = this.inputs.slice()
+
+
+			//  Step through this quantum circuit one step at a time,
+			//  applying each moment’s operation to our state.
+
+			this.moments.forEach( function( moment ){
+
+				moment.forEach( function( operation ){
+
+					operation.gate.applyTo(
+
+						...operation.qubitIndices.reduce( function( accumulation, qubitIndex ){
+
+							accumulation.push( state[ qubitIndex ])
+							return accumulation
+
+						}, [] )
+					
+					).forEach( function( outputQubit, qubitIndex ){
+
+						state[ operation.qubitIndices[ qubitIndex ]] = outputQubit
+					})
+				})
+			})
+
+
+			//  We have our result for this run. 
+			//  Push it to the stack.
+
+			states.push( state.map( function( qubit ){
+				
+				return qubit.ket.real
+			}))
+		}
+		
+
+		//  This averages operation may need to be in the loop itself,
+		//  possibly on a clutch so it only executes every X number of loops.
+		//  This way we can set n = Infinity so it runs 
+		//  until we tell it to stop :)
+
+		const results = states
+			.reduce( function( accumulation, state, s ){
+
+				state.forEach( function( qubit, q ){
+
+					accumulation[ q ] += qubit
+				})
+				return accumulation
+
+			}, new Array( this.bandwidth ).fill( 0 ))
+			.map( function( qubit ){
+
+				return qubit / n
+			})
+
+
+		//console.log( 'Ran circuit', n, 'times with average result of:', results )
+		
+		//  ***** Def come back and clean this idea up!! threading??
+		this.results = results
+
+		return this
 	}
 })
 
