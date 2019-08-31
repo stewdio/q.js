@@ -850,7 +850,14 @@ Object.assign( Q.Circuit.prototype, {
 
 
 
-	paste$: function( circuit, atMoment, atQubit, shouldClean = true ){
+
+	//  This is where “hanging operations” get interesting!
+	//  when you paste one circuit in to another
+	//  and that clipboard circuit has hanging operations
+	//  those can find a home in the circuit its being pasted in to!
+
+
+	pasteOver$: function( circuit, atMoment, atQubit, shouldClean = true ){
 
 		/*
 
@@ -866,22 +873,28 @@ Object.assign( Q.Circuit.prototype, {
 					if q > this.bandwidth
 
 						increase this.bandwidth
-
-			now go through whole 'this'
-			and make sure every moment,qubit has at least an identity gate.
-
-	tricky part: if there are hanging gate indices!
-	just do a valdation cleanup at the end??
-	.removeHangingOperations$()
-			
 		*/
 
 		//
 
 		if( shouldClean ) this.removeHangingOperations$()
-
+		this.fillEmptyOperations$()
+		
 		return this
 	},
+	pasteInsert$: function(){
+
+
+		if( shouldClean ) this.removeHangingOperations$()
+		this.fillEmptyOperations$()
+		
+		return this
+
+	},
+
+
+
+
 
 
 
