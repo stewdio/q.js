@@ -290,6 +290,142 @@ q0  |0⟩─┤ H ├┤ M │
 			<p>
 				How close do your results come to <code>0.5</code>?
 			</p>
+			<h3 id="Overlapping_multi-qubit_gates">Overlapping multi-qubit gates</h3>
+			<p>
+				Some physical architectures allow for interactioins between qubits that don’t resolve in to the simplest diagrams.
+				Take this circuit, for example, which contains two C-not gates at moment 2:
+			</p>
+<pre><code>
+var fox = <a href="Q.html">Q</a>`
+	H-C00-M
+	I-C10-M
+	I-C01-M
+	I-C11-M
+	X-I---M`
+</code></pre>
+			<p>
+				We can see that they overlap. The first C-not [0] operates on qubit 0 and qubit 2, while the second C-not [1] operates on qubit 1 and qubit 3.
+				We can see this slightly more clearly as a diagram
+				with the <code>fox.<a href="#.prototype.toDiagram">toDiagram</a>()</code> command:
+			</p>
+<pre><code>
+    t0   t1    t2    t3  
+        ┌───┐┌─────┐┌───┐
+q0  |0⟩─┤ H ├┤ C00 ├┤ M │
+        └───┘└┬────┘└───┘
+             ┌─────┐┌───┐
+q1  |0⟩───○──┤ C10 ├┤ M │
+             └─┬───┘└───┘
+             ┌┴────┐┌───┐
+q2  |0⟩───○──┤ C01 ├┤ M │
+             └─────┘└───┘
+             ┌─┴───┐┌───┐
+q3  |0⟩───○──┤ C11 ├┤ M │
+             └─────┘└───┘
+        ┌───┐       ┌───┐
+q4  |0⟩─┤ X ├───○───┤ M │
+        └───┘       └───┘
+</code></pre>
+			<h3 id="Copy,_cut,_paste">Copy, cut, paste</h3>
+			<p>
+				Let’s start with the <code>fox</code> circuit above, 
+				and copy a section of it.
+				In this case we’re copying all of its moments 
+				and all of its qubits
+				so it is effectively equal to 
+				<code>fox.<a href="#.prototype.clone">clone</a>()</code>:
+			</p>
+<pre><code>
+var gup = fox.<a href="#.prototype.copy">copy</a>({
+	
+	qubitFirstIndex:  0,
+	qubitRange:       fox.bandwidth,
+	momentFirstIndex: 0,
+	momentRange:      fox.timewidth
+})
+</code></pre>
+			<p>
+				Both <code><a href="#.prototype.copy">copy</a></code>
+				and <code><a href="#.prototype.cut$">cut$</a></code>
+				are very flexible with the parameter object.
+				Supplying no parameters is effectively equal to selecting the entire circuit.
+				(So the above example is a bit superfluous, but socratic.)
+			</p>
+			<p>
+				Cutting replaces the “cut” operations with Identity gates
+				and returns the cut portion.
+			</p>
+<pre><code>
+var hen = gup.<a href="#.prototype.cut$">cut$</a>()
+</code></pre>
+			<p>
+				Cutting <em>all</em> of the operations as above
+				will yield a blank circuit as seen below. 
+				(And <code>hen</code> will now contain those cut operations.)
+			</p>
+<pre><code>
+    t0   t1   t2   t3  
+                     
+q0  |0⟩───○────○────○
+                     
+                     
+q1  |0⟩───○────○────○
+                     
+                     
+q2  |0⟩───○────○────○
+                     
+                     
+q3  |0⟩───○────○────○
+                     
+                     
+q4  |0⟩───○────○────○
+                     
+</code></pre>
+			<p>
+				Pasting in to a circuit can cause that circuit to expand
+				in both time and qubits.
+				For example, both our <code>fox</code>
+				and <code>gup</code> circuits are 4 moments long (0, 1, 2, 3)
+				and 5 qubits in bandwidth (0, 1, 2, 3, 4).
+				What if we paste our <code>fox</code> circuit
+				in to our empty <code>gup</code> circuit
+				but do so by pushing it one moment further and one qubit further?
+			</p>
+<pre><code>
+gup.<a href="#.prototype.paste$">paste$</a>( fox, 1, 1 )
+</code></pre>
+			<p>
+				Notice how <code>gup</code> has now expanded.
+				The first qubit registers are still empty.
+				The first moment of qubits also remains empty.
+				But the entirety of <code>fox</code>
+				is now pasted in there.
+			</p>
+<pre><code>
+    t0   t1   t2    t3    t4  
+                            
+q0  |0⟩───○────○─────○─────○
+                            
+             ┌───┐┌─────┐┌───┐
+q1  |0⟩───○──┤ H ├┤ C00 ├┤ M │
+             └───┘└┬────┘└───┘
+                  ┌─────┐┌───┐
+q2  |0⟩───○────○──┤ C10 ├┤ M │
+                  └─┬───┘└───┘
+                  ┌┴────┐┌───┐
+q3  |0⟩───○────○──┤ C01 ├┤ M │
+                  └─────┘└───┘
+                  ┌─┴───┐┌───┐
+q4  |0⟩───○────○──┤ C11 ├┤ M │
+                  └─────┘└───┘
+             ┌───┐       ┌───┐
+q5  |0⟩───○──┤ X ├───○───┤ M │
+             └───┘       └───┘
+</code></pre>
+			<p>
+				More to come! More examples! Revised examples! 
+				Check back in October 2019.
+			</p>
 			<hr>
 			<h3 id="Constructor">Constructor</h3>
 			<p>
@@ -396,11 +532,8 @@ q0  |0⟩─┤ H ├┤ M │
 					<dt id=".prototype.cut$"><a href="#.prototype.cut$">cut$</a></dt>
 					<dd>Description TK.</dd>
 				</li>
-
-
-
 				<li>
-					<dt id=".prototype.pasteOver$"><a href="#.prototype.pasteOver$">pasteOver$</a></dt>
+					<dt id=".prototype.paste$"><a href="#.prototype.paste$">paste$</a></dt>
 					<dd>Description TK.</dd>
 				</li>
 				<li>
@@ -415,11 +548,6 @@ q0  |0⟩─┤ H ├┤ M │
 					<dt id=".prototype.trim$"><a href="#.prototype.trim$">trim$</a></dt>
 					<dd>Description TK.</dd>
 				</li>
-
-
-
-
-
 				<li>
 					<dt id=".prototype.run$"><a href="#.prototype.run$">run$</a></dt>
 					<dd>Description TK.</dd>
@@ -449,7 +577,6 @@ var cat = Q`
 	X-I
 	H-M`
 
-
 var dog = Q`
 
 I  I
@@ -460,102 +587,24 @@ H  M
 
 var elk = Q( ape.toText() )
 
+var fox = Q`
+	H-C00-M
+	I-C10-M
+	I-C01-M
+	I-C11-M
+	X-I---M`
 
+var gup = fox.copy({
+	
+	qubitFirstIndex:  0,
+	qubitRange:       fox.bandwidth,
+	momentFirstIndex: 0,
+	momentRange:      fox.timewidth
+})
 
+var hen = gup.cut$()
 
-
-
-
-
-//  C-NOT TEST
-//
-//  Q now supports multi-qubit gates in circuits
-//  with .add$(), .fromText(), .toTable(), and .toText().
-//  About to rewrite .toDiagram() to support it as well.
-//  But my CNOT gate -- and perhaps all multi-qubit gates? --
-//  themselves seem to be broken. So working on that now....
-
-var overlappingCNotTest = Q`
-
-	H C00 M
-	I C10 M
-	I C01 M
-	I C11 M
-	I X   M
-`
-overlappingCNotTest.toText()
-overlappingCNotTest.toDiagram()
-
-
-
-
-//  C-NOT TRUTH TABLE TESTS
-/*
-console.log( 'Expecting 0, 0',
-Q`I C0
-I C1`.run$().results )
-
-
-console.log( 'Expecting 0, 1',
-Q`I C0
-X C1`.run$().results )
-
-
-console.log( 'Expecting 1, 1',
-Q`X C0
-I C1`.run$().results )
-
-
-console.log( 'Expect 1, 0',
-Q`X C0
-X C1`.run$().results )
-*/
-
-
-
-/*
-
-Possible text-based resolutions.
-Rounded corners for multi-qubit gates?
-Naming:
-	Gate type, gate index for this moment, qubit index for this gate.
-	C, 1, 0 = CNOT, first CNOT of this moment, 0=control bit.
-
-
-    t0   t1   t2   t3  
-        ┌───┐╭───╮┌───┐
-q0  |0⟩─┤ H ├┤C10├┤ M │
-        └───┘╰┬──╯└───┘
-              │   ┌───┐
-q1  |0⟩───○────○──┤ M │
-              │   └───┘
-             ╭┴──╮┌───┐
-q2  |0⟩───○──┤C11├┤ M │
-             ╰───╯└───┘
-
-
-
-Overlapping C-Not gates.
-Use up to 3 different positions for vertical connection.
-
-
-    t0   t1   t2   t3  
-        ┌───┐╭───╮┌───┐
-q0  |0⟩─┤ H ├┤C10├┤ M │
-        └───┘╰┬──╯└───┘
-             ╭───╮┌───┐
-q2  |0⟩───○──┤C20├┤ M │
-             ╰──┬╯└───┘
-             ╭┴──╮┌───┐
-q2  |0⟩───○──┤C11├┤ M │
-             ╰───╯└───┘
-             ╭──┴╮┌───┐
-q3  |0⟩───○──┤C21├┤ M │
-             ╰───╯└───┘
-
-
-
-*/
+gup.paste$( fox, 1, 1 )
 
 
 		</script>

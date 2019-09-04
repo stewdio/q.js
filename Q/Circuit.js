@@ -864,7 +864,7 @@ Object.assign( Q.Circuit.prototype, {
 	//  those can find a home in the circuit its being pasted in to!
 
 
-	pasteOver$: function( other, atMoment = 0, atQubit = 0, shouldClean = true ){
+	paste$: function( other, atMoment = 0, atQubit = 0, shouldClean = true ){
 
 		const scope = this
 		this.timewidth = Math.max( this.timewidth, atMoment + other.timewidth )
