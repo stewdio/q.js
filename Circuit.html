@@ -53,11 +53,14 @@
 			<p>
 				A quantum circuit is a series of moments in time.
 				During each moment, gate operations can be applied to qubits.
-				<code>Q.Circuit</code> now supports basic functionality,
-				but beware:
+				<code>Q.Circuit</code> supports ingesting circuitry from text notations,
+				copying, cutting, and pasting circuit snippets, 
+				and outputting circuits as text notation or text diagrams.
+				But beware:
 				<strong><em>
-					Gates that use multi-qubit inputs are not yet supported.
-					Check back in September 2019.
+					<code>Circuit</code> is not fully stable yet!
+					We’re still debugging multi-qubit gates and other bits.
+					Check back in October 2019.
 				</em></strong>
 				This is, after-all, a work in progress.
 				You can join the effort <a href="https://github.com/stewdio/q.js" target="_blank">here on GitHub</a>.
@@ -330,6 +333,15 @@ q0  |0⟩─┤ H ├┤ M │
 			<h4>Non-destructive methods</h4>
 			<ul class="properties">
 				<li>
+					<dt id=".prototype.clone"><a href="#.prototype.clone">clone</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.toTable"><a href="#.prototype.toTable">toTable</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+
+				<li>
 					<dt id=".prototype.toText"><a href="#.prototype.toText">toText</a></dt>
 					<dd>Description TK.</dd>
 				</li>
@@ -338,16 +350,76 @@ q0  |0⟩─┤ H ├┤ M │
 					<dd>Description TK.</dd>
 				</li>
 				<li>
+					<dt id=".prototype.toDom"><a href="#.prototype.toDom">toDom</a></dt>
+					<dd>Description TK. (Not yet functional.)</dd>
+				</li>
+				<li>
 					<dt id=".prototype.results"><a href="#.prototype.results">results</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.determineRanges"><a href="#.prototype.determineRanges">determineRanges</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.copy"><a href="#.prototype.copy">copy</a></dt>
 					<dd>Description TK.</dd>
 				</li>
 			</ul>
 			<h4>Destructive methods</h4>
 			<ul class="properties">
 				<li>
+					<dt id=".prototype.ensureMomentsAreReady$"><a href="#.prototype.ensureMomentsAreReady$">ensureMomentsAreReady$</a></dt>
+					<dd>Description TK.</dd>
+				</li>				
+				<li>
+					<dt id=".prototype.fillEmptyOperations$"><a href="#.prototype.fillEmptyOperations$">fillEmptyOperations$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.removeHangingOperations$"><a href="#.prototype.removeHangingOperations$">removeHangingOperations$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.clearThisInput$"><a href="#.prototype.clearThisInput$">clearThisInput$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
 					<dt id=".prototype.add$"><a href="#.prototype.add$">add$</a></dt>
 					<dd>Description TK.</dd>
 				</li>
+				<li>
+					<dt id=".prototype.remove$"><a href="#.prototype.remove$">remove$</a></dt>
+					<dd>Description TK. (Not yet functional, may remove.)</dd>
+				</li>
+				<li>
+					<dt id=".prototype.cut$"><a href="#.prototype.cut$">cut$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+
+
+
+				<li>
+					<dt id=".prototype.pasteOver$"><a href="#.prototype.pasteOver$">pasteOver$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.pasteInsert$"><a href="#.prototype.pasteInsert$">pasteInsert$</a></dt>
+					<dd>Description TK. (Not yet functional.)</dd>
+				</li>
+				<li>
+					<dt id=".prototype.expand$"><a href="#.prototype.expand$">expand$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+				<li>
+					<dt id=".prototype.trim$"><a href="#.prototype.trim$">trim$</a></dt>
+					<dd>Description TK.</dd>
+				</li>
+
+
+
+
+
 				<li>
 					<dt id=".prototype.run$"><a href="#.prototype.run$">run$</a></dt>
 					<dd>Description TK.</dd>

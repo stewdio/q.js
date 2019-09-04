@@ -39,7 +39,8 @@ Q.Circuit = function( bandwidth, timewidth ){
 	//  You cannot do that in real life -- but here you can!
 	//  Just assign those inputs to whatever you need :)
 
-	this.inputs = new Array( bandwidth ).fill( Q.Qubit.HORIZONTAL )	
+	/* this.inputs = new Array( bandwidth ).fill( Q.Qubit.HORIZONTAL ) */
+	
 	
 
 	//  Each moment is a collection of operations to run (gates),
@@ -47,7 +48,7 @@ Q.Circuit = function( bandwidth, timewidth ){
 	//  We’re going to begin by filling each moment with one
 	//  IDENTITY gate per qubit.
 	
-	this.moments = new Array( timewidth )
+	/* this.moments = new Array( timewidth )
 		.fill( 0 )
 		.map( function( moment, m ){
 
@@ -63,7 +64,13 @@ Q.Circuit = function( bandwidth, timewidth ){
 				})
 			gates.momentIndex = m
 			return gates
-		})
+		}) */
+
+
+	this.ensureMomentsAreReady$()		
+	this.fillEmptyOperations$()
+
+
 
 	this.results = []
 	// Function.call( this )
@@ -229,30 +236,6 @@ Object.assign( Q.Circuit, {
 			})
 		})
 		return p
-	},
-
-
-
-
-	/*************************************************************************
-
-
-	Ok: We want to be able to easily slice and dice circuits so you can have
-	some “favorite snippets” you can glue in to other circuits and so on.
-	That will be fun. When we get to it.
-
-
-	*************************************************************************/
-
-	copy: function(){},
-	cut: function(){},
-	paste: function(){},
-	getMoment: function(){
-
-		return {
-
-			to: function( moment ){}
-		}
 	}
 })
 
@@ -576,29 +559,13 @@ Object.assign( Q.Circuit.prototype, {
 	//////////////
 
 
-	removeHangingOperations$: function(){
+	ensureMomentsAreReady$: function(){
 
-		`
-		Step through each moment of this circuit
-		and remove any “hanging” gate operations
-		that contain qubit indices outside the expected range.
-		This is useful after a copy() command
-		that may contain stray qubit indices from multi-qubit gates
-		or after a trim$() command with a similar result.
-		`
+		if( this.moments instanceof Array !== true ) this.moments = []
+		for( let m = 0; m < this.timewidth; m ++ ){
 
-		const bandwidth = this.bandwidth
-		this.moments = this.moments.map( function( moment ){
-
-			moment = moment.filter( function( operation ){
-
-				return operation.qubitIndices.every( function( index ){
-
-					return index >= 0 && index < bandwidth
-				})
-			})
-			return moment
-		})
+			if( this.moments[ m ] instanceof Array !== true ) this.moments[ m ] = []
+		}
 		return this
 	},
 	fillEmptyOperations$: function(){
@@ -611,6 +578,11 @@ Object.assign( Q.Circuit.prototype, {
 		`
 
 		const scope = this
+		if( this.inputs instanceof Array !== true ) this.inputs = []
+		while( this.inputs.length < this.bandwidth ){
+
+			this.inputs.push( Q.Qubit.HORIZONTAL )
+		}
 		this.moments.forEach( function( moment ){
 
 			scope.inputs.forEach( function( qubit, q ){
@@ -631,30 +603,64 @@ Object.assign( Q.Circuit.prototype, {
 		})
 		return this
 	},
-	
+	removeHangingOperations$: function(){
+
+		`
+		First: If the inputs array is longer than 
+		our designated bandwidth we need to trim it.
+		Then: Step through each moment of this circuit
+		and remove any “hanging” gate operations
+		that contain qubit indices outside the expected range.
+		This is useful after a copy() command
+		that may contain stray qubit indices from multi-qubit gates
+		or after a trim$() command with a similar result.
+		`
+		
+		if( this.inputs.length > this.bandwidth ) this.inputs.splice( this.timewidth )
+		const bandwidth = this.bandwidth
+		this.moments = this.moments.map( function( moment ){
+
+			moment = moment.filter( function( operation ){
+
+				return operation.qubitIndices.every( function( index ){
+
+					return index >= 0 && index < bandwidth
+				})
+			})
+			return moment
+		})
+		return this
+	},
+
 
 
 
 	clearThisInput$: function( moment, qubitIndices ){
 
-		let gatesToRemove = 0
-		while( gatesToRemove >= 0 ){
+
+		//
 		
-			gatesToRemove = moment.findIndex( function( gate, o ){
+		//if( moment !== undefined ){
+		
+			let gatesToRemove = 0
+			while( gatesToRemove >= 0 ){
+				
+				gatesToRemove = moment.findIndex( function( gate, o ){
 
-				const shouldRemoveThisGate = gate.qubitIndices.some( function( qubitIndex ){
+					const shouldRemoveThisGate = gate.qubitIndices.some( function( qubitIndex ){
 
-					return qubitIndices.includes( qubitIndex )
+						return qubitIndices.includes( qubitIndex )
+					})
+					return shouldRemoveThisGate
 				})
-				return shouldRemoveThisGate
-			})
-			
+				
 
-			//  NOTE: Should we call remove$() here instead?
-			//  and within there add that to an UNDO stack!
+				//  NOTE: Should we call remove$() here instead?
+				//  and within there add that to an UNDO stack!
 
-			if( gatesToRemove >= 0 ) moment.splice( gatesToRemove, 1 )
-		}
+				if( gatesToRemove >= 0 ) moment.splice( gatesToRemove, 1 )
+			}
+		//}
 	},
 	add$: function( momentIndex, gate, qubitIndices, gateId, allowOverrun ){
 
@@ -670,7 +676,8 @@ Object.assign( Q.Circuit.prototype, {
 
 		//  Is this a valid moment index?
 		
-		if( momentIndex < 0 || momentIndex > this.moments.length - 1 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at a moment index that is not valid:`, momentIndex )
+		if( momentIndex < 0 || momentIndex > this.timewidth - 1 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at a moment index that is not valid:`, momentIndex )
+		//if( momentIndex < 0 || momentIndex > this.moments.length - 1 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at a moment index that is not valid:`, momentIndex )
 		const moment = this.moments[ momentIndex ]
 
 
@@ -857,41 +864,57 @@ Object.assign( Q.Circuit.prototype, {
 	//  those can find a home in the circuit its being pasted in to!
 
 
-	pasteOver$: function( circuit, atMoment, atQubit, shouldClean = true ){
+	pasteOver$: function( other, atMoment = 0, atQubit = 0, shouldClean = true ){
 
-		/*
+		const scope = this
+		this.timewidth = Math.max( this.timewidth, atMoment + other.timewidth )
+		this.bandwidth = Math.max( this.bandwidth, atQubit  + other.bandwidth )
+		this.ensureMomentsAreReady$()
+		this.fillEmptyOperations$()
+		other.moments.forEach( function( moment, m ){
 
-			
-			begnning t from atMoment to atMoment + circuit.timewidth
+			moment.forEach( function( operation ){
 
-				if t > this.timewidth
+				//console.log( 'past over w this:', m + atMoment, operation )
 
-					increase this.timewidth
+				scope.add$(
 
-				q from atQubit to atQubit + circuit.bandwidth
+					m + atMoment + 1,
+					operation.gate,
+					operation.qubitIndices.map( function( qubitIndex ){
 
-					if q > this.bandwidth
-
-						increase this.bandwidth
-		*/
-
-		//
-
+						return qubitIndex + atQubit
+					}),
+					operation.gateId,
+					true
+				)
+			})
+		})
 		if( shouldClean ) this.removeHangingOperations$()
 		this.fillEmptyOperations$()
-		
 		return this
 	},
-	pasteInsert$: function(){
+	pasteInsert$: function( other, atMoment, atQubit ){
+
+		// if( other.brandwidth !== this.bandwidth && 
+		// 	other.timewidth !== this.timewidth ) return Q.error( 'Q.Circuit attempted to pasteInsert Circuit A', other, 'in to circuit B', this, 'but neither their bandwidth or timewidth matches.' )
+
+		
 
 
 		if( shouldClean ) this.removeHangingOperations$()
-		this.fillEmptyOperations$()
-		
+		this.fillEmptyOperations$()		
 		return this
 
 	},
+	expand$: function(){
 
+		//   expand either bandwidth or timewidth, fill w  identity
+
+
+		this.fillEmptyOperations$()
+		return thiis
+	},
 
 
 
