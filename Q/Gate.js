@@ -179,7 +179,11 @@ const result = Q.Matrix.CONTROLLED_NOT.multiply( controlQubit.multiplyTensor( ta
 
 
 			const tensor = controlQubit.multiplyTensor( targetQubit )
-			// console.log( 'tensor', tensor.toTsv() )
+			//const tensor = targetQubit.multiplyTensor( controlQubit )
+			
+			console.log( 'controlQubit', controlQubit.toTsv() )
+			console.log( 'targetQubit', targetQubit.toTsv() )
+			console.log( 'tensor', tensor.toTsv() )
 
 			const result = Q.Matrix.CONTROLLED_NOT.multiply( tensor )
 
@@ -189,7 +193,7 @@ const result = Q.Matrix.CONTROLLED_NOT.multiply( controlQubit.multiplyTensor( ta
 
 //  so replace all this w that!
 
-// console.log( 'result!', result.toTsv() )
+console.log( 'result!', result.toTsv() )
 
 			return [
 

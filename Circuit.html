@@ -36,6 +36,7 @@
 		<link rel="icon" type="image/png" href="Assets/q-favicon-064.png">
 		<link rel="apple-touch-icon"      href="Assets/q-favicon-144.png">
 		<link rel="stylesheet" type="text/css" href="Assets/style.css">
+		<link rel="stylesheet" type="text/css" href="Q/Styles.css">
 		
 		<script async src="https://www.googletagmanager.com/gtag/js"></script>
 		<script src="Assets/ga.js"></script>
@@ -403,9 +404,9 @@ gup.<a href="#.prototype.paste$">paste$</a>( fox, 1, 1 )
 			</p>
 <pre><code>
     t0   t1   t2    t3    t4  
-                            
-q0  |0⟩───○────○─────○─────○
-                            
+                              
+q0  |0⟩───○────○─────○─────○  
+                              
              ┌───┐┌─────┐┌───┐
 q1  |0⟩───○──┤ H ├┤ C00 ├┤ M │
              └───┘└┬────┘└───┘
@@ -605,6 +606,20 @@ var gup = fox.copy({
 var hen = gup.cut$()
 
 gup.paste$( fox, 1, 1 )
+
+
+
+
+
+
+
+
+//  Nothing to see here!
+
+console.log( gup.toTable() )
+console.log( gup.toDom( document.querySelector( 'main' )))
+
+
 
 
 		</script>

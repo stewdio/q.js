@@ -284,7 +284,7 @@ Object.assign( Q.Circuit.prototype, {
 		`
 
 		const 
-		table = new Array( this.bandwidth )
+		table = new Array( this.bandwidth ),
 		scope = this
 
 
@@ -453,6 +453,7 @@ Object.assign( Q.Circuit.prototype, {
 		`
 
 		const 
+		scope  = this,
 		table  = this.toTable(),
 		output = new Array( table.bandwidth * 3 + 1 ).fill( '' )
 
@@ -489,12 +490,10 @@ Object.assign( Q.Circuit.prototype, {
 					second += Q.centerText( '○', padToLength, '─' )
 					third  += ' '.padEnd( padToLength )
 
-					if( x < table.timewidth - 1 ){
-
-						first  += '  '
-						second += '──'
-						third  += '  '
-					}
+					first  += '  '
+					if( x < table.timewidth - 1 ) second += '──'
+					else second += '  '
+					third  += '  '
 				}
 				else {
 
@@ -531,7 +530,7 @@ Object.assign( Q.Circuit.prototype, {
 		}
 		return '\n'+ output.join( '\n' )
 	},
-	toDom: function(){
+	toDomGRID: function( target ){
 
 		`
 		Create a functioning document object model fragment
@@ -541,13 +540,335 @@ Object.assign( Q.Circuit.prototype, {
 		OBVIOUSLY THIS IS NOT COMPLETE !
 		`
 
-		const circuitElement = document.createElement( 'div' )
-		circuitElement.classList.add( 'circuit' )
+		const 
+		scope = this,
+		table = this.toTable()
 
-		//  Magic needs to happen HERE.
+
+		//  Create the circuit DOM element;
+		//  acts as a container for all circuit-related things.
+
+		const circuitElement = document.createElement( 'div' )
+		circuitElement.classList.add( 'qjs-circuit' )
+		circuitElement.setAttribute( 'title', 'Q Circuit #'+ scope.index )
+		Object.assign( circuitElement.dataset, {
+
+			type:     'Q.Circuit',
+			index:     scope.index,
+			bandwidth: scope.bandwidth,
+			timewidth: scope.timewidth
+		})
+
+
+		
+
+		scope.inputs.forEach( function( qubit, q ){
+
+			//const rowElement = document.createElement( 'tr' )
+			
+
+			//  Input qubits.
+
+			const inputElement = document.createElement( 'div' )
+			inputElement.classList.add( 'qjs-input' )
+			inputElement.setAttribute( 'title', qubit.name )
+			inputElement.innerText = qubit.ket.toText() +'⟩' 
+			Object.assign( inputElement.dataset, {
+
+				type:        'Q.Qubit',
+				index:        qubit.index,
+				braReal:      qubit.bra.real,
+				braImaginary: qubit.bra.imaginary,
+				ketReal:      qubit.ket.real,
+				ketImaginary: qubit.ket.imaginary,
+			})
+			circuitElement.appendChild( inputElement )
+
+			
+			//  Moments.
+			/*
+			table.forEach( function( moment ){
+
+				const 
+				operation = moment[ q ],
+				tdElement = document.createElement( 'td' ),
+				operationElement = document.createElement( 'div' )
+
+				operationElement.classList.add( 'qjs-operation' )
+				if( operation.label === 'I' ) operationElement.classList.add( 'identity' )
+				//if( operation.label === 'I' ) operationElement.classList.add( 'entangled' )
+				operationElement.innerText = operation.label
+
+				
+
+				// rowElement.appendChild( 
+					
+				// 	document.createElement( 'td' ).appendChild( operationElement )
+				// )
+
+
+				tdElement.appendChild( operationElement )
+				rowElement.appendChild( tdElement )
+			})*/
+
+
+			// circuitElement.appendChild( rowElement )
+		})
+
+
+		//  Perhaps we don’t need this here?
+		//  Is it best to return the DOM package
+		//  and leave appending to whoever called this?
+
+		if( target === undefined ) target = document.body
+		target.appendChild( circuitElement )
+
+
+		//  Yield a DOM package.
 
 		return circuitElement
 	},
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	toDom: function( target ){
+
+		`
+		Create a functioning document object model fragment
+		that can uses CSS and responds to user interaction events
+		to manifest a graphic user interface for this circuit.
+
+		OBVIOUSLY THIS IS NOT COMPLETE !
+		`
+
+		const 
+		scope = this,
+		table = this.toTable()
+
+
+		//  Create the circuit DOM element;
+		//  acts as a container for all circuit-related things.
+
+		const circuitElement = document.createElement( 'table' )
+		circuitElement.classList.add( 'qjs-circuit' )
+		circuitElement.setAttribute( 'title', 'Q Circuit #'+ scope.index )
+		Object.assign( circuitElement.dataset, {
+
+			type:     'Q.Circuit',
+			index:     scope.index,
+			bandwidth: scope.bandwidth,
+			timewidth: scope.timewidth
+		})
+
+
+		//  Moment labels
+
+		const timewidthElement = document.createElement( 'tr' )
+		timewidthElement.classList.add( 'qjs-moment-labels' )
+		
+		const nullCell = document.createElement( 'td' )
+		nullCell.classList.add( 'qjs-null-cell' )
+		timewidthElement.appendChild( nullCell )
+		
+		const moment0Element = document.createElement( 'td' )
+		moment0Element.classList.add( 'qjs-moment-label' )
+		moment0Element.innerText = 't0'
+		timewidthElement.appendChild( moment0Element )
+		table.forEach( function( moment, m ){
+
+			const momentElement = document.createElement( 'td' )
+			momentElement.classList.add( 'qjs-moment-label', 'qjs-moment-label-movable' )
+			momentElement.innerText = 't'+ ( m + 1 )
+			timewidthElement.appendChild( momentElement )
+		})
+		circuitElement.appendChild( timewidthElement )
+		
+
+		scope.inputs.forEach( function( qubit, q ){
+
+			const rowElement = document.createElement( 'tr' )
+			
+
+			//  Qubit register labels.
+
+			const registerElement = document.createElement( 'td' )
+			registerElement.classList.add( 'qjs-register', 'qjs-qubit-label' )
+			registerElement.setAttribute( 'title', 'Register #'+ q )
+			registerElement.innerText = 'q'+ q
+			rowElement.appendChild( registerElement )
+
+
+			//  Input qubits.
+
+			const inputElement = document.createElement( 'td' )
+			inputElement.classList.add( 'qjs-input' )
+			inputElement.setAttribute( 'title', qubit.name )
+			inputElement.innerText = qubit.ket.toText() +'⟩' 
+			Object.assign( inputElement.dataset, {
+
+				type:        'Q.Qubit',
+				index:        qubit.index,
+				braReal:      qubit.bra.real,
+				braImaginary: qubit.bra.imaginary,
+				ketReal:      qubit.ket.real,
+				ketImaginary: qubit.ket.imaginary,
+			})
+			rowElement.appendChild( inputElement )
+
+			
+			//  Moments.
+
+			table.forEach( function( moment ){
+
+				const 
+				operation = moment[ q ],
+				tdElement = document.createElement( 'td' ),
+				wireElement = document.createElement( 'div' ),
+				operationElement = document.createElement( 'div' )
+
+				wireElement.classList.add( 'qjs-wire' )
+				tdElement.appendChild( wireElement )
+
+				// console.log( 'operation', operation )
+
+				operationElement.classList.add( 'qjs-operation' )
+				if( operation.label === 'I' ) operationElement.classList.add( 'qjs-operation-identity' )
+				if( operation.bandwidth > 1 ){
+
+					operationElement.classList.add( 'qjs-operation-entangled' )
+					if( operation.gateInputIndex === 0 ) operationElement.classList.add( 'qjs-operation-control' )
+					else operationElement.classList.add( 'qjs-operation-target' )
+				}
+				operationElement.innerText = operation.label
+
+
+				tdElement.appendChild( operationElement )
+				rowElement.appendChild( tdElement )
+			})
+
+
+			circuitElement.appendChild( rowElement )
+		})
+
+
+
+
+		//@@@@@@@  make this 
+
+		const 
+		elements  = Array.from( circuitElement.querySelectorAll( 'td' )),
+		highlight = function( event ){
+
+			const 
+			el = event.target,
+			x  = el.cellIndex,
+			y  = el.parentNode.rowIndex
+
+			if( x === 0 && y === 0 ) return
+			el.classList.add( 'qjs-highlighted' )
+			elements.forEach( function( other ){
+
+				const
+				otherX = other.cellIndex,
+				otherY = other.parentNode.rowIndex
+
+				if(( x === 0 && y === otherY ) ||
+				   ( y === 0 && x === otherX )){
+
+					other.classList.add( 'qjs-highlighted' )
+				}
+				if( 
+					
+					x > 0 && y > 0 && (
+
+						( otherX === x && otherY === 0 ) || 
+						( otherX === 0 && otherY === y )
+					)
+				){
+				
+					other.classList.add( 'qjs-highlighted' )
+				}
+			})
+		},
+		unhighlight = function(){
+
+			elements.forEach( function( el ){
+
+				el.classList.remove( 'qjs-highlighted' )
+			})
+		}
+		elements.forEach( function( el ){
+
+			el.addEventListener( 'mouseenter',  highlight )
+			el.addEventListener( 'touchstart',  highlight )
+			el.addEventListener( 'mouseleave',  unhighlight )
+			el.addEventListener( 'touchend',    unhighlight )
+		})
+
+
+		//  Perhaps we don’t need this here?
+		//  Is it best to return the DOM package
+		//  and leave appending to whoever called this?
+
+		if( target === undefined ) target = document.body
+		target.appendChild( circuitElement )
+
+
+		//  Yield a DOM package.
+
+		return circuitElement
+	},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
