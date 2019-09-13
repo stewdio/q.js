@@ -150,7 +150,7 @@ Object.assign( Q.Circuit, {
 
 				if( gate.bandwidth == 1 ){
 
-					p.add$( m + 1, gate, [ l ])
+					p.set$( m + 1, gate, [ l ])
 				}
 
 
@@ -230,7 +230,7 @@ Object.assign( Q.Circuit, {
 						// 	console.log( 'setting gate.id to gateId', gateId )
 						// 	gate.id = gateId
 						// }
-						p.add$( m + 1, gate, inputIndices, gateId )
+						p.set$( m + 1, gate, inputIndices, gateId )
 					}
 				}
 			})
@@ -783,6 +783,23 @@ Object.assign( Q.Circuit.prototype, {
 
 
 
+
+
+
+		/*
+
+			
+			Interaction notes.
+
+			Not sure about click-and-drag to move individual gates
+			because we need to be able to draw selection boxes around an area of gates.
+			Could sort of accomplish that
+			by having larger gaps between gates; whitespace to click between.
+
+
+		*/
+
+
 		//@@@@@@@  make this 
 
 		const 
@@ -983,7 +1000,7 @@ Object.assign( Q.Circuit.prototype, {
 			}
 		//}
 	},
-	add$: function( momentIndex, gate, qubitIndices, gateId, allowOverrun ){
+	set$: function( momentIndex, gate, qubitIndices, gateId, allowOverrun ){
 
 		const scope = this
 
@@ -1040,16 +1057,6 @@ Object.assign( Q.Circuit.prototype, {
 			qubitIndices
 		})
 	},
-	remove$: function(){
-
-		//  TO DO: Replace removed gate with Q.Gate.IDENTITY(s).
-		//  Also consider creating an UNDO stack.
-		return this
-	},
-
-
-
-
 
 
 
@@ -1135,7 +1142,7 @@ Object.assign( Q.Circuit.prototype, {
 
 					return qubitIndex - qubitFirstIndex
 				})
-				copy.add$(
+				copy.set$(
 
 					1 + m - momentFirstIndex, 
 					operation.gate, 
@@ -1174,6 +1181,123 @@ Object.assign( Q.Circuit.prototype, {
 
 		return this.copy( options, true )
 	},
+
+
+
+
+
+
+
+	/*
+
+
+
+
+	If covers all moments for 1 or more qubits then 
+	1. go through each moment and remove those qubits
+	2. remove hanging operations. (right?? don’t want them?)
+
+
+
+
+	*/
+
+	spliceCut$: function( options ){
+
+		let {
+
+			qubitFirstIndex,
+			qubitRange,
+			qubitLastIndex,
+			momentFirstIndex,
+			momentRange,
+			momentLastIndex
+
+		} = this.determineRanges( options )
+
+
+		//  Only three options are valid:
+		//  1. Selection area covers ALL qubits for a series of moments.
+		//  2. Selection area covers ALL moments for a seriies of qubits.
+		//  3. Both of the above (splice the entire circuit).
+
+		if( qubitRange  !== this.bandwidth &&
+			momentRange !== this.timewidth ){
+
+			return Q.error( `Q.Circuit attempted to splice circuit #${this.index} by an area that did not include all qubits _or_ all moments.` )
+		}
+
+
+		//  If the selection area covers all qubits for 1 or more moments
+		//  then splice the moments array.
+			
+		if( qubitRange === this.bandwidth ){
+
+
+			//!!!!!  THIS NEEDS TO BE A DEEP COPY !!!!!!!!!!!!!!!!!!!!!
+
+			this.moments.splice( momentFirstIndex, momentRange )
+			//this.moments.splice( momentFirstIndex, momentRange, momentsToPasteIn??? )
+			this.timewidth -= momentRange
+		}
+
+
+		//  If the selection area covers all moments for 1 or more qubits
+		//  then iterate over each moment and remove those qubits.
+	
+		if( momentRange === this.timewidth ){
+
+
+			//  First, let’s splice the inputs array.
+
+			this.inputs.splice( qubitFirstIndex, qubitRange )
+			//this.inputs.splice( qubitFirstIndex, qubitRange, qubitsToPaste?? )
+			
+
+			//  Now we can make the proper adjustments
+			//  to each of our moments.
+
+			this.moments = this.moments.map( function( operations ){
+
+				
+				//  Remove operations that pertain to the removed qubits.
+				//  Renumber the remaining operations’ qubitIndices.
+				
+				return operations.reduce( function( accumulator, operation, o ){
+
+					if( operation.qubitIndices.every( function( index ){
+
+						return index < qubitFirstIndex || index >= qubitLastIndex
+					
+					})) accumulator.push( operation )
+					return accumulator
+				
+				}, [])
+				.map( function( operation ){
+
+					operation.qubitIndices = operation.qubitIndices.map( function( index ){
+
+						return index >= qubitLastIndex ? index - qubitRange : index
+					})
+					return operation
+				})
+			})
+			this.bandwidth -= qubitRange
+		}
+		
+
+		//  Final clean up.
+
+		this.removeHangingOperations$()
+		this.fillEmptyOperations$()
+		
+
+		return this//  Or should we return the cut area?!
+	},
+	splicePaste$: function(){
+
+
+	},
 	
 
 
@@ -1198,7 +1322,7 @@ Object.assign( Q.Circuit.prototype, {
 
 				//console.log( 'past over w this:', m + atMoment, operation )
 
-				scope.add$(
+				scope.set$(
 
 					m + atMoment + 1,
 					operation.gate,

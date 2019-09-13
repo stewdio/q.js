@@ -128,7 +128,7 @@ I-I
 //  we’ll use a Pauli X gate
 //  to flip the value of qubit #1.</span>
 
-ape.<a href="#.prototype.add$">add$</a>( 1, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.PAULI_X">PAULI_X</a>, [ 1 ])
+ape.<a href="#.prototype.set$">set$</a>( 1, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.PAULI_X">PAULI_X</a>, [ 1 ])
 </code></pre>
 			<p>
 				Finally, we want to put qubit #2 in to superposition 
@@ -141,14 +141,14 @@ ape.<a href="#.prototype.add$">add$</a>( 1, <a href="Q.html">Q</a>.<a href="Gate
 //  we’ll use a Hadamard gate
 //  to put qubit #2 in to superposition.</span>
 
-ape.<a href="#.prototype.add$">add$</a>( 1, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.HADAMARD">HADAMARD</a>, [ 2 ])
+ape.<a href="#.prototype.set$">set$</a>( 1, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.HADAMARD">HADAMARD</a>, [ 2 ])
 
 
 <span class="comment">//  At moment #2 (the next moment),
 //  we’ll use a measurement gate
 //  to collpase qubit #2 in to a definite value.</span>
 
-ape.<a href="#.prototype.add$">add$</a>( 2, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.MEASURE">MEASURE</a>, [ 2 ])
+ape.<a href="#.prototype.set$">set$</a>( 2, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.MEASURE">MEASURE</a>, [ 2 ])
 </code></pre>
 			<p>
 				Now that we’ve added some gates to our circuit
@@ -522,7 +522,7 @@ q5  |0⟩───○──┤ X ├───○───┤ M │
 					<dd>Description TK.</dd>
 				</li>
 				<li>
-					<dt id=".prototype.add$"><a href="#.prototype.add$">add$</a></dt>
+					<dt id=".prototype.set$"><a href="#.prototype.set$">set$</a></dt>
 					<dd>Description TK.</dd>
 				</li>
 				<li>
@@ -564,9 +564,9 @@ q5  |0⟩───○──┤ X ├───○───┤ M │
 
 
 var ape = new Q.Circuit( 3, 2 )
-ape.add$( 1, Q.Gate.PAULI_X,  [ 1 ])
-ape.add$( 1, Q.Gate.HADAMARD, [ 2 ])
-ape.add$( 2, Q.Gate.MEASURE,  [ 2 ])
+ape.set$( 1, Q.Gate.PAULI_X,  [ 1 ])
+ape.set$( 1, Q.Gate.HADAMARD, [ 2 ])
+ape.set$( 2, Q.Gate.MEASURE,  [ 2 ])
 
 var bee = Q.Circuit.fromText(`
 	I-I
