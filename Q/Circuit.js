@@ -1234,11 +1234,19 @@ Object.assign( Q.Circuit.prototype, {
 		if( qubitRange === this.bandwidth ){
 
 
-			//!!!!!  THIS NEEDS TO BE A DEEP COPY !!!!!!!!!!!!!!!!!!!!!
+			//  We cannot use Array.prototype.splice() for this
+			//  because we need a DEEP copy of the array
+			//  and splice() will only make a shallow copy.
+			
+			this.moments = this.moments.reduce( function( accumulator, moment, m ){
 
-			this.moments.splice( momentFirstIndex, momentRange )
-			//this.moments.splice( momentFirstIndex, momentRange, momentsToPasteIn??? )
+				if( m < momentFirstIndex - 1 || m >= momentLastIndex - 1 ) accumulator.push( moment )
+				return accumulator
+			
+			}, [])
 			this.timewidth -= momentRange
+
+			//@@  And how do we implement splicePaste$() here?
 		}
 
 
@@ -1251,7 +1259,7 @@ Object.assign( Q.Circuit.prototype, {
 			//  First, let’s splice the inputs array.
 
 			this.inputs.splice( qubitFirstIndex, qubitRange )
-			//this.inputs.splice( qubitFirstIndex, qubitRange, qubitsToPaste?? )
+			//@@  this.inputs.splice( qubitFirstIndex, qubitRange, qubitsToPaste?? )
 			
 
 			//  Now we can make the proper adjustments
@@ -1263,7 +1271,7 @@ Object.assign( Q.Circuit.prototype, {
 				//  Remove operations that pertain to the removed qubits.
 				//  Renumber the remaining operations’ qubitIndices.
 				
-				return operations.reduce( function( accumulator, operation, o ){
+				return operations.reduce( function( accumulator, operation ){
 
 					if( operation.qubitIndices.every( function( index ){
 
