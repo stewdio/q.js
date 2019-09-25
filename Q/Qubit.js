@@ -318,8 +318,8 @@ Object.assign( Q.Qubit, {
 
 			theta: theta.real,
 			phi: phi.real,
-			vector,
-			position
+			vector, //  Wonked YZX vector for maths because maths.
+			position//  Un-wonked XYZ for use by actual 3D engines.
 		}
 	},
 	fromBlochVector: function( x, y, z ){

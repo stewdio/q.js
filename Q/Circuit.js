@@ -661,7 +661,8 @@ Object.assign( Q.Circuit.prototype, {
 
 
 
-	toDom: function( target ){
+	toDom: function(){ 
+	//toDom: function( target ){ 
 
 		`
 		Create a functioning document object model fragment
@@ -857,8 +858,8 @@ Object.assign( Q.Circuit.prototype, {
 		//  Is it best to return the DOM package
 		//  and leave appending to whoever called this?
 
-		if( target === undefined ) target = document.body
-		target.appendChild( circuitElement )
+		//if( target === undefined ) target = document.body
+		//target.appendChild( circuitElement )
 
 
 		//  Yield a DOM package.

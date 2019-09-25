@@ -283,6 +283,13 @@ code .comment {
 
 	color: var( --text-code-comment-color );
 }
+img.figure {
+
+	border-radius: 10px;
+	overflow: hiidden;
+}
+
+
 
 
 
