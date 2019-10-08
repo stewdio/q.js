@@ -84,21 +84,21 @@ var fox = new Q.Gate({
 				<li>
 					<dt id="this.label"><a href="#this.label">label</a></dt>
 					<dd>
-						<code>String</code>.
+						<code class="expected-type">String</code>.
 						A single character used as a label in visual representations of this <code>Gate</code> in circuit diagrams.
 					</dd>
 				</li>
 				<li>
 					<dt id="this.name"><a href="#this.name">name</a></dt>
 					<dd>
-						<code>String</code>.
+						<code class="expected-type">String</code>.
 						The full name of this <code>Gate</code> to be used as a title or long label in a visual representation.
 					</dd>
 				</li>
 				<li>
 					<dt id="this.operation"><a href="#this.operation">operation</a></dt>
 					<dd>
-						<code>Function</code>.
+						<code class="expected-type">Function</code>.
 						The supplied <code>operation</code> function.
 						Not intended to be directly called.
 					</dd>
@@ -106,14 +106,14 @@ var fox = new Q.Gate({
 				<li>
 					<dt id="this.applyTo"><a href="#this.applyTo">applyTo</a></dt>
 					<dd>
-						<code>Function</code>.
+						<code class="expected-type">Function</code>.
 						Calls the supplied <code>operation</code> function and ensures the result is an array.
 					</dd>
 				</li>
 				<li>
 					<dt id="this.index"><a href="#this.index">index</a></dt>
 					<dd>
-						<code>Number</code>.
+						<code class="expected-type">Number</code>.
 						An auto-incrementing identification number assigned to the instance,
 						used for minding the total number of instances created.
 					</dd>
@@ -308,6 +308,7 @@ new Q.Gate({
 				<li>
 					<dt id=".constants"><a href="#.constants">constants</a></dt>
 					<dd>
+						<code class="expected-type">Object</code>.
 						While <code>Q.Gate</code> <a href="#Constants">constants</a>
 						are appended directly to the <code>Q.Gate</code> object,
 						they are also appended to a <code>Q.Gate.constants</code> object
@@ -335,14 +336,14 @@ new Q.Gate({
 				<li>
 					<dt id=".prototype.toText"><a href="#.prototype.toText">toText</a></dt>
 					<dd>
-						<code>Function</code>.
+						<code class="expected-type">Function</code>.
 						Returns a <code>String</code> of text to represent this <code>Gate</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.toHtml"><a href="#.prototype.toHtml">toHtml</a></dt>
 					<dd>
-						<code>Function</code>.
+						<code class="expected-type">Function</code>.
 						Returns a <code>String</code> of HTML code to represent this <code>Gate</code>.
 						(In the future should this return a collection of actual DOM elements instead?)
 					</dd>

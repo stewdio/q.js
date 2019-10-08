@@ -1,5 +1,14 @@
 
 
+/*
+
+
+	These are the styles necessary for interactive circuit diagrams.
+
+
+*/
+
+
 
 
 table.qjs-circuit {
@@ -138,7 +147,6 @@ td.qjs-null-cell:hover {
 
 
 
-
 .qjs-highlighted {
 
 	/*background-color: #FD0;*/
@@ -152,8 +160,6 @@ td.qjs-null-cell:hover {
 
 	border: 1px solid rgba( 0, 0, 0, 0.8 );
 }
-
-
 
 
 

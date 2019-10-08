@@ -54,7 +54,8 @@
 	--text-XL-leading: 40px;
 
 	--text-color: #444;
-	--text-code-comment-color: #999;
+	--text-code-comment-color: #BBB;
+	--text-code-output-color: #888;
 	--hyperlink-internal-color: #0366D6;
 	--hyperlink-external-color: var( --text-color );
 	
@@ -272,7 +273,10 @@ code, samp {
 	/*margin:  0  -1px;*/
 	/*padding: 2px 2px;*/
 }
-samp {}
+samp {
+
+	color: var( --text-code-output-color );
+}
 pre code {
 
 	margin:  0;
@@ -287,6 +291,11 @@ img.figure {
 
 	border-radius: 10px;
 	overflow: hiidden;
+}
+.expected-type {
+
+	opacity: 0.7;
+	/*font-style: italic;*/
 }
 
 
@@ -422,6 +431,13 @@ td:hover {
 
 
 
+.coming-soon {
+
+	margin: 20px 0;
+	border-left: 5px solid #F60;
+	background-color: #FFF0E0;
+	padding: 20px;
+}
 
 
 
@@ -788,11 +804,11 @@ table#console-open-commands .na {
 
 
 
-    /*****************/
-   /*               */
-  /*    Quantums   */
- /*               */
-/*****************/
+    /****************/
+   /*              */
+  /*   Quantums   */
+ /*              */
+/****************/
 
 
 .interactive-container {

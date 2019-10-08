@@ -285,13 +285,11 @@ q1  |0⟩───○────○──┤ C1 ├┤ Y ├┤ M │
 document.body.appendChild( ape.<a href="#.prototype.toDom">toDom</a>() )
 </code></pre>			
 			<div class="ape-diagram"></div>
-			<p>
-				<em>
-					Note that this feature is still in its early stages
-					and is not yet fully functional.
-					Check back in late October 2019 for updates.
-					Better yet, <a href="https://github.com/stewdio/q.js" target="_blank">contribute to Q!</a>
-				</em>
+			<p class="coming-soon">
+				Note that this feature is still in its early stages
+				and is not yet fully functional.
+				Check back in late November 2019 for updates.
+				Better yet, <a href="https://github.com/stewdio/q.js" target="_blank">contribute to Q!</a>
 			</p>
 			<h3 id="Executing_quantum_circuits">Executing quantum circuits</h3>
 			<p>
@@ -344,7 +342,7 @@ var cat = <a href="Q.html">Q</a>`
 				We can see this slightly more clearly as a diagram
 				with the <code>cat.<a href="#.prototype.toDiagram">toDiagram</a>()</code> command:
 			</p>
-<pre><code>
+<pre><samp>
     t0   t1    t2    t3  
         ┌───┐┌─────┐┌───┐
 q0  |0⟩─┤ H ├┤ C00 ├┤ M │
@@ -361,7 +359,7 @@ q3  |0⟩───○──┤ C11 ├┤ M │
         ┌───┐       ┌───┐
 q4  |0⟩─┤ X ├───○───┤ M │
         └───┘       └───┘
-</code></pre>
+</samp></pre>
 
 
 
@@ -412,7 +410,7 @@ var hen = gup.<a href="#.prototype.cut$">cut$</a>()
 				will yield a blank circuit as seen below. 
 				(And <code>hen</code> will now contain those cut operations.)
 			</p>
-<pre><code>
+<pre><samp>
     t0   t1   t2   t3  
                      
 q0  |0⟩───○────○────○
@@ -429,7 +427,7 @@ q3  |0⟩───○────○────○
                      
 q4  |0⟩───○────○────○
                      
-</code></pre>
+</samp></pre>
 			<p>
 				Pasting in to a circuit can cause that circuit to expand
 				in both time and qubits.
@@ -450,7 +448,7 @@ gup.<a href="#.prototype.paste$">paste$</a>( fox, 1, 1 )
 				But the entirety of <code>fox</code>
 				is now pasted in there.
 			</p>
-<pre><code>
+<pre><samp>
     t0   t1   t2    t3    t4  
                               
 q0  |0⟩───○────○─────○─────○  
@@ -470,11 +468,11 @@ q4  |0⟩───○────○──┤ C11 ├┤ M │
              ┌───┐       ┌───┐
 q5  |0⟩───○──┤ X ├───○───┤ M │
              └───┘       └───┘
-</code></pre>
+</samp></pre>
 
-			<p>
+			<p class="coming-soon">
 				More to come! More examples! Revised examples! 
-				Check back in October 2019.
+				Check back in November 2019.
 			</p>
 			<hr>
 			<h3 id="Constructor">Constructor</h3>
