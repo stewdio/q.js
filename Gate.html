@@ -51,25 +51,28 @@
 		<main>
 			<h3>Operations, not just matrices</h3>
 			<p>
-				Traditionally, a 
+				Mathematically, a 
 				<a href="https://en.wikipedia.org/wiki/Quantum_logic_gate" target="_blank">quantum logic gate</a>
 				is a matrix that can be multiplied against a qubit’s matrix.
-				For our purposes we need a broad definition.
+				For our purposes we need a broader definition.
 				Let’s consider a <code>Gate</code> to be an <em>operation</em>.
 				That operation can be the multiplication of a logic gate matrix against a qubit matrix.
 				Or it can be a measurement operation that collapses a qubit.
-				It can also be a visualization operation, such as a Bloch Sphere visualization of a qubit state. When gates are attached to a <code>Board</code>
-				they are placed in both space and time. 
+				It can also be a visualization operation, such as a Bloch Sphere visualization of a qubit state. 
+				<!-- When gates are attached to a <code>Board</code>
+				they are placed in both space and time. -->
 			</p>
 			<hr>
 			<h3 id="Constructor">Constructor</h3>
 			<p>
-				Expects a function as a first argument that will become the operation invoked by <code>.<a href="#this.applyTo">applyTo</a>()</code>. 
-				Accepts a string as an optional second argument (expected to be a single character) for use as a label.
-				Accepts a string as an optional third argument for use as a name / longer label.
+				Expects an object containing optional properties, 
+				such as an “operation” <code>Function</code> to be invoked by the <code><a href="#prototype.applyTo">applyTo</a> method</code>,
+				a single-character “label” <code>String</code>
+				for use in labeling this gate within a circuit diagram,
+				or a “name” <code>String</code> for use in descriptions.
 			</p>
 <pre><code>
-var fox = new Q.Gate({
+var fox = new <a href="Q.html">Q</a>.Gate({
 
 	name:  'What input?',
 	label: '?',
@@ -82,38 +85,38 @@ var fox = new Q.Gate({
 </code></pre>			
 			<ul class="properties">
 				<li>
-					<dt id="this.label"><a href="#this.label">label</a></dt>
+					<dt id="prototype.label"><a href="#prototype.label">label</a></dt>
 					<dd>
-						<code class="expected-type">String</code>.
+						<code class="value-type">String</code>
 						A single character used as a label in visual representations of this <code>Gate</code> in circuit diagrams.
 					</dd>
 				</li>
 				<li>
-					<dt id="this.name"><a href="#this.name">name</a></dt>
+					<dt id="prototype.name"><a href="#prototype.name">name</a></dt>
 					<dd>
-						<code class="expected-type">String</code>.
+						<code class="value-type">String</code>
 						The full name of this <code>Gate</code> to be used as a title or long label in a visual representation.
 					</dd>
 				</li>
 				<li>
-					<dt id="this.operation"><a href="#this.operation">operation</a></dt>
+					<dt id="prototype.operation"><a href="#prototype.operation">operation</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						The supplied <code>operation</code> function.
 						Not intended to be directly called.
 					</dd>
 				</li>
 				<li>
-					<dt id="this.applyTo"><a href="#this.applyTo">applyTo</a></dt>
+					<dt id="prototype.applyTo"><a href="#prototype.applyTo">applyTo</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						Calls the supplied <code>operation</code> function and ensures the result is an array.
 					</dd>
 				</li>
 				<li>
-					<dt id="this.index"><a href="#this.index">index</a></dt>
+					<dt id="prototype.index"><a href="#prototype.index">index</a></dt>
 					<dd>
-						<code class="expected-type">Number</code>.
+						<code class="value-type">Number</code>
 						An auto-incrementing identification number assigned to the instance,
 						used for minding the total number of instances created.
 					</dd>
@@ -121,9 +124,9 @@ var fox = new Q.Gate({
 			</ul>
 			<h3 id="Constants">Constants</h3>
 			<p>
-				While <code>Q.Gate</code> <a href="#Constants">constants</a>
-				are appended directly to the <code>Q.Gate</code> object,
-				they are also appended to a <code>Q.Gate.constants</code> object
+				While <code><a href="Q.html">Q</a>.Gate</code> constants
+				are appended directly to the <code><a href="Q.html">Q</a>.Gate</code> object,
+				they are also appended to the <code><a href="Q.html">Q</a>.Gate.constants</code> object
 				to make looking up constants in the JavaScript console trivial,
 				and to make iterating across all constants convenient via
 				functions like 
@@ -131,25 +134,56 @@ var fox = new Q.Gate({
 				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
 				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
 				and so on.
+				Strictly speaking, all constants are properties—but 
+				these particular properties are configured to be unwritable once appended via
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
+				and they are labeled in uppercase to signal to us that this is so.
 			</p>
 			<ul class="properties">
 				<li>
 					<dt id=".IDENTITY"><a href="#.IDENTITY">IDENTITY</a></dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						An Identity gate has no effect on the value of the qubit it operates on;
+						equivalent to multiplying a value by one.
+						It is used as a placeholder in circuit design.
 <pre><code>
-new Q.Gate({
+new <a href="Q.html">Q</a>.Gate({
 	
 	name:  'Identity',
 	label: 'I'
 })
 </code></pre>
+						Matrix representation as declared in 
+						<code><a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>.<a href="Matrix.html#.IDENTITY_2X2">IDENTITY_2X2</a></code>:
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td>
+									</tr>
+								</table>
+							</div>
+						</div>
 					</dd>
 				</li>
 				<li>
 					<dt id=".MEASURE"><a href="#.MEASURE">MEASURE</a></dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						A measurement operation collapses the probability wave of a qubit state
+						to a definite value of either one or zero.
+						The likelyhood of the result being one versus the other
+						depends on the nature of the qubit’s superposition.
+						This operation is <strong>not</strong> reversible
+						and is always used as the final step of a circuit.
 <pre><code>
-new Q.Gate({
+new <a href="Q.html">Q</a>.Gate({
 	
 	name:  'Measure',
 	label: 'M', 
@@ -162,24 +196,47 @@ new Q.Gate({
 					</dd>
 				</li>
 			</ul>
-
-
 			<h4>Operations with 2 × 2 matrices</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".HADAMARD"><a href="#.HADAMARD">HADAMARD</a></dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						Applies a <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Hadamard_(H)_gate" target="_blank">Hadamard transform</a> to a single qubit.
+						For the basis qubit states of <code>|0⟩</code> and <code>|1⟩</code> 
+						this has the effect of putting a qubit in to <a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>.  
 <pre><code>
-new Q.Gate({
+new <a href="Q.html">Q</a>.Gate({
 
 	name:  'Hadamard',
 	label: 'H',
 	operation: function( qubit ){
 
-		return new Q.Qubit( Q.Matrix.HADAMARD.multiply( qubit ))
+		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>.<a href="Matrix.html#.HADAMARD">HADAMARD</a>.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
 	}
 })
 </code></pre>
+						Matrix representation as declared in
+						<code><a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>.<a href="Matrix.html#.HADAMARD">HADAMARD</a></code>:
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>1</td>
+									</tr>
+									<tr>
+										<td>1</td><td>-1</td>
+									</tr>
+								</table>
+							</div>
+							×
+							<table class="division">
+								<tr class="dividend"><td>1</td></tr>
+								<tr class="divisor"><td>√ 2</td></tr>
+							</table>
+						</div>
 					</dd>
 				</li>
 				<li>
@@ -297,16 +354,22 @@ new Q.Gate({
 			<ul class="properties">
 				<li>
 					<dt id=".index"><a href="#.index">index</a></dt>
-					<dd>Description TK</dd>
+					<dd>
+						<code class="value-type">Number</code>
+						Description TK
+					</dd>
 				</li>
 				<li>
 					<dt id=".help"><a href="#.help">help</a></dt>
-					<dd>Description TK</dd>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK
+					</dd>
 				</li>
 				<li>
 					<dt id=".constants"><a href="#.constants">constants</a></dt>
 					<dd>
-						<code class="expected-type">Object</code>.
+						<code class="value-type">Object</code>
 						While <code>Q.Gate</code> <a href="#Constants">constants</a>
 						are appended directly to the <code>Q.Gate</code> object,
 						they are also appended to a <code>Q.Gate.constants</code> object
@@ -321,11 +384,17 @@ new Q.Gate({
 				</li>
 				<li>
 					<dt id=".createConstant"><a href="#.createConstant">createConstant</a></dt>
-					<dd>Description TK</dd>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK
+					</dd>
 				</li>
 				<li>
 					<dt id=".createConstants"><a href="#.createConstants">createConstants</a></dt>
-					<dd>Description TK</dd>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK
+					</dd>
 				</li>
 			</ul>
 			<h3 id="Prototype_properties">Prototype properties</h3>
@@ -333,14 +402,14 @@ new Q.Gate({
 				<li>
 					<dt id=".prototype.toText"><a href="#.prototype.toText">toText</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						Returns a <code>String</code> of text to represent this <code>Gate</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.toHtml"><a href="#.prototype.toHtml">toHtml</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						Returns a <code>String</code> of HTML code to represent this <code>Gate</code>.
 						(In the future should this return a collection of actual DOM elements instead?)
 					</dd>
