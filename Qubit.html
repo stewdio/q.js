@@ -231,7 +231,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id="this.bra"><a href="#this.bra">bra</a></dt>
 					<dd>
-						<code class="expected-type"><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code>.
+						<code class="value-type"><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code>
 						The <span class="symbol">a</span> or 
 						<a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra</a> component of the qubit state.
 					</dd>
@@ -239,7 +239,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id="this.ket"><a href="#this.ket">ket</a></dt>
 					<dd>
-						<code class="expected-type"><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code>.
+						<code class="value-type"><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code>
 						The <span class="symbol">b</span> or 
 						<a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">ket</a> component of the qubit state.
 					</dd>
@@ -247,11 +247,11 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id="this.label"><a href="#this.label">label</a></dt>
 					<dd>
-						<code class="expected-type">String</code>.
+						<code class="value-type">String</code>
 						Single character representing this qubit state, 
 						for example ‘H’ for <a href="#.HORIZONTAL">horizontal</a>. 
 						This can be passed to the constructor as an optional third argument 
-						or automatically assigned based on existing <code><a href="Q.html">Q</a>.Qubit.<a href="#Constants">constants</a></code>.
+						or automatically assigned based on existing <code><a href="Q.html">Q</a>.Qubit.<a href="#Constants">constants</a></code>
 						If no match is found among existings constants the ‘?’ character is assigned.
 						Note: This property name and behavior expected to change in the near future.
 					</dd>
@@ -259,7 +259,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id="this.name"><a href="#this.name">name</a></dt>
 					<dd>
-						<code class="expected-type">String</code>.
+						<code class="value-type">String</code>
 						The name of the qubit state, assigned based on existing Q.Qubit <a href="#Constants">constants</a>.
 						If no match is found among existings constants the name is left empty.
 						Note: This property name and behavior expected to change in the near future.
@@ -268,14 +268,13 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id="this.index"><a href="#this.index">index</a></dt>
 					<dd>
-						<code class="expected-type">Number</code>.
+						<code class="value-type">Number</code>
 						An identification number assigned to the instance based on the
 						auto-incrementing static number <code><a href="Q.html">Q</a>.Qubit.<a href="#.index">index</a></code>.
 						Used for minding the total number of instances created.
 					</dd>
 				</li>
 			</ul>
-			<hr>
 			<h3 id="Constants">Constants</h3>
 			<p>
 				While <code><a href="Q.html">Q</a>.Qubit</code> <a href="#Constants">constants</a>
@@ -406,7 +405,6 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 			</ul>
-			<hr>
 			<h3 id="Static_properties">Static properties</h3>
 			<p>
 				Because <code>Q.Qubit</code> extends <code>Q.<a href="Matrix.html">Matrix</a></code>,
@@ -416,7 +414,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id=".index"><a href="#.index">index</a></dt>
 					<dd>
-						<code class="expected-type">Number</code>.
+						<code class="value-type">Number</code>
 						Initialized to zero, this number is then incremented each time an instance is created
 						in order to promote mindfulness of the total number instances in the system.
 						At the time of instance creation the instance is assigned a copy of this value
@@ -426,7 +424,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id=".help"><a href="#.help">help</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						Calls and returns the result of <code>Q.<a href="Q.html#.help">help</a>( this )</code>
 						to provide helpful context in the form of a <code>String</code>.
 						Expects no arguments.
@@ -435,7 +433,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id=".constants"><a href="#.constants">constants</a></dt>
 					<dd>
-						<code class="expected-type">Object</code>.
+						<code class="value-type">Object</code>
 						While <code>Q.Qubit</code> <a href="#Constants">constants</a>
 						are appended directly to the <code>Q.Qubit</code> object,
 						they are also appended to a <code>Q.Qubit.constants</code> object
@@ -451,7 +449,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id=".createConstant"><a href="#.createConstant">createConstant</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						Expects <code>( key, value )</code> as arguments.
 						Assigns a reference to <code>value</code> to <code>Q.Qubit[ key ]</code>
 						as well as <code>Q.Qubit.<a href="#.constants">constants</a>[ key ]</code>.
@@ -467,7 +465,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id=".createConstants"><a href="#.createConstants">createConstants</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						Expects an even number of arguments in the form of
 						<code>( key, value, key, value, key, value … )</code>
 						and with each <code>key</code> / <code>value</code> pair calls 
@@ -477,7 +475,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id=".collapse"><a href="#.collapse">collapse</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						Expects a single <code>Q.Qubit</code> instance as argument.
 						Returns a new <code>Q.Qubit</code> randomly chosen to be either
 						<code>new Qubit( 1, 0 )</code> (<code><a href="#.HORIZONTAL">HORIZONTAL</a></code>)
@@ -489,7 +487,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id=".areEqual"><a href="#.areEqual">areEqual</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						Expects two instances of <code>Q.Qubit</code> as arguments.
 						If the <code><a href="#.bra">bra</a></code> of each are within 
 						<code>Q.<a href="Q.html#.EPSILON">EPSILON</a></code>
@@ -501,7 +499,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id=".toBlochSphere"><a href="#.toBlochSphere">toBlochSphere</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						Expects a single <code>Q.Qubit</code> instance as argument.
 						Returns the following object for a given qubit’s probability state,
 						useful for rendering a <a href="#Bloch_sphere">Bloch Sphere</a> representation.
@@ -541,7 +539,6 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 
 				-->
 			</ul>
-			<hr>
 			<h3 id="Prototype_properties">Prototype properties</h3>
 			<p>
 				Because <code>Q.Qubit</code> extends <code>Q.<a href="Matrix.html">Matrix</a></code>,
@@ -552,7 +549,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id=".prototype.isEqualTo"><a href="#.prototype.isEqualTo">isEqualTo</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						Calls and returns the result of static method 
 						<code>Q.Qubit.<a href="#.areEqual">areEqual</a>( this, otherQubit )</code>.
 						The returned <code>Boolean</code> breaks method chaining.
@@ -561,7 +558,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id=".prototype.collapse"><a href="#.prototype.collapse">collapse</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						Calls and returns the result of static method 
 						<code>Q.Qubit.<a href="#.collapse">collapse</a>( this )</code>.
 					</dd>
@@ -569,7 +566,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id=".prototype.toBlochSphere"><a href="#.prototype.toBlochSphere">toBlochSphere</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						Calls and returns the result of static method 
 						<code>Q.Qubit.<a href="#.toBlochSphere">toBlochSphere</a>( this )</code>.
 						The returned <code>Object</code> breaks method chaining.
@@ -581,7 +578,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id=".prototype.copy$"><a href="#.prototype.copy$">copy$</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						Expects a single <code>Q.Qubit</code> instance as argument.
 						Overwrites the internal <code>bra</code>
 						and <code>ket</code> values
@@ -591,7 +588,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id=".prototype.collapse$"><a href="#.prototype.collapse$">collapse$</a></dt>
 					<dd>
-						<code class="expected-type">Function</code>.
+						<code class="value-type">Function</code>
 						Expects no arguments.
 						Calls the non-destructive <code><a href="#.prototype.collapse">collapse</a></code> method,
 						then uses <code><a href="#.prototype.copy$">copy$</a></code> to overwrite
@@ -720,21 +717,21 @@ sphere.add( innards )
 const yAxis = new THREE.Mesh(
 
 	new THREE.BoxGeometry( 2.5, 0.01, 0.01 ),
-	new THREE.MeshBasicMaterial({ color: 0xFF0000 })
+	new THREE.MeshBasicMaterial({ color: 0x33BB77 })
 )
 sphere.add( yAxis )
 
 const xAxis = new THREE.Mesh(
 
 	new THREE.BoxGeometry( 0.01, 0.01, 2.5 ),
-	new THREE.MeshBasicMaterial({ color: 0x0000CC })
+	new THREE.MeshBasicMaterial({ color: 0xFF4433 })
 )
 sphere.add( xAxis )
 
 const zAxis = new THREE.Mesh(
 
 	new THREE.BoxGeometry( 0.01, 2.5, 0.01 ),
-	new THREE.MeshBasicMaterial({ color: 0x00CC00 })
+	new THREE.MeshBasicMaterial({ color: 0x0366D6 })
 )
 sphere.add( zAxis )
 
@@ -752,7 +749,7 @@ sphere.add( new THREE.ArrowHelper(
 	new THREE.Vector3( 0, 1.0, 0 ), 
 	new THREE.Vector3( 0, 1.25, 0 ), 
 	arrowLength, 
-	0x00CC00, 
+	0x0366D6, 
 	arrowHeadLength, 
 	arrowHeadWidth
 ))
@@ -761,7 +758,7 @@ sphere.add( new THREE.ArrowHelper(
 	new THREE.Vector3( 1.0, 0, 0 ), 
 	new THREE.Vector3( 1.25, 0, 0 ), 
 	arrowLength, 
-	0xFF0000, 
+	0x33BB77, 
 	arrowHeadLength, 
 	arrowHeadWidth
 ))
@@ -770,7 +767,7 @@ sphere.add( new THREE.ArrowHelper(
 	new THREE.Vector3( 0, 0, 1.0 ), 
 	new THREE.Vector3( 0, 0, 1.25 ),
 	arrowLength, 
-	0x0000CC, 
+	0xFF4433, 
 	arrowHeadLength, 
 	arrowHeadWidth
 ))
@@ -814,7 +811,7 @@ zAxis.add( zAxisLabel )
 const blochPointer = new THREE.Mesh(
 
 	new THREE.CylinderBufferGeometry( 0, 0.5, 1, 32, 1 ),
-	new THREE.MeshPhongMaterial({ color: 0x666666 })
+	new THREE.MeshPhongMaterial({ color: 0xFFDD44 })
 )
 blochPointer.geometry.translate( 0, -0.5, 0 )
 blochPointer.geometry.rotateX( Math.PI / 2 )
@@ -828,7 +825,7 @@ sphere.add( blochPointer )
 const blochVector = new THREE.Mesh(
 
 	new THREE.BoxGeometry( 0.04, 0.04, 1 ),
-	new THREE.MeshBasicMaterial({ color: 0x000000 })
+	new THREE.MeshBasicMaterial({ color: 0xFFDD44 })
 )
 blochVector.geometry.translate( 0, 0, 0.5 )
 sphere.add( blochVector )

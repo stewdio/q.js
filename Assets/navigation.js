@@ -42,10 +42,10 @@ document.addEventListener( 'DOMContentLoaded', function(){
 		<ul>
 			<li><h2><a href="Q.html">Q</a></h2></li>
 			<li><h2><a href="ComplexNumber.html">ComplexNumber</a></h2></li>
-			<li><a href="Matrix.html">Matrix</a></li>
-			<li><a href="Qubit.html">Qubit</a></li>
-			<li><a href="Gate.html">Gate</a></li>
-			<li><a href="Circuit.html">Circuit</a></li>
+			<li><h2><a href="Matrix.html">Matrix</a></h2></li>
+			<li><h2><a href="Qubit.html">Qubit</a></h2></li>
+			<li><h2><a href="Gate.html">Gate</a></h2></li>
+			<li><h2><a href="Circuit.html">Circuit</a></h2></li>
 		</ul>
 	`
 	document.body.appendChild( nav )
@@ -59,6 +59,25 @@ document.addEventListener( 'DOMContentLoaded', function(){
 	})
 
 	
+	Array.from( document.querySelectorAll( 'main h2, main h3, main h4' )).forEach( function( el ){
+
+		if( el.getAttribute( 'id' ) === null ){
+
+			el.setAttribute( 'id', el.innerText.trim().replace( /\s+/g, '_' ))
+		}
+		
+		const 
+		container = document.createElement( 'span' ),
+		link = document.createElement( 'a' )
+		
+		container.classList.add( 'section-anchor' )
+		container.appendChild( link )
+		link.setAttribute( 'href', '#'+ el.getAttribute( 'id' ))
+		link.innerText = '§'
+		el.insertAdjacentElement( 'afterbegin', container )
+	})
+
+
 	onHashChange()
 })
 

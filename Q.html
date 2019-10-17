@@ -52,16 +52,32 @@
 			<h3>The <code>Q</code> object</h3>
 			<p>
 				The root of Q.js is the <code>Q</code> object.
-				In addition to providing a single object to attach all other building blocks to
-				(and avoiding pollution of the global namespace)
-				the <code>Q</code> object provides some convenience functions.
+				It provides a single point for attaching all other Q.js functionality to, 
+				thereby avoiding pollution of the global namespace
+				while keeping everything accessible to us.
+				It also provides some convenience properties and methods for use across the library.
+				Most conveniently, 
+				the <code>Q</code> object is actually a function
+				that wraps the 
+				<code>Q.<a href="Circuit.html">Circuit</a>.<a href="Circuit.html#fromText">fromText</a></code> function.
+				This makes defining quantum circuits incredibly brief.
+			</p>
+<pre><code>
+var circuit = Q`
+
+	H-X-C0-Y-M
+	I-I-C1-Y-M
+`
+</code></pre>
+			<p>
+				See <a href="Circuit.html#Writing_quantum_circuits">“Writing quantum circuits”</a> for more details.
 			</p>
 			<hr>
-			<h3 id="Constants">Constants</h3>
+			<h3>Constants</h3>
 			<p>
-				While Q <a href="#Constants">constants</a>
+				While Q constants
 				are appended directly to the <code>Q</code> object,
-				they are also appended to a <code>Q.constants</code> object
+				they are also appended to the <code>Q.constants</code> object
 				to make looking up constants in the JavaScript console trivial,
 				and to make iterating across all constants convenient via
 				functions like 
@@ -69,11 +85,16 @@
 				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
 				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
 				and so on.
+				Strictly speaking, all constants are properties—but 
+				these particular properties are configured to be unwritable once appended via
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
+				and they are labeled in uppercase to signal to us that this is so.
 			</p>
 			<ul class="properties">
 				<li>
 					<dt id=".REVISION"><a href="#.REVISION">REVISION</a></dt>
 					<dd>
+						<code class="value-type">Number</code>
 						The code revision number. 
 						The version of Q currently loaded on this web page is revision #<strong id="q-revision">NOT FOUND</strong>.
 					</dd>
@@ -81,7 +102,8 @@
 				<li>
 					<dt id=".EPSILON"><a href="#.EPSILON">EPSILON</a></dt>
 					<dd>
-						<code>Number.EPSILON * 6</code>.
+						<code class="value-type">Number</code>
+						Set equal to <code>Number.EPSILON * 6</code>.
 						In the future we may wish to incorporate something like 
 						<a href="https://github.com/MikeMcl/bignumber.js" target="_blank">bignumber.js</a> in to Q,
 						but for now this higher epsilon value is necessary 
@@ -90,99 +112,164 @@
 <pre><code>
 var a = new Q.<a href="ComplexNumber.html">ComplexNumber</a>( 1, 2 )
 a.<a href="ComplexNumber.html#.prototype.multiply">multiply</a>( a ).<a href="ComplexNumber.html#.prototype.multiply">isEqualTo</a>( a.<a href="ComplexNumber.html#.prototype.power">power</a>( 2 ))
-</code></pre>						
+</code>
+<samp>true</samp></pre>
 					</dd>
 				</li>
 				<li>
 					<dt id=".RADIANS_TO_DEGREES"><a href="#.RADIANS_TO_DEGREES">RADIANS_TO_DEGREES</a></dt>
 					<dd>
-						180 ÷ π
+						<code class="value-type">Number</code>
+						Set equal to <code>180 / Math.PI</code>.
 					</dd>
 				</li>
 			</ul>
-			<hr>
-			<h3 id="Properties">Properties</h3>
+			<h3>Properties</h3>
+			<h4>Inspection</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".verbosity"><a href="#.verbosity">verbosity</a></dt>
+					<dt id=".help"><a href="#.help">help</a></dt>
 					<dd>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".animals"><a href="#.animals">animals</a></dt>
-					<dd>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".colors"><a href="#.colors">colors</a></dt>
-					<dd>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".warn"><a href="#.warn">warn</a></dt>
-					<dd>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".error"><a href="#.error">error</a></dt>
-					<dd>
+						<code class="value-type">Function</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".extractDocumentation"><a href="#.extractDocumentation">extractDocumentation</a></dt>
 					<dd>
+						<code class="value-type">Function</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
-					<dt id=".help"><a href="#.help">help</a></dt>
+					<dt id=".verbosity"><a href="#.verbosity">verbosity</a></dt>
 					<dd>
+						<code class="value-type">Number</code>
 						Description TK.
 					</dd>
 				</li>
+				<li>
+					<dt id=".log"><a href="#.log">log</a></dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>				
+				<li>
+					<dt id=".warn"><a href="#.warn">warn</a></dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".error"><a href="#.error">error</a></dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+			</ul>
+			<h4>Constants creation and reference</h4>		
+			<ul class="properties">
 				<li>
 					<dt id=".constants"><a href="#.constants">constants</a></dt>
 					<dd>
+						<code class="value-type">Object</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".createConstant"><a href="#.createConstant">createConstant</a></dt>
 					<dd>
+						<code class="value-type">Function</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".createConstants"><a href="#.createConstants">createConstants</a></dt>
 					<dd>
+						<code class="value-type">Function</code>
 						Description TK.
 					</dd>
 				</li>
+			</ul>
+			<h4>Maths</h4>
+			<ul class="properties">
 				<li>
 					<dt id=".hypotenuse"><a href="#.hypotenuse">hypotenuse</a></dt>
 					<dd>
+						<code class="value-type">Function</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".logHypotenuse"><a href="#.logHypotenuse">logHypotenuse</a></dt>
 					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".hyperbolicSine"><a href="#.hyperbolicSine">hyperbolicSine</a></dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".hyperbolicCosine"><a href="#.hyperbolicCosine">hyperbolicCosine</a></dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".round"><a href="#.round">round</a></dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+			</ul>
+			<h4>Miscellaneous</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".animals"><a href="#.animals">animals</a></dt>
+					<dd>
+						<code class="value-type">Array</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".animals3"><a href="#.animals3">animals3</a></dt>
+					<dd>
+						<code class="value-type">Array</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".colors"><a href="#.colors">colors</a></dt>
+					<dd>
+						<code class="value-type">Array</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".toTitleCase"><a href="#.toTitleCase">toTitleCase</a></dt>
 					<dd>
-						<code>Function</code>.
+						<code class="value-type">Function</code>
 						Expects one <code>String</code> argument.
 						Replaces underscores with spaces, breaks apart text in to words, 
 						capitalizes the first letter of each word,
 						then returns a new <code>String</code> with these changes.
+					</dd>
+				</li>
+				<li>
+					<dt id=".centerText"><a href="#.centerText">centerText</a></dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
 					</dd>
 				</li>
 			</ul>

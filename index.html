@@ -52,13 +52,15 @@
 		<main>
 			<h3>Hello, this is Q</h3>
 			<p>
-				Q is quantum computing in your browser.
+				Q is <a href="https://en.wikipedia.org/wiki/Quantum_computing" target="_blank">quantum computing</a> in your browser.
 				(What?!)
 				Okay, okay, it’s a quantum circuit <em>simulator</em>—because you can’t do actual quantum computing using whatever non-quantum device you’re reading this on.
-				(So why build this?)
+			</p>
+			<p>
+				So why build Q?
 				The same reason Google, IBM, and Microsoft build quantum simulators:
 				to explore quantum circuit design using a cheap and easy medium before applying those designs to the real hardware.
-				Q was started by <a href="http://stewartsmith.io" target="_blank">Stewart Smith</a>, 
+				Q was created by <a href="http://stewartsmith.io" target="_blank">Stewart Smith</a>, 
 				in April 2019
 				as a way to learn about quantum computing, 
 				share that learning with others,
@@ -68,8 +70,9 @@
 				This documentation website is live at
 				<a href="https://stewdio.github.io/q.js">https://stewdio.github.io/q.js</a>,
 				which is probably where you’re viewing it from now, eh?
+				But it’s built to run just as well right off of your desktop.
 			</p>
-			<h3 id="Open_your_JavaScript_console">Open your JavaScript console</h3>
+			<h3>Open your JavaScript console</h3>
 			<p>
 				In the future, Q will take advantage of the browser
 				as a graphic user interface, 
@@ -232,23 +235,14 @@
 					<td><span class="key"><small>F12</small></span></td>
 				</tr>
 			</table>
-			<h3 id="My_first_superposition">My first superposition</h3>
+			<h3>My first superposition</h3>
 			<p>
 				Have you opened up your browser’s JavaScript console yet? 
 				(See above.)
 				You don’t have to know anything about quantum physics or JavaScript
 				to launch your first qubit in to <a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>!
-				Just copy and paste the following in to your console:
-			</p>
-<pre><code>
-<a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>.<a href="Qubit.html#.HORIZONTAL">HORIZONTAL</a>
-	.<a href="Qubit.html#.prototype.applyGate">applyGate</a>( <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.HADAMARD">HADAMARD</a> )
-	.<a href="Qubit.html#.prototype.applyGate">applyGate</a>( <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.HADAMARD">MEASURE</a> )
-	.<a href="Qubit.html#this.ket">ket</a>.<a href="ComplexNumber.html#.prototype.toText">toText</a>()
-</pre></code>
-			<p>
-				Or if brevity is more your thing, try this super compressed version. 
-				(Note those are backticks, not quotes.)
+				Just copy and paste the following in to your console.
+				(Note those are backticks, not quotation marks.)
 			</p>
 <pre><code>
 <a href="Q.html">Q</a>`H-M`.<a href="Circuit.html#.prototype.run$">run$</a>().<a href="Circuit.html#.prototype.results">results</a>
@@ -266,15 +260,13 @@
 				You haven’t installed or configured any fancy software, 
 				yet you’re already doing quantum computation.
 				You must be a genius!
+				To learn more about what you’ve just accomplished,
+				see <a href="Circuit.html#Writing_quantum_circuits">“Writing quantum circuits.”</a>
 			</p>
 			<hr>
-			<h3 id="Roadmap">Roadmap</h3>
+			<h3>Roadmap</h3>
 			<p>
-				This is a work-in-progress.
-				Currently the computation relies on matrix math,
-				but it may be desirable to create a 
-				<a href="https://en.wikipedia.org/wiki/Finite-state_machine#Representations" target="_blank">state machine</a> based on the 
-				<a href="https://en.wikipedia.org/wiki/Bloch_sphere" target="_blank">Bloch Sphere</a> as an alternative.
+				Q is a work-in-progress.
 				This documentation is still being written, as is the code it documents.
 				We’re laying railroad track directly in front of the train.
 				While
@@ -283,11 +275,12 @@
 				<code><a href="Matrix.html">Matrix</a></code>,
 				<code><a href="Qubit.html">Qubit</a></code>,
 				<code><a href="Gate.html">Gate</a></code>, 
-				and <code><a href="Circuit.html">Circuit</a></code> are functional,
+				and <code><a href="Circuit.html">Circuit</a></code> components are functional,
 				there are a lot of details to fill in.
 				(Stay tuned.)
 				Full functionality and a <a href="https://en.wikipedia.org/wiki/Graphical_user_interface" target="_blank">graphic user interface</a>—as an alternative to the console’s 
 				<a href="https://en.wikipedia.org/wiki/Command-line_interface" target="_blank">commaind-line interface</a>—are coming!
+				<a href="https://en.wikipedia.org/wiki/WebGPU" target="_blank">WebGPU</a> for simulation is on our list!
 				Developing and maintaining a consistent tone-of-voice across documentation, code, and code comments is a never-ending marathon, but it’s worth it.
 			</p>
 			<p>
@@ -297,9 +290,9 @@
 				How about breaking down complex subjects in to simple bite-sized chunks of 
 				<a href="https://en.wikipedia.org/wiki/Copywriting" target="_blank">copywriting</a> and minimalist diagrams?
 				Help us by <a href="https://github.com/stewdio/q.js/issues" target="_blank">creating (or resolving) issues</a> on <a href="https://github.com/stewdio/q.js" target="_blank">Q’s GitHub repository</a>.
-				Let’s make quantum accessible!
+				Let’s make quantum computing accessible!
 			</p>
-			<h3 id="Style">Style</h3>
+			<h3>Style</h3>
 			<p>
 				Q’s source code is verbose, heavily commented, and there’s great empathy for fellow learners.
 				<a href="https://en.wikipedia.org/wiki/Visual_hierarchy" target="_blank">Visual hierarchy</a> is key when facing a brick of monospace code gibberish. 

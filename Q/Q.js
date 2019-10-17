@@ -20,9 +20,8 @@ const Q = function( circuitText ){
 
 Object.assign( Q, {
 
-	verbosity: 0.5,
+	verbosity: 0.5,	
 	animals: [],
-	colors: [],
 	animals3: [
 
 		'ape',
@@ -32,8 +31,27 @@ Object.assign( Q, {
 		'elk',
 		'fox',
 		'gup',
-		'hen'
+		'hen',
+		'ide',
+		'jay',
+		'koi',
+		//  L ?
+		//  M ?
+		'nit',
+		'owl',
+		'pig',
+		//  Q ?
+		'ram',
+		'sow',
+		'tui',
+		//  U ?
+		//  V ?
+		//  W ?
+		//  X ?
+		'yak'
+		//  Z ?
 	],
+	colors: [],
 	log: function( verbosityThreshold, ...remainingArguments ){
 
 		if( Q.verbosity >= verbosityThreshold ) console.log( ...remainingArguments )
@@ -108,7 +126,18 @@ Object.assign( Q, {
 	constants: {},
 	createConstant: function( key, value ){
 
+		//Object.freeze( value )
 		this[ key ] = value
+		// Object.defineProperty( this, key, {
+
+		// 	value,
+		// 	writable: false
+		// })
+		// Object.defineProperty( this.constants, key, {
+
+		// 	value,
+		// 	writable: false
+		// })
 		this.constants[ key ] = this[ key ]
 		Object.freeze( this[ key ])
 	},
