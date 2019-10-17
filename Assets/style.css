@@ -183,7 +183,8 @@ a {
 	text-decoration: none;
 	transition: 
 		background-color 0.2s,
-		color 0.2s;
+		color 0.2s,
+		text-decoration-color 0.2s;
 }
 a svg {
 
@@ -195,7 +196,8 @@ a:hover {
 	color: #FFF;
 	transition: 
 		background-color 0s,
-		color 0s;
+		color 0s,
+		text-decoration-color 0s;
 }
 a:hover svg {
 
@@ -213,7 +215,7 @@ a[ target=_blank ] svg {
 a[ target=_blank ]:hover {
 
 	background-color: var( --hyperlink-external-color );
-	text-decoration: none;
+	text-decoration-color: rgba( 0, 0, 0, 0 );
 	color: #FFF;
 }
 a[ target=_blank ]:hover svg {
@@ -229,8 +231,13 @@ a[ target=_blank ]:hover svg {
 
 	display: inline-block;
 	width: 2rem;
-	font-size: 1rem;
+	font-size: 0.8rem;
 	font-weight: 400;
+}
+dt .section-anchor {
+
+	position: absolute;
+	left: -2rem;
 }
 .section-anchor a {
 		
@@ -242,11 +249,11 @@ a[ target=_blank ]:hover svg {
 }
 h3 .section-anchor a {
 
-	top: -0.45em;
+	top: -0.62em;
 }
-h4 .section-anchor a {
+h4 .section-anchor a, dt .section-anchor a {
 
-	top: -0.15em;
+	top: -0.1em;
 }
 .section-anchor a:hover {
 
@@ -281,14 +288,15 @@ h3, h4 {
 }
 h3 {
 
-	padding-top: 1.6em;
+	padding-top:    1.6em;
 	padding-bottom: 0.2em;
 	font-size: 2em;
 }
 h4 {
 
-	padding-top: 1.6em;
+	padding-top:    1.8em;
 	padding-bottom: 0.2em;
+	font-size: 1.2em;
 }
 hr {
 
@@ -557,21 +565,28 @@ td:hover {
 
 ul.properties {
 
-	margin-top: 1em;
-	border-top: 1px solid #EEE;
+	margin-top: 0.8em;
+	border-top: 1px solid #DDD;
 }
 ul.properties li {
 
-	border-bottom: 1px solid #EEE;
+	border-bottom: 1px solid #DDD;
 	list-style: none;
-	padding: 0.5em 0;
+	padding: 0.8em 0;
 }
+ul.properties li:hover {
+
+	background-color: var( --background-callout-color );
+}
+
+
 ul.properties pre {
 
 	margin-left: 0;
 }
 dt {
 
+	position: relative;
 	display: inline;
 	margin-right:  0.4em;
 	font-family: 'Roboto Mono', Menlo, "Courier New", monospace;
@@ -937,6 +952,7 @@ table#console-open-commands .na {
 	top:   50%;
 	width: 60%;
 	padding-bottom: 60%;
+	font-family: 'Roboto', sans-serif;
 }
 
 
@@ -1198,6 +1214,7 @@ table#console-open-commands .na {
 #bloch-sphere-qubits {
 
 	margin-top: 15px;
+	font-family: 'Roboto', sans-serif;
 }
 .qubit-container {
 
@@ -1249,6 +1266,7 @@ table#console-open-commands .na {
 #bloch-sphere-gates {
 
 	margin-top: 15px;
+	font-family: 'Roboto', sans-serif;
 }
 .gate-container {
 
@@ -1292,8 +1310,10 @@ table#console-open-commands .na {
 	line-height: 37px;
 	color: #000;
 }
+.interactive-container {
 
-
+	font-family: 'Roboto', sans-serif;
+}
 
 
 

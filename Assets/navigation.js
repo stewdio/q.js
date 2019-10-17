@@ -78,6 +78,20 @@ document.addEventListener( 'DOMContentLoaded', function(){
 	})
 
 
+	Array.from( document.querySelectorAll( 'dt[id]' )).forEach( function( el ){
+		
+		const 
+		container = document.createElement( 'span' ),
+		link = document.createElement( 'a' )
+		
+		container.classList.add( 'section-anchor' )
+		container.appendChild( link )
+		link.setAttribute( 'href', '#'+ el.getAttribute( 'id' ))
+		link.innerText = '§'
+		el.insertAdjacentElement( 'afterbegin', container )
+	})
+
+
 	onHashChange()
 })
 

@@ -85,21 +85,21 @@ var fox = new <a href="Q.html">Q</a>.Gate({
 </code></pre>			
 			<ul class="properties">
 				<li>
-					<dt id="prototype.label"><a href="#prototype.label">label</a></dt>
+					<dt id="prototype.label">label</dt>
 					<dd>
 						<code class="value-type">String</code>
 						A single character used as a label in visual representations of this <code>Gate</code> in circuit diagrams.
 					</dd>
 				</li>
 				<li>
-					<dt id="prototype.name"><a href="#prototype.name">name</a></dt>
+					<dt id="prototype.name">name</dt>
 					<dd>
 						<code class="value-type">String</code>
 						The full name of this <code>Gate</code> to be used as a title or long label in a visual representation.
 					</dd>
 				</li>
 				<li>
-					<dt id="prototype.operation"><a href="#prototype.operation">operation</a></dt>
+					<dt id="prototype.operation">operation</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						The supplied <code>operation</code> function.
@@ -107,14 +107,14 @@ var fox = new <a href="Q.html">Q</a>.Gate({
 					</dd>
 				</li>
 				<li>
-					<dt id="prototype.applyTo"><a href="#prototype.applyTo">applyTo</a></dt>
+					<dt id="prototype.applyTo">applyTo</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Calls the supplied <code>operation</code> function and ensures the result is an array.
 					</dd>
 				</li>
 				<li>
-					<dt id="prototype.index"><a href="#prototype.index">index</a></dt>
+					<dt id="prototype.index">index</dt>
 					<dd>
 						<code class="value-type">Number</code>
 						An auto-incrementing identification number assigned to the instance,
@@ -141,7 +141,7 @@ var fox = new <a href="Q.html">Q</a>.Gate({
 			</p>
 			<ul class="properties">
 				<li>
-					<dt id=".IDENTITY"><a href="#.IDENTITY">IDENTITY</a></dt>
+					<dt id=".IDENTITY">IDENTITY</dt>
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 						An Identity gate has no effect on the value of the qubit it operates on;
@@ -173,7 +173,7 @@ new <a href="Q.html">Q</a>.Gate({
 					</dd>
 				</li>
 				<li>
-					<dt id=".MEASURE"><a href="#.MEASURE">MEASURE</a></dt>
+					<dt id=".MEASURE">MEASURE</dt>
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 						A measurement operation collapses the probability wave of a qubit state
@@ -199,7 +199,7 @@ new <a href="Q.html">Q</a>.Gate({
 			<h4>Operations with 2 × 2 matrices</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".HADAMARD"><a href="#.HADAMARD">HADAMARD</a></dt>
+					<dt id=".HADAMARD">HADAMARD</dt>
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 						Applies a <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Hadamard_(H)_gate" target="_blank">Hadamard transform</a> to a single qubit.
@@ -240,8 +240,9 @@ new <a href="Q.html">Q</a>.Gate({
 					</dd>
 				</li>
 				<li>
-					<dt id=".PAULI_X"><a href="#.PAULI_X">PAULI_X</a></dt>
+					<dt id=".PAULI_X">PAULI_X</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 <pre><code>
 new Q.Gate({//  Rπ
 
@@ -256,8 +257,9 @@ new Q.Gate({//  Rπ
 					</dd>
 				</li>
 				<li>
-					<dt id=".PAULI_Y"><a href="#.PAULI_Y">PAULI_Y</a></dt>
+					<dt id=".PAULI_Y">PAULI_Y</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 <pre><code>
 new Q.Gate({
 
@@ -272,8 +274,9 @@ new Q.Gate({
 					</dd>
 				</li>
 				<li>
-					<dt id=".PAULI_Z"><a href="#.PAULI_Z">PAULI_Z</a></dt>
+					<dt id=".PAULI_Z">PAULI_Z</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 <pre><code>
 new Q.Gate({
 
@@ -288,8 +291,9 @@ new Q.Gate({
 					</dd>
 				</li>
 				<li>
-					<dt id=".PHASE"><a href="#.PHASE">PHASE</a></dt>
+					<dt id=".PHASE">PHASE</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 <pre><code>
 new Q.Gate({
 
@@ -304,8 +308,9 @@ new Q.Gate({
 					</dd>
 				</li>
 				<li>
-					<dt id=".PI_8"><a href="#.PI_8">PI_8</a></dt>
+					<dt id=".PI_8">PI_8</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 <pre><code>
 new Q.Gate({
 
@@ -323,51 +328,69 @@ new Q.Gate({
 			<h4>Operations with 4 × 4 matrices</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".CONTROLLED_NOT"><a href="#.CONTROLLED_NOT">CONTROLLED_NOT</a></dt>
-					<dd>Arriving soon.</dd>
+					<dt id=".CONTROLLED_NOT">CONTROLLED_NOT</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						Arriving soon.
+					</dd>
 				</li>
 				<li>
-					<dt id=".SWAP"><a href="#.SWAP">SWAP</a></dt>
-					<dd>Arriving soon.</dd>
+					<dt id=".SWAP">SWAP</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						Arriving soon.
+					</dd>
 				</li>
 				<li>
-					<dt id=".CONTROLLED_Z"><a href="#.CONTROLLED_Z">CONTROLLED_Z</a></dt>
-					<dd>Arriving soon.</dd>
+					<dt id=".CONTROLLED_Z">CONTROLLED_Z</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						Arriving soon.
+					</dd>
 				</li>
 				<li>
-					<dt id=".CONTROLLED_PHASE"><a href="#.CONTROLLED_PHASE">CONTROLLED_PHASE</a></dt>
-					<dd>Arriving soon.</dd>
+					<dt id=".CONTROLLED_PHASE">CONTROLLED_PHASE</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						Arriving soon.
+					</dd>
 				</li>
 			</ul>
 			<h4>Operations with 8 × 8 matrices</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".TOFFOLI"><a href="#.TOFFOLI">TOFFOLI</a></dt>
-					<dd>Arriving soon.</dd>
+					<dt id=".TOFFOLI">TOFFOLI</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						Arriving soon.
+					</dd>
 				</li>
 				<li>
-					<dt id=".CONTROLLED_SWAP"><a href="#.CONTROLLED_SWAP">CONTROLLED_SWAP</a></dt>
-					<dd>Arriving soon.</dd>
+					<dt id=".CONTROLLED_SWAP">CONTROLLED_SWAP</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						Arriving soon.
+					</dd>
 				</li>
 			</ul>
 			<h3 id="Static_properties">Static properties</h3>
 			<ul class="properties">
 				<li>
-					<dt id=".index"><a href="#.index">index</a></dt>
+					<dt id=".index">index</dt>
 					<dd>
 						<code class="value-type">Number</code>
-						Description TK
+						Description TK.
 					</dd>
 				</li>
 				<li>
-					<dt id=".help"><a href="#.help">help</a></dt>
+					<dt id=".help">help</dt>
 					<dd>
 						<code class="value-type">Function</code>
-						Description TK
+						Description TK.
 					</dd>
 				</li>
 				<li>
-					<dt id=".constants"><a href="#.constants">constants</a></dt>
+					<dt id=".constants">constants</dt>
 					<dd>
 						<code class="value-type">Object</code>
 						While <code>Q.Gate</code> <a href="#Constants">constants</a>
@@ -383,31 +406,31 @@ new Q.Gate({
 					</dd>
 				</li>
 				<li>
-					<dt id=".createConstant"><a href="#.createConstant">createConstant</a></dt>
+					<dt id=".createConstant">createConstant</dt>
 					<dd>
 						<code class="value-type">Function</code>
-						Description TK
+						Description TK.
 					</dd>
 				</li>
 				<li>
-					<dt id=".createConstants"><a href="#.createConstants">createConstants</a></dt>
+					<dt id=".createConstants">createConstants</dt>
 					<dd>
 						<code class="value-type">Function</code>
-						Description TK
+						Description TK.
 					</dd>
 				</li>
 			</ul>
 			<h3 id="Prototype_properties">Prototype properties</h3>
 			<ul class="properties">
 				<li>
-					<dt id=".prototype.toText"><a href="#.prototype.toText">toText</a></dt>
+					<dt id=".prototype.toText">toText</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Returns a <code>String</code> of text to represent this <code>Gate</code>.
 					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.toHtml"><a href="#.prototype.toHtml">toHtml</a></dt>
+					<dt id=".prototype.toHtml">toHtml</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Returns a <code>String</code> of HTML code to represent this <code>Gate</code>.

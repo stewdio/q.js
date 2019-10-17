@@ -229,7 +229,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 </code></pre>
 			<ul class="properties">
 				<li>
-					<dt id="this.bra"><a href="#this.bra">bra</a></dt>
+					<dt id="this.bra">bra</dt>
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code>
 						The <span class="symbol">a</span> or 
@@ -237,7 +237,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id="this.ket"><a href="#this.ket">ket</a></dt>
+					<dt id="this.ket">ket</dt>
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code>
 						The <span class="symbol">b</span> or 
@@ -245,28 +245,28 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id="this.label"><a href="#this.label">label</a></dt>
+					<dt id="this.label">label</dt>
 					<dd>
 						<code class="value-type">String</code>
 						Single character representing this qubit state, 
 						for example ‘H’ for <a href="#.HORIZONTAL">horizontal</a>. 
 						This can be passed to the constructor as an optional third argument 
-						or automatically assigned based on existing <code><a href="Q.html">Q</a>.Qubit.<a href="#Constants">constants</a></code>
+						or automatically assigned based on existing <code><a href="Q.html">Q</a>.Qubit.<a href="#.constants">constants</a></code>
 						If no match is found among existings constants the ‘?’ character is assigned.
 						Note: This property name and behavior expected to change in the near future.
 					</dd>
 				</li>
 				<li>
-					<dt id="this.name"><a href="#this.name">name</a></dt>
+					<dt id="this.name">name</dt>
 					<dd>
 						<code class="value-type">String</code>
-						The name of the qubit state, assigned based on existing Q.Qubit <a href="#Constants">constants</a>.
+						The name of the qubit state, assigned based on existing <code>Q.Qubit.<a href="#.constants">constants</a></code>.
 						If no match is found among existings constants the name is left empty.
 						Note: This property name and behavior expected to change in the near future.
 					</dd>
 				</li>
 				<li>
-					<dt id="this.index"><a href="#this.index">index</a></dt>
+					<dt id="this.index">index</dt>
 					<dd>
 						<code class="value-type">Number</code>
 						An identification number assigned to the instance based on the
@@ -275,11 +275,13 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 			</ul>
-			<h3 id="Constants">Constants</h3>
+			<h3 id="Static_constants">Static constants</h3>
 			<p>
-				While <code><a href="Q.html">Q</a>.Qubit</code> <a href="#Constants">constants</a>
-				are appended directly to the <code>Q.Qubit</code> object,
-				they are also appended to a <code>Q.Qubit.constants</code> object
+				While <code><a href="Q.html">Q</a>.Qubit</code> constants
+				are appended directly to the 
+				<code><a href="Q.html">Q</a>.Qubit</code> object,
+				they are also appended to a 
+				<code><a href="Q.html">Q</a>.Qubit.<a href="#.constants">constants</a></code> object
 				to make looking up constants in the JavaScript console trivial,
 				and to make iterating across all constants convenient via
 				functions like 
@@ -287,13 +289,22 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
 				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
 				and so on.
-				<code>Q.Qubit</code> provides the following built-in <a href="https://en.wikipedia.org/wiki/Jones_calculus#Jones_vectors" target="_blank">Jones vectors</a>.
+				Strictly speaking, all constants are merely properties—but 
+				these particular properties are configured to be unwritable once appended via
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
+				and are labeled in uppercase to signal to us that this is so.
+			</p>
+			<p>
+				<code><a href="Q.html">Q</a>.Qubit</code> provides the following built-in <a href="https://en.wikipedia.org/wiki/Jones_calculus#Jones_vectors" target="_blank">Jones vectors</a>.
 			</p>
 			<ul class="properties">
 				<li>
-					<dt id=".HORIZONTAL"><a href="#.HORIZONTAL">HORIZONTAL</a></dt>
+					<dt id=".HORIZONTAL">HORIZONTAL</dt>
 					<dd>
-						<code>new Q.Qubit( 1, 0, 'H', 'Horizontal' )</code><br>
+						<code class="value-type"><a href="Q.html">Q</a>.Qubit</code>
+						Initialized as
+						<code>new <a href="Q.html">Q</a>.Qubit( 1, 0, 'H', 'Horizontal' )</code>.
+						Described by the following matrix:<br>
 						<div class="matrix">
 							<div class="matrix-bracket-left"></div>
 							<div class="matrix-bracket-right"></div>
@@ -305,9 +316,12 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id=".VERTICAL"><a href="#.VERTICAL">VERTICAL</a></dt>
+					<dt id=".VERTICAL">VERTICAL</dt>
 					<dd>
-						<code>new Q.Qubit( 0, 1, 'V', 'Vertical' )</code><br>
+						<code class="value-type"><a href="Q.html">Q</a>.Qubit</code>
+						Initialized as
+						<code>new <a href="Q.html">Q</a>.Qubit( 0, 1, 'V', 'Vertical' )</code>.
+						Described by the following matrix:<br>
 						<div class="matrix">
 							<div class="matrix-bracket-left"></div>
 							<div class="matrix-bracket-right"></div>
@@ -319,9 +333,12 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id=".DIAGONAL"><a href="#.DIAGONAL">DIAGONAL</a></dt>
+					<dt id=".DIAGONAL">DIAGONAL</dt>
 					<dd>
-						<code>new Q.Qubit( Math.SQRT1_2, Math.SQRT1_2, 'D', 'Diagonal' )</code>
+						<code class="value-type"><a href="Q.html">Q</a>.Qubit</code>
+						Initialized as
+						<code>new <a href="Q.html">Q</a>.Qubit( Math.SQRT1_2, Math.SQRT1_2, 'D', 'Diagonal' )</code>.
+						Described by the following matrix:<br>
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -340,9 +357,12 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id=".ANTI_DIAGONAL"><a href="#.ANTI_DIAGONAL">ANTI_DIAGONAL</a></dt>
+					<dt id=".ANTI_DIAGONAL">ANTI_DIAGONAL</dt>
 					<dd>
-						<code>new Q.Qubit( Math.SQRT1_2, -Math.SQRT1_2, 'A', 'Anti-diagonal' )</code>
+						<code class="value-type"><a href="Q.html">Q</a>.Qubit</code>
+						Initialized as
+						<code>new <a href="Q.html">Q</a>.Qubit( Math.SQRT1_2, -Math.SQRT1_2, 'A', 'Anti-diagonal' )</code>.
+						Described by the following matrix:<br>
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -361,9 +381,12 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id=".RIGHT_HAND_CIRCULAR_POLARIZED"><a href="#.RIGHT_HAND_CIRCULAR_POLARIZED">RIGHT_HAND_CIRCULAR_POLARIZED</a></dt>
+					<dt id=".RIGHT_HAND_CIRCULAR_POLARIZED">RIGHT_HAND_CIRCULAR_POLARIZED</dt>
 					<dd>
-						<code>new Q.Qubit( Math.SQRT1_2, new Q.ComplexNumber( 0, -Math.SQRT1_2 ), 'R', 'Right-hand Circular Polarized' )</code>
+						<code class="value-type"><a href="Q.html">Q</a>.Qubit</code>
+						Initialized as
+						<code>new <a href="Q.html">Q</a>.Qubit( Math.SQRT1_2, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, -Math.SQRT1_2 ), 'R', 'Right-hand Circular Polarized' )</code>.
+						Described by the following matrix:<br>
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -381,12 +404,13 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 						</div>
 					</dd>
 				</li>
-
-
 				<li>
-					<dt id=".LEFT_HAND_CIRCULAR_POLARIZED"><a href="#.LEFT_HAND_CIRCULAR_POLARIZED">LEFT_HAND_CIRCULAR_POLARIZED</a></dt>
+					<dt id=".LEFT_HAND_CIRCULAR_POLARIZED">LEFT_HAND_CIRCULAR_POLARIZED</dt>
 					<dd>
-						<code>new Q.Qubit( Math.SQRT1_2, new Q.ComplexNumber( 0, Math.SQRT1_2 ), 'L', 'Left-hand Circular Polarized' )</code>
+						<code class="value-type"><a href="Q.html">Q</a>.Qubit</code>
+						Initialized as
+						<code>new <a href="Q.html">Q</a>.Qubit( Math.SQRT1_2, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, Math.SQRT1_2 ), 'L', 'Left-hand Circular Polarized' )</code>.
+						Described by the following matrix:<br>
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -412,7 +436,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 			</p>
 			<ul class="properties">
 				<li>
-					<dt id=".index"><a href="#.index">index</a></dt>
+					<dt id=".index">index</dt>
 					<dd>
 						<code class="value-type">Number</code>
 						Initialized to zero, this number is then incremented each time an instance is created
@@ -422,7 +446,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id=".help"><a href="#.help">help</a></dt>
+					<dt id=".help">help</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Calls and returns the result of <code>Q.<a href="Q.html#.help">help</a>( this )</code>
@@ -431,10 +455,10 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id=".constants"><a href="#.constants">constants</a></dt>
+					<dt id=".constants">constants</dt>
 					<dd>
 						<code class="value-type">Object</code>
-						While <code>Q.Qubit</code> <a href="#Constants">constants</a>
+						While <code>Q.Qubit</code> <a href="#.constants">constants</a>
 						are appended directly to the <code>Q.Qubit</code> object,
 						they are also appended to a <code>Q.Qubit.constants</code> object
 						to make looking up constants in the JavaScript console trivial,
@@ -447,7 +471,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id=".createConstant"><a href="#.createConstant">createConstant</a></dt>
+					<dt id=".createConstant">createConstant</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Expects <code>( key, value )</code> as arguments.
@@ -463,7 +487,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id=".createConstants"><a href="#.createConstants">createConstants</a></dt>
+					<dt id=".createConstants">createConstants</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Expects an even number of arguments in the form of
@@ -473,7 +497,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id=".collapse"><a href="#.collapse">collapse</a></dt>
+					<dt id=".collapse">collapse</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Expects a single <code>Q.Qubit</code> instance as argument.
@@ -485,7 +509,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id=".areEqual"><a href="#.areEqual">areEqual</a></dt>
+					<dt id=".areEqual">areEqual</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Expects two instances of <code>Q.Qubit</code> as arguments.
@@ -497,7 +521,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id=".toBlochSphere"><a href="#.toBlochSphere">toBlochSphere</a></dt>
+					<dt id=".toBlochSphere">toBlochSphere</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Expects a single <code>Q.Qubit</code> instance as argument.
@@ -547,7 +571,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 			<h4>Non-destructive methods</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".prototype.isEqualTo"><a href="#.prototype.isEqualTo">isEqualTo</a></dt>
+					<dt id=".prototype.isEqualTo">isEqualTo</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Calls and returns the result of static method 
@@ -556,7 +580,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.collapse"><a href="#.prototype.collapse">collapse</a></dt>
+					<dt id=".prototype.collapse">collapse</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Calls and returns the result of static method 
@@ -564,7 +588,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.toBlochSphere"><a href="#.prototype.toBlochSphere">toBlochSphere</a></dt>
+					<dt id=".prototype.toBlochSphere">toBlochSphere</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Calls and returns the result of static method 
@@ -576,7 +600,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 			<h4>Destructive methods</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".prototype.copy$"><a href="#.prototype.copy$">copy$</a></dt>
+					<dt id=".prototype.copy$">copy$</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Expects a single <code>Q.Qubit</code> instance as argument.
@@ -586,7 +610,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.collapse$"><a href="#.prototype.collapse$">collapse$</a></dt>
+					<dt id=".prototype.collapse$">collapse$</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Expects no arguments.

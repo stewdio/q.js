@@ -201,7 +201,7 @@ var a = new <a href="Q.html">Q</a>.Matrix(
 			<h4 id="Import_and_export_formats">Import and export formats</h4>
 			<p>
 				Getting data in and out of any system can be laborious. 
-				With that in mind, <code>Q.Matrix</code> comes with helper methods for
+				With that in mind, <code><a href="Q.html">Q</a>.Matrix</code> comes with helper methods for
 				importing and exporting the following common formats:
 			</p>
 			<br>
@@ -211,11 +211,13 @@ var a = new <a href="Q.html">Q</a>.Matrix(
 				<li><a href="#.fromXsv">Arbitrary character separated values (XSV)</a></li>
 				<li><a href="#.fromHtml">HTML tables</a></li>
 			</ul>
-			<h3 id="Constants">Constants</h3>
+			<h3 id="Static_constants">Static constants</h3>
 			<p>
-				While <code>Matrix</code> <a href="#Constants">constants</a>
-				are appended directly to the <code>Matrix</code> object,
-				they are also appended to a <code>Matrix.constants</code> object
+				While <code><a href="Q.html">Q</a>.Matrix</code> constants
+				are appended directly to the 
+				<code><a href="Q.html">Q</a>.Matrix</code> object,
+				they are also appended to a 
+				<code><a href="Q.html">Q</a>.Matrix.<a href="#.constants">constants</a></code> object
 				to make looking up constants in the JavaScript console trivial,
 				and to make iterating across all constants convenient via
 				functions like 
@@ -223,6 +225,10 @@ var a = new <a href="Q.html">Q</a>.Matrix(
 				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
 				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
 				and so on.
+				Strictly speaking, all constants are merely properties—but 
+				these particular properties are configured to be unwritable once appended via
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
+				and are labeled in uppercase to signal to us that this is so.
 			</p>
 			<h4 id="Example_matrices">Example matrices</h4>
 			<ul class="properties">

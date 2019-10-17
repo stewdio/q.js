@@ -204,7 +204,7 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 </pre></code>
 			<ul class="properties">
 				<li>
-					<dt id="this.real"><a href="#this.real">real</a></dt>
+					<dt id="this.real">real</dt>
 					<dd>
 						<code class="value-type">Number</code>
 						Traditionally the first argument, 
@@ -214,7 +214,7 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 					</dd>
 				</li>
 				<li>
-					<dt id="this.imaginary"><a href="#this.imaginary">imaginary</a></dt>
+					<dt id="this.imaginary">imaginary</dt>
 					<dd>
 						<code class="value-type">Number</code>
 						Traditionally the second argument, 
@@ -224,7 +224,7 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 					</dd>
 				</li>
 				<li>
-					<dt id="this.index"><a href="#this.index">index</a></dt>
+					<dt id="this.index">index</dt>
 					<dd>
 						<code class="value-type">Number</code>
 						An auto-incrementing identification number assigned to the instance,
@@ -232,12 +232,13 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 					</dd>
 				</li>
 			</ul>
-			<!-- <hr> -->
 			<h3>Static constants</h3>
 			<p>
-				While <code>Q.ComplexNumber</code> <a href="#Constants">constants</a>
-				are appended directly to the <code>Q.ComplexNumber</code> object,
-				they are also appended to a <code>Q.ComplexNumber.constants</code> object
+				While <code><a href="Q.html">Q</a>.ComplexNumber</code> constants
+				are appended directly to the 
+				<code><a href="Q.html">Q</a>.ComplexNumber</code> object,
+				they are also appended to a 
+				<code><a href="Q.html">Q</a>.ComplexNumber.<a href="#.constants">constants</a></code> object
 				to make looking up constants in the JavaScript console trivial,
 				and to make iterating across all constants convenient via
 				functions like 
@@ -245,259 +246,429 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
 				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
 				and so on.
+				Strictly speaking, all constants are merely properties—but 
+				these particular properties are configured to be unwritable once appended via
+				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
+				and are labeled in uppercase to signal to us that this is so.
 			</p>
 			<ul class="properties">
 				<li>
-					<dt id=".ZERO"><a href="#.ZERO">ZERO</a></dt>
-					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( 0, 0 )</code></dd>
+					<dt id=".ZERO">ZERO</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
+						Intialized as
+						<code>new <a href="Q.html">Q</a>.ComplexNumber( 0, 0 )</code>.
+					</dd>
 				</li>
 				<li>
-					<dt id=".ONE"><a href="#.ONE">ONE</a></dt>
-					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( 1, 0 )</code></dd>
+					<dt id=".ONE">ONE</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
+						Intialized as
+						<code>new <a href="Q.html">Q</a>.ComplexNumber( 1, 0 )</code>.
+					</dd>
 				</li>
 				<li>
-					<dt id=".E"><a href="#.E">E</a></dt>
-					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( Math.E, 0 )</code></dd>
+					<dt id=".E">E</dt>					
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
+						Intialized as
+						<code>new <a href="Q.html">Q</a>.ComplexNumber( Math.E, 0 )</code>.
+					</dd>
 				</li>
 				<li>
-					<dt id=".PI"><a href="#.PI">PI</a></dt>
-					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( Math.PI, 0 )</code></dd>
+					<dt id=".PI">PI</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
+						Intialized as
+						<code>new <a href="Q.html">Q</a>.ComplexNumber( Math.PI, 0 )</code>.
+					</dd>
 				</li>
 				<li>
-					<dt id=".I"><a href="#.I">I</a></dt>
-					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( 0, 1 )</code></dd>
+					<dt id=".I">I</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
+						Intialized as
+						<code>new <a href="Q.html">Q</a>.ComplexNumber( 0, 1 )</code>.
+					</dd>
 				</li>
 				<li>
-					<dt id=".EPSILON"><a href="#.EPSILON">EPSILON</a></dt>
-					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( <a href="Q.html">Q</a>.<a href="Q.html#.EPSILON">EPSILON</a>, <a href="Q.html">Q</a>.<a href="Q.html#.EPSILON">EPSILON</a> )</code></dd>
+					<dt id=".EPSILON">EPSILON</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
+						Intialized as
+						<code>new <a href="Q.html">Q</a>.ComplexNumber( <a href="Q.html">Q</a>.<a href="Q.html#.EPSILON">EPSILON</a>, <a href="Q.html">Q</a>.<a href="Q.html#.EPSILON">EPSILON</a> )</code>.
+					</dd>
 				</li>
 				<li>
-					<dt id=".INFINITY"><a href="#.INFINITY">INFINITY</a></dt>
-					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( Infinity, Infinity )</code></dd>
+					<dt id=".INFINITY">INFINITY</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
+						Intialized as
+						<code>new <a href="Q.html">Q</a>.ComplexNumber( Infinity, Infinity )</code>.
+					</dd>
 				</li>
 				<li>
-					<dt id=".NAN"><a href="#.NAN">NAN</a></dt>
-					<dd><code>new <a href="Q.html">Q</a>.ComplexNumber( NaN, NaN )</code></dd>
+					<dt id=".NAN">NAN</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
+						Intialized as
+						<code>new <a href="Q.html">Q</a>.ComplexNumber( NaN, NaN )</code>.
+					</dd>
 				</li>
 			</ul>
 			<!-- <hr> -->
 			<h3 id="Static_properties">Static properties</h3>
 			<ul class="properties">
 				<li>
-					<dt id=".index"><a href="#.index">index</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".index">index</dt>
+					<dd>
+						<code class="value-type">Number</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".help"><a href="#.help">help</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".help">help</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".constants"><a href="#.constants">constants</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".constants">constants</dt>
+					<dd>
+						<code class="value-type">Object</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".createConstant"><a href="#.createConstant">createConstant</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".createConstant">createConstant</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".createConstants"><a href="#.createConstants">createConstants</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".createConstants">createConstants</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".isNumberLike"><a href="#.isNumberLike">isNumberLike</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".isNumberLike">isNumberLike</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".isNaN"><a href="#.isNaN">isNaN</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".isNaN">isNaN</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".isZero"><a href="#.isZero">isZero</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".isZero">isZero</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".isFinite"><a href="#.isFinite">isFinite</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".isFinite">isFinite</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".isInfinite"><a href="#.isInfinite">isInfinite</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".isInfinite">isInfinite</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".areEqual"><a href="#.areEqual">areEqual</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".areEqual">areEqual</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".absolute"><a href="#.absolute">absolute</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".absolute">absolute</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".conjugate"><a href="#.conjugate">conjugate</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".conjugate">conjugate</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".operate"><a href="#.operate">operate</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".operate">operate</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".arcCosine"><a href="#.arcCosine">arcCosine</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".arcCosine">arcCosine</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".arcTangent"><a href="#.arcTangent">arcTangent</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".arcTangent">arcTangent</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".power"><a href="#.power">power</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".power">power</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".squareRoot"><a href="#.squareRoot">squareRoot</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".squareRoot">squareRoot</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".log"><a href="#.log">log</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".log">log</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".multiply"><a href="#.multiply">multiply</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".multiply">multiply</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".divide"><a href="#.divide">divide</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".divide">divide</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".add"><a href="#.add">add</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".add">add</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".subtract"><a href="#.subtract">subtract</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".subtract">subtract</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 			</ul>
-			<!-- <hr> -->
 			<h3 id="Prototype_properties">Prototype properties</h3>
 			<h4>Non-destructive methods</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".prototype.clone"><a href="#.prototype.clone">clone</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.clone">clone</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.reduce"><a href="#.prototype.reduce">reduce</a></dt>
+					<dt id=".prototype.reduce">reduce</dt>
 					<dd>
+						<code class="value-type">Function</code>
 						Description TK. May return a <code>Number</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">method chaining</a>.
 					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.isNaN"><a href="#.prototype.isNaN">isNaN</a></dt>
+					<dt id=".prototype.isNaN">isNaN</dt>
 					<dd>
+						<code class="value-type">Function</code>
 						Description TK. Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">method chaining</a>.
 					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.isZero"><a href="#.prototype.isZero">isZero</a></dt>
+					<dt id=".prototype.isZero">isZero</dt>
 					<dd>
+						<code class="value-type">Function</code>
 						Description TK. Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">method chaining</a>.
 					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.isFinite"><a href="#.prototype.isFinite">isFinite</a></dt>
+					<dt id=".prototype.isFinite">isFinite</dt>
 					<dd>
+						<code class="value-type">Function</code>
 						Description TK. Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">method chaining</a>.
 					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.isInfinite"><a href="#.prototype.isInfinite">isInfinite</a></dt>
+					<dt id=".prototype.isInfinite">isInfinite</dt>
 					<dd>
+						<code class="value-type">Function</code>
 						Description TK. Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">method chaining</a>.
 					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.isEqualTo"><a href="#.prototype.isEqualTo">isEqualTo</a></dt>
+					<dt id=".prototype.isEqualTo">isEqualTo</dt>
 					<dd>
+						<code class="value-type">Function</code>
 						Description TK. Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">method chaining</a>.
 					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.absolute"><a href="#.prototype.absolute">absolute</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.absolute">absolute</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.conjugate"><a href="#.prototype.conjugate">conjugate</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.conjugate">conjugate</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.power"><a href="#.prototype.power">power</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.power">power</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.squareRoot"><a href="#.prototype.squareRoot">squareRoot</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.squareRoot">squareRoot</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.log"><a href="#.prototype.log">log</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.log">log</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.multiply"><a href="#.prototype.multiply">multiply</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.multiply">multiply</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.divide"><a href="#.prototype.divide">divide</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.divide">divide</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.add"><a href="#.prototype.add">add</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.add">add</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.subtract"><a href="#.prototype.subtract">subtract</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.subtract">subtract</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.toText"><a href="#.prototype.toText">toText</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.toText">toText</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 			</ul>
 			<h4>Destructive methods</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".prototype.copy$"><a href="#.prototype.copy$">copy$</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.copy$">copy$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.conjugate$"><a href="#.prototype.conjugate$">conjugate$</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.conjugate$">conjugate$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.power$"><a href="#.prototype.power$">power$</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.power$">power$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.squareRoot$"><a href="#.prototype.squareRoot$">squareRoot$</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.squareRoot$">squareRoot$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.log$"><a href="#.lprototype.og$">log$</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.log$">log$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.multiply$"><a href="#.prototype.multiply$">multiply$</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.multiply$">multiply$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.divide$"><a href="#.prototype.divide$">divide$</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.divide$">divide$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.add$"><a href="#.prototype.add$">add$</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.add$">add$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.subtract$"><a href="#.prototype.subtract$">subtract$</a></dt>
-					<dd>Description TK.</dd>
+					<dt id=".prototype.subtract$">subtract$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 			</ul>
 			<hr>
