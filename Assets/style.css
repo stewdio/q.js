@@ -667,7 +667,7 @@ dd .maths {
 	padding: 10px;
 	font-family: 'Roboto Mono', Menlo, "Courier New", monospace;
 	font-weight: 300;
-	font-size: 13.5px;
+	line-height: 1em;
 	text-align: right;
 }
 .matrix td {

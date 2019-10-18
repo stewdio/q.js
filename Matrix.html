@@ -179,20 +179,23 @@ var a = new <a href="Q.html">Q</a>.Matrix(
 			</div>
 			<ul class="properties">
 				<li>
-					<dt id="this.rows"><a href="#this.rows">rows</a></dt>
+					<dt id="this.rows">rows</dt>
 					<dd>
-						The <code>Array</code> of the supplied <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments" target="_blank">arguments</a></code>.
+						<code class="value-type">Array</code>
+						The list of supplied <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments" target="_blank">arguments</a></code>.
 					</dd>
 				</li>
 				<li>
-					<dt id="this.columns"><a href="#this.columns">columns</a></dt>
+					<dt id="this.columns">columns</dt>
 					<dd>
-						An <code>Array</code> of getters and setters that operate on the <a href="#this.rows">rows</a> property to appear as if this property contained actual values. 
+						<code class="value-type">Array</code>
+						The list of getters and setters that operate on the <a href="#this.rows">rows</a> property to appear as if this property contained actual values. 
 					</dd>
 				</li>
 				<li>
-					<dt id="this.index"><a href="#this.index">index</a></dt>
+					<dt id="this.index">index</dt>
 					<dd>
+						<code class="value-type">Number</code>
 						An auto-incrementing identification number assigned to the instance,
 						used for minding the total number of instances created.
 					</dd>
@@ -204,7 +207,6 @@ var a = new <a href="Q.html">Q</a>.Matrix(
 				With that in mind, <code><a href="Q.html">Q</a>.Matrix</code> comes with helper methods for
 				importing and exporting the following common formats:
 			</p>
-			<br>
 			<ul>
 				<li><a href="#.fromCsv">Comma separated values (CSV)</a></li>
 				<li><a href="#.fromTsv">Tab separated values (TSV)</a></li>
@@ -233,9 +235,12 @@ var a = new <a href="Q.html">Q</a>.Matrix(
 			<h4 id="Example_matrices">Example matrices</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".IDENTITY_2X2"><a href="#.IDENTITY_2X2">IDENTITY_2X2</a></dt>
+					<dt id=".IDENTITY_2X2">IDENTITY_2X2</dt>
 					<dd>
-						<code><a href="Q.html">Q</a>.Matrix.<a href="#.createIdentity">createIdentity</a>( 2 )</code>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
+						<code><a href="Q.html">Q</a>.Matrix.<a href="#.createIdentity">createIdentity</a>( 2 )</code>.
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -253,9 +258,12 @@ var a = new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 				<li>
-					<dt id=".IDENTITY_3X3"><a href="#.IDENTITY_3X3">IDENTITY_3X3</a></dt>
+					<dt id=".IDENTITY_3X3">IDENTITY_3X3</dt>
 					<dd>
-						<code><a href="Q.html">Q</a>.Matrix.<a href="#.createIdentity">createIdentity</a>( 3 )</code>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
+						<code><a href="Q.html">Q</a>.Matrix.<a href="#.createIdentity">createIdentity</a>( 3 )</code>.
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -276,9 +284,12 @@ var a = new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 				<li>
-					<dt id=".IDENTITY_4X4"><a href="#.IDENTITY_4X4">IDENTITY_4X4</a></dt>
+					<dt id=".IDENTITY_4X4">IDENTITY_4X4</dt>
 					<dd>
-						<code><a href="Q.html">Q</a>.Matrix.<a href="#.createIdentity">createIdentity</a>( 4 )</code>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
+						<code><a href="Q.html">Q</a>.Matrix.<a href="#.createIdentity">createIdentity</a>( 4 )</code>.
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -302,13 +313,16 @@ var a = new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 				<li>
-					<dt id=".CONSTANT0_2X2"><a href="#.CONSTANT0_2X2">CONSTANT0_2X2</a></dt>
+					<dt id=".CONSTANT0_2X2">CONSTANT0_2X2</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 1 ],
 	[ 0, 0 ])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -326,13 +340,16 @@ new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 				<li>
-					<dt id=".CONSTANT1_2X2"><a href="#.CONSTANT1_2X2">CONSTANT1_2X2</a></dt>
+					<dt id=".CONSTANT1_2X2">CONSTANT1_2X2</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(
 	[ 0, 0 ],
 	[ 1, 1 ])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -350,13 +367,16 @@ new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 				<li>
-					<dt id=".NEGATION_2X2"><a href="#.NEGATION_2X2">NEGATION_2X2</a></dt>
+					<dt id=".NEGATION_2X2">NEGATION_2X2</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(
 	[ 0, 1 ],
 	[ 1, 0 ])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -374,8 +394,10 @@ new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 				<li>
-					<dt id=".TEST_MAP_9X9"><a href="#.TEST_MAP_9X9">TEST_MAP_9X9</a></dt>
+					<dt id=".TEST_MAP_9X9">TEST_MAP_9X9</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(
 	[ 11, 21, 31, 41, 51, 61, 71, 81, 91 ],
@@ -388,6 +410,7 @@ new <a href="Q.html">Q</a>.Matrix(
 	[ 18, 28, 38, 48, 58, 68, 78, 88, 98 ],
 	[ 19, 29, 39, 49, 59, 69, 79, 89, 99 ])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -501,13 +524,16 @@ new <a href="Q.html">Q</a>.Matrix(
 			<h4 id="Quantum_gates_2x2">Quantum gates, 2 × 2</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".HADAMARD"><a href="#.HADAMARD">HADAMARD</a></dt>
+					<dt id=".HADAMARD">HADAMARD</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(
 	[ Math.SQRT1_2,  Math.SQRT1_2 ],
 	[ Math.SQRT1_2, -Math.SQRT1_2 ])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -530,13 +556,16 @@ new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 				<li>
-					<dt id=".PAULI_X"><a href="#.PAULI_X">PAULI_X</a></dt>
+					<dt id=".PAULI_X">PAULI_X</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(
 	[ 0, 1 ],
 	[ 1, 0 ])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -554,13 +583,16 @@ new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 				<li>
-					<dt id=".PAULI_Y"><a href="#.PAULI_Y">PAULI_Y</a></dt>
+					<dt id=".PAULI_Y">PAULI_Y</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(
 	[ 0, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, -1 )],
 	[ new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 ),  0 ])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -578,13 +610,16 @@ new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 				<li>
-					<dt id=".PAULI_Z"><a href="#.PAULI_Z">PAULI_Z</a></dt>
+					<dt id=".PAULI_Z">PAULI_Z</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(
 	[ 1,  0 ],
 	[ 0, -1 ])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -602,13 +637,16 @@ new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 				<li>
-					<dt id=".PHASE"><a href="#.PHASE">PHASE</a></dt>
+					<dt id=".PHASE">PHASE</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 0 ],
 	[ 0, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -626,13 +664,16 @@ new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 				<li>
-					<dt id=".PI_8"><a href="#.PI_8">PI_8</a></dt>
+					<dt id=".PI_8">PI_8</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 0 ],
-	[ 0, Q.<a href="ComplexNumber.html">ComplexNumber</a>.<a href="ComplexNumber.htmll#.E">E</a>.<a href="ComplexNumber.htmll#.power">power</a>( new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, Math.PI / 4 )) ])
+	[ 0, <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>.<a href="ComplexNumber.htmll#.E">E</a>.<a href="ComplexNumber.htmll#.power">power</a>( new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, Math.PI / 4 )) ])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -653,8 +694,10 @@ new <a href="Q.html">Q</a>.Matrix(
 			<h4 id="Quantum_gates_2x2">Quantum gates, 4 × 4</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".CONTROLLED_NOT"><a href="#.CONTROLLED_NOT">CONTROLLED_NOT</a></dt>
+					<dt id=".CONTROLLED_NOT">CONTROLLED_NOT</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  C-Not</span>
 	[ 1, 0, 0, 0 ],
@@ -662,6 +705,7 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  C-Not</span>
 	[ 0, 0, 0, 1 ],
 	[ 0, 0, 1, 0 ])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -685,8 +729,10 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  C-Not</span>
 					</dd>
 				</li>
 				<li>
-					<dt id=".SWAP"><a href="#.SWAP">SWAP</a></dt>
+					<dt id=".SWAP">SWAP</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 0, 0, 0 ],
@@ -694,6 +740,7 @@ new <a href="Q.html">Q</a>.Matrix(
 	[ 0, 1, 0, 0 ],
 	[ 0, 0, 0, 1 ])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -717,8 +764,10 @@ new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 				<li>
-					<dt id=".CONTROLLED_Z"><a href="#.CONTROLLED_Z">CONTROLLED_Z</a></dt>
+					<dt id=".CONTROLLED_Z">CONTROLLED_Z</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 0, 0,  0 ],
@@ -726,6 +775,7 @@ new <a href="Q.html">Q</a>.Matrix(
 	[ 0, 0, 1,  0 ],
 	[ 0, 0, 0, -1 ])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -749,8 +799,10 @@ new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 				<li>
-					<dt id=".CONTROLLED_PHASE"><a href="#.CONTROLLED_PHASE">CONTROLLED_PHASE</a></dt>
+					<dt id=".CONTROLLED_PHASE">CONTROLLED_PHASE</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 0, 0, 0 ],
@@ -758,6 +810,7 @@ new <a href="Q.html">Q</a>.Matrix(
 	[ 0, 0, 1, 0 ],
 	[ 0, 0, 0, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -784,8 +837,10 @@ new <a href="Q.html">Q</a>.Matrix(
 			<h4 id="Quantum_gates_2x2">Quantum gates, 8 × 8</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".TOFFOLI"><a href="#.TOFFOLI">TOFFOLI</a></dt>
+					<dt id=".TOFFOLI">TOFFOLI</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(
 	[ 1, 0, 0, 0, 0, 0, 0, 0 ],
@@ -797,6 +852,7 @@ new <a href="Q.html">Q</a>.Matrix(
 	[ 0, 0, 0, 0, 0, 0, 0, 1 ],
 	[ 0, 0, 0, 0, 0, 0, 1, 0 ])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -832,8 +888,10 @@ new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 				<li>
-					<dt id=".CONTROLLED_SWAP"><a href="#.CONTROLLED_SWAP">CONTROLLED_SWAP</a></dt>
+					<dt id=".CONTROLLED_SWAP">CONTROLLED_SWAP</dt>
 					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Matrix</code>
+						Initialized as
 <pre><code>
 new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 	[ 1, 0, 0, 0, 0, 0, 0, 0 ],
@@ -845,6 +903,7 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 	[ 0, 0, 0, 0, 0, 1, 0, 0 ],
 	[ 0, 0, 0, 0, 0, 0, 0, 1 ])
 </code></pre>
+						Described by the following matrix:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -883,238 +942,368 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 			<h3 id="Static_properties">Static properties</h3>
 			<ul class="properties">
 				<li>
-					<dt id=".index"><a href="#.index">index</a></dt>
-					<dd> Description TK</dd>
-				</li>
-				<li>
-					<dt id=".help"><a href="#.help">help</a></dt>
-					<dd> Description TK</dd>
-				</li>
-				<li>
-					<dt id=".constants"><a href="#.constants">constants</a></dt>
+					<dt id=".index">index</dt>
 					<dd>
-						While <code>Q.Matrix</code> <a href="#Constants">constants</a>
-						are appended directly to the <code>Q.Matrix</code> object,
-						they are also appended to a <code>Q.Matrix.constants</code> object
-						to make looking up constants in the JavaScript console trivial,
-						and to make iterating across all constants convenient via
-						functions like 
-						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
-						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
-						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
-						and so on.
+						<code class="value-type">Number</code>
+						Description TK.
 					</dd>
 				</li>
 				<li>
-					<dt id=".createConstant"><a href="#.createConstant">createConstant</a></dt>
-					<dd> Description TK</dd>
+					<dt id=".help">help</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".createConstants"><a href="#.createConstants">createConstants</a></dt>
-					<dd> Description TK</dd>
-				</li>
-
-
-
-
-				<li>
-					<dt id=".isMatrixLike"><a href="#.isMatrixLike">isMatrixLike</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".constants">constants</dt>
+					<dd>
+						<code class="value-type">Object</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".isWithinRange"><a href="#.isWithinRange">isWithinRange</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".createConstant">createConstant</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".getWidth"><a href="#.getWidth">getWidth</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".createConstants">createConstants</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+			</ul>
+			<h4>Static inspection</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".isMatrixLike">isMatrixLike</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".getHeight"><a href="#.getHeight">getHeight</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".isWithinRange">isWithinRange</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".haveEqualDimensions"><a href="#.haveEqualDimensions">haveEqualDimensions</a></dt>
-					<dd>Description TK</dd>
-				</li>
-
-
-
-
-				<li>
-					<dt id=".createSquare"><a href="#.createSquare">createSquare</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".getWidth">getWidth</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".createZero"><a href="#.createZero">createZero</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".getHeight">getHeight</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".createOne"><a href="#.createOne">createOne</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".haveEqualDimensions">haveEqualDimensions</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+			</ul>
+			<h4>Simple creation</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".createSquare">createSquare</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".createIdentity"><a href="#.createIdentity">createIdentity</a></dt>
-					<dd>Description TK</dd>
-				</li>
-
-
-
-
-				<li>
-					<dt id=".from"><a href="#.from">from</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".createZero">createZero</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".fromArray"><a href="#.fromArray">fromArray</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".createOne">createOne</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".fromXsv"><a href="#.fromXsv">fromXsv</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".createIdentity">createIdentity</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+			</ul>
+			<h4>Creation from data import</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".from">from</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".fromCsv"><a href="#.fromCsv">fromCsv</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".fromArray">fromArray</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".fromTsv"><a href="#.fromTsv">fromTsv</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".fromXsv">fromXsv</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".fromHtml"><a href="#.fromHtml">fromHtml</a></dt>
-					<dd>Description TK</dd>
-				</li>
-
-
-
-
-				<li>
-					<dt id=".add"><a href="#.add">add</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".fromCsv">fromCsv</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".multiplyScalar"><a href="#.multiplyScalar">multiplyScalar</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".fromTsv">fromTsv</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".multiply"><a href="#.multiply">multiply</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".fromHtml">fromHtml</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+			</ul>
+			<h4>Static maths</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".add">add</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".multiplyTensor"><a href="#.multiplyTensor">multiplyTensor</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".multiplyScalar">multiplyScalar</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".multiply">multiply</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".multiplyTensor">multiplyTensor</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 			</ul>
 			<h3 id="Prototype_properties">Prototype properties</h3>
+			<h4>Internal inspection</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".prototype.isValidRow"><a href="#.prototype.isValidRow">isValidRow</a></dt>
-					<dd> Description TK</dd>
+					<dt id=".prototype.isValidRow">isValidRow</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.isValidColumn"><a href="#.prototype.isValidColumn">isValidColumn</a></dt>
-					<dd> Description TK</dd>
+					<dt id=".prototype.isValidColumn">isValidColumn</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.isValidAddress"><a href="#.prototype.isValidAddress">isValidAddress</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.isValidAddress">isValidAddress</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.getWidth"><a href="#.prototype.getWidth">getWidth</a></dt>
-					<dd> Description TK</dd>
+					<dt id=".prototype.getWidth">getWidth</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.getHeight"><a href="#.prototype.getHeight">getHeight</a></dt>
-					<dd> Description TK</dd>
+					<dt id=".prototype.getHeight">getHeight</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 			</ul>
 			<h4>Data exports methods (non-destructive by nature)</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".prototype.read"><a href="#.prototype.read">read</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.read">read</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.clone"><a href="#.prototype.clone">clone</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.clone">clone</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.toArray"><a href="#.prototype.toArray">toArray</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.toArray">toArray</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.toXsv"><a href="#.prototype.toXsv">toXsv</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.toXsv">toXsv</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.toCsv"><a href="#.prototype.toCsv">toCsv</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.toCsv">toCsv</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.toTsv"><a href="#.prototype.toTsv">toTsv</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.toTsv">toTsv</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.toHtml"><a href="#.prototype.toHtml">toHtml</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.toHtml">toHtml</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 			</ul>
 			<h4>Data import methods (destructive)</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".prototype.write$"><a href="#.prototype.write$">write$</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.write$">write$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.copy$"><a href="#.prototype.copy$">copy$</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.copy$">copy$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.fromArray$"><a href="#.prototype.fromArray$">fromArray$</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.fromArray$">fromArray$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.fromCsv$"><a href="#.prototype.fromCsv$">fromCsv$</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.fromCsv$">fromCsv$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.fromTsv$"><a href="#.prototype.fromTsv$">fromTsv$</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.fromTsv$">fromTsv$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.fromHtml$"><a href="#.prototype.fromHtml$">fromHtml$</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.fromHtml$">fromHtml$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 			</ul>
 			<h4>Maths operations (non-destructive)</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".prototype.add"><a href="#.prototype.add">add</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.add">add</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.multiplyScalar"><a href="#.prototype.multiplyScalar">multiplyScalar</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.multiplyScalar">multiplyScalar</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.multiply"><a href="#.prototype.multiply">multiply</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.multiply">multiply</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.multiplyTensor"><a href="#.prototype.multiplyTensor">multiplyTensor</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.multiplyTensor">multiplyTensor</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 			</ul>
 			<h4>Maths operations (destructive)</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".prototype.add$"><a href="#.prototype.add$">add$</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.add$">add$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.multiplyScalar$"><a href="#.prototype.multiplyScalar$">multiplyScalar$</a></dt>
-					<dd>Description TK</dd>
+					<dt id=".prototype.multiplyScalar$">multiplyScalar$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
 				</li>
 			</ul>
 			<hr>
