@@ -66,7 +66,7 @@
 			<h3 id="Constructor">Constructor</h3>
 			<p>
 				Expects an object containing optional properties, 
-				such as an “operation” <code>Function</code> to be invoked by the <code><a href="#prototype.applyTo">applyTo</a> method</code>,
+				such as an “operation” <code>Function</code> to be invoked by the <code><a href="#this.applyTo">applyTo</a> method</code>,
 				a single-character “label” <code>String</code>
 				for use in labeling this gate within a circuit diagram,
 				or a “name” <code>String</code> for use in descriptions.
@@ -85,21 +85,21 @@ var fox = new <a href="Q.html">Q</a>.Gate({
 </code></pre>			
 			<ul class="properties">
 				<li>
-					<dt id="prototype.label">label</dt>
+					<dt id="this.label">label</dt>
 					<dd>
 						<code class="value-type">String</code>
 						A single character used as a label in visual representations of this <code>Gate</code> in circuit diagrams.
 					</dd>
 				</li>
 				<li>
-					<dt id="prototype.name">name</dt>
+					<dt id="this.name">name</dt>
 					<dd>
 						<code class="value-type">String</code>
 						The full name of this <code>Gate</code> to be used as a title or long label in a visual representation.
 					</dd>
 				</li>
 				<li>
-					<dt id="prototype.operation">operation</dt>
+					<dt id="this.operation">operation</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						The supplied <code>operation</code> function.
@@ -107,14 +107,14 @@ var fox = new <a href="Q.html">Q</a>.Gate({
 					</dd>
 				</li>
 				<li>
-					<dt id="prototype.applyTo">applyTo</dt>
+					<dt id="this.applyTo">applyTo</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Calls the supplied <code>operation</code> function and ensures the result is an array.
 					</dd>
 				</li>
 				<li>
-					<dt id="prototype.index">index</dt>
+					<dt id="this.index">index</dt>
 					<dd>
 						<code class="value-type">Number</code>
 						An auto-incrementing identification number assigned to the instance,
@@ -122,7 +122,7 @@ var fox = new <a href="Q.html">Q</a>.Gate({
 					</dd>
 				</li>
 			</ul>
-			<h3 id="Constants">Constants</h3>
+			<h3>Static constants</h3>
 			<p>
 				While <code><a href="Q.html">Q</a>.Gate</code> constants
 				are appended directly to the <code><a href="Q.html">Q</a>.Gate</code> object,
@@ -393,7 +393,7 @@ new Q.Gate({
 					<dt id=".constants">constants</dt>
 					<dd>
 						<code class="value-type">Object</code>
-						While <code>Q.Gate</code> <a href="#Constants">constants</a>
+						While <code>Q.Gate</code> <a href="#Static_constants">constants</a>
 						are appended directly to the <code>Q.Gate</code> object,
 						they are also appended to a <code>Q.Gate.constants</code> object
 						to make looking up constants in the JavaScript console trivial,
