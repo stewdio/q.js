@@ -21,37 +21,6 @@ const Q = function( circuitText ){
 Object.assign( Q, {
 
 	verbosity: 0.5,	
-	animals: [],
-	animals3: [
-
-		'ape',
-		'bee',
-		'cat',
-		'dog',
-		'elk',
-		'fox',
-		'gup',
-		'hen',
-		'ide',
-		'jay',
-		'koi',
-		//  L ?
-		//  M ?
-		'nit',
-		'owl',
-		'pig',
-		//  Q ?
-		'ram',
-		'sow',
-		'tui',
-		//  U ?
-		//  V ?
-		//  W ?
-		//  X ?
-		'yak'
-		//  Z ?
-	],
-	colors: [],
 	log: function( verbosityThreshold, ...remainingArguments ){
 
 		if( Q.verbosity >= verbosityThreshold ) console.log( ...remainingArguments )
@@ -203,7 +172,7 @@ Object.assign( Q, {
 		const f = Math.pow( 10, d )
 		return Math.round( n * f ) / f
 	},
-	toTitleCase: function ( text ){
+	toTitleCase: function( text ){
 
 		text = text.replace( /_/g, ' ' )
 		return text.toLowerCase().split( ' ' ).map( function( word ){
@@ -246,7 +215,39 @@ Q.createConstants(
 	
 	'EPSILON', Number.EPSILON * 6,
 
-	'RADIANS_TO_DEGREES', 180 / Math.PI
+	'RADIANS_TO_DEGREES', 180 / Math.PI,
+
+	'ANIMALS', [],
+	'ANIMALS3', [
+
+		'ape',
+		'bee',
+		'cat',
+		'dog',
+		'elk',
+		'fox',
+		'gup',
+		'hen',
+		'ide',
+		'jay',
+		'koi',
+		//  L ?
+		//  M ?
+		'nit',
+		'owl',
+		'pig',
+		//  Q ?
+		'ram',
+		'sow',
+		'tui',
+		//  U ?
+		//  V ?
+		//  W ?
+		//  X ?
+		'yak'
+		//  Z ?
+	],
+	'COLORS', []
 )
 
 

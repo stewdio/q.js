@@ -76,24 +76,105 @@ var circuit = Q`
 				See <a href="Circuit.html#Writing_quantum_circuits">“Writing quantum circuits”</a> for more details.
 			</p>
 			<hr>
-			<h3>Constants</h3>
-			<p>
-				While <code>Q</code> constants
-				are appended directly to the <code>Q</code> object,
-				they are also appended to the <code>Q.constants</code> object
-				to make looking up constants in the JavaScript console trivial,
-				and to make iterating across all constants convenient via
-				functions like 
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
-				and so on.
-				Strictly speaking, all constants are properties—but 
-				these particular properties are configured to be unwritable once appended via
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
-				and they are labeled in uppercase to signal to us that this is so.
-			</p>
+			<h3>Properties</h3>
+			<h4>Help and inspection</h4>
 			<ul class="properties">
+				<li>
+					<dt id=".help">help</dt>
+					<dd>
+						<code class="value-type">Function([ f: Function ]) ⇒ String</code>
+						Calls and returns the value of 
+						<code><a href="#.extractDocumentation">extractDocumentation</a></code>,
+						passing <code>f</code> as the argument.
+						If no argument is supplied,
+						the <code>Q</code> function is passed.
+					</dd>
+				</li>
+				<li>
+					<dt id=".extractDocumentation">extractDocumentation</dt>
+					<dd>
+						<code class="value-type">Function( f: Function ) ⇒ String</code>
+						Extracts the first 
+						<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals">Template literal</a>
+						found within the passed <code>Function</code>
+						and returns it as a <code>String</code>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".verbosity">verbosity</dt>
+					<dd>
+						<code class="value-type">Number</code>
+						Expected to be a number from <code>0</code> to <code>1</code>, inclusive.
+						Throttles the ouput of built-in console logging.
+					</dd>
+				</li>
+				<li>
+					<dt id=".log">log</dt>
+					<dd>
+						<code class="value-type">Function( verbosityThreshold: Number, … )</code>
+						Passes remaining arguments to <code>console.log</code>
+						if the current value of <code><a href="#.verbosity">verbosity</a></code> 
+						is greater than or equal to the <code>verbosityThreshold</code> argument.
+					</dd>
+				</li>				
+				<li>
+					<dt id=".warn">warn</dt>
+					<dd>
+						<code class="value-type">Function( … )</code>
+						Wraps <code>console.warn</code>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".error">error</dt>
+					<dd>
+						<code class="value-type">Function( … )</code>
+						Wraps <code>console.error</code>.
+					</dd>
+				</li>
+			</ul>
+			<h4>Constants and constant creation</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".constants">constants</dt>
+					<dd>
+						<code class="value-type">Object</code>
+						Constants are appended <em>directly</em> to the 
+						<code>Q</code> object.
+						For convenience they are also appended to this
+						<code>Q.constants</code> object
+						to make looking up constants in the JavaScript console trivial,
+						and to make iterating across all constants convenient via functions like 
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
+						and so on.
+						<!-- Configured to be unwritable once appended via
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
+						and they are labeled in uppercase to signal to us that this is so. -->
+						The intention that a property act as a constant is signaled 
+						by its labelling in all-uppercase.
+					</dd>
+				</li>
+				<li>
+					<dt id=".createConstant">createConstant</dt>
+					<dd>
+						<code class="value-type">Function( key: String, value: * )<!-- → undefined --></code>
+						Appends a property named by <code>key</code> 
+						with a value of <code>value</code>
+						to both the 
+						<code>Q</code> object 
+						and its <code><a href="#.constants">constants</a></code> property.
+					</dd>
+				</li>
+				<li>
+					<dt id=".createConstants">createConstants</dt>
+					<dd>
+						<code class="value-type">Function( … )</code>
+						Expects an even number of arguments.
+						Will use each pair in the sequence of arguments to call
+						<code><a href="#.createConstant">createConstant</a></code>.
+					</dd>
+				</li>
 				<li>
 					<dt id=".REVISION">REVISION</dt>
 					<dd>
@@ -106,7 +187,7 @@ var circuit = Q`
 					<dt id=".EPSILON">EPSILON</dt>
 					<dd>
 						<code class="value-type">Number</code>
-						Set equal to <code>Number.EPSILON * 6</code>.
+						Initialized equal to <code>Number.EPSILON * 6</code>.
 						In the future we may wish to incorporate something like 
 						<a href="https://github.com/MikeMcl/bignumber.js" target="_blank">bignumber.js</a> in to Q,
 						but for now this higher epsilon value is necessary 
@@ -123,147 +204,111 @@ a.<a href="ComplexNumber.html#.prototype.multiply">multiply</a>( a ).<a href="Co
 					<dt id=".RADIANS_TO_DEGREES">RADIANS_TO_DEGREES</dt>
 					<dd>
 						<code class="value-type">Number</code>
-						Set equal to <code>180 / Math.PI</code>.
+						Initialized equal to <code>180 / Math.PI</code>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".COLORS">COLORS</dt>
+					<dd>
+						<code class="value-type">Array</code>
+						Arriving soon.
+						Intended for future use in assigning human-readable, 
+						unique-ish identification labels
+						to various objects;
+						in combination with the <code><a href="#.ANIMALS">ANIMALS</a></code> property.
+						Some examples:
+						Blue Panda,
+						Orange Ocelot,
+						Purple Reindeer.
+					</dd>
+				</li>
+				<li>
+					<dt id=".ANIMALS">ANIMALS</dt>
+					<dd>
+						<code class="value-type">Array</code>
+						Arriving soon.
+						Intended for future use in assigning human-readable, 
+						unique-ish identification labels
+						to various objects;
+						in combination with the <code><a href="#.COLORS">COLORS</a></code> property.
+						Some examples:
+						Pink Camel,
+						Silver Badger,
+						Red Seahorse.
+					</dd>
+				</li>
+				<li>
+					<dt id=".ANIMALS3">ANIMALS3</dt>
+					<dd>
+						<code class="value-type">Array</code>
+						An alphabetical list of animal names,
+						each exactly three letters long,
+						one per letter of the alphabet.
+						(The current list falls short of running the full alphabet by L, M, Q, U, V, W, X and Z.)
+						Many of these names are currently used as variable names in these documentation code examples.
 					</dd>
 				</li>
 			</ul>
-			<h3>Properties</h3>
-			<h4>Inspection</h4>
-			<ul class="properties">
-				<li>
-					<dt id=".help">help</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".extractDocumentation">extractDocumentation</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".verbosity">verbosity</dt>
-					<dd>
-						<code class="value-type">Number</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".log">log</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>				
-				<li>
-					<dt id=".warn">warn</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".error">error</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-			</ul>
-			<h4>Constants creation and reference</h4>		
-			<ul class="properties">
-				<li>
-					<dt id=".constants">constants</dt>
-					<dd>
-						<code class="value-type">Object</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".createConstant">createConstant</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".createConstants">createConstants</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-			</ul>
+
 			<h4>Maths</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".hypotenuse">hypotenuse</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( x: Number, y: Number ) ⇒ Number</code>
+						Returns the 
+						<a href="https://en.wikipedia.org/wiki/Hypotenuse" target="_blank">hypotenuse</a>
+						length of a right-angled triangle whose other two (shorter) sides are lengths
+						<code>x</code> and <code>y</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".logHypotenuse">logHypotenuse</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( x: Number, y: Number ) ⇒ Number</code>
+						Returns half of the 
+						<a href="https://en.wikipedia.org/wiki/Logarithm" target="_blank">logarithm</a> of 
+						<code>x</code><sup>2</sup> + <code>y</code><sup>2</sup>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".hyperbolicSine">hyperbolicSine</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( n: Number ) ⇒ Number</code>
+						Returns the 
+						<a href="https://en.wikipedia.org/wiki/Hyperbolic_function" target="_blank">hyperbolic sine</a>
+						of <code>n</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".hyperbolicCosine">hyperbolicCosine</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( n: Number ) ⇒ Number</code>
+						Returns the 
+						<a href="https://en.wikipedia.org/wiki/Hyperbolic_function" target="_blank">hyperbolic cosine</a>
+						of <code>n</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".round">round</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( n: Number[, d: Number ]) ⇒ Number</code>
+						Returns a number, <code>n</code>, 
+						rounded to <code>d</code> decimal places.
+						If <code>d</code> is not provided
+						then <code>n</code> is rounded to the nearest whole number.
 					</dd>
 				</li>
 			</ul>
 			<h4>Miscellaneous</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".animals">animals</dt>
-					<dd>
-						<code class="value-type">Array</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".animals3">animals3</dt>
-					<dd>
-						<code class="value-type">Array</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".colors">colors</dt>
-					<dd>
-						<code class="value-type">Array</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
 					<dt id=".toTitleCase">toTitleCase</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Expects one <code>String</code> argument.
-						Replaces underscores with spaces, breaks apart text in to words, 
+						<code class="value-type">Function( text: String ) ⇒ String</code>
+						For the supplied <code>String</code>
+						replaces underscores with spaces, 
+						breaks apart text in to words, 
 						capitalizes the first letter of each word,
 						then returns a new <code>String</code> with these changes.
 					</dd>
@@ -271,8 +316,13 @@ a.<a href="ComplexNumber.html#.prototype.multiply">multiply</a>( a ).<a href="Co
 				<li>
 					<dt id=".centerText">centerText</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( text: String, length: Number[, filler: String ]) ⇒ String</code>
+						Returns a <code>String</code> 
+						at least <code>length</code> characters long
+						containing the original <code>text</code>
+						and padded on either side with <code>filler</code>
+						such that the <code>text</code> is more or less centered
+						within the returned <code>String</code>.
 					</dd>
 				</li>
 			</ul>

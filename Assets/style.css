@@ -299,8 +299,8 @@ h3 {
 }
 h4 {
 
-	padding-top:    1.8em;
-	padding-bottom: 0.2em;
+	padding-top:    2em;
+	/*padding-bottom: 0.2em;*/
 	font-size: 1.2em;
 }
 hr {
@@ -489,7 +489,7 @@ main {
 	left: 260px;
 	min-height: 100vh;
 	background-color: #FFF;
-	padding: 3rem 0 12rem 0;
+	padding: 3rem 1em 12rem 0;
 	overflow: auto;
 	max-width: 620px;
 
@@ -596,6 +596,7 @@ dt {
 	margin-right:  0.4em;
 	font-family: var( --font-family-mono );
 	font-weight: 700;
+	color: #000;
 }
 dd {
 
