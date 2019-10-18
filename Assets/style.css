@@ -113,6 +113,11 @@
 
 :root {
 
+	--font-family-serif:   'Roboto Slab', 'Georgia', serif;
+	--font-family-sans:    'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+	--font-family-mono:    'Roboto Mono', 'Source Code Pro', 'Menlo', 'Courier New', monospace;
+	--font-family-symbols: 'Georgia', serif;
+
 	--text-color: #333;
 	--text-code-comment-color: #AAA;
 	--text-code-output-color: #888;
@@ -163,7 +168,7 @@ body {
 	background-attachment: fixed;
 	padding: 0;
 	color: var( --text-color );
-	font-family: 'Roboto Slab', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-family: var( --font-family-serif );
 	font-weight: 400;
 }
 
@@ -279,7 +284,7 @@ h1, h2, h3, h4 {
 	margin:  0;
 	padding: 0;
 	color: #000;
-	font-family: 'Roboto';
+	font-family: var( --font-family-sans );
 	font-weight: normal;
 }
 h3, h4 {
@@ -307,7 +312,7 @@ hr {
 	background-color: #333;
 	padding: 0;
 }
-hr + p {
+hr + p, hr + footer {
 
 	padding-top: 1rem;
 }
@@ -358,7 +363,7 @@ pre {
 }
 pre, code, samp {
 
-	font-family: 'Roboto Mono', Menlo, "Courier New", monospace;
+	font-family: var( --font-family-mono );
 	line-height: 1.3em;
 }
 code, samp {
@@ -447,7 +452,7 @@ nav li a {
 
 	display: block;
 	padding: 0 0 0 3rem;
-	font-family: 'Roboto Mono', Menlo, "Courier New", monospace;
+	font-family: var( --font-family-mono );
 }
 nav a.selected {
 
@@ -494,7 +499,7 @@ main {
 
 }
 /*main > p, main > h2, main > h3, main > h4, main > ul {*/
-main > p, main > ul {
+main > p, main > ul, main > footer {
 
 	margin: 0 2rem;
 }
@@ -589,12 +594,21 @@ dt {
 	position: relative;
 	display: inline;
 	margin-right:  0.4em;
-	font-family: 'Roboto Mono', Menlo, "Courier New", monospace;
+	font-family: var( --font-family-mono );
 	font-weight: 700;
 }
 dd {
 
 	display: inline;
+}
+
+footer {
+
+	font-family: var( --font-family-sans );
+}
+.keywords {
+
+	color: var( --text-code-comment-color );
 }
 
 
@@ -626,7 +640,7 @@ dd .maths {
 
 	font-size: 1.1em;
 	padding: 0 0.1em;
-	font-family: Georgia, "Times New Roman", Times, serif;
+	font-family: var( --font-family-symbols );
 	font-style: italic;
 	font-weight: 900;
 	letter-spacing: 0.05em;
@@ -665,7 +679,7 @@ dd .maths {
 	position: relative;
 	margin:  10px;
 	padding: 10px;
-	font-family: 'Roboto Mono', Menlo, "Courier New", monospace;
+	font-family: var( --font-family-mono );
 	font-weight: 300;
 	line-height: 1em;
 	text-align: right;
@@ -849,7 +863,7 @@ table#console-open-commands {
 
 	margin: 1em 0 1em 0;
 	overflow: hidden;
-	font-family: 'Roboto', sans-serif;
+	font-family: var( --font-family-sans );
 }
 table#console-open-commands td {
 
@@ -952,7 +966,7 @@ table#console-open-commands .na {
 	top:   50%;
 	width: 60%;
 	padding-bottom: 60%;
-	font-family: 'Roboto', sans-serif;
+	font-family: var( --font-family-sans );
 }
 
 
@@ -1214,7 +1228,7 @@ table#console-open-commands .na {
 #bloch-sphere-qubits {
 
 	margin-top: 15px;
-	font-family: 'Roboto', sans-serif;
+	font-family: var( --font-family-sans );
 }
 .qubit-container {
 
@@ -1266,7 +1280,7 @@ table#console-open-commands .na {
 #bloch-sphere-gates {
 
 	margin-top: 15px;
-	font-family: 'Roboto', sans-serif;
+	font-family: var( --font-family-sans );
 }
 .gate-container {
 
@@ -1312,7 +1326,7 @@ table#console-open-commands .na {
 }
 .interactive-container {
 
-	font-family: 'Roboto', sans-serif;
+	font-family: var( --font-family-sans );
 }
 
 

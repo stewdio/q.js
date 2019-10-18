@@ -18,15 +18,6 @@ website at
 [https://stewdio.github.io/q.js](https://stewdio.github.io/q.js)
 and paste this in to your JavaScript console:
 ```javascript
-Q.Qubit.HORIZONTAL
-    .applyGate( Q.Gate.HADAMARD )
-    .applyGate( Q.Gate.MEASURE )
-    .ket.toText()
-```  
-
-Or if brevity is more your thing, try this version. (Note those are backticks, 
-not quotes.)
-```javascript
 Q`H-M`.run$().results
 ```  
 
