@@ -21,7 +21,7 @@
 				Quantum Development Kit, Cirq, Strawberry Fields, t|ket>,
 				QCL, Quantum pseudocode, Q#, Q|SI>, Q language, qGCL, QFC, QML, LIQUi|>, Quipper,
 			Stanford CS 269 Q: Quantum Computer Programming">
-		<meta name="viewport"             content="width=device-width;">
+		<meta name="viewport"             content="width=device-width">
 
 		<meta name="twitter:card"         content="summary">
 		<meta name="twitter:site"         content="@stew_rtsmith">
@@ -236,9 +236,6 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 					</dd>
 				</li>
 			</ul>
-
-
-
 			<h3>Static properties</h3>
 			<h4>Help and inspection</h4>
 			<ul class="properties">
@@ -374,54 +371,84 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 					</dd>
 				</li>
 			</ul>
-
-
-
-
-
-
-
-
-				
-			<h4>Maths</h4>
+			<h4>Inspection</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".isNumberLike">isNumberLike</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( n: ? ) ⇒ Boolean</code>
+						Returns true if 
+						<code>n</code>’s <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof" target="_blank">typeof</a></code> is equal to the <code>String</code> <code>'number'</code> 
+						or if <code>n <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof" target="_blank">instanceof</a> Number</code> is <code>true</code>,
+						otherwise returns <code>false</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".isNaN">isNaN</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( c: <a href="Q.html">Q</a>.ComplexNumber ) ⇒ Boolean</code>
+						Returns <code>true</code> if either of this instance’s 
+						<code><a href="#this.real">real</a></code>
+						or
+						<code><a href="#this.real">imaginary</a></code>
+						components are <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN" target="_blank">NaN</a></code>,
+						otherwise returns <code>false</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".isZero">isZero</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( c: <a href="Q.html">Q</a>.ComplexNumber ) ⇒ Boolean</code>
+						Returns <code>true</code> if both of this instance’s 
+						<code><a href="#this.real">real</a></code>
+						and
+						<code><a href="#this.real">imaginary</a></code>
+						absolute values are equal to zero,
+						otherwise returns <code>false</code>.
+						See <a href="https://en.wikipedia.org/wiki/Signed_zero" target="_blank">“Signed zero”</a> for an explanation of why the <em>absolute</em> value of zero must be taken.
 					</dd>
 				</li>
 				<li>
 					<dt id=".isFinite">isFinite</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( c: <a href="Q.html">Q</a>.ComplexNumber ) ⇒ Boolean</code>
+						Returns <code>true</code> if both of this instance’s 
+						<code><a href="#this.real">real</a></code>
+						and
+						<code><a href="#this.real">imaginary</a></code>
+						values are <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isFinite" target="_blank">finite</a>,
+						otherwise returns <code>false</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".isInfinite">isInfinite</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( c: <a href="Q.html">Q</a>.ComplexNumber ) ⇒ Boolean</code>
+						Returns <code>true</code> if both of this instance’s 
+						<code><a href="#this.real">real</a></code>
+						and
+						<code><a href="#this.real">imaginary</a></code>
+						values are not <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isFinite" target="_blank">finite</a>
+						and are also not <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isNaN" target="_blank">NaN</a></code>,
+						otherwise returns <code>false</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".areEqual">areEqual</dt>
+					<dd>
+						<code class="value-type">Function( a: Number or <a href="Q.html">Q</a>.ComplexNumber, b: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ Boolean</code>
+						Returns <code>true</code> if the arguments
+						<code>a</code> and <code>b</code>
+						are within 
+						<code><a href="Q.html">Q</a>.<a href="Q.html#.EPSILON">EPSILON</a></code> of each other,
+						otherwise returns <code>false</code>.
+					</dd>
+				</li>
+			</ul>
+			<h4>Maths</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".operate">operate</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Description TK.
@@ -436,13 +463,6 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 				</li>
 				<li>
 					<dt id=".conjugate">conjugate</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".operate">operate</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Description TK.
@@ -513,22 +533,32 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 				</li>
 			</ul>
 			<h3 id="Prototype_properties">Prototype properties</h3>
-			<h4>Non-destructive methods</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".prototype.clone">clone</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Returns a new instance with the values for
+						<code><a href="#this.real">real</a></code>
+						and
+						<code><a href="#this.imaginary">imaginary</a></code>
+						copied from this instance.
 					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.reduce">reduce</dt>
+					<dt id=".prototype.copy$">copy$</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK. May return a <code>Number</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>.
+						<code class="value-type">Function( c: <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Copies the values for
+						<code><a href="#this.real">real</a></code>
+						and
+						<code><a href="#this.imaginary">imaginary</a></code>
+						from the supplied <code><a href="Q.html">Q</a>.ComplexNumber</code> argument.
 					</dd>
 				</li>
+			</ul>
+			<h4>Inspections (non-destructive)</h4>
+			<ul class="properties">
 				<li>
 					<dt id=".prototype.isNaN">isNaN</dt>
 					<dd>
@@ -580,6 +610,37 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>.
 					</dd>
 				</li>
+				<li>
+					<dt id=".prototype.reduce">reduce</dt>
+					<dd>
+						<code class="value-type">Function ⇒ <a href="Q.html">Q</a>.ComplexNumber or Number</code>
+						If no <code><a href="#this.imaginary">imaginary</a></code> component exists,
+						returns a <code>Number</code> representing the <code><a href="Q.html">Q</a>.ComplexNumber <a href="#this.real">real</a></code> component,
+						otherwise returns the instance itself.
+						Note that this may prevent <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".prototype.toText">toText</dt>
+					<dd>
+						<code class="value-type">Function([ roundToDecimal: Number ]) ⇒ String</code>
+						Returns the value of this instance expressed as text 
+						in a form similar to
+						<span class="symbol">a</span>+<span class="symbol">bi</span>.
+						If <code>roundToDecimal</code> is supplied, will round both the
+						<code><a href="#this.real">real</a></code>
+						and 
+						<code><a href="#this.imaginary">imaginary</a></code>
+						components 
+						by passing themselves and <code>roundToDecimal</code>
+						to <code><a href="Q.html">Q</a>.<a href="Q.html#.round">round</a></code>
+						as arguments.
+						Will return a <code>String</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>.
+					</dd>
+				</li>
+			</ul>
+			<h4>Maths (non-destructive)</h4>
+			<ul class="properties">
 				<li>
 					<dt id=".prototype.absolute">absolute</dt>
 					<dd>
@@ -643,23 +704,9 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						Description TK.
 					</dd>
 				</li>
-				<li>
-					<dt id=".prototype.toText">toText</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
 			</ul>
-			<h4>Destructive methods</h4>
+			<h4>Maths (destructive)</h4>
 			<ul class="properties">
-				<li>
-					<dt id=".prototype.copy$">copy$</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
 				<li>
 					<dt id=".prototype.conjugate$">conjugate$</dt>
 					<dd>

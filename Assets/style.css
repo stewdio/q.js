@@ -104,11 +104,11 @@
 
 
 
-    /******************/
-   /*                */
-  /*   Foundation   */
- /*                */
-/******************/
+    /*****************/
+   /*               */
+  /*   Variables   */
+ /*               */
+/*****************/
 
 
 :root {
@@ -134,6 +134,11 @@
 
 
 
+
+
+
+
+
 @media screen and ( max-device-width: 480px ){
 
 	body {
@@ -141,10 +146,6 @@
 		-webkit-text-size-adjust: 100%;
 	}
 }
-
-
-
-
 * {
 
 	box-sizing: border-box;
@@ -261,24 +262,23 @@ dt .section-anchor {
 .section-anchor a {
 		
 	position: relative;
-	color: #8CB3EB;
-
 	color: var( --hyperlink-internal-color );
-	/*color: #F43;*/
 }
 h3 .section-anchor a {
 
 	top: -0.62em;
 }
-h4 .section-anchor a, dt .section-anchor a {
+h4 .section-anchor a {
 
+	top: -0.3em;
+}
+dt .section-anchor a {
+	
 	top: -0.1em;
 }
 .section-anchor a:hover {
 
 	background-color: inherit;
-	color: #8CB3EB;
-	color: #F43;
 	color: var( --hyperlink-internal-color );
 }
 
