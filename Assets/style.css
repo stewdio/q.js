@@ -131,6 +131,20 @@
 
 	--svg-fill-color: var( --text-color );
 }
+
+
+
+@media screen and ( max-device-width: 480px ){
+
+	body {
+
+		-webkit-text-size-adjust: 100%;
+	}
+}
+
+
+
+
 * {
 
 	box-sizing: border-box;
