@@ -230,37 +230,83 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 					<dt id="this.index">index</dt>
 					<dd>
 						<code class="value-type">Number</code>
-						An auto-incrementing identification number assigned to the instance,
+						An identification number assigned to the instance,
 						used for minding the total number of instances created.
 					</dd>
 				</li>
 			</ul>
-			<h3>Static constants</h3>
-			<p>
-				While <code><a href="Q.html">Q</a>.ComplexNumber</code> constants
-				are appended directly to the 
-				<code><a href="Q.html">Q</a>.ComplexNumber</code> object,
-				they are also appended to a 
-				<code><a href="Q.html">Q</a>.ComplexNumber.<a href="#.constants">constants</a></code> object
-				to make looking up constants in the JavaScript console trivial,
-				and to make iterating across all constants convenient via
-				functions like 
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
-				and so on.
-				Strictly speaking, all constants are merely properties—but 
-				these particular properties are configured to be unwritable once appended via
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
-				and are labeled in uppercase to signal to us that this is so.
-			</p>
+
+
+
+			<h3>Static properties</h3>
+			<h4>Help and inspection</h4>
 			<ul class="properties">
+				<li>
+					<dt id=".help">help</dt>
+					<dd>
+						<code class="value-type">Function([ f: Function ]) ⇒ String</code>
+						Calls and returns the value of 
+						<code><a href="Q.html">Q</a>.<a href="#.help">help</a></code>,
+						passing <code><a href="Q.html">Q</a>.ComplexNumber</code> as the argument.
+					</dd>
+				</li>
+				<li>
+					<dt id=".index">index</dt>
+					<dd>
+						The number of instances created so far.
+					</dd>
+				</li>
+			</ul>
+			<h4>Constants and constant creation</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".constants">constants</dt>
+					<dd>
+						<code class="value-type">Object</code>
+						Constants are appended <em>directly</em> to the 
+						<code><a href="Q.html">Q</a>.ComplexNumber</code> object.
+						For convenience they are also appended to this
+						<code><a href="Q.html">Q</a>.ComplexNumber</code>.constants</code> object
+						to make looking up constants in the JavaScript console trivial,
+						and to make iterating across all constants convenient via functions like 
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
+						and so on.
+						<!-- Configured to be unwritable once appended via
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
+						and they are labeled in uppercase to signal to us that this is so. -->
+						The intention that a property act as a constant is signaled 
+						by its labelling in all-uppercase.
+					</dd>
+				</li>
+				<li>
+					<dt id=".createConstant">createConstant</dt>
+					<dd>
+						<code class="value-type">Function( key: String, value: * )<!-- → undefined --></code>
+						Appends a property named by <code>key</code> 
+						with a value of <code>value</code>
+						to both the 
+						<code>Q</code> object 
+						and its <code><a href="#.constants">constants</a></code> property.
+					</dd>
+				</li>
+				<li>
+					<dt id=".createConstants">createConstants</dt>
+					<dd>
+						<code class="value-type">Function( … )</code>
+						Expects an even number of arguments.
+						Will use each pair in the sequence of arguments to call
+						<code><a href="#.createConstant">createConstant</a></code>.
+					</dd>
+				</li>
 				<li>
 					<dt id=".ZERO">ZERO</dt>
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
 						Intialized as
 						<code>new <a href="Q.html">Q</a>.ComplexNumber( 0, 0 )</code>.
+						Described as 0.
 					</dd>
 				</li>
 				<li>
@@ -269,6 +315,7 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
 						Intialized as
 						<code>new <a href="Q.html">Q</a>.ComplexNumber( 1, 0 )</code>.
+						Described as 1.
 					</dd>
 				</li>
 				<li>
@@ -277,6 +324,7 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
 						Intialized as
 						<code>new <a href="Q.html">Q</a>.ComplexNumber( Math.E, 0 )</code>.
+						Described as <span class="symbol">e</span> ≈ 2.7183.
 					</dd>
 				</li>
 				<li>
@@ -285,6 +333,7 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
 						Intialized as
 						<code>new <a href="Q.html">Q</a>.ComplexNumber( Math.PI, 0 )</code>.
+						Described as <a href="https://youtu.be/L1eegVTwDS0" target="_blank"><strong>exactly</strong> equal to 3</a>.
 					</dd>
 				</li>
 				<li>
@@ -293,6 +342,7 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
 						Intialized as
 						<code>new <a href="Q.html">Q</a>.ComplexNumber( 0, 1 )</code>.
+						Described as <span class="symbol">i</span>.
 					</dd>
 				</li>
 				<li>
@@ -301,6 +351,7 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
 						Intialized as
 						<code>new <a href="Q.html">Q</a>.ComplexNumber( <a href="Q.html">Q</a>.<a href="Q.html#.EPSILON">EPSILON</a>, <a href="Q.html">Q</a>.<a href="Q.html#.EPSILON">EPSILON</a> )</code>.
+						Described as ≈ 1.3323 × 10<sup>-15</sup> + 1.3323 × 10<sup>-15</sup><span class="symbol">i</span>.
 					</dd>
 				</li>
 				<li>
@@ -309,6 +360,7 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
 						Intialized as
 						<code>new <a href="Q.html">Q</a>.ComplexNumber( Infinity, Infinity )</code>.
+						Described as <span class="symbol">∞</span> + <span class="symbol">∞i</span>.
 					</dd>
 				</li>
 				<li>
@@ -317,47 +369,21 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						<code class="value-type"><a href="Q.html">Q</a>.ComplexNumber</code>
 						Intialized as
 						<code>new <a href="Q.html">Q</a>.ComplexNumber( NaN, NaN )</code>.
+						<code>Array( 16 ).join( NaN ) +' BATMAN!'</code>
 					</dd>
 				</li>
 			</ul>
-			<!-- <hr> -->
-			<h3 id="Static_properties">Static properties</h3>
+
+
+
+
+
+
+
+
+				
+			<h4>Maths</h4>
 			<ul class="properties">
-				<li>
-					<dt id=".index">index</dt>
-					<dd>
-						<code class="value-type">Number</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".help">help</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".constants">constants</dt>
-					<dd>
-						<code class="value-type">Object</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".createConstant">createConstant</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".createConstants">createConstants</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
 				<li>
 					<dt id=".isNumberLike">isNumberLike</dt>
 					<dd>
