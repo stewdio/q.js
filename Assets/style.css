@@ -505,14 +505,11 @@ main {
 	background-color: #FFF;
 	padding: 3rem 1em 12rem 0;
 	overflow: auto;
+	min-width: 480px;
 	max-width: 620px;
-
-
 	font-size:   1.0rem;
 	line-height: 1.8rem;
-
 }
-/*main > p, main > h2, main > h3, main > h4, main > ul {*/
 main > p, main > ul, main > footer {
 
 	margin: 0 2rem;
@@ -720,6 +717,10 @@ dd .maths {
 
 	right: 0;
 	border-left: none;
+}
+.matrix.qubit tr:first-child td {
+
+	color: #BBB;
 }
 
 
@@ -1245,7 +1246,7 @@ table#console-open-commands .na {
 	margin-top: 15px;
 	font-family: var( --font-family-sans );
 }
-.qubit-container {
+.bloch-sphere-qubit-container {
 
 	display: inline-block;
 	margin:  0px 10px 10px 0;
@@ -1259,22 +1260,22 @@ table#console-open-commands .na {
 	background-color: var( --background-callout-color );
 	transition: background-color 0.5s;
 }
-.qubit-container:hover {
+.bloch-sphere-qubit-container:hover {
 	
 	background-color: #DDD;
 	transition: background-color 0s;
 }
-.qubit-container.selected {
+.bloch-sphere-qubit-container.selected {
 	
 	background-color: #BBB;
 	/*color: #FFF;*/
 }
-.qubit-container p {
+.bloch-sphere-qubit-container p {
 
 	font-size:   12px;
 	line-height: 18px;
 }
-.qubit {
+.bloch-sphere-qubit {
 
 	display: inline-block;
 	margin:  4px 0 4px 0;
@@ -1297,7 +1298,7 @@ table#console-open-commands .na {
 	margin-top: 15px;
 	font-family: var( --font-family-sans );
 }
-.gate-container {
+.bloch-sphere-gate-container {
 
 	display: inline-block;
 	margin:  0 5px 5px 0;
@@ -1311,22 +1312,22 @@ table#console-open-commands .na {
 	background-color: var( --background-callout-color );
 	transition: background-color 0.5s;
 }
-.gate-container:hover {
+.bloch-sphere-gate-container:hover {
 	
 	background-color: #DDD;
 	transition: background-color 0s;
 }
-.gate-container.selected {
+.bloch-sphere-gate-container.selected {
 	
 	background-color: #BBB;
 	/*color: #FFF;*/
 }
-.gate-container p {
+.bloch-sphere-gate-container p {
 
 	font-size:   12px;
 	line-height: 18px;
 }
-.gate {
+.bloch-sphere-gate {
 
 	display: inline-block;
 	margin:  4px 0 4px 0;

@@ -236,7 +236,6 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 				</li>
 			</ul>
 			<h3>Static properties</h3>
-			<h4>Help and inspection</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".help">help</dt>
@@ -616,7 +615,8 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						Calls and returns the result of the
 						<code><a href="#.isNaN">isNaN</a></code>
 						static function, passing the calling instance as the argument.
-						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>.
+						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
@@ -626,7 +626,8 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						Calls and returns the result of the
 						<code><a href="#.isZero">isZero</a></code>
 						static function, passing the calling instance as the argument.
-						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>.
+						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
@@ -636,7 +637,8 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						Calls and returns the result of the
 						<code><a href="#.isFinite">isFinite</a></code>
 						static function, passing the calling instance as the argument.
-						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>.
+						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
@@ -646,7 +648,8 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						Calls and returns the result of the
 						<code><a href="#.isInfinite">isInfinite</a></code>
 						static function, passing the calling instance as the argument.
-						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>.
+						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
@@ -657,7 +660,8 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						<code><a href="#.areEqual">areEqual</a></code>
 						static function, passing the calling instance as the first argument
 						and <code>n</code> as the second argument.
-						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>.
+						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
@@ -667,7 +671,7 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						If no <code><a href="#this.imaginary">imaginary</a></code> component exists,
 						returns a <code>Number</code> representing the <code><a href="Q.html">Q</a>.ComplexNumber <a href="#this.real">real</a></code> component,
 						otherwise returns the instance itself.
-						Note that this may prevent <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>.
+						Note that this may prevent <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>for this instance.
 					</dd>
 				</li>
 				<li>
@@ -685,7 +689,8 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						by passing themselves and <code>roundToDecimal</code>
 						to <code><a href="Q.html">Q</a>.<a href="Q.html#.round">round</a></code>
 						as arguments.
-						Will return a <code>String</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>.
+						Will return a <code>String</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>
+						for this instance.
 					</dd>
 				</li>
 			</ul>
@@ -694,64 +699,94 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 				<li>
 					<dt id=".prototype.absolute">absolute</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function ⇒ Number</code>
+						Passes this instance as an argument to the
+						<a href="#.absolute"><code>absolute</code>
+						static method</a> and returns the result.
+						Will return a <code>Number</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.conjugate">conjugate</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Passes this instance as an argument to the
+						<a href="#.conjugate"><code>conjugate</code>
+						static method</a> and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.power">power</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( n: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Passes this instance as the first argument 
+						and <code>n</code> as the second argument
+						to the
+						<a href="#.power"><code>power</code>
+						static method</a> and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.squareRoot">squareRoot</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Passes this instance as an argument to the
+						<a href="#.squareRoot"><code>squareRoot</code>
+						static method</a> and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.log">log</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Passes this instance as an argument to the
+						<a href="#.log"><code>log</code>
+						static method</a> and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.multiply">multiply</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( n: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Passes this instance as the first argument 
+						and <code>n</code> as the second argument
+						to the
+						<a href="#.multiply"><code>multiply</code>
+						static method</a> and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.divide">divide</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( n: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Passes this instance as the first argument 
+						and <code>n</code> as the second argument
+						to the
+						<a href="#.divide"><code>divide</code>
+						static method</a> and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.add">add</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( n: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Passes this instance as the first argument 
+						and <code>n</code> as the second argument
+						to the
+						<a href="#.add"><code>add</code>
+						static method</a> and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.subtract">subtract</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( n: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Passes this instance as the first argument 
+						and <code>n</code> as the second argument
+						to the
+						<a href="#.subtract"><code>subtract</code>
+						static method</a> and returns the result.
 					</dd>
 				</li>
 			</ul>
@@ -760,64 +795,87 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 				<li>
 					<dt id=".prototype.absolute$">absolute$</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function ⇒ Number</code>
+						Calls the <a href="#.prototype.absolute"><code>absolute</code>
+						instance method</a> 
+						and <code><a href="#.copy$">copies</a></code> the result to this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.conjugate$">conjugate$</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Calls the <a href="#.prototype.conjugate"><code>conjugate</code>
+						instance method</a> 
+						and <code><a href="#.copy$">copies</a></code> the result to this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.power$">power$</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( n: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Calls the <a href="#.prototype.power"><code>power</code>
+						instance method</a> 
+						with <code>n</code> as an argument
+						and <code><a href="#.copy$">copies</a></code> the result to this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.squareRoot$">squareRoot$</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Calls the <a href="#.prototype.squareRoot"><code>squareRoot</code>
+						instance method</a> 
+						and <code><a href="#.copy$">copies</a></code> the result to this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.log$">log$</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Calls the <a href="#.prototype.log"><code>log</code>
+						instance method</a> 
+						and <code><a href="#.copy$">copies</a></code> the result to this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.multiply$">multiply$</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( n: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Calls the <a href="#.prototype.multiply"><code>multiply</code>
+						instance method</a> 
+						with <code>n</code> as an argument
+						and <code><a href="#.copy$">copies</a></code> the result to this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.divide$">divide$</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( n: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Calls the <a href="#.prototype.divide"><code>divide</code>
+						instance method</a> 
+						with <code>n</code> as an argument
+						and <code><a href="#.copy$">copies</a></code> the result to this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.add$">add$</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( n: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Calls the <a href="#.prototype.add"><code>add</code>
+						instance method</a> 
+						with <code>n</code> as an argument
+						and <code><a href="#.copy$">copies</a></code> the result to this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.subtract$">subtract$</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( n: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Calls the <a href="#.prototype.subtract"><code>subtract</code>
+						instance method</a> 
+						with <code>n</code> as an argument
+						and <code><a href="#.copy$">copies</a></code> the result to this instance.
 					</dd>
 				</li>
 			</ul>

@@ -307,8 +307,9 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 						<code class="value-type"><a href="Q.html">Q</a>.Qubit</code>
 						Initialized as
 						<code>new <a href="Q.html">Q</a>.Qubit( 1, 0, 'H', 'Horizontal' )</code>.
+						Commonly thought of as “zero” or “off.”
 						Described by the following matrix:<br>
-						<div class="matrix">
+						<div class="matrix qubit">
 							<div class="matrix-bracket-left"></div>
 							<div class="matrix-bracket-right"></div>
 							<table>
@@ -324,8 +325,9 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 						<code class="value-type"><a href="Q.html">Q</a>.Qubit</code>
 						Initialized as
 						<code>new <a href="Q.html">Q</a>.Qubit( 0, 1, 'V', 'Vertical' )</code>.
+						Commonly thought of as “one” or “on.”
 						Described by the following matrix:<br>
-						<div class="matrix">
+						<div class="matrix qubit">
 							<div class="matrix-bracket-left"></div>
 							<div class="matrix-bracket-right"></div>
 							<table>
@@ -343,7 +345,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 						<code>new <a href="Q.html">Q</a>.Qubit( Math.SQRT1_2, Math.SQRT1_2, 'D', 'Diagonal' )</code>.
 						Described by the following matrix:<br>
 						<div class="maths">
-							<div class="matrix">
+							<div class="matrix qubit">
 								<div class="matrix-bracket-left"></div>
 								<div class="matrix-bracket-right"></div>
 								<table>
@@ -367,7 +369,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 						<code>new <a href="Q.html">Q</a>.Qubit( Math.SQRT1_2, -Math.SQRT1_2, 'A', 'Anti-diagonal' )</code>.
 						Described by the following matrix:<br>
 						<div class="maths">
-							<div class="matrix">
+							<div class="matrix qubit">
 								<div class="matrix-bracket-left"></div>
 								<div class="matrix-bracket-right"></div>
 								<table>
@@ -391,7 +393,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 						<code>new <a href="Q.html">Q</a>.Qubit( Math.SQRT1_2, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, -Math.SQRT1_2 ), 'R', 'Right-hand Circular Polarized' )</code>.
 						Described by the following matrix:<br>
 						<div class="maths">
-							<div class="matrix">
+							<div class="matrix qubit">
 								<div class="matrix-bracket-left"></div>
 								<div class="matrix-bracket-right"></div>
 								<table>
@@ -415,7 +417,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 						<code>new <a href="Q.html">Q</a>.Qubit( Math.SQRT1_2, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, Math.SQRT1_2 ), 'L', 'Left-hand Circular Polarized' )</code>.
 						Described by the following matrix:<br>
 						<div class="maths">
-							<div class="matrix">
+							<div class="matrix qubit">
 								<div class="matrix-bracket-left"></div>
 								<div class="matrix-bracket-right"></div>
 								<table>
@@ -1103,7 +1105,7 @@ Object.keys( Q.Qubit.constants ).forEach( function( key ){
 	qubitElement = document.createElement( 'div' ),
 	qubitNameElement = document.createElement( 'p' )
 	
-	qubitContainerElement.classList.add( 'qubit-container' )
+	qubitContainerElement.classList.add( 'bloch-sphere-qubit-container' )
 	qubitContainerElement.setAttribute( 'data-qubit', qubit.name )
 	qubitContainerElement.addEventListener( 'click', function(){
 
@@ -1111,7 +1113,7 @@ Object.keys( Q.Qubit.constants ).forEach( function( key ){
 		changeBlochVector()
 	})
 	
-	qubitElement.classList.add( 'qubit' )
+	qubitElement.classList.add( 'bloch-sphere-qubit' )
 	qubitElement.setAttribute( 'title', qubit.name )
 	qubitElement.innerText = qubit.label
 	qubitContainerElement.appendChild( qubitElement )
@@ -1149,7 +1151,7 @@ const blochSphereGates = document.getElementById( 'bloch-sphere-gates' )
 	gateElement = document.createElement( 'div' ),
 	gateNameElement = document.createElement( 'p' )
 
-	gateContainerElement.classList.add( 'gate-container' )
+	gateContainerElement.classList.add( 'bloch-sphere-gate-container' )
 	gateContainerElement.setAttribute( 'data-gate',  gate.name )
 	gateContainerElement.addEventListener( 'click', function(){
 
@@ -1157,7 +1159,7 @@ const blochSphereGates = document.getElementById( 'bloch-sphere-gates' )
 		changeBlochVector()
 	})
 
-	gateElement.classList.add( 'gate' )
+	gateElement.classList.add( 'bloch-sphere-gate' )
 
 	gateElement.setAttribute( 'title', gate.name )
 	gateElement.innerText = gate.label
