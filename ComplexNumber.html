@@ -376,7 +376,7 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 				<li>
 					<dt id=".isNumberLike">isNumberLike</dt>
 					<dd>
-						<code class="value-type">Function( n: ? ) ⇒ Boolean</code>
+						<code class="value-type">Function( n: * ) ⇒ Boolean</code>
 						Returns true if 
 						<code>n</code>’s <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof" target="_blank">typeof</a></code> is equal to the <code>String</code> <code>'number'</code> 
 						or if <code>n <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof" target="_blank">instanceof</a> Number</code> is <code>true</code>,
@@ -448,87 +448,138 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 			<h4>Maths</h4>
 			<ul class="properties">
 				<li>
-					<dt id=".operate">operate</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
 					<dt id=".absolute">absolute</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( c: <a href="Q.html">Q</a>.ComplexNumber ) ⇒ Number</code>
+						Calls and returns the value of <code><a href="Q.html">Q</a>.<a href="Q.html#.hypotenuse">hypotenuse</a></code>
+						using <code>c</code>’s
+						<code><a href="#this.real">real</a></code>
+						and
+						<code><a href="#this.real">imaginary</a></code>
+						properties as arguments.
 					</dd>
 				</li>
 				<li>
 					<dt id=".conjugate">conjugate</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( c: <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Returns a new complex number with the values
+						<code>c.<a href="#this.real">real</a></code>  
+						and
+						<code>c.<a href="#this.real">imaginary</a> * -1</code>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".sine">sine</dt>
+					<dd>
+						<code class="value-type">Function( c: <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Returns the 
+						<a href="https://en.wikipedia.org/wiki/Sine#Sine_with_a_complex_argument" target="_blank">sine</a>
+						of <code>c</code>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".cosine">cosine</dt>
+					<dd>
+						<code class="value-type">Function( c: <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Returns the 
+						<a href="https://en.wikipedia.org/wiki/Trigonometric_functions#In_the_complex_plane" target="_blank">cosine</a>
+						of <code>c</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".arcCosine">arcCosine</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( c: <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Returns the 
+						<a href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Extension_to_complex_plane"  target="_blank">arccosine</a>
+						of <code>c</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".arcTangent">arcTangent</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( c: <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Returns the
+						<a href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Extension_to_complex_plane"  target="_blank">arctangent</a>
+						of <code>c</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".power">power</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( a: Number or <a href="Q.html">Q</a>.ComplexNumber, b: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Returns <code>a</code> raised to the power of <code>b</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".squareRoot">squareRoot</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( c: <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Returns the square root of <code>c</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".log">log</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( c: <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Returns the log of <code>c</code>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".operate">operate</dt>
+					<dd>
+						<code class="value-type">Function( 
+						name: String,
+						a: Number or <a href="Q.html">Q</a>.ComplexNumber,
+						b: Number or <a href="Q.html">Q</a>.ComplexNumber,
+						numberAndNumber: Function,
+						numberAndComplex: Function,
+						complexAndNumber: Function,
+						complexAndComplex: Function ) ⇒ *</code>
+						Meta function for performing operations on two values
+						that may each be either numbers or complex numbers.
+						The <code>name</code> argument indicates the name of the
+						operation being performed and is used in error logging
+						should the operation fail.
+						The intent is to return a <code><a href="Q.html">Q</a>.ComplexNumber</code>, though this is up to the functions
+						passed in as it is their return values that are returned.
 					</dd>
 				</li>
 				<li>
 					<dt id=".multiply">multiply</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( a: Number or <a href="Q.html">Q</a>.ComplexNumber, b: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Uses <code><a href="Q.html">Q</a>.ComplexNumber.<a href="#.operate">operate</a></code>
+						to return the result of multiplying
+						<code>a</code> and <code>b</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".divide">divide</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( a: Number or <a href="Q.html">Q</a>.ComplexNumber, b: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Uses <code><a href="Q.html">Q</a>.ComplexNumber.<a href="#.operate">operate</a></code>
+						to return the result of dividing
+						<code>a</code> by <code>b</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".add">add</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( a: Number or <a href="Q.html">Q</a>.ComplexNumber, b: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Uses <code><a href="Q.html">Q</a>.ComplexNumber.<a href="#.operate">operate</a></code>
+						to return the result of adding
+						<code>a</code> and <code>b</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".subtract">subtract</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function( a: Number or <a href="Q.html">Q</a>.ComplexNumber, b: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
+						Uses <code><a href="Q.html">Q</a>.ComplexNumber.<a href="#.operate">operate</a></code>
+						to return the result of subtracting
+						<code>b</code> from <code>a</code>.
 					</dd>
 				</li>
 			</ul>
@@ -707,6 +758,13 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 			</ul>
 			<h4>Maths (destructive)</h4>
 			<ul class="properties">
+				<li>
+					<dt id=".prototype.absolute$">absolute$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
 				<li>
 					<dt id=".prototype.conjugate$">conjugate$</dt>
 					<dd>

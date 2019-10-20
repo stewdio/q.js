@@ -450,7 +450,7 @@ Object.assign( Q.ComplexNumber, {
 			'subtract', a, b,
 			function( a, b ){
 
-				return new Q.ComplexNumber( a + b )
+				return new Q.ComplexNumber( a - b )
 			},
 			function( a, b ){
 
