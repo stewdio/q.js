@@ -63,24 +63,24 @@
 			</svg>
 			<p>
 				When a real number is multiplied by itself the product is always positive.
-				For example, if we choose the number 7 we see that 7 × 7 = 49.
-				Similarly, had we chosen the negative number -7, the product would still be positive
+				For example, if we choose the number 2 we see that 2 × 2 = 4.
+				Similarly, had we chosen the negative number -2, the product would still be positive
 				because two negative numbers multiplied together also produce a positive result;
-				-7 × -7 = 49.
-				For brevity we could rewrite these equations as 7<sup>2</sup> = 49 and -7<sup>2</sup> = 49, respectively.
+				-2 × -2 = 4.
+				For brevity we could rewrite these equations as 2<sup>2</sup> = 4 and (-2)<sup>2</sup> = 4, respectively.
 			</p>
 			<p>
 				The <a href="https://en.wikipedia.org/wiki/Square_root" target="_blank">square root</a> 
 				of a real number has two possible answers. 
-				The square root of 49, for example, is both 7 <em>and</em> -7
+				The square root of 4, for example, is both 2 <em>and</em> -2
 				because both are solutions for <span class="symbol">x</span> 
-				in the equation <span class="symbol">x</span> = √49.
+				in the equation <span class="symbol">x</span> = √4.
 			</p>
 			<h3 id="Imaginary_numbers">Imaginary numbers 𝕀</h3>
 			<p>
 				But suppose we wanted to find the square root of a <em>negative</em> number.
 				Is there any number that could solve for <span class="symbol">x</span> 
-				in the equation <span class="symbol">x</span> = √-49?
+				in the equation <span class="symbol">x</span> = √(-4)?
 				Sadly, there is not. Or more precisely: there is not any <em>real</em> solution for the square root of a negative number.
 			</p>
 			<p>
@@ -91,27 +91,29 @@
 				<a href="https://en.wikipedia.org/wiki/Imaginary_number" target="_blank">Imaginary numbers</a> 
 				might be considered an intermediate impossible. 
 				The symbol <span class="symbol">i</span> is defined as the imaginary solution to the equation 
-				<span class="symbol">x</span> = √-1,
+				<span class="symbol">x</span> = √(-1),
 				therefore <span class="symbol">i</span><sup>2</sup> = -1.
 				With this imaginary device we now have a solution to the above equation 
-				<span class="symbol">x</span> = √-49
-				and that solution is 7<span class="symbol">i</span>.
+				<span class="symbol">x</span> = √(-4)
+				and that solution is 2<span class="symbol">i</span>.
 				Let’s inspect that more closely.
 			</p>
 <pre><code>
-𝒙 = √-49
-𝒙 = √(49 × -1)
-𝒙 = √49 × √-1
-𝒙 = 7 × √-1
-𝒙 = 7 × 𝒊
-𝒙 = 7𝒊
+𝒙 = √(-4)
+𝒙 = √( 4 × -1)
+𝒙 = √4 × √(-1)
+𝒙 =  2 × √(-1)
+𝒙 =  2 × 𝒊
+𝒙 =  2𝒊
 </code></pre>
 			<p>
-				Our result of 7<span class="symbol">i</span> is an
+				Our result of 2<span class="symbol">i</span> is an
 				<a href="https://en.wikipedia.org/wiki/Imaginary_number" target="_blank">imaginary number</a>
-				that consists of a real number multiplier, 7, and 
-				our imaginary solution to √-1, called <span class="symbol">i</span>.
+				that consists of a real number multiplier, 2, and 
+				our imaginary solution to √(-1), called <span class="symbol">i</span>.
 				Like real numbers, imaginary numbers also exist along an infinite number line.
+				We plotted our real number line horizontally, 
+				so let’s plot our imaginary number line vertically.
 			</p>
 			<svg class="complex-plane" viewBox="0 0 600 600">
 				<use xlink:href="#complex-plane-imaginary">
@@ -197,7 +199,11 @@
 						fill: none;
 						stroke: var( --color-blue );
 					}
+					#examples line {
 
+						fill: none;
+						stroke: var( --color-charcoal );
+					}
 
 				</style>
 				<g id="complex-plane-real">
@@ -231,21 +237,21 @@
 						<line class="dashed" x1="300" y1="300" x2="300" y2="600"/>
 					</g>
 					<g id="real-numbers">
-						<text transform="matrix(1 0 0 1 495 282)">4</text>
-						<text transform="matrix(1 0 0 1 545 282)">5</text>
-						<text transform="matrix(1 0 0 1 455 325)" class="symbol">π</text>
-						<text transform="matrix(1 0 0 1 445 282)">3</text>
+						<text transform="matrix(1 0 0 1 496 282)">4</text>
+						<text transform="matrix(1 0 0 1 546 282)">5</text>
+						<text transform="matrix(1 0 0 1 453 325)" class="symbol">π</text>
+						<text transform="matrix(1 0 0 1 446 282)">3</text>
 						<text transform="matrix(1 0 0 1 433 325)" class="symbol">e</text>
-						<text transform="matrix(1 0 0 1 395 282)">2</text>
-						<text transform="matrix(1 0 0 1 363 330)">√2</text>
-						<text transform="matrix(1 0 0 1 345 282)">1</text>
-						<text transform="matrix(1 0 0 1 295 282)">0</text>
+						<text transform="matrix(1 0 0 1 396 282)">2</text>
+						<text transform="matrix(1 0 0 1 363 328)">√2</text>
+						<text transform="matrix(1 0 0 1 347 282)">1</text>
+						<text transform="matrix(1 0 0 1 296 282)">0</text>
 						<g class="negative-numbers">
-							<text transform="matrix(1 0 0 1 239 282)">-1</text>
-							<text transform="matrix(1 0 0 1 189 282)">-2</text>
-							<text transform="matrix(1 0 0 1 139 282)">-3</text>
-							<text transform="matrix(1 0 0 1  89 282)">-4</text>
-							<text transform="matrix(1 0 0 1  39 282)">-5</text>
+							<text transform="matrix(1 0 0 1 240 282)">-1</text>
+							<text transform="matrix(1 0 0 1 190 282)">-2</text>
+							<text transform="matrix(1 0 0 1 140 282)">-3</text>
+							<text transform="matrix(1 0 0 1  90 282)">-4</text>
+							<text transform="matrix(1 0 0 1  40 282)">-5</text>
 						</g>
 					</g>
 				</g>
@@ -285,18 +291,23 @@
 						<text transform="matrix(1 0 0 1 270 255)">1<tspan class="symbol">i</tspan></text>
 						<text transform="matrix(1 0 0 1 270 305)">0<tspan class="symbol">i</tspan></text>
 						<g class="negative-numbers">
-							<text transform="matrix(1 0 0 1 260 355)">-1<tspan class="symbol">i</tspan></text>
-							<text transform="matrix(1 0 0 1 260 405)">-2<tspan class="symbol">i</tspan></text>
-							<text transform="matrix(1 0 0 1 260 455)">-3<tspan class="symbol">i</tspan></text>						
-							<text transform="matrix(1 0 0 1 260 505)">-4<tspan class="symbol">i</tspan></text>
-							<text transform="matrix(1 0 0 1 260 555)">-5<tspan class="symbol">i</tspan></text>
+							<text transform="matrix(1 0 0 1 263.5 355)">-1<tspan class="symbol">i</tspan></text>
+							<text transform="matrix(1 0 0 1 263.5 405)">-2<tspan class="symbol">i</tspan></text>
+							<text transform="matrix(1 0 0 1 263.5 455)">-3<tspan class="symbol">i</tspan></text>						
+							<text transform="matrix(1 0 0 1 263.5 505)">-4<tspan class="symbol">i</tspan></text>
+							<text transform="matrix(1 0 0 1 263.5 555)">-5<tspan class="symbol">i</tspan></text>
 						</g>
 					</g>
 				</g>
 				<g id="examples">
+					<line class="dashed strong" x1="300" y1="200" x2="350" y2="200"/>
+					<line class="dashed strong" x1="350" y1="265" x2="350" y2="200"/>
 					<circle cx="350" cy="200" r="4"/>
-					<circle cx="450" cy="500" r="4"/>
 					<text transform="matrix(1 0 0 1 360 205)">1+2<tspan class="symbol">i</tspan></text>
+
+					<line class="dashed strong" x1="300" y1="500" x2="450" y2="500"/>
+					<line class="dashed strong" x1="450" y1="300" x2="450" y2="500"/>
+					<circle cx="450" cy="500" r="4"/>
 					<text transform="matrix(1 0 0 1 460 505)">3-4<tspan class="symbol">i</tspan></text>
 				</g>
 				<!-- <use xlink:href="#imaginary-numbers" /> -->
