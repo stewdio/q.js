@@ -133,159 +133,174 @@
 				 viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
 				<style type="text/css">
 					
-					.st0{opacity:0.15;}
-					.st1{fill:#0366D6;}
-					.st2{opacity:5.000000e-02;}
-					.st3{fill:none;stroke:#0366D6;stroke-miterlimit:10;}
-					.st4{opacity:0.33;fill:none;stroke:#0366D6;stroke-width:0.5;stroke-miterlimit:10;}
-					.st5{fill:none;stroke:#0366D6;stroke-width:0.5;stroke-miterlimit:10;}
-					.st6{fill:none;stroke:#0366D6;stroke-miterlimit:10;stroke-dasharray:1,3;}
-					.st7{fill:none;}
-					.st8{font-family:'RobotoMono-Regular';}
-					.st9{font-size: 1rem; }
-					.st10{font-family:'Georgia-BoldItalic';}
-					/*.st10{font-family: var( --font-family-symbol );}*/
-					.st11{opacity:0.33;}
-					.st13{opacity:0.15;fill:#FF4433;}
-					.st14{opacity:5.000000e-02;fill:#FF4433;}
-					.st16{fill:none;stroke:#FF4433;stroke-width:0.5;stroke-miterlimit:10;}
-					.st17{opacity:0.33;}
-					.st18{fill:none;stroke:#FF4433;stroke-miterlimit:10;}
-					.st19{fill:#FF4433;}
-					.st20{fill:none;stroke:#FF4433;stroke-miterlimit:10;stroke-dasharray:1,3;}
-					.st21{fill:none;}
+				
+					svg #complex-plane {
+
+						font-family: 'Roboto';
+						/*mix-blend-mode: difference;*/
+						/*mix-blend-mode: multiply;*/
+						/*background-blend-mode: screen;*/
+						stroke-width: 0.5;
+						stroke-miterlimit: 10;
+					}
+
+
+					.light {
+
+						opacity: 0.5;
+					}
+					.lighter  {
+
+						opacity: 0.15;	
+					}
+					.lightest {
+
+						opacity: 0.05;
+					}
+					line.dashed {
+
+						stroke-dasharray: 1, 3;
+					}
+					line.strong {
+
+						stroke-width: 1;
+					}
+					.negative-numbers {
+
+						opacity: 0.25; 
+					}
+
+
+					#complex-plane-real text,
+					#complex-plane-real rect,
+					#complex-plane-real polygon {
+
+						fill: var( --color-red );
+						stroke: none;
+					}
+					#complex-plane-real line {
+
+						fill: none;
+						stroke: var( --color-red );
+					}
+
+
+					#complex-plane-imaginary text,
+					#complex-plane-imaginary rect,
+					#complex-plane-imaginary polygon {
+
+						fill: var( --color-blue );
+						stroke: none;
+					}
+					#complex-plane-imaginary line {
+
+						fill: none;
+						stroke: var( --color-blue );
+					}
+
+
 				</style>
 				<g id="complex-plane-real">
 					<g id="real-overlays">
-						<rect x="300" class="st0 st1" width="300" height="600"/>
-						<rect y="0" class="st2 st1" width="300" height="600"/>
+						<rect class="lightest" x="300" width="300" height="600"/>
+						<rect class="lighter" y="0" width="300" height="600"/>
 					</g>
 					<g id="real-ticks">
-						<line class="st4" x1="250" y1="290" x2="250" y2="300"/>
-						<line class="st4" x1="200" y1="290" x2="200" y2="300"/>
-						<line class="st4" x1="150" y1="290" x2="150" y2="300"/>
-						<line class="st4" x1="100" y1="290" x2="100" y2="300"/>
-						<line class="st4" x1="50"  y1="290" x2="50"  y2="300"/>
-						<line class="st5" x1="550" y1="290" x2="550" y2="300"/>
-						<line class="st5" x1="500" y1="290" x2="500" y2="300"/>
-						<line class="st5" x1="450" y1="290" x2="450" y2="300"/>
-						<line class="st5" x1="400" y1="290" x2="400" y2="300"/>
-						<line class="st5" x1="458" y1="300" x2="458" y2="310"/>
-						<line class="st5" x1="438" y1="300" x2="438" y2="310"/>
-						<line class="st5" x1="373" y1="300" x2="373" y2="310"/>
-						<line class="st5" x1="350" y1="290" x2="350" y2="300"/>
-						<line class="st5" x1="300" y1="290" x2="300" y2="300"/>
-						<line class="st6" x1="300" y1="0"   x2="300" y2="260"/>
-						<line class="st6" x1="300" y1="300" x2="300" y2="600"/>
-						<g>
-							<line class="st3" x1="32.2" y1="300" x2="567.8" y2="300"/>
-							<polygon class="st1" points="33.6,305 25,300 33.6,295"/>
-							<polygon class="st1" points="566.4,305 575,300 566.4,295"/>
+						<g class="lighter">
+							<line x1="50"  y1="290" x2="50"  y2="300"/>
+							<line x1="100" y1="290" x2="100" y2="300"/>
+							<line x1="150" y1="290" x2="150" y2="300"/>
+							<line x1="200" y1="290" x2="200" y2="300"/>
+							<line x1="250" y1="290" x2="250" y2="300"/>
 						</g>
+						<line x1="300" y1="290" x2="300" y2="300"/>
+						<line x1="350" y1="290" x2="350" y2="300"/>
+						<line x1="373" y1="300" x2="373" y2="310"/>
+						<line x1="400" y1="290" x2="400" y2="300"/>
+						<line x1="438" y1="300" x2="438" y2="310"/>
+						<line x1="450" y1="290" x2="450" y2="300"/>
+						<line x1="458" y1="300" x2="458" y2="310"/>
+						<line x1="500" y1="290" x2="500" y2="300"/>
+						<line x1="550" y1="290" x2="550" y2="300"/>
+						<g>
+							<line class="strong" x1="32.2" y1="300" x2="567.8" y2="300"/>
+							<polygon points="33.6,305 25,300 33.6,295"/>
+							<polygon points="566.4,305 575,300 566.4,295"/>
+						</g>
+						<line class="dashed" x1="300" y1="0"   x2="300" y2="260"/>
+						<line class="dashed" x1="300" y1="300" x2="300" y2="600"/>
 					</g>
 					<g id="real-numbers">
-						<rect x="464" y="257" class="st7" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 494.9992 282.0001)" class="st1 st8 st9">4</text>
-						<rect x="514" y="257" class="st7" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 544.9992 282.0001)" class="st1 st8 st9">5</text>
-						<rect x="364" y="257" class="st7" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 394.9992 282.0001)" class="st1 st8 st9">2</text>
-						<rect x="424" y="300" class="st7" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 454.1047 325.0001)" class="st1 st10 st9">π</text>
-						<g class="st11">
-							<rect x="164" y="257" class="st7" width="40" height="40"/>
-							<text transform="matrix(1 0 0 1 185.2394 282.0001)" class="st1 st8 st9">-2</text>
-						</g>
-						<g class="st11">
-							<rect x="114" y="257" class="st7" width="40" height="40"/>
-							<text transform="matrix(1 0 0 1 135.2394 282.0001)" class="st1 st8 st9">-3</text>
-						</g>
-						<g class="st11">
-							<rect x="64" y="257" class="st7" width="40" height="40"/>
-							<text transform="matrix(1 0 0 1 85.2394 282.0001)" class="st1 st8 st9">-4</text>
-						</g>
-						<g class="st11">
-							<rect x="14" y="257" class="st7" width="40" height="40"/>
-							<text transform="matrix(1 0 0 1 35.2395 282.0001)" class="st1 st8 st9">-5</text>
-						</g>
-						<rect x="314" y="257" class="st7" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 344.9992 282.0001)" class="st1 st8 st9">1</text>
-						<rect x="280" y="257" class="st7" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 295.4992 282.0001)" class="st1 st8 st9">0</text>
-						<g class="st11">
-							<rect x="214" y="257" class="st7" width="40" height="40"/>
-							<text transform="matrix(1 0 0 1 235.2394 282.0001)" class="st1 st8 st9">-1</text>
-						</g>
-						<rect x="414" y="257" class="st7" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 444.9992 282.0001)" class="st1 st8 st9">3</text>
-						<g>
-							<rect x="342" y="305" class="st7" width="40" height="40"/>
-							<text transform="matrix(1 0 0 1 363.2473 330.0001)" class="st1 st8 st9">√2</text>
-						</g>
-						<g>
-							<rect x="402" y="300" class="st7" width="40" height="40"/>
-							<text transform="matrix(1 0 0 1 433.6437 325.0001)" class="st1 st10 st9">e</text>
+						<text transform="matrix(1 0 0 1 495 282)">4</text>
+						<text transform="matrix(1 0 0 1 545 282)">5</text>
+						<text transform="matrix(1 0 0 1 455 325)" class="symbol">π</text>
+						<text transform="matrix(1 0 0 1 445 282)">3</text>
+						<text transform="matrix(1 0 0 1 433 325)" class="symbol">e</text>
+						<text transform="matrix(1 0 0 1 395 282)">2</text>
+						<text transform="matrix(1 0 0 1 363 330)">√2</text>
+						<text transform="matrix(1 0 0 1 345 282)">1</text>
+						<text transform="matrix(1 0 0 1 295 282)">0</text>
+						<g class="negative-numbers">
+							<text transform="matrix(1 0 0 1 239 282)">-1</text>
+							<text transform="matrix(1 0 0 1 189 282)">-2</text>
+							<text transform="matrix(1 0 0 1 139 282)">-3</text>
+							<text transform="matrix(1 0 0 1  89 282)">-4</text>
+							<text transform="matrix(1 0 0 1  39 282)">-5</text>
 						</g>
 					</g>
 				</g>
 				<g id="complex-plane-imaginary">
-					<g id="imaginary-overlays" class="st12">
-						<rect class="st13" width="600" height="300"/>
-						<rect y="300" class="st14" width="600" height="300"/>
+					<g id="imaginary-overlays">
+						<rect class="lightest" width="600" height="300"/>
+						<rect class="lighter" y="300" width="600" height="300"/>
 					</g>
-					<g id="imaginary-ticks" class="st12">
-						<line class="st15 st16" x1="290" y1="250" x2="300" y2="250"/>
-						<line class="st15 st16" x1="290" y1="300" x2="300" y2="300"/>
-						<line class="st15 st16" x1="290" y1="150" x2="300" y2="150"/>
-						<line class="st15 st16" x1="290" y1="200" x2="300" y2="200"/>
-						<line class="st15 st16" x1="290" y1="100" x2="300" y2="100"/>
-						<line class="st15 st16" x1="290" y1="50"  x2="300" y2="50" />
-						<line class="st17 st16" x1="290" y1="550" x2="300" y2="550"/>
-						<line class="st17 st16" x1="290" y1="450" x2="300" y2="450"/>
-						<line class="st17 st16" x1="290" y1="500" x2="300" y2="500"/>
-						<line class="st17 st16" x1="290" y1="400" x2="300" y2="400"/>
-						<line class="st17 st16" x1="290" y1="350" x2="300" y2="350"/>
-						<g>
-							<line class="st15 st18" x1="300" y1="32.2" x2="300" y2="567.8"/>
-							<polygon class="st19" points="295,33.6 300,25 305,33.6"/>
-							<polygon class="st19" points="295,566.4 300,575 305,566.4"/>
+					<g id="imaginary-ticks">
+						
+						<line x1="290" y1="50"  x2="300" y2="50" />
+						<line x1="290" y1="100" x2="300" y2="100"/>
+						<line x1="290" y1="150" x2="300" y2="150"/>
+						<line x1="290" y1="200" x2="300" y2="200"/>
+						<line x1="290" y1="250" x2="300" y2="250"/>
+						<line x1="290" y1="300" x2="300" y2="300"/>
+						<g class="lighter">
+							<line x1="290" y1="350" x2="300" y2="350"/>
+							<line x1="290" y1="400" x2="300" y2="400"/>
+							<line x1="290" y1="450" x2="300" y2="450"/>
+							<line x1="290" y1="500" x2="300" y2="500"/>
+							<line x1="290" y1="550" x2="300" y2="550"/>
 						</g>
-						<line class="st20" x1="0" y1="300" x2="260" y2="300"/>
-						<line class="st20" x1="300" y1="300" x2="600" y2="300"/>
+						<g>
+							<line class="strong" x1="300" y1="32.2" x2="300" y2="567.8"/>
+							<polygon points="295,33.6 300,25 305,33.6"/>
+							<polygon points="295,566.4 300,575 305,566.4"/>
+						</g>
+						<line class="dashed" x1="0" y1="300" x2="260" y2="300"/>
+						<line class="dashed" x1="300" y1="300" x2="600" y2="300"/>
 					</g>
-					<g id="imaginary-numbers" class="st12">
-						<rect x="245" y="80" class="st21" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 269.7629 105.0001)" class="st15"><tspan x="0" y="0" class="st19 st8 st9">4</tspan><tspan x="9.8" y="0" class="st19 st10 st9">i</tspan></text>
-						<rect x="245" y="30" class="st21" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 269.7629 55.0001)" class="st15"><tspan x="0" y="0" class="st19 st8 st9">5</tspan><tspan x="9.8" y="0" class="st19 st10 st9">i</tspan></text>
-						<rect x="245" y="180" class="st21" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 269.7629 205.0001)" class="st15"><tspan x="0" y="0" class="st19 st8 st9">2</tspan><tspan x="9.8" y="0" class="st19 st10 st9">i</tspan></text>
-						<rect x="245" y="380" class="st21" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 260.0041 405.0001)" class="st17"><tspan x="0" y="0" class="st19 st8 st9">-2</tspan><tspan x="19.5" y="0" class="st19 st10 st9">i</tspan></text>
-						<rect x="245" y="430" class="st21" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 260.0041 455.0001)" class="st17"><tspan x="0" y="0" class="st19 st8 st9">-3</tspan><tspan x="19.5" y="0" class="st19 st10 st9">i</tspan></text>
-						<rect x="245" y="480" class="st21" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 260.0041 505.0001)" class="st17"><tspan x="0" y="0" class="st19 st8 st9">-4</tspan><tspan x="19.5" y="0" class="st19 st10 st9">i</tspan></text>
-						<rect x="245" y="530" class="st21" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 260.0041 555.0001)" class="st17"><tspan x="0" y="0" class="st19 st8 st9">-5</tspan><tspan x="19.5" y="0" class="st19 st10 st9">i</tspan></text>
-						<rect x="245" y="230" class="st21" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 269.7629 255.0001)" class="st15"><tspan x="0" y="0" class="st19 st8 st9">1</tspan><tspan x="9.8" y="0" class="st19 st10 st9">i</tspan></text>
-						<rect x="245" y="280" class="st21" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 269.7629 305.0001)" class="st15"><tspan x="0" y="0" class="st19 st8 st9">0</tspan><tspan x="9.8" y="0" class="st19 st10 st9">i</tspan></text>
-						<rect x="245" y="330" class="st21" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 260.0041 355.0001)" class="st17"><tspan x="0" y="0" class="st19 st8 st9">-1</tspan><tspan x="19.5" y="0" class="st19 st10 st9">i</tspan></text>
-						<rect x="245" y="130" class="st21" width="40" height="40"/>
-						<text transform="matrix(1 0 0 1 269.7629 155.0001)" class="st15"><tspan x="0" y="0" class="st19 st8 st9">3</tspan><tspan x="9.8" y="0" class="st19 st10 st9">i</tspan></text>
+					<g id="imaginary-numbers">
+						<text transform="matrix(1 0 0 1 270  55)">5<tspan class="symbol">i</tspan></text>
+						<text transform="matrix(1 0 0 1 270 105)">4<tspan class="symbol">i</tspan></text>
+						<text transform="matrix(1 0 0 1 270 205)">2<tspan class="symbol">i</tspan></text>
+						<text transform="matrix(1 0 0 1 270 155)">3<tspan class="symbol">i</tspan></text>
+						<text transform="matrix(1 0 0 1 270 255)">1<tspan class="symbol">i</tspan></text>
+						<text transform="matrix(1 0 0 1 270 305)">0<tspan class="symbol">i</tspan></text>
+						<g class="negative-numbers">
+							<text transform="matrix(1 0 0 1 260 355)">-1<tspan class="symbol">i</tspan></text>
+							<text transform="matrix(1 0 0 1 260 405)">-2<tspan class="symbol">i</tspan></text>
+							<text transform="matrix(1 0 0 1 260 455)">-3<tspan class="symbol">i</tspan></text>						
+							<text transform="matrix(1 0 0 1 260 505)">-4<tspan class="symbol">i</tspan></text>
+							<text transform="matrix(1 0 0 1 260 555)">-5<tspan class="symbol">i</tspan></text>
+						</g>
 					</g>
 				</g>
 				<g id="examples">
 					<circle cx="350" cy="200" r="4"/>
 					<circle cx="450" cy="500" r="4"/>
-					<rect x="365" y="180" class="st7" width="60" height="40"/>
-					<text transform="matrix(1 0 0 1 365.0003 205.0001)"><tspan x="0" y="0" class="st8 st9">1+2</tspan><tspan x="26" y="0" class="st10 st9">i</tspan></text>
-					<rect x="465" y="480" class="st7" width="60" height="40"/>
-					<text transform="matrix(1 0 0 1 465.0003 505.0001)"><tspan x="0" y="0" class="st8 st9">3-4</tspan><tspan x="26" y="0" class="st10 st9">i</tspan></text>
+					<text transform="matrix(1 0 0 1 360 205)">1+2<tspan class="symbol">i</tspan></text>
+					<text transform="matrix(1 0 0 1 460 505)">3-4<tspan class="symbol">i</tspan></text>
 				</g>
+				<!-- <use xlink:href="#imaginary-numbers" /> -->
+				<!-- <use xlink:href="#real-numbers" /> -->
 			</svg>
 			<!--
 

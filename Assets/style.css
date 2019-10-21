@@ -9,7 +9,7 @@
 /*****************/
 
 
-:root {
+svg, :root {
 
 
 	/*  Spectrum  */
@@ -712,6 +712,37 @@ dd .maths {
 
 
 
+
+
+
+
+svg.complex-plane {
+
+	display: block;
+	margin: 1rem 0;
+	border-radius:  0.5rem;
+	letter-spacing: 0.1em;
+}
+svg .st10 {
+
+	font-family: var( --font-family-symbols );
+	font-weight: bold;
+
+	/*font-family: 'RobotoMono-Regular';*/
+	/*font-family: 'Roboto Mono';*/
+	/*'Georgia';*/
+	/*fill: green;*/
+	fill: var( --color-orange );
+}
+#complex-plane-real {
+
+	/*opacity: 0.2;*/
+	fill: green;
+}
+
+
+
+
 .matrix {
 
 	display: inline-block;
@@ -959,13 +990,6 @@ table#console-open-commands .na {
 
 
 
-
-svg.complex-plane {
-
-	display: block;
-	margin: 1rem 0;
-	border-radius: 0.5rem;
-}
 
 
 
