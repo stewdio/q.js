@@ -610,10 +610,6 @@ Object.assign( Q.ComplexNumber.prototype, {
 
 	//  DESTRUCTIVE operations.
 
-	absolute$: function(){
-	
-		return this.copy$( this.absolute() )
-	},
 	copy$: function( b ){
 		
 		if( b instanceof Q.ComplexNumber !== true )

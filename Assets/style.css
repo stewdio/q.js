@@ -2,6 +2,61 @@
 
 
 
+    /*****************/
+   /*               */
+  /*   Variables   */
+ /*               */
+/*****************/
+
+
+:root {
+
+
+	/*  Spectrum  */
+
+	--color-red:    #FF4433;
+	--color-orange: #FF7744;
+	--color-yellow: #FFDD44;
+	--color-green:  #33BB77;
+	--color-blue:   #0366D6;
+
+
+	/*  Grayscale  */
+
+	--color-black:    #000000;
+	--color-charcoal: #333333;
+	--color-chalk:    #F9F9F9;
+	--color-white:    #FFFFFF;
+
+
+	/*  Fonts  */
+
+	--font-family-serif:   'Roboto Slab', 'Georgia', serif;
+	--font-family-sans:    'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+	--font-family-mono:    'Roboto Mono', 'Source Code Pro', 'Menlo', 'Courier New', monospace;
+	--font-family-symbols: 'Georgia', serif;
+
+
+	/*  Misc  */
+
+	--text-color: var( --color-charcoal );
+	--text-code-comment-color: #AAA;
+	--text-code-output-color: #888;
+	
+	--hyperlink-internal-color: var( --color-blue );
+	--hyperlink-external-color: var( --text-color );
+	
+	--highlight-color: var( --color-black );
+	--highlight-background-color: var( --color-yellow );
+
+	--background-callout-color: var( --color-chalk );
+
+	--svg-fill-color: var( --text-color );
+}
+
+
+
+
     /*************/
    /*           */
   /*   Fonts   */
@@ -104,33 +159,6 @@
 
 
 
-    /*****************/
-   /*               */
-  /*   Variables   */
- /*               */
-/*****************/
-
-
-:root {
-
-	--font-family-serif:   'Roboto Slab', 'Georgia', serif;
-	--font-family-sans:    'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-	--font-family-mono:    'Roboto Mono', 'Source Code Pro', 'Menlo', 'Courier New', monospace;
-	--font-family-symbols: 'Georgia', serif;
-
-	--text-color: #333;
-	--text-code-comment-color: #AAA;
-	--text-code-output-color: #888;
-	--hyperlink-internal-color: #0366D6;
-	--hyperlink-external-color: var( --text-color );
-	
-	--highlight-color: #000;
-	--highlight-background-color: #FD4;
-
-	--background-callout-color: #F9F9F9;
-
-	--svg-fill-color: var( --text-color );
-}
 
 
 
@@ -928,6 +956,18 @@ table#console-open-commands .na {
 	line-height: 2.7em;
 	box-shadow: 0 1px 2px #666;
 }
+
+
+
+
+svg.complex-plane {
+
+	display: block;
+	margin: 1rem 0;
+	border-radius: 0.5rem;
+}
+
+
 
 
 

@@ -58,11 +58,9 @@
 				These include integers and decimals.
 				You can visualize real numbers as existing along an infinite number line—with zero in the middle, positive numbers counting up forever to infinity on the right, and negative numbers doing the exact opposite on the left.
 			</p>
-<pre><code>
-…  -3  -2  -1   0  +1  +2  +3   …  
-┄───┴───┴───┴───┴───┴─┬─┴──┬┴┬──┄  
-                     √2    𝒆 π
-</pre></code>
+			<svg class="complex-plane" viewBox="0 0 600 600">
+				<use xlink:href="#complex-plane-real">
+			</svg>
 			<p>
 				When a real number is multiplied by itself the product is always positive.
 				For example, if we choose the number 7 we see that 7 × 7 = 49.
@@ -108,8 +106,6 @@
 𝒙 = 7 × 𝒊
 𝒙 = 7𝒊
 </code></pre>
-
-
 			<p>
 				Our result of 7<span class="symbol">i</span> is an
 				<a href="https://en.wikipedia.org/wiki/Imaginary_number" target="_blank">imaginary number</a>
@@ -117,10 +113,9 @@
 				our imaginary solution to √-1, called <span class="symbol">i</span>.
 				Like real numbers, imaginary numbers also exist along an infinite number line.
 			</p>
-<pre><code>
-…  -3𝒊 -2𝒊  -1𝒊  0  +1𝒊 +2𝒊 +3𝒊  …  
-┄───┴───┴───┴───┴───┴───┴───┴───┄
-</pre></code>
+			<svg class="complex-plane" viewBox="0 0 600 600">
+				<use xlink:href="#complex-plane-imaginary">
+			</svg>
 			<h3 id="Complex_numbers">Complex numbers ℂ</h3>
 			<p>
 				We just saw that multiplying a real number by <span class="symbol">i</span>
@@ -133,14 +128,173 @@
 				where <span class="symbol">a</span> is the real component and 
 				<span class="symbol">bi</span> is the imaginary component. 
 				Some examples might be 1 + 2<span class="symbol">i</span> or 3 - 4<span class="symbol">i</span>.
-<!--
+			</p>
+			<svg class="complex-plane" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+				 viewBox="0 0 600 600" style="enable-background:new 0 0 600 600;" xml:space="preserve">
+				<style type="text/css">
+					
+					.st0{opacity:0.15;}
+					.st1{fill:#0366D6;}
+					.st2{opacity:5.000000e-02;}
+					.st3{fill:none;stroke:#0366D6;stroke-miterlimit:10;}
+					.st4{opacity:0.33;fill:none;stroke:#0366D6;stroke-width:0.5;stroke-miterlimit:10;}
+					.st5{fill:none;stroke:#0366D6;stroke-width:0.5;stroke-miterlimit:10;}
+					.st6{fill:none;stroke:#0366D6;stroke-miterlimit:10;stroke-dasharray:1,3;}
+					.st7{fill:none;}
+					.st8{font-family:'RobotoMono-Regular';}
+					.st9{font-size: 1rem; }
+					.st10{font-family:'Georgia-BoldItalic';}
+					/*.st10{font-family: var( --font-family-symbol );}*/
+					.st11{opacity:0.33;}
+					.st13{opacity:0.15;fill:#FF4433;}
+					.st14{opacity:5.000000e-02;fill:#FF4433;}
+					.st16{fill:none;stroke:#FF4433;stroke-width:0.5;stroke-miterlimit:10;}
+					.st17{opacity:0.33;}
+					.st18{fill:none;stroke:#FF4433;stroke-miterlimit:10;}
+					.st19{fill:#FF4433;}
+					.st20{fill:none;stroke:#FF4433;stroke-miterlimit:10;stroke-dasharray:1,3;}
+					.st21{fill:none;}
+				</style>
+				<g id="complex-plane-real">
+					<g id="real-overlays">
+						<rect x="300" class="st0 st1" width="300" height="600"/>
+						<rect y="0" class="st2 st1" width="300" height="600"/>
+					</g>
+					<g id="real-ticks">
+						<line class="st4" x1="250" y1="290" x2="250" y2="300"/>
+						<line class="st4" x1="200" y1="290" x2="200" y2="300"/>
+						<line class="st4" x1="150" y1="290" x2="150" y2="300"/>
+						<line class="st4" x1="100" y1="290" x2="100" y2="300"/>
+						<line class="st4" x1="50"  y1="290" x2="50"  y2="300"/>
+						<line class="st5" x1="550" y1="290" x2="550" y2="300"/>
+						<line class="st5" x1="500" y1="290" x2="500" y2="300"/>
+						<line class="st5" x1="450" y1="290" x2="450" y2="300"/>
+						<line class="st5" x1="400" y1="290" x2="400" y2="300"/>
+						<line class="st5" x1="458" y1="300" x2="458" y2="310"/>
+						<line class="st5" x1="438" y1="300" x2="438" y2="310"/>
+						<line class="st5" x1="373" y1="300" x2="373" y2="310"/>
+						<line class="st5" x1="350" y1="290" x2="350" y2="300"/>
+						<line class="st5" x1="300" y1="290" x2="300" y2="300"/>
+						<line class="st6" x1="300" y1="0"   x2="300" y2="260"/>
+						<line class="st6" x1="300" y1="300" x2="300" y2="600"/>
+						<g>
+							<line class="st3" x1="32.2" y1="300" x2="567.8" y2="300"/>
+							<polygon class="st1" points="33.6,305 25,300 33.6,295"/>
+							<polygon class="st1" points="566.4,305 575,300 566.4,295"/>
+						</g>
+					</g>
+					<g id="real-numbers">
+						<rect x="464" y="257" class="st7" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 494.9992 282.0001)" class="st1 st8 st9">4</text>
+						<rect x="514" y="257" class="st7" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 544.9992 282.0001)" class="st1 st8 st9">5</text>
+						<rect x="364" y="257" class="st7" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 394.9992 282.0001)" class="st1 st8 st9">2</text>
+						<rect x="424" y="300" class="st7" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 454.1047 325.0001)" class="st1 st10 st9">π</text>
+						<g class="st11">
+							<rect x="164" y="257" class="st7" width="40" height="40"/>
+							<text transform="matrix(1 0 0 1 185.2394 282.0001)" class="st1 st8 st9">-2</text>
+						</g>
+						<g class="st11">
+							<rect x="114" y="257" class="st7" width="40" height="40"/>
+							<text transform="matrix(1 0 0 1 135.2394 282.0001)" class="st1 st8 st9">-3</text>
+						</g>
+						<g class="st11">
+							<rect x="64" y="257" class="st7" width="40" height="40"/>
+							<text transform="matrix(1 0 0 1 85.2394 282.0001)" class="st1 st8 st9">-4</text>
+						</g>
+						<g class="st11">
+							<rect x="14" y="257" class="st7" width="40" height="40"/>
+							<text transform="matrix(1 0 0 1 35.2395 282.0001)" class="st1 st8 st9">-5</text>
+						</g>
+						<rect x="314" y="257" class="st7" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 344.9992 282.0001)" class="st1 st8 st9">1</text>
+						<rect x="280" y="257" class="st7" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 295.4992 282.0001)" class="st1 st8 st9">0</text>
+						<g class="st11">
+							<rect x="214" y="257" class="st7" width="40" height="40"/>
+							<text transform="matrix(1 0 0 1 235.2394 282.0001)" class="st1 st8 st9">-1</text>
+						</g>
+						<rect x="414" y="257" class="st7" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 444.9992 282.0001)" class="st1 st8 st9">3</text>
+						<g>
+							<rect x="342" y="305" class="st7" width="40" height="40"/>
+							<text transform="matrix(1 0 0 1 363.2473 330.0001)" class="st1 st8 st9">√2</text>
+						</g>
+						<g>
+							<rect x="402" y="300" class="st7" width="40" height="40"/>
+							<text transform="matrix(1 0 0 1 433.6437 325.0001)" class="st1 st10 st9">e</text>
+						</g>
+					</g>
+				</g>
+				<g id="complex-plane-imaginary">
+					<g id="imaginary-overlays" class="st12">
+						<rect class="st13" width="600" height="300"/>
+						<rect y="300" class="st14" width="600" height="300"/>
+					</g>
+					<g id="imaginary-ticks" class="st12">
+						<line class="st15 st16" x1="290" y1="250" x2="300" y2="250"/>
+						<line class="st15 st16" x1="290" y1="300" x2="300" y2="300"/>
+						<line class="st15 st16" x1="290" y1="150" x2="300" y2="150"/>
+						<line class="st15 st16" x1="290" y1="200" x2="300" y2="200"/>
+						<line class="st15 st16" x1="290" y1="100" x2="300" y2="100"/>
+						<line class="st15 st16" x1="290" y1="50"  x2="300" y2="50" />
+						<line class="st17 st16" x1="290" y1="550" x2="300" y2="550"/>
+						<line class="st17 st16" x1="290" y1="450" x2="300" y2="450"/>
+						<line class="st17 st16" x1="290" y1="500" x2="300" y2="500"/>
+						<line class="st17 st16" x1="290" y1="400" x2="300" y2="400"/>
+						<line class="st17 st16" x1="290" y1="350" x2="300" y2="350"/>
+						<g>
+							<line class="st15 st18" x1="300" y1="32.2" x2="300" y2="567.8"/>
+							<polygon class="st19" points="295,33.6 300,25 305,33.6"/>
+							<polygon class="st19" points="295,566.4 300,575 305,566.4"/>
+						</g>
+						<line class="st20" x1="0" y1="300" x2="260" y2="300"/>
+						<line class="st20" x1="300" y1="300" x2="600" y2="300"/>
+					</g>
+					<g id="imaginary-numbers" class="st12">
+						<rect x="245" y="80" class="st21" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 269.7629 105.0001)" class="st15"><tspan x="0" y="0" class="st19 st8 st9">4</tspan><tspan x="9.8" y="0" class="st19 st10 st9">i</tspan></text>
+						<rect x="245" y="30" class="st21" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 269.7629 55.0001)" class="st15"><tspan x="0" y="0" class="st19 st8 st9">5</tspan><tspan x="9.8" y="0" class="st19 st10 st9">i</tspan></text>
+						<rect x="245" y="180" class="st21" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 269.7629 205.0001)" class="st15"><tspan x="0" y="0" class="st19 st8 st9">2</tspan><tspan x="9.8" y="0" class="st19 st10 st9">i</tspan></text>
+						<rect x="245" y="380" class="st21" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 260.0041 405.0001)" class="st17"><tspan x="0" y="0" class="st19 st8 st9">-2</tspan><tspan x="19.5" y="0" class="st19 st10 st9">i</tspan></text>
+						<rect x="245" y="430" class="st21" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 260.0041 455.0001)" class="st17"><tspan x="0" y="0" class="st19 st8 st9">-3</tspan><tspan x="19.5" y="0" class="st19 st10 st9">i</tspan></text>
+						<rect x="245" y="480" class="st21" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 260.0041 505.0001)" class="st17"><tspan x="0" y="0" class="st19 st8 st9">-4</tspan><tspan x="19.5" y="0" class="st19 st10 st9">i</tspan></text>
+						<rect x="245" y="530" class="st21" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 260.0041 555.0001)" class="st17"><tspan x="0" y="0" class="st19 st8 st9">-5</tspan><tspan x="19.5" y="0" class="st19 st10 st9">i</tspan></text>
+						<rect x="245" y="230" class="st21" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 269.7629 255.0001)" class="st15"><tspan x="0" y="0" class="st19 st8 st9">1</tspan><tspan x="9.8" y="0" class="st19 st10 st9">i</tspan></text>
+						<rect x="245" y="280" class="st21" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 269.7629 305.0001)" class="st15"><tspan x="0" y="0" class="st19 st8 st9">0</tspan><tspan x="9.8" y="0" class="st19 st10 st9">i</tspan></text>
+						<rect x="245" y="330" class="st21" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 260.0041 355.0001)" class="st17"><tspan x="0" y="0" class="st19 st8 st9">-1</tspan><tspan x="19.5" y="0" class="st19 st10 st9">i</tspan></text>
+						<rect x="245" y="130" class="st21" width="40" height="40"/>
+						<text transform="matrix(1 0 0 1 269.7629 155.0001)" class="st15"><tspan x="0" y="0" class="st19 st8 st9">3</tspan><tspan x="9.8" y="0" class="st19 st10 st9">i</tspan></text>
+					</g>
+				</g>
+				<g id="examples">
+					<circle cx="350" cy="200" r="4"/>
+					<circle cx="450" cy="500" r="4"/>
+					<rect x="365" y="180" class="st7" width="60" height="40"/>
+					<text transform="matrix(1 0 0 1 365.0003 205.0001)"><tspan x="0" y="0" class="st8 st9">1+2</tspan><tspan x="26" y="0" class="st10 st9">i</tspan></text>
+					<rect x="465" y="480" class="st7" width="60" height="40"/>
+					<text transform="matrix(1 0 0 1 465.0003 505.0001)"><tspan x="0" y="0" class="st8 st9">3-4</tspan><tspan x="26" y="0" class="st10 st9">i</tspan></text>
+				</g>
+			</svg>
+			<!--
 
+				“Quantum Mechanics Concepts: 1 Dirac Notation and Photon Polarisation”
+				 https://youtu.be/pBh7Xqbh5JQ?t=352
+				 Maybe someday add the above video’s bits about a^2 + b^2 = c^2 ?
 
-This would be a great place to add a^2 + b^2 = c^2
-https://youtu.be/pBh7Xqbh5JQ?t=352
-
-
--->
+			-->
+			<p>
 				This is what the <code>ComplexNumber</code> class was created to handle.
 				Open up your JavaScript console and paste in the following:
 			</p>
@@ -613,9 +767,11 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 					<dd>
 						<code class="value-type">Function ⇒ Boolean</code>
 						Calls and returns the result of the
-						<code><a href="#.isNaN">isNaN</a></code>
-						static function, passing the calling instance as the argument.
-						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>
+						<a href="#.isNaN"><code>isNaN</code> static method</a>,
+						passing the calling instance as the argument.
+						Will return a <code>Boolean</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
 						for this instance.
 					</dd>
 				</li>
@@ -624,9 +780,11 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 					<dd>
 						<code class="value-type">Function ⇒ Boolean</code>
 						Calls and returns the result of the
-						<code><a href="#.isZero">isZero</a></code>
-						static function, passing the calling instance as the argument.
-						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>
+						<a href="#.isZero"><code>isZero</code> static method</a>,
+						passing the calling instance as the argument.
+						Will return a <code>Boolean</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
 						for this instance.
 					</dd>
 				</li>
@@ -635,9 +793,11 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 					<dd>
 						<code class="value-type">Function ⇒ Boolean</code>
 						Calls and returns the result of the
-						<code><a href="#.isFinite">isFinite</a></code>
-						static function, passing the calling instance as the argument.
-						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>
+						<a href="#.isFinite"><code>isFinite</code> static method</a>,
+						passing the calling instance as the argument.
+						Will return a <code>Boolean</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
 						for this instance.
 					</dd>
 				</li>
@@ -646,9 +806,11 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 					<dd>
 						<code class="value-type">Function ⇒ Boolean</code>
 						Calls and returns the result of the
-						<code><a href="#.isInfinite">isInfinite</a></code>
-						static function, passing the calling instance as the argument.
-						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>
+						<a href="#.isInfinite"><code>isInfinite</code> static method</a>,
+						passing the calling instance as the argument.
+						Will return a <code>Boolean</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
 						for this instance.
 					</dd>
 				</li>
@@ -657,10 +819,12 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 					<dd>
 						<code class="value-type">Function( n: Number or <a href="Q.html">Q</a>.ComplexNumber ) ⇒ Boolean</code>
 						Calls and returns the result of the
-						<code><a href="#.areEqual">areEqual</a></code>
-						static function, passing the calling instance as the first argument
+						<a href="#.areEqual"><code>areEqual</code> static method</a>,
+						passing the calling instance as the first argument
 						and <code>n</code> as the second argument.
-						Will return a <code>Boolean</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>
+						Will return a <code>Boolean</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
 						for this instance.
 					</dd>
 				</li>
@@ -671,7 +835,10 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						If no <code><a href="#this.imaginary">imaginary</a></code> component exists,
 						returns a <code>Number</code> representing the <code><a href="Q.html">Q</a>.ComplexNumber <a href="#this.real">real</a></code> component,
 						otherwise returns the instance itself.
-						Note that this may prevent <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>for this instance.
+						May return a <code>Number</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
@@ -689,7 +856,9 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						by passing themselves and <code>roundToDecimal</code>
 						to <code><a href="Q.html">Q</a>.<a href="Q.html#.round">round</a></code>
 						as arguments.
-						Will return a <code>String</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>
+						Will return a <code>String</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
 						for this instance.
 					</dd>
 				</li>
@@ -703,7 +872,9 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 						Passes this instance as an argument to the
 						<a href="#.absolute"><code>absolute</code>
 						static method</a> and returns the result.
-						Will return a <code>Number</code> value, thereby preventing <a href="https://en.wikipedia.org/wiki/Method_chaining" target="_blank">function chaining</a>
+						Will return a <code>Number</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
 						for this instance.
 					</dd>
 				</li>
@@ -792,15 +963,6 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 			</ul>
 			<h4>Maths (destructive)</h4>
 			<ul class="properties">
-				<li>
-					<dt id=".prototype.absolute$">absolute$</dt>
-					<dd>
-						<code class="value-type">Function ⇒ Number</code>
-						Calls the <a href="#.prototype.absolute"><code>absolute</code>
-						instance method</a> 
-						and <code><a href="#.copy$">copies</a></code> the result to this instance.
-					</dd>
-				</li>
 				<li>
 					<dt id=".prototype.conjugate$">conjugate$</dt>
 					<dd>
