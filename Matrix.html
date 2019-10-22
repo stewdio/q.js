@@ -987,55 +987,54 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 					</dd>
 				</li>
 			</ul>			
-			
-
-
-
-
-
-
-
-
-
-
-
-
-
 			<h4>Static inspection</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".isMatrixLike">isMatrixLike</dt>
 					<dd>
-						<code class="value-type">Function( n: * ) ⇒ Boolean</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".isWithinRange">isWithinRange</dt>
-					<dd>
-						<code class="value-type">Function( n: Number, minimum: Number, maximum: Number ) ⇒ Boolean</code>
-						Description TK.
+						<code class="value-type">Function( object: * ) ⇒ Boolean</code>
+						Returns <code>true</code> 
+						if <code>object</code> is an instance of 
+						<code><a href="Q.html">Q</a>.Matrix</code>
+						or if <code><a href="Q.html">Q</a>.Matrix</code>
+						is in <code>object</code>’s prototype chain,
+						otherwise returns <code>false</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".getWidth">getWidth</dt>
 					<dd>
 						<code class="value-type">Function( m: <a href="Q.html">Q</a>.Matrix ) ⇒ Number</code>
-						Description TK.
+						Returns the number of columns in this matrix.
 					</dd>
 				</li>
 				<li>
 					<dt id=".getHeight">getHeight</dt>
 					<dd>
 						<code class="value-type">Function( m: <a href="Q.html">Q</a>.Matrix ) ⇒ Number</code>
-						Description TK.
+						Returns the number of rows in this matrix.
 					</dd>
 				</li>
 				<li>
 					<dt id=".haveEqualDimensions">haveEqualDimensions</dt>
 					<dd>
 						<code class="value-type">Function( a: <a href="Q.html">Q</a>.Matrix, b: <a href="Q.html">Q</a>.Matrix ) ⇒ Boolean</code>
-						Description TK.
+						Returns <code>true</code>
+						if both matrices have the same number of rows
+						and the same number of columns, 
+						otherwise returns <code>false</code>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".isWithinRange">isWithinRange</dt>
+					<dd>
+						<code class="value-type">Function( n: Number, minimum: Number, maximum: Number ) ⇒ Boolean</code>
+						Returns <code>true</code>
+						if <code>n</code> is an integer,
+						and is greater than or equal to <code>minimum</code>,
+						and is less than or equal to <code>maximum</code>,
+						otherwise returns <code>false</code>.
+						Used to determine if a value is a valid row or column number.
 					</dd>
 				</li>
 			</ul>
@@ -1044,74 +1043,110 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 				<li>
 					<dt id=".createSquare">createSquare</dt>
 					<dd>
-						<code class="value-type">Function( size: Number, f: Function ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						<code class="value-type">Function([ size: Number = 2[, f: Function = function(){ return 0 }]]) ⇒ <a href="Q.html">Q</a>.Matrix</code>
+						Creates a square matrix of width and height equal to <code>size</code>.
+						<code>f</code> is invoked for each cell of the matrix 
+						and is passed two arguments, 
+						<code>x: Number</code> and <code>y: Number</code>,
+						which correspond to the address of the cell.
+						The result of <code>f</code> is then assigned to that cell.
+						Returns the resulting matrix.
 					</dd>
 				</li>
 				<li>
 					<dt id=".createZero">createZero</dt>
 					<dd>
 						<code class="value-type">Function( size: Number ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Calls <code><a href="#.createSquare">createSquare</a></code> 
+						with the passed <code>size</code> argument,
+						but no function argument,
+						to yield a matrix of all zeros.
+						Returns the resulting matrix.
 					</dd>
 				</li>
 				<li>
 					<dt id=".createOne">createOne</dt>
 					<dd>
 						<code class="value-type">Function( size: Number ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Calls <code><a href="#.createSquare">createSquare</a></code> 
+						with the passed <code>size</code> argument,
+						and an <code>f</code> argument that invariably returns <code>1</code>,
+						to yield a matrix of all ones.
+						Returns the resulting matrix.
 					</dd>
 				</li>
 				<li>
 					<dt id=".createIdentity">createIdentity</dt>
 					<dd>
 						<code class="value-type">Function( size: Number ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Calls <code><a href="#.createSquare">createSquare</a></code> 
+						with the passed <code>size</code> argument,
+						and an <code>f</code> argument 
+						that yields an identity matrix.
+						Returns the resulting matrix.
 					</dd>
 				</li>
 			</ul>
 			<h4>Creation from data import</h4>
 			<ul class="properties">
-				<li>
+				<!-- li>
 					<dt id=".from">from</dt>
 					<dd>
 						<code class="value-type">Function( format: String ) ⇒ Function</code>
-						Description TK.
+						Returns a <code><a href="Q.html">Q</a>.Matrix</code> static method 
+						of the name <code>'from'+ format</code> (if one exists),
+						otherwise returns an instance of 
+						<code><a href="Q.html">Q</a>.<a href="Q.html#error">error</a></code>.
 					</dd>
-				</li>
+				</li -->
 				<li>
 					<dt id=".fromArray">fromArray</dt>
 					<dd>
 						<code class="value-type">Function( array: Array ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Ingests matrix data from an <code>Array</code> of 
+						values where each element represents a row
+						that is itself an <code>Array</code> of values,
+						and returns the result.
+						Note how this differs from the <code>Matrix</code> 
+						<a href="#Constructor">constructor</a>
+						which uses the function’s <code>Array</code>-like arguments list directly.
 					</dd>
 				</li>
 				<li>
 					<dt id=".fromXsv">fromXsv</dt>
 					<dd>
 						<code class="value-type">Function( input: String, rowSeparator: String, valueSeparator: String ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Ingests matrix data from a <code>String</code> of 
+						values that are sepearated in to rows by <code>rowSeparator</code>
+						and separated in to values (columns) by <code>valueSeparator</code>,
+						and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".fromCsv">fromCsv</dt>
 					<dd>
 						<code class="value-type">Function( csv: String ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Ingests matrix data from a <code>String</code> of 
+						comma-separated-values 
+						and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".fromTsv">fromTsv</dt>
 					<dd>
 						<code class="value-type">Function( tsv: String ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Ingests matrix data from a <code>String</code> of 
+						tab-separated-values 
+						and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".fromHtml">fromHtml</dt>
 					<dd>
 						<code class="value-type">Function( html: String ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Ingests matrix data from a <code>String</code> of 
+						HTML table code
+						and returns the result.
 					</dd>
 				</li>
 			</ul>
@@ -1121,28 +1156,29 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 					<dt id=".add">add</dt>
 					<dd>
 						<code class="value-type">Function( a: <a href="Q.html">Q</a>.Matrix, b: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Adds the two supplied matrices together and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".multiplyScalar">multiplyScalar</dt>
 					<dd>
 						<code class="value-type">Function( a: <a href="Q.html">Q</a>.Matrix, b: Number ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Multiplies the supplied matrix by the supplied scalar and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".multiply">multiply</dt>
 					<dd>
 						<code class="value-type">Function( a: <a href="Q.html">Q</a>.Matrix, b: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Multiplies the two supplied matrices together and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".multiplyTensor">multiplyTensor</dt>
 					<dd>
 						<code class="value-type">Function( a: <a href="Q.html">Q</a>.Matrix, b: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Returns the <code><a href="https://en.wikipedia.org/wiki/Tensor_product" target="_blank">tensor product</a></code>
+						of the two supplied matrices.
 					</dd>
 				</li>
 			</ul>

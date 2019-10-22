@@ -192,7 +192,7 @@ Object.assign( Q.Matrix, {
 		format = format.toLowerCase()
 		if( typeof f !== 'function' )
 			return Q.error( `Q.Matrix could not find an importer for “${format}” data.` )
-		return f()
+		return f
 	},
 	fromArray: function( array ){
 

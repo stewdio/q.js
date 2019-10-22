@@ -23,10 +23,11 @@ svg, :root {
 
 	/*  Grayscale  */
 
-	--color-black:    #000000;
-	--color-charcoal: #333333;
-	--color-chalk:    #F9F9F9;
-	--color-white:    #FFFFFF;
+	--color-black:     #000000;
+	--color-charcoal:  #333333;
+	--color-newsprint: #F3F3F3;
+	--color-chalk:     #F9F9F9;
+	--color-white:     #FFFFFF;
 
 
 	/*  Fonts  */
@@ -46,10 +47,10 @@ svg, :root {
 	--hyperlink-internal-color: var( --color-blue );
 	--hyperlink-external-color: var( --text-color );
 	
-	--highlight-color: var( --color-black );
-	--highlight-background-color: var( --color-yellow );
+	--selection-color: var( --color-black );
+	--selection-background-color: var( --color-yellow );
 
-	--background-callout-color: var( --color-chalk );
+	--background-callout-color: var( --color-white );
 
 	--svg-fill-color: var( --text-color );
 }
@@ -185,13 +186,13 @@ svg, :root {
 }
 ::-moz-selection {
 
-	background: var( --highlight-background-color );
-	color: var( --highlight-color );
+	background: var( --selection-background-color );
+	color: var( --selection-color );
 }
 ::selection {
 
-	background: var( --highlight-background-color );
-	color: var( --highlight-color );
+	background: var( --selection-background-color );
+	color: var( --selection-color );
 }
 html, body {
 
@@ -205,7 +206,7 @@ html {
 body {
 
 	margin: 0;
-	background-color: #FFF;
+	background-color: var( --color-newsprint );
 	background-image: url( 'q-background.png' );
 	background-size: 60px 60px;
 	background-attachment: fixed;
@@ -411,6 +412,7 @@ pre, code, samp {
 }
 code, samp {
 
+	/*background-color: var( --color-white );*/
 }
 samp {
 
@@ -462,7 +464,7 @@ nav {
 	width: 260px;
 	height: 100%;
 	min-height: 100vh;
-	background-color: #FFF;
+	background-color: var( --color-chalk );
 	padding: 0 1rem 8rem 0;
 	overflow: auto;
 	font-size:   1rem;
@@ -531,7 +533,7 @@ main {
 	top: 0;
 	left: 260px;
 	min-height: 100vh;
-	background-color: #FFF;
+	background-color: var( --color-chalk );
 	padding: 3rem 1em 12rem 0;
 	overflow: auto;
 	min-width: 480px;
@@ -600,7 +602,7 @@ td:hover {
 @keyframes hash-target-blink {
 
 	  0% { background-color: transparent; }
-	 50% { background-color: var( --highlight-background-color ); }
+	 50% { background-color: var( --selection-background-color ); }
 	100% { background-color: transparent; }
 }
 
@@ -943,7 +945,7 @@ table#console-open-commands {
 }
 table#console-open-commands td {
 
-	border: 1px solid #FFF;
+	border: 1px solid var( --color-newsprint );
 	padding: 0.8em 1em;
 	transition: background-color 0.5s;
 }
