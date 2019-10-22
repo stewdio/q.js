@@ -376,7 +376,7 @@ Object.assign( Q.ComplexNumber, {
 
 		return Q.ComplexNumber.operate(
 
-			'multiply', a, b,
+			'divide', a, b,
 			function( a, b ){
 				
 				return new Q.ComplexNumber( a / b )
@@ -402,6 +402,11 @@ Object.assign( Q.ComplexNumber, {
 				const 
 				conjugate   = b.conjugate(),
 				numerator   = a.multiply( conjugate ),
+
+
+				//  The .imaginary will be ZERO for sure, 
+				//  so this forces a ComplexNumber.divide( Number ) ;)
+				
 				denominator = b.multiply( conjugate ).real
 
 				return numerator.divide( denominator )
@@ -595,13 +600,19 @@ Object.assign( Q.ComplexNumber.prototype, {
 
 			if( reduced.imaginary ===  1 ) return  'i'
 			if( reduced.imaginary === -1 ) return '-i'
-			return reduced.imaginary.toFixed( roundToDecimal ) +'i'
+			if( typeof roundToDecimal === 'number' ) return reduced.imaginary.toFixed( roundToDecimal ) +'i'
+			return reduced.imaginary.toLocaleString() +'i'
 		}
 		return (
-		
-			''+ reduced.real.toFixed( roundToDecimal ) +' '+ 
+
+			( typeof roundToDecimal === 'number' ? reduced.real.toFixed( roundToDecimal ) : reduced.real.toLocaleString() )
+			+' '+ 
 			( reduced.imaginary >= 0 ? '+' : '-' ) +' '+ 
-			( imaginaryAbsolute === 1 ? 'i' : Q.round( imaginaryAbsolute, roundToDecimal ) + 'i' )
+			( imaginaryAbsolute === 1 ? 'i' :
+
+				( typeof roundToDecimal === 'number' ? Q.round( imaginaryAbsolute, roundToDecimal ) : imaginaryAbsolute.toLocaleString() )
+				+'i'
+			)
 		)
 	},
 
