@@ -584,7 +584,7 @@ Object.assign( Q.ComplexNumber.prototype, {
 		
 		//  Note: this kills function chaining.
 		
-		if( typeof roundToDecimal !== 'number' ) roundToDecimal = 16
+		//if( typeof roundToDecimal !== 'number' ) roundToDecimal = 16
 		
 		const 
 		reduced = this.reduce(),

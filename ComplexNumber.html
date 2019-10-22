@@ -376,16 +376,16 @@ i.<a href="#.prototype.power">power</a>( 2 ).<a href="#.prototype.toText">toText
 var 
 ape = new <a href="Q.html">Q</a>.ComplexNumber(),
 bee = new <a href="Q.html">Q</a>.ComplexNumber( 1 ),
-cat = new <a href="Q.html">Q</a>.ComplexNumber( 1, 2 ),
-dog = new <a href="Q.html">Q</a>.ComplexNumber( cat )
+elk = new <a href="Q.html">Q</a>.ComplexNumber( 1, 2 ),
+fox = new <a href="Q.html">Q</a>.ComplexNumber( elk )
 
 ape.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '0'</span>
 bee.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1'</span>
-cat.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1 + 2i'</span>
-dog.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1 + 2i'</span>
+elk.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1 + 2i'</span>
+fox.<a href="#.prototype.toText">toText</a>()<span class="comment">//  Returns '1 + 2i'</span>
 
-cat.<a href="#.prototype.isEqualTo">isEqualTo</a>( dog )   <span class="comment">//  Returns true</span>
-cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a><span class="comment">//  Returns false</span>
+elk.<a href="#.prototype.isEqualTo">isEqualTo</a>( fox )   <span class="comment">//  Returns true</span>
+elk.<a href="#this.index">index</a> === fox.<a href="#.prototype.index">index</a><span class="comment">//  Returns false</span>
 </pre></code>
 			<ul class="properties">
 				<li>
@@ -1080,14 +1080,22 @@ cat.<a href="#this.index">index</a> === dog.<a href="#.prototype.index">index</a
 		<script>
 
 
+
+
 // console.log( '\n\nQ.ComplexNumber\n\n', Q.ComplexNumber.help(), '\n\n' )
+
+var
+cat = new Q.ComplexNumber( 1,  2 ),
+dog = new Q.ComplexNumber( 3, -4 ),
+i   = new Q.ComplexNumber( 0,  1 )
 
 var 
 ape = new Q.ComplexNumber(),
 bee = new Q.ComplexNumber( 1 ),
-cat = new Q.ComplexNumber( 1, 2 ),
-dog = cat.clone(),//  We’re avoiding a warning here: new <a href="Q.html">Q</a>.ComplexNumber( cat ),
-i   = new Q.ComplexNumber( 0,  1 )
+elk = new Q.ComplexNumber( 1, 2 ),
+fox = elk.clone()//  We’re avoiding a warning here: new <a href="Q.html">Q</a>.ComplexNumber( cat ),
+
+
 
 			
 		</script>
