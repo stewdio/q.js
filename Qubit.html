@@ -57,7 +57,7 @@
 	</head>
 	<body>
 		<main>
-			<h3 id="Perfect_pairs">Perfect pairs</h3>
+			<h3>Perfect pairs</h3>
 			<p>
 				A <a href="https://en.wikipedia.org/wiki/Qubit" target="_blank">qubit</a>
 				is a pair of <a href="ComplexNumber.html">complex numbers</a>, 
@@ -92,7 +92,7 @@
 				<li>A qubit {<span class="symbol">a</span>=1÷√2, <span class="symbol">b</span>=1÷√2} has a 50% chance of collapsing to 0, and a 50% 
 				chance of collapsing to 1.</li>
 			</ul>
-			<h3 id="Unit_circle">Unit circle</h3>
+			<h3>Unit circle</h3>
 			<p>
 				Given the constraints above, if we plot all of the possible <em>real</em> values for 
 				<span class="symbol">a</span>, <span class="symbol">b</span> on a graph 
@@ -163,7 +163,7 @@
 					</table>
 				</div>
 			</div>
-			<h3 id="Bloch_sphere">Bloch sphere</h3>
+			<h3>Bloch sphere</h3>
 			<p>
 				But a qubit isn’t just a pair of <em>real</em> numbers—it’s a pair of <a href="ComplexNumber.html">complex numbers</a> and plotting those values requires a third dimension.
 				This transforms our unit circle in to a
@@ -205,7 +205,7 @@
 				Click and drag the Bloch Sphere to rotate it.
 			</p>
 			<hr>
-			<h3 id="Constructor">Constructor</h3>
+			<h3>Constructor</h3>
 			<p>
 				<code>Qubit</code>
 				extends the <code><a href="Matrix.html">Matrix</a></code> class
@@ -278,25 +278,75 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 			</ul>
-			<h3 id="Static_constants">Static constants</h3>
+			<hr>
+			<h3>Static properties</h3>
 			<p>
-				While <code><a href="Q.html">Q</a>.Qubit</code> constants
-				are appended directly to the 
-				<code><a href="Q.html">Q</a>.Qubit</code> object,
-				they are also appended to a 
-				<code><a href="Q.html">Q</a>.Qubit.<a href="#.constants">constants</a></code> object
-				to make looking up constants in the JavaScript console trivial,
-				and to make iterating across all constants convenient via
-				functions like 
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
-				and so on.
-				Strictly speaking, all constants are merely properties—but 
-				these particular properties are configured to be unwritable once appended via
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
-				and are labeled in uppercase to signal to us that this is so.
+				Because <code>Q.Qubit</code> extends <code>Q.<a href="Matrix.html">Matrix</a></code>,
+				the following append or replace the latter’s existing static properties.
 			</p>
+			<ul class="properties">
+				<li>
+					<dt id=".help">help</dt>
+					<dd>
+						<code class="value-type">Function ⇒ String</code>
+						Calls and returns the value of 
+						<code><a href="Q.html">Q</a>.<a href="#.help">help</a></code>,
+						passing <code><a href="Q.html">Q</a>.Qubit</code> as the argument.
+					</dd>
+				</li>
+				<li>
+					<dt id=".index">index</dt>
+					<dd>
+						<code class="value-type">Number</code>
+						The number of instances created so far.
+					</dd>
+				</li>
+			</ul>
+			<h4>Constants and constant creation</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".constants">constants</dt>
+					<dd>
+						<code class="value-type">Object</code>
+						Constants are appended <em>directly</em> to the 
+						<code><a href="Q.html">Q</a>.Qubit</code> object.
+						For convenience they are also appended to this
+						<code><a href="Q.html">Q</a>.Qubit</code>.constants</code> object
+						to make looking up constants in the JavaScript console trivial,
+						and to make iterating across all constants convenient via functions like 
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
+						and so on.
+						<!-- Configured to be unwritable once appended via
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
+						and they are labeled in uppercase to signal to us that this is so. -->
+						The intention that a property act as a constant is signaled 
+						by its labelling in all-uppercase.
+					</dd>
+				</li>
+				<li>
+					<dt id=".createConstant">createConstant</dt>
+					<dd>
+						<code class="value-type">Function( key: String, value: * )<!-- → undefined --></code>
+						Appends a property named by <code>key</code> 
+						with a value of <code>value</code>
+						to both the 
+						<code>Q</code> object 
+						and its <code><a href="#.constants">constants</a></code> property.
+					</dd>
+				</li>
+				<li>
+					<dt id=".createConstants">createConstants</dt>
+					<dd>
+						<code class="value-type">Function( … )</code>
+						Expects an even number of arguments.
+						Will use each pair in the sequence of arguments to call
+						<code><a href="#.createConstant">createConstant</a></code>.
+					</dd>
+				</li>
+			</ul>
+			<h4 id="Jones_Vectors">Constants — Jones Vectors</h4>
 			<p>
 				<code><a href="Q.html">Q</a>.Qubit</code> provides the following built-in <a href="https://en.wikipedia.org/wiki/Jones_calculus#Jones_vectors" target="_blank">Jones vectors</a>.
 			</p>
@@ -434,73 +484,8 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 					</dd>
 				</li>
 			</ul>
-			<h3 id="Static_properties">Static properties</h3>
-			<p>
-				Because <code>Q.Qubit</code> extends <code>Q.<a href="Matrix.html">Matrix</a></code>,
-				the following append or replace the latter’s existing static properties.
-			</p>
+			<h4>Self inspection</h4>
 			<ul class="properties">
-				<li>
-					<dt id=".index">index</dt>
-					<dd>
-						<code class="value-type">Number</code>
-						Initialized to zero, this number is then incremented each time an instance is created
-						in order to promote mindfulness of the total number instances in the system.
-						At the time of instance creation the instance is assigned a copy of this value
-						to its own <code><a href="#this.index">index</a></code> property.
-					</dd>
-				</li>
-				<li>
-					<dt id=".help">help</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Calls and returns the result of <code>Q.<a href="Q.html#.help">help</a>( this )</code>
-						to provide helpful context in the form of a <code>String</code>.
-						Expects no arguments.
-					</dd>
-				</li>
-				<li>
-					<dt id=".constants">constants</dt>
-					<dd>
-						<code class="value-type">Object</code>
-						While <code>Q.Qubit</code> <a href="#.constants">constants</a>
-						are appended directly to the <code>Q.Qubit</code> object,
-						they are also appended to a <code>Q.Qubit.constants</code> object
-						to make looking up constants in the JavaScript console trivial,
-						and to make iterating across all constants convenient via
-						functions like 
-						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
-						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
-						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
-						and so on.
-					</dd>
-				</li>
-				<li>
-					<dt id=".createConstant">createConstant</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Expects <code>( key, value )</code> as arguments.
-						Assigns a reference to <code>value</code> to <code>Q.Qubit[ key ]</code>
-						as well as <code>Q.Qubit.<a href="#.constants">constants</a>[ key ]</code>.
-						The former is for coding convenience (short form) while the latter
-						makes iterating across all constants convenient via
-						functions like 
-						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
-						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
-						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
-						and so on.
-					</dd>
-				</li>
-				<li>
-					<dt id=".createConstants">createConstants</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Expects an even number of arguments in the form of
-						<code>( key, value, key, value, key, value … )</code>
-						and with each <code>key</code> / <code>value</code> pair calls 
-						<code><a href="#.createConstant">createConstant</a></code>.
-					</dd>
-				</li>
 				<li>
 					<dt id=".collapse">collapse</dt>
 					<dd>
@@ -568,7 +553,8 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 
 				-->
 			</ul>
-			<h3 id="Prototype_properties">Prototype properties</h3>
+			<hr>
+			<h3>Prototype properties</h3>
 			<p>
 				Because <code>Q.Qubit</code> extends <code>Q.<a href="Matrix.html">Matrix</a></code>,
 				the following append or replace the latter’s existing prototype properties.
