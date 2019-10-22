@@ -188,9 +188,8 @@ Object.assign( Q.Matrix, {
 	from: function( format ){
 
 		if( typeof format !== 'string' ) format = 'Array'
-		format = format.toLowerCase()
-
 		const f = Q.Matrix[ 'from'+ format ]
+		format = format.toLowerCase()
 		if( typeof f !== 'function' )
 			return Q.error( `Q.Matrix could not find an importer for “${format}” data.` )
 		return f()
@@ -508,7 +507,8 @@ Object.assign( Q.Matrix.prototype, {
 
 		if( this.isValidAddress( x, y )){
 
-			if( typeof n !== 'number' ) return Q.error( `Attempted to write an invalid value (${n}) to matrix#${this.index} at x=${x}, y=${y}`, this )
+			if( typeof n === 'number' ) n = new Q.ComplexNumber( n )
+			if( n instanceof Q.ComplexNumber !== true ) return Q.error( `Attempted to write an invalid value (${n}) to matrix#${this.index} at x=${x}, y=${y}`, this )
 			this.rows[ y ][ x ] = n
 			return this
 		}

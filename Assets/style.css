@@ -402,6 +402,7 @@ pre {
 	tab-size: 4;
 	-moz-tab-size: 4;
 	overflow: auto;
+	white-space: pre-wrap;
 }
 pre, code, samp {
 

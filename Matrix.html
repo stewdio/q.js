@@ -52,10 +52,10 @@
 	</head>
 	<body>
 		<main>
-			<h3 id="Table_of_numbers">Table of numbers</h3>
+			<h3>Grid of numbers</h3>
 			<p>
 				A <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)" target="_blank">matrix</a>
-				is just a table of numbers; rows and columns containing values.
+				is just a grid of numbers; rows and columns containing values.
 				Matrices can be of any size.
 				Here’s an example of a 3 × 2 matrix. 
 				It is 3 columns wide and 2 rows tall,
@@ -199,7 +199,7 @@ var a = new <a href="Q.html">Q</a>.Matrix(
 					<dt id="this.index">index</dt>
 					<dd>
 						<code class="value-type">Number</code>
-						An auto-incrementing identification number assigned to the instance,
+						An identification number assigned to the instance,
 						used for minding the total number of instances created.
 					</dd>
 				</li>
@@ -214,28 +214,73 @@ var a = new <a href="Q.html">Q</a>.Matrix(
 				<li><a href="#.fromCsv">Comma separated values (CSV)</a></li>
 				<li><a href="#.fromTsv">Tab separated values (TSV)</a></li>
 				<li><a href="#.fromXsv">Arbitrary character separated values (XSV)</a></li>
-				<li><a href="#.fromHtml">HTML tables</a></li>
+				<li><a href="#.fromHtml">HTML table code</a></li>
 			</ul>
-			<h3 id="Static_constants">Static constants</h3>
-			<p>
-				While <code><a href="Q.html">Q</a>.Matrix</code> constants
-				are appended directly to the 
-				<code><a href="Q.html">Q</a>.Matrix</code> object,
-				they are also appended to a 
-				<code><a href="Q.html">Q</a>.Matrix.<a href="#.constants">constants</a></code> object
-				to make looking up constants in the JavaScript console trivial,
-				and to make iterating across all constants convenient via
-				functions like 
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
-				and so on.
-				Strictly speaking, all constants are merely properties—but 
-				these particular properties are configured to be unwritable once appended via
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
-				and are labeled in uppercase to signal to us that this is so.
-			</p>
-			<h4 id="Example_matrices">Example matrices</h4>
+			<hr>
+			<h3 id="Static_properties">Static properties</h3>
+			<ul class="properties">
+				<li>
+					<dt id=".help">help</dt>
+					<dd>
+						<code class="value-type">Function([ f: Function ]) ⇒ String</code>
+						Calls and returns the value of 
+						<code><a href="Q.html">Q</a>.<a href="#.help">help</a></code>,
+						passing <code><a href="Q.html">Q</a>.Matrix</code> as the argument.
+					</dd>
+				</li>
+				<li>
+					<dt id=".index">index</dt>
+					<dd>
+						<code class="value-type">Number</code>
+						The number of instances created so far.
+					</dd>
+				</li>
+			</ul>
+			<h4>Constants and constant creation</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".constants">constants</dt>
+					<dd>
+						<code class="value-type">Object</code>
+						Constants are appended <em>directly</em> to the 
+						<code><a href="Q.html">Q</a>.Matrix</code> object.
+						For convenience they are also appended to this
+						<code><a href="Q.html">Q</a>.Matrix</code>.constants</code> object
+						to make looking up constants in the JavaScript console trivial,
+						and to make iterating across all constants convenient via functions like 
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
+						and so on.
+						<!-- Configured to be unwritable once appended via
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
+						and they are labeled in uppercase to signal to us that this is so. -->
+						The intention that a property act as a constant is signaled 
+						by its labelling in all-uppercase.
+					</dd>
+				</li>
+				<li>
+					<dt id=".createConstant">createConstant</dt>
+					<dd>
+						<code class="value-type">Function( key: String, value: * )<!-- → undefined --></code>
+						Appends a property named by <code>key</code> 
+						with a value of <code>value</code>
+						to both the 
+						<code>Q</code> object 
+						and its <code><a href="#.constants">constants</a></code> property.
+					</dd>
+				</li>
+				<li>
+					<dt id=".createConstants">createConstants</dt>
+					<dd>
+						<code class="value-type">Function( … )</code>
+						Expects an even number of arguments.
+						Will use each pair in the sequence of arguments to call
+						<code><a href="#.createConstant">createConstant</a></code>.
+					</dd>
+				</li>
+			</ul>
+			<h4 id="Example_matrices">Constants — Example matrices</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".IDENTITY_2X2">IDENTITY_2X2</dt>
@@ -524,7 +569,7 @@ new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 			</ul>
-			<h4 id="Quantum_gates_2x2">Quantum gates, 2 × 2</h4>
+			<h4 id="Quantum_gates_2x2">Constants — Quantum gates, 2 × 2</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".HADAMARD">HADAMARD</dt>
@@ -694,7 +739,7 @@ new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 			</ul>
-			<h4 id="Quantum_gates_2x2">Quantum gates, 4 × 4</h4>
+			<h4 id="Quantum_gates_2x2">Constants — Quantum gates, 4 × 4</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".CONTROLLED_NOT">CONTROLLED_NOT</dt>
@@ -837,7 +882,7 @@ new <a href="Q.html">Q</a>.Matrix(
 					</dd>
 				</li>
 			</ul>
-			<h4 id="Quantum_gates_2x2">Quantum gates, 8 × 8</h4>
+			<h4 id="Quantum_gates_2x2">Constants — Quantum gates, 8 × 8</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".TOFFOLI">TOFFOLI</dt>
@@ -941,110 +986,86 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 						</div>
 					</dd>
 				</li>
-			</ul>
-			<h3 id="Static_properties">Static properties</h3>
-			<ul class="properties">
-				<li>
-					<dt id=".index">index</dt>
-					<dd>
-						<code class="value-type">Number</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".help">help</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".constants">constants</dt>
-					<dd>
-						<code class="value-type">Object</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".createConstant">createConstant</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".createConstants">createConstants</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-			</ul>
+			</ul>			
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
 			<h4>Static inspection</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".isMatrixLike">isMatrixLike</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( n: * ) ⇒ Boolean</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".isWithinRange">isWithinRange</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( n: Number, minimum: Number, maximum: Number ) ⇒ Boolean</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".getWidth">getWidth</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( m: <a href="Q.html">Q</a>.Matrix ) ⇒ Number</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".getHeight">getHeight</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( m: <a href="Q.html">Q</a>.Matrix ) ⇒ Number</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".haveEqualDimensions">haveEqualDimensions</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( a: <a href="Q.html">Q</a>.Matrix, b: <a href="Q.html">Q</a>.Matrix ) ⇒ Boolean</code>
 						Description TK.
 					</dd>
 				</li>
 			</ul>
-			<h4>Simple creation</h4>
+			<h4>Creation from description</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".createSquare">createSquare</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( size: Number, f: Function ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".createZero">createZero</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( size: Number ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".createOne">createOne</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( size: Number ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".createIdentity">createIdentity</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( size: Number ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
@@ -1054,42 +1075,42 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 				<li>
 					<dt id=".from">from</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( format: String ) ⇒ Function</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".fromArray">fromArray</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( array: Array ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".fromXsv">fromXsv</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( input: String, rowSeparator: String, valueSeparator: String ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".fromCsv">fromCsv</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( csv: String ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".fromTsv">fromTsv</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( tsv: String ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".fromHtml">fromHtml</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( html: String ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
@@ -1099,164 +1120,219 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 				<li>
 					<dt id=".add">add</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( a: <a href="Q.html">Q</a>.Matrix, b: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".multiplyScalar">multiplyScalar</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( a: <a href="Q.html">Q</a>.Matrix, b: Number ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".multiply">multiply</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( a: <a href="Q.html">Q</a>.Matrix, b: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".multiplyTensor">multiplyTensor</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( a: <a href="Q.html">Q</a>.Matrix, b: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 			</ul>
+			<hr>
 			<h3 id="Prototype_properties">Prototype properties</h3>
-			<h4>Internal inspection</h4>
+			<h4>Self inspection</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".prototype.isValidRow">isValidRow</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( row: Number ) ⇒ Boolean</code>
 						Description TK.
+						Will return a <code>Boolean</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.isValidColumn">isValidColumn</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( column: Number ) ⇒ Boolean</code>
 						Description TK.
+						Will return a <code>Boolean</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.isValidAddress">isValidAddress</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( x: Number, y: Number ) ⇒ Boolean</code>
 						Description TK.
+						Will return a <code>Boolean</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.getWidth">getWidth</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function ⇒ Number</code>
 						Description TK.
+						Will return a <code>Number</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.getHeight">getHeight</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function ⇒ Number</code>
 						Description TK.
+						Will return a <code>Number</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
+						for this instance.
 					</dd>
 				</li>
 			</ul>
-			<h4>Data exports methods (non-destructive by nature)</h4>
+			<h4>Data export (non-destructive)</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".prototype.read">read</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( x: Number, y: Number ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
 						Description TK.
+						Will return a <code>Number</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.clone">clone</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.toArray">toArray</dt>
 					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
+						<code class="value-type">Function ⇒ Array</code>
+						Will return an <code>Array</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.toXsv">toXsv</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function ⇒ String</code>
 						Description TK.
+						Will return a <code>String</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.toCsv">toCsv</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function ⇒ String</code>
 						Description TK.
+						Will return a <code>String</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.toTsv">toTsv</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function ⇒ String</code>
 						Description TK.
+						Will return a <code>String</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
+						for this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.toHtml">toHtml</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function ⇒ String</code>
 						Description TK.
+						Will return a <code>String</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
+						for this instance.
+					</dd>
+				</li>
+				<li>
+					<dt id=".prototype.toHtml">toDom</dt>
+					<dd>
+						<code class="value-type">Function ⇒ DocumentFragment</code>
+						Arriving soon.
+						Will return a <code>DocumentFragment</code> value, 
+						thereby halting 
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
+						for this instance.
 					</dd>
 				</li>
 			</ul>
-			<h4>Data import methods (destructive)</h4>
+			<h4>Data import (destructive)</h4>
 			<ul class="properties">
 				<li>
 					<dt id=".prototype.write$">write$</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( x: Number, y: Number, n: Number or <a  href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.copy$">copy$</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.fromArray$">fromArray$</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( array: Array ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.fromCsv$">fromCsv$</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( csv: String ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.fromTsv$">fromTsv$</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( tsv: String ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.fromHtml$">fromHtml$</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( html: String ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
@@ -1266,28 +1342,28 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 				<li>
 					<dt id=".prototype.add">add</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( otherMatrix: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.multiplyScalar">multiplyScalar</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( scalar: Number ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.multiply">multiply</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( otherMatrix: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.multiplyTensor">multiplyTensor</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( otherMatrix: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
@@ -1297,14 +1373,14 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 				<li>
 					<dt id=".prototype.add$">add$</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( otherMatrix: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.multiplyScalar$">multiplyScalar$</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function( otherMatrix: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
 					</dd>
 				</li>
