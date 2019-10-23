@@ -1279,15 +1279,19 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 					<dt id=".prototype.clone">clone</dt>
 					<dd>
 						<code class="value-type">Function ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
-
+						Returns a new instance with the value for
+						<code><a href="#this.rows">rows</a></code>
+						copied from this instance.
+						The <a href="#Constructor">constructor</a> will 
+						populate the values for <code><a href="#this.columns">columns</a></code> as well.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.toArray">toArray</dt>
 					<dd>
 						<code class="value-type">Function ⇒ Array</code>
-						Description TK.
+						Returns the value of this instance’s
+						<code><a href="#this.rows">rows</a></code> property.
 						Will return an <code>Array</code> value, 
 						thereby halting 
 						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
@@ -1297,8 +1301,9 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 				<li>
 					<dt id=".prototype.toXsv">toXsv</dt>
 					<dd>
-						<code class="value-type">Function ⇒ String</code>
-						Description TK.
+						<code class="value-type">Function( rowSeparator: String, valueSeparator: String ) ⇒ String</code>
+						Returns the value of this matrix
+						expressed as a <code>String</code> delimited by the supplied arguments.
 						Will return a <code>String</code> value, 
 						thereby halting 
 						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
@@ -1309,7 +1314,7 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 					<dt id=".prototype.toCsv">toCsv</dt>
 					<dd>
 						<code class="value-type">Function ⇒ String</code>
-						Description TK.
+						Creates a comma-separated-values table and returns it as a <code>String</code>.
 						Will return a <code>String</code> value, 
 						thereby halting 
 						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
@@ -1320,7 +1325,7 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 					<dt id=".prototype.toTsv">toTsv</dt>
 					<dd>
 						<code class="value-type">Function ⇒ String</code>
-						Description TK.
+						Creates a tab-separated-values table and returns it as a <code>String</code>.
 						Will return a <code>String</code> value, 
 						thereby halting 
 						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
@@ -1331,7 +1336,7 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 					<dt id=".prototype.toHtml">toHtml</dt>
 					<dd>
 						<code class="value-type">Function ⇒ String</code>
-						Description TK.
+						Creates HTML table code and returns it as a <code>String</code>.
 						Will return a <code>String</code> value, 
 						thereby halting 
 						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
@@ -1356,42 +1361,77 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 					<dt id=".prototype.write$">write$</dt>
 					<dd>
 						<code class="value-type">Function( x: Number, y: Number, n: Number or <a  href="Q.html">Q</a>.ComplexNumber ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Writes a value, <code>n</code>, to the specified cell address
+						of this matrix.
+						Equivalent to 
+						<code>this.columns[ x ][ y ] = n</code>,
+						or 
+						<code>this.rows[ y ][ x ] = n</code>,
+						but with safety checks.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.copy$">copy$</dt>
 					<dd>
-						<code class="value-type">Function( <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						<code class="value-type">Function( m: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
+						Copies the value for
+						<code><a href="#this.rows">rows</a></code>
+						from the supplied argument, <code>m</code>,
+						if <code>m</code>
+						is a matrix of equal dimensions to this instance,
+						otherwise returns <code><a href="Q.html">Q</a>.<a href="Q.html#.error">error</a></code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.fromArray$">fromArray$</dt>
 					<dd>
 						<code class="value-type">Function( array: Array ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Passes the supplied 
+						<code>array</code> argument
+						to the 
+						<a href="#.fromArray"><code>fromArray</code> static method</a>,
+						then uses 
+						<code><a href="#.prototype.copy$">copy$</a></code>
+						to copy that result in to this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.fromCsv$">fromCsv$</dt>
 					<dd>
 						<code class="value-type">Function( csv: String ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Passes the supplied 
+						<code>csv</code> argument
+						to the 
+						<a href="#.fromCsv"><code>fromCsv</code> static method</a>,
+						then uses 
+						<code><a href="#.prototype.copy$">copy$</a></code>
+						to copy that result in to this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.fromTsv$">fromTsv$</dt>
 					<dd>
 						<code class="value-type">Function( tsv: String ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Passes the supplied 
+						<code>tsv</code> argument
+						to the 
+						<a href="#.fromTsv"><code>fromTsv</code> static method</a>,
+						then uses 
+						<code><a href="#.prototype.copy$">copy$</a></code>
+						to copy that result in to this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.fromHtml$">fromHtml$</dt>
 					<dd>
 						<code class="value-type">Function( html: String ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Passes the supplied 
+						<code>html</code> argument
+						to the 
+						<a href="#.fromHtml"><code>fromHtml</code> static method</a>,
+						then uses 
+						<code><a href="#.prototype.copy$">copy$</a></code>
+						to copy that result in to this instance.
 					</dd>
 				</li>
 			</ul>
@@ -1401,28 +1441,44 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 					<dt id=".prototype.add">add</dt>
 					<dd>
 						<code class="value-type">Function( otherMatrix: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Passes this instance as the first argument 
+						and <code>otherMatrix</code> as the second argument
+						to the
+						<a href="#.add"><code>add</code> static method</a>
+						and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.multiplyScalar">multiplyScalar</dt>
 					<dd>
 						<code class="value-type">Function( scalar: Number ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Passes this instance as the first argument 
+						and <code>otherMatrix</code> as the second argument
+						to the
+						<a href="#.multiplyScalar"><code>multiplyScalar</code> static method</a>
+						and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.multiply">multiply</dt>
 					<dd>
 						<code class="value-type">Function( otherMatrix: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Passes this instance as the first argument 
+						and <code>otherMatrix</code> as the second argument
+						to the
+						<a href="#.multiply"><code>multiply</code> static method</a>
+						and returns the result.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.multiplyTensor">multiplyTensor</dt>
 					<dd>
 						<code class="value-type">Function( otherMatrix: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Passes this instance as the first argument 
+						and <code>otherMatrix</code> as the second argument
+						to the
+						<a href="#.multiplyTensor"><code>multiplyTensor</code> static method</a>
+						and returns the result.
 					</dd>
 				</li>
 			</ul>
@@ -1432,14 +1488,20 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 					<dt id=".prototype.add$">add$</dt>
 					<dd>
 						<code class="value-type">Function( otherMatrix: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Calls the <a href="#.prototype.add"><code>add</code>
+						instance method</a> 
+						with <code>otherMatrix</code> as an argument
+						and <code><a href="#.copy$">copies</a></code> the result to this instance.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.multiplyScalar$">multiplyScalar$</dt>
 					<dd>
 						<code class="value-type">Function( otherMatrix: <a href="Q.html">Q</a>.Matrix ) ⇒ <a href="Q.html">Q</a>.Matrix</code>
-						Description TK.
+						Calls the <a href="#.prototype.multiplyScalar"><code>multiplyScalar</code>
+						instance method</a> 
+						with <code>otherMatrix</code> as an argument
+						and <code><a href="#.copy$">copies</a></code> the result to this instance.
 					</dd>
 				</li>
 			</ul>

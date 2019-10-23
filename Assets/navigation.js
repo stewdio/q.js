@@ -38,6 +38,10 @@ document.addEventListener( 'DOMContentLoaded', function(){
 					</svg>
 				</a>
 			</h1>
+			<div id="veggie-burger">
+				<div id="top-dexter"></div>
+				<div id="bottom-sinister"></div>
+			</div>
 		</header>
 		<ul>
 			<li><h2><a href="Q.html">Q</a></h2></li>
@@ -57,6 +61,29 @@ document.addEventListener( 'DOMContentLoaded', function(){
 			link.classList.add( 'selected' )
 		}
 	})
+
+
+	const 
+	vb = document.getElementById( 'veggie-burger' ),
+	vbOpen  = function(){
+
+		nav.classList.add( 'expand' )
+		vb.isOpen = true
+	},
+	vbClose = function(){
+
+		nav.classList.remove( 'expand' )
+		vb.isOpen = false
+	},
+	vbToggle = function(){
+
+		if( vb.isOpen ) vbClose()
+		else vbOpen()
+	}
+	
+	vb.isOpen = false
+	vb.addEventListener( 'mousedown', vbToggle )
+	vb.addEventListener( 'touchstart', vbToggle )
 
 	
 	Array.from( document.querySelectorAll( 'main h2, main h3, main h4' )).forEach( function( el ){

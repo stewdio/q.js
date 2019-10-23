@@ -1470,13 +1470,25 @@ table#console-open-commands .na {
 
 
 
+#veggie-burger {
 
+	display: none;
+}
 
 @media( max-width: 600px ){
 	
 	html {
 
 		font-size: 16px;
+	}
+	header {
+
+		position: relative;
+	}
+	header h1 svg {
+
+		width:  6rem;
+		height: 3rem;
 	}
 	nav {
 
@@ -1492,15 +1504,64 @@ table#console-open-commands .na {
 	nav ul li a {
 
 		display: none;
-		padding-left: 5.6rem;
+		padding-left: 4.6rem;
 	}
 	nav h1 a {
 
 		display: block;
 	}
-	nav:hover a, nav a.selected {
+	/*nav:hover a, */
+
+	nav.expand a {
 
 		display: block;
+	}
+	nav a.selected {
+
+		display: block;
+	}
+	#veggie-burger {
+
+		z-index: 90;
+		display: block;
+		position: absolute;
+		right:  0;
+		top:    0;
+		width:  5rem;
+		height: 100%;
+		background-color: var( --color-white );
+		color: var( --hyperlink-internal-color );
+		text-align: center;
+		cursor: pointer;
+	}
+	#top-dexter, #bottom-sinister {
+
+		position: absolute;
+		left:  30%;
+		width: 40%;
+		height: 3px;
+		background-color: var( --hyperlink-internal-color );
+		overflow: hidden;
+		transform-origin: 20% center;
+		transition-duration: 0.3s;
+		transition-property: transform;
+		transition-timing-function: ease-out;
+	}
+	#top-dexter {
+
+		top: 40%;
+	}
+	#bottom-sinister {
+
+		bottom: 40%;
+	}
+	nav.expand #top-dexter {
+
+		transform: rotate( 45deg );
+	}
+	nav.expand #bottom-sinister {
+
+		transform: rotate( -45deg );
 	}
 	main {
 
