@@ -599,7 +599,7 @@ main {
 main > h3, main > h4, main > p, main > ul, main > footer {
 
 	margin-left:  1rem;
-	margin-right: 1rem;
+	/*margin-right: 1rem;*/
 }
 main a {
 
@@ -1489,11 +1489,16 @@ table#console-open-commands .na {
 		padding-bottom: 0;
 		box-shadow: 0 0 0.8rem rgba( 0, 0, 0, 0.5 );
 	}
-	nav ul {
+	nav ul li a {
 
 		display: none;
+		padding-left: 5.6rem;
 	}
-	nav:hover ul {
+	nav h1 a {
+
+		display: block;
+	}
+	nav:hover a, nav a.selected {
 
 		display: block;
 	}
