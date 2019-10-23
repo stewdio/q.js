@@ -203,6 +203,11 @@ html {
 
 	font-size: 14px;
 }
+
+
+
+
+
 body {
 
 	margin: 0;
@@ -277,33 +282,31 @@ a[ target=_blank ]:hover svg {
 }*/
 
 .section-anchor {
-
+	
 	display: inline-block;
+	position: absolute;
+	left: -2rem;
 	width: 2rem;
 	font-size: 0.8rem;
 	font-weight: 400;
 }
-dt .section-anchor {
-
-	position: absolute;
-	left: -2rem;
-}
 .section-anchor a {
-		
+	
+	display: block;
 	position: relative;
 	color: var( --hyperlink-internal-color );
 }
 h3 .section-anchor a {
 
-	top: -0.62em;
+	top: -0.3rem;
 }
 h4 .section-anchor a {
 
-	top: -0.3em;
+	top: -0.3rem;
 }
 dt .section-anchor a {
 	
-	top: -0.1em;
+	top: -0.3rem;
 }
 .section-anchor a:hover {
 
@@ -324,6 +327,7 @@ dt .section-anchor a {
 
 h1, h2, h3, h4 {
 
+	position: relative;
 	margin:  0;
 	padding: 0;
 	color: #000;
@@ -465,7 +469,7 @@ nav {
 	height: 100%;
 	min-height: 100vh;
 	background-color: var( --color-chalk );
-	padding: 0 1rem 8rem 0;
+	padding: 0 0 8rem 0;
 	overflow: auto;
 	font-size:   1rem;
 	line-height: 3.2rem;
@@ -534,16 +538,17 @@ main {
 	left: 260px;
 	min-height: 100vh;
 	background-color: var( --color-chalk );
-	padding: 3rem 1em 12rem 0;
+	padding: 3rem 1rem 12rem 1rem;
 	overflow: auto;
-	min-width: 480px;
+	min-width: 320px;
 	max-width: 620px;
 	font-size:   1.0rem;
 	line-height: 1.8rem;
 }
-main > p, main > ul, main > footer {
+main > h3, main > h4, main > p, main > ul, main > footer {
 
-	margin: 0 2rem;
+	margin-left:  2rem;
+	margin-right: 2rem;
 }
 main a {
 
@@ -1412,6 +1417,42 @@ table#console-open-commands .na {
 	font-family: var( --font-family-sans );
 }
 
+
+
+
+
+@media( max-width: 600px ){
+	
+	html {
+
+		font-size: 16px;
+	}
+	nav {
+
+		position: fixed;
+		top:  0;
+		left: 0;
+		width: 100%;
+		height: auto;
+		min-height: auto;
+		padding-bottom: 0;
+		box-shadow: 0 0 0.8rem rgba( 0, 0, 0, 0.5 );
+	}
+	nav ul {
+
+		display: none;
+	}
+	nav:hover ul {
+
+		display: block;
+	}
+	main {
+
+		left:  0;
+		width: 100%;
+		padding-top: 8rem;
+	}
+}
 
 
 
