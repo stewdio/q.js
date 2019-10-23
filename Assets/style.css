@@ -223,6 +223,8 @@ svg, :root {
 	padding: 0;
 	-webkit-font-smoothing: antialiased;
   	-moz-osx-font-smoothing: grayscale;
+
+	overflow-wrap: break-word;
 }
 ::-moz-selection {
 
@@ -399,6 +401,10 @@ hr {
 	background-color: #333;
 	padding: 0;
 }
+/*footer {
+
+	overflow-wrap: break-word;
+}*/
 hr + p, hr + footer {
 
 	padding-top: 1rem;
