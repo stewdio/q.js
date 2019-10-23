@@ -595,7 +595,14 @@ Object.assign( Q.ComplexNumber.prototype, {
 		reduced = this.reduce(),
 		imaginaryAbsolute = Math.abs( reduced.imaginary )
 		
-		if( Q.ComplexNumber.isNumberLike( reduced )) return ''+ Q.round( reduced, roundToDecimal )
+		if( Q.ComplexNumber.isNumberLike( reduced )){
+			
+			if( typeof roundToDecimal === 'number' ){
+
+				return ''+ Q.round( reduced, roundToDecimal )
+			}
+			else return reduced.toLocaleString()
+		}
 		if( reduced.real === 0 ){
 
 			if( reduced.imaginary ===  1 ) return  'i'

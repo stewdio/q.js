@@ -1,15 +1,7 @@
 
 
 
-
 Q.Gate = function( params ){
-
-	`
-	
-		SEE ALSO
-	
-	https://en.wikipedia.org/wiki/Quantum_logic_gate
-	`
 
 	Object.assign( this, params )
 	this.index = Q.Gate.index ++
@@ -22,6 +14,7 @@ Q.Gate = function( params ){
 	}
 	const scope = this
 	this.applyTo = function(){
+
 
 		//  TO DO:
 		//  make sure arguments are all instances of Q.Qubit!
@@ -85,9 +78,13 @@ Q.Gate.createConstants(
 
 		name:  'Hadamard',
 		label: 'H',
+		matrix: new Q.Matrix(
+			[ Math.SQRT1_2,  Math.SQRT1_2 ],
+			[ Math.SQRT1_2, -Math.SQRT1_2 ]),
 		operation: function( qubit ){
 
-			return new Q.Qubit( Q.Matrix.HADAMARD.multiply( qubit ))
+			//return new Q.Qubit( Q.Matrix.HADAMARD.multiply( qubit ))
+			return new Q.Qubit( this.matrix.multiply( qubit ))
 		}}),
 	
 	'PAULI_X', new Q.Gate({//  Rπ
