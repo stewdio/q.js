@@ -1,3 +1,43 @@
+@charset "utf-8";
+/*
+
+
+	Mobile devices in portrait orientation sorted by
+	  CSS Viewport Width descending, 
+	  Pixel Ratio descending, 
+	  Release Date descending.
+
+
+	Device         Released     Viewport     Rat   Pixels         PPI
+	─────────────────────────────────────────────────────────────────
+	iPhone XS Max  2018 Sep     414 × 896    3     1242 × 2688    458
+	iPhone XR      2018 Oct     414 × 896    2      828 × 1792    326
+	iPhone 8+      2017 Sep     414 × 736    3~    1080 × 1920    401
+	iPhone 7+      2016 Sep     414 × 736    3~    1080 × 1920    401
+	iPhone 6s+     2015 Sep     414 × 736    3~    1080 × 1920    401
+	iPhone 6+      2014 Sep     414 × 736    3~    1080 × 1920    401
+	Pixel 3 XL     2018 Oct     412 × 847    4~    1440 × 2960    523
+	Pixel 3        2018 Oct     412 × 824    3~    1080 × 2160    443
+	Pixel 2 XL     2017 Oct     412 × 732    4~    1440 × 2880    538
+	Pixel 1 XL     2016 Oct     412 × 732    4~    1440 × 2560    534
+	Pixel 2        2017 Oct     412 × 732    3~    1080 × 1920    441
+	Pixel 1        2016 Oct     412 × 732    3~    1080 × 1920    441
+	iPhone Xs      2018 Sep     375 × 812    3     1125 × 2436    458
+	iPhone X       2017 Nov     375 × 812    3     1125 × 2436    458
+	iPhone 8       2017 Sep     375 × 667    2      750 × 1334    326
+	iPhone 7       2016 Sep     375 × 667    2      750 × 1334    326
+	iPhone 6s      2015 Sep     375 × 667    2      750 × 1334    326
+	iPhone 6       2014 Sep     375 × 667    2      750 × 1334    326
+	iPhone SE      2016 Mar     320 × 568    2      640 × 1136    326
+
+
+	https://www.paintcodeapp.com/news/ultimate-guide-to-iphone-resolutions
+	https://mediag.com/blog/popular-screen-resolutions-designing-for-all/
+
+
+
+
+*/
 
 
 
