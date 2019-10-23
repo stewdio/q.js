@@ -1190,8 +1190,11 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 				<li>
 					<dt id=".prototype.isValidRow">isValidRow</dt>
 					<dd>
-						<code class="value-type">Function( row: Number ) ⇒ Boolean</code>
-						Description TK.
+						<code class="value-type">Function( rowIndex: Number ) ⇒ Boolean</code>
+						Returns true if <code>rowIndex</code>
+						is greater than or equal to zero
+						and is less than the height of this matrix,
+						otherwise returns <code>false</code>.
 						Will return a <code>Boolean</code> value, 
 						thereby halting 
 						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
@@ -1201,8 +1204,11 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 				<li>
 					<dt id=".prototype.isValidColumn">isValidColumn</dt>
 					<dd>
-						<code class="value-type">Function( column: Number ) ⇒ Boolean</code>
-						Description TK.
+						<code class="value-type">Function( columnIndex: Number ) ⇒ Boolean</code>
+						Returns true if <code>columnIndex</code>
+						is greater than or equal to zero
+						and is less than the width of this matrix,
+						otherwise returns <code>false</code>.
 						Will return a <code>Boolean</code> value, 
 						thereby halting 
 						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
@@ -1213,7 +1219,10 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 					<dt id=".prototype.isValidAddress">isValidAddress</dt>
 					<dd>
 						<code class="value-type">Function( x: Number, y: Number ) ⇒ Boolean</code>
-						Description TK.
+						Returns <code>true</code>
+						if <code>x</code> is a valid row index
+						and <code>y</code> is a valid column index,
+						otherwise returns <code>false</code>.
 						Will return a <code>Boolean</code> value, 
 						thereby halting 
 						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
@@ -1224,7 +1233,9 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 					<dt id=".prototype.getWidth">getWidth</dt>
 					<dd>
 						<code class="value-type">Function ⇒ Number</code>
-						Description TK.
+						Calls and returns the value of 
+						<code><a href="Q.html">Q</a>.Matrix.<a href="#.getWidth">getWidth</a></code>,
+						passing itself as the argument.
 						Will return a <code>Number</code> value, 
 						thereby halting 
 						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
@@ -1235,7 +1246,9 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 					<dt id=".prototype.getHeight">getHeight</dt>
 					<dd>
 						<code class="value-type">Function ⇒ Number</code>
-						Description TK.
+						Calls and returns the value of 
+						<code><a href="Q.html">Q</a>.Matrix.<a href="#.getHeight">getHeight</a></code>,
+						passing itself as the argument.
 						Will return a <code>Number</code> value, 
 						thereby halting 
 						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
@@ -1249,7 +1262,13 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 					<dt id=".prototype.read">read</dt>
 					<dd>
 						<code class="value-type">Function( x: Number, y: Number ) ⇒ <a href="Q.html">Q</a>.ComplexNumber</code>
-						Description TK.
+						Returns the value of this matrix’s cell at row <code>y</code>
+						and column <code>x</code>.
+						Equivalent to 
+						<code>this.columns[ x ][ y ]</code>
+						or 
+						<code>this.rows[ y ][ x ]</code>
+						but with safety mechanisms.
 						Will return a <code>Number</code> value, 
 						thereby halting 
 						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
@@ -1261,12 +1280,14 @@ new <a href="Q.html">Q</a>.Matrix(<span class="comment">//  Fredkin</span>
 					<dd>
 						<code class="value-type">Function ⇒ <a href="Q.html">Q</a>.Matrix</code>
 						Description TK.
+
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.toArray">toArray</dt>
 					<dd>
 						<code class="value-type">Function ⇒ Array</code>
+						Description TK.
 						Will return an <code>Array</code> value, 
 						thereby halting 
 						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
