@@ -113,7 +113,7 @@ var fox = new <a href="Q.html">Q</a>.Gate({
 				<li>
 					<dt id="this.applyTo">applyTo</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function ⇒ Array</code>
 						Calls the supplied <code>operation</code> function and ensures the result is an array.
 					</dd>
 				</li>
@@ -126,23 +126,71 @@ var fox = new <a href="Q.html">Q</a>.Gate({
 					</dd>
 				</li>
 			</ul>
-			<h3>Static constants</h3>
-			<p>
-				While <code><a href="Q.html">Q</a>.Gate</code> constants
-				are appended directly to the <code><a href="Q.html">Q</a>.Gate</code> object,
-				they are also appended to the <code><a href="Q.html">Q</a>.Gate.constants</code> object
-				to make looking up constants in the JavaScript console trivial,
-				and to make iterating across all constants convenient via
-				functions like 
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
-				and so on.
-				Strictly speaking, all constants are properties—but 
-				these particular properties are configured to be unwritable once appended via
-				<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
-				and they are labeled in uppercase to signal to us that this is so.
-			</p>
+			<hr>
+			<h3>Static properties</h3>
+			<ul class="properties">
+				<li>
+					<dt id=".help">help</dt>
+					<dd>
+						<code class="value-type">Function ⇒ String</code>
+						Calls and returns the value of 
+						<code><a href="Q.html">Q</a>.<a href="#.help">help</a></code>,
+						passing <code><a href="Q.html">Q</a>.Gate</code> as the argument.
+					</dd>
+				</li>
+				<li>
+					<dt id=".index">index</dt>
+					<dd>
+						<code class="value-type">Number</code>
+						The number of instances created so far.
+					</dd>
+				</li>
+			</ul>
+			<h4>Constants and constant creation</h4>
+			<ul class="properties">
+				<li>
+					<dt id=".constants">constants</dt>
+					<dd>
+						<code class="value-type">Object</code>
+						Constants are appended <em>directly</em> to the 
+						<code><a href="Q.html">Q</a>.Gate</code> object.
+						For convenience they are also appended to this
+						<code><a href="Q.html">Q</a>.Gate</code>.constants</code> object
+						to make looking up constants in the JavaScript console trivial,
+						and to make iterating across all constants convenient via functions like 
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
+						and so on.
+						<!-- Configured to be unwritable once appended via
+						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank">Object.defineProperty</a></code>
+						and they are labeled in uppercase to signal to us that this is so. -->
+						The intention that a property act as a constant is signaled 
+						by its labelling in all-uppercase.
+					</dd>
+				</li>
+				<li>
+					<dt id=".createConstant">createConstant</dt>
+					<dd>
+						<code class="value-type">Function( key: String, value: * )<!-- → undefined --></code>
+						Appends a property named by <code>key</code> 
+						with a value of <code>value</code>
+						to both the 
+						<code>Gate</code> object 
+						and its <code><a href="#.constants">constants</a></code> property.
+					</dd>
+				</li>
+				<li>
+					<dt id=".createConstants">createConstants</dt>
+					<dd>
+						<code class="value-type">Function( … )</code>
+						Expects an even number of arguments.
+						Will use each pair in the sequence of arguments to call
+						<code><a href="#.createConstant">createConstant</a></code>.
+					</dd>
+				</li>
+			</ul>
+			<h4>Operations without matrices</h3>
 			<ul class="properties">
 				<li>
 					<dt id=".IDENTITY">IDENTITY</dt>
@@ -214,14 +262,15 @@ new <a href="Q.html">Q</a>.Gate({
 
 	name:  'Hadamard',
 	label: 'H',
+	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+			[ Math.SQRT1_2,  Math.SQRT1_2 ],
+			[ Math.SQRT1_2, -Math.SQRT1_2 ]),
 	operation: function( qubit ){
 
-		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>.<a href="Matrix.html#.HADAMARD">HADAMARD</a>.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
+		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
 	}
 })
 </code></pre>
-						Matrix representation as declared in
-						<code><a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>.<a href="Matrix.html#.HADAMARD">HADAMARD</a></code>:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -248,16 +297,33 @@ new <a href="Q.html">Q</a>.Gate({
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 <pre><code>
-new Q.Gate({//  Rπ
+new <a href="Q.html">Q</a>.Gate({<span class="comment">//  Rπ</span>
 
 	name:  'Pauli X',
 	label: 'X',
+	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+		[ 0, 1 ],
+		[ 1, 0 ]),
 	operation: function( qubit ){
 
-		return new Q.Qubit( Q.Matrix.PAULI_X.multiply( qubit ))
+		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
 	}
 })
 </code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>0</td><td>1</td>
+									</tr>
+									<tr>
+										<td>1</td><td>0</td>
+									</tr>
+								</table>
+							</div>
+						</div>
 					</dd>
 				</li>
 				<li>
@@ -265,16 +331,33 @@ new Q.Gate({//  Rπ
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 <pre><code>
-new Q.Gate({
+new <a href="Q.html">Q</a>.Gate({
 
 	name:  'Pauli Y',
-	label: 'Y', 
+	label: 'Y',
+	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+		[ 0, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, -1 )],
+		[ new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 ), 0 ]),
 	operation: function( qubit ){
 
-		return new Q.Qubit( Q.Matrix.PAULI_Y.multiply( qubit ))
+		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
 	}
 })
 </code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>0</td><td class="symbol">-i</td>
+									</tr>
+									<tr>
+										<td class="symbol">i</td><td>0</td>
+									</tr>
+								</table>
+							</div>
+						</div>
 					</dd>
 				</li>
 				<li>
@@ -282,16 +365,33 @@ new Q.Gate({
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 <pre><code>
-new Q.Gate({
+new <a href="Q.html">Q</a>.Gate({
 
 	name:  'Pauli Z',
 	label: 'Z', 
+	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+		[ 1,  0 ],
+		[ 0, -1 ]),
 	operation: function( qubit ){
 
-		return new Q.Qubit( Q.Matrix.PAULI_Z.multiply( qubit ))
+		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
 	}
 })
 </code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>-1</td>
+									</tr>
+								</table>
+							</div>
+						</div>
 					</dd>
 				</li>
 				<li>
@@ -299,16 +399,33 @@ new Q.Gate({
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 <pre><code>
-new Q.Gate({
+new <a href="Q.html">Q</a>.Gate({
 
 	name:  'Phase',
 	label: 'S',
+	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+		[ 1, 0 ],
+		[ 0, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )]),
 	operation: function( qubit ){
 
-		return new Q.Qubit( Q.Matrix.PHASE.multiply( qubit ))
+		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
 	}
 })
 </code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td class="symbol">i</td>
+									</tr>
+								</table>
+							</div>
+						</div>
 					</dd>
 				</li>
 				<li>
@@ -316,16 +433,33 @@ new Q.Gate({
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 <pre><code>
-new Q.Gate({
+new <a href="Q.html">Q</a>.Gate({
 
 	name:  'π ÷ 8',
 	label: 'T',
+	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+		[ 1, 0 ],
+		[ 0, <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>.<a href="ComplexNumber.html#.E">E</a>.<a href="ComplexNumber.html#.prototype.power">power</a>( new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, Math.PI / 4 )) ]),
 	operation: function( qubit ){
 
-		return new Q.Qubit( Q.Matrix.PI_8.multiply( qubit ))
+		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
 	}
 })
 </code></pre>
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td class="symbol">e<sup>iπ ÷ 4</sup></td>
+									</tr>
+								</table>
+							</div>
+						</div>
 					</dd>
 				</li>
 			</ul>
@@ -377,66 +511,32 @@ new Q.Gate({
 					</dd>
 				</li>
 			</ul>
-			<h3 id="Static_properties">Static properties</h3>
-			<ul class="properties">
-				<li>
-					<dt id=".index">index</dt>
-					<dd>
-						<code class="value-type">Number</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".help">help</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".constants">constants</dt>
-					<dd>
-						<code class="value-type">Object</code>
-						While <code>Q.Gate</code> <a href="#Static_constants">constants</a>
-						are appended directly to the <code>Q.Gate</code> object,
-						they are also appended to a <code>Q.Gate.constants</code> object
-						to make looking up constants in the JavaScript console trivial,
-						and to make iterating across all constants convenient via
-						functions like 
-						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank">Object.entries</a></code>,
-						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys" target="_blank">Object.keys</a></code>,
-						<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values" target="_blank">Object.values</a></code>,
-						and so on.
-					</dd>
-				</li>
-				<li>
-					<dt id=".createConstant">createConstant</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
-					<dt id=".createConstants">createConstants</dt>
-					<dd>
-						<code class="value-type">Function</code>
-						Description TK.
-					</dd>
-				</li>
-			</ul>
+			
+
+
+
+
+
+
+
+
+
+
+
+			<hr>
 			<h3 id="Prototype_properties">Prototype properties</h3>
 			<ul class="properties">
 				<li>
 					<dt id=".prototype.toText">toText</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function ⇒ String</code>
 						Returns a <code>String</code> of text to represent this <code>Gate</code>.
 					</dd>
 				</li>
 				<li>
 					<dt id=".prototype.toHtml">toHtml</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function ⇒ String</code>
 						Returns a <code>String</code> of HTML code to represent this <code>Gate</code>.
 						(In the future should this return a collection of actual DOM elements instead?)
 					</dd>

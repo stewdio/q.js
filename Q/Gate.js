@@ -74,6 +74,11 @@ Q.Gate.createConstants(
 
 
 
+	//  Hadamard
+	//   ┌───┐
+	//  ─┤ H ├─
+	//   └───┘
+
 	'HADAMARD', new Q.Gate({
 
 		name:  'Hadamard',
@@ -83,53 +88,97 @@ Q.Gate.createConstants(
 			[ Math.SQRT1_2, -Math.SQRT1_2 ]),
 		operation: function( qubit ){
 
-			//return new Q.Qubit( Q.Matrix.HADAMARD.multiply( qubit ))
 			return new Q.Qubit( this.matrix.multiply( qubit ))
 		}}),
 	
+
+	//  Pauli X
+	//   ┌───┐
+	//  ─┤ X ├─
+	//   └───┘
+
 	'PAULI_X', new Q.Gate({//  Rπ
 
 		name:  'Pauli X',
 		label: 'X',
+		matrix: new Q.Matrix(
+			[ 0, 1 ],
+			[ 1, 0 ]),
 		operation: function( qubit ){
 
-			return new Q.Qubit( Q.Matrix.PAULI_X.multiply( qubit ))
+			return new Q.Qubit( this.matrix.multiply( qubit ))
 		}}),
 	
+
+	//  Pauli Y
+	//   ┌───┐
+	//  ─┤ Y ├─
+	//   └───┘
+
 	'PAULI_Y', new Q.Gate({
 
 		name:  'Pauli Y',
-		label: 'Y', 
+		label: 'Y',
+		matrix: new Q.Matrix(
+			[ 0, new Q.ComplexNumber( 0, -1 )],
+			[ new Q.ComplexNumber( 0, 1 ), 0 ]),
 		operation: function( qubit ){
 
-			return new Q.Qubit( Q.Matrix.PAULI_Y.multiply( qubit ))
+			return new Q.Qubit( this.matrix.multiply( qubit ))
 		}}),
 	
+
+	//  Pauli Z
+	//   ┌───┐
+	//  ─┤ Z ├─
+	//   └───┘
+
 	'PAULI_Z', new Q.Gate({
 
 		name:  'Pauli Z',
-		label: 'Z', 
+		label: 'Z',
+		matrix: new Q.Matrix(
+			[ 1,  0 ],
+			[ 0, -1 ]),
 		operation: function( qubit ){
 
-			return new Q.Qubit( Q.Matrix.PAULI_Z.multiply( qubit ))
+			return new Q.Qubit( this.matrix.multiply( qubit ))
 		}}),
 	
+
+	//  Phase
+	//   ┌───┐
+	//  ─┤ S ├─
+	//   └───┘
+
 	'PHASE', new Q.Gate({
 
 		name:  'Phase',
 		label: 'S',
+		matrix: new Q.Matrix(
+			[ 1, 0 ],
+			[ 0, new Q.ComplexNumber( 0, 1 )]),
 		operation: function( qubit ){
 
-			return new Q.Qubit( Q.Matrix.PHASE.multiply( qubit ))
+			return new Q.Qubit( this.matrix.multiply( qubit ))
 		}}),
+	
+
+	//  π / 8
+	//   ┌───┐
+	//  ─┤ T ├─
+	//   └───┘
 	
 	'PI_8', new Q.Gate({
 
 		name:  'π ÷ 8',
 		label: 'T',
+		matrix: new Q.Matrix(
+			[ 1, 0 ],
+			[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, Math.PI / 4 )) ]),
 		operation: function( qubit ){
 
-			return new Q.Qubit( Q.Matrix.PI_8.multiply( qubit ))
+			return new Q.Qubit( this.matrix.multiply( qubit ))
 		}}),
 
 
@@ -169,6 +218,11 @@ const result = Q.Matrix.CONTROLLED_NOT.multiply( controlQubit.multiplyTensor( ta
 		name:  'Controlled Not (C-Not)',
 		label: 'C', 
 		bandwidth: 2,
+		matrix: new Q.Matrix(
+			[ 1, 0, 0, 0 ],
+			[ 0, 1, 0, 0 ],
+			[ 0, 0, 0, 1 ],
+			[ 0, 0, 1, 0 ]),
 		operation: function( controlQubit, targetQubit ){
 
 // console.log('controlQubit', controlQubit )
@@ -182,7 +236,7 @@ const result = Q.Matrix.CONTROLLED_NOT.multiply( controlQubit.multiplyTensor( ta
 			// console.log( 'targetQubit', targetQubit.toTsv() )
 			// console.log( 'tensor', tensor.toTsv() )
 
-			const result = Q.Matrix.CONTROLLED_NOT.multiply( tensor )
+			const result = this.matrix.multiply( tensor )
 
 
 //  actually this seems to describe it well:
