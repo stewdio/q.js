@@ -302,7 +302,8 @@ a:hover svg {
 a[ target=_blank ]{
 
 	color: var( --hyperlink-external-color );
-	text-decoration: #CCC underline;
+	text-decoration-line: underline;
+	text-decoration-color: #CCC;
 }
 a[ target=_blank ] svg {
 
@@ -457,7 +458,7 @@ pre {
 	tab-size: 4;
 	-moz-tab-size: 4;
 	overflow: auto;
-	white-space: pre-wrap;
+	/*white-space: pre-wrap;*/
 }
 pre, code, samp {
 
