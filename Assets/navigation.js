@@ -75,15 +75,18 @@ document.addEventListener( 'DOMContentLoaded', function(){
 		nav.classList.remove( 'expand' )
 		vb.isOpen = false
 	},
-	vbToggle = function(){
+	vbToggle = function( event ){
 
+		event.preventDefault()
+		event.stopPropagation()
 		if( vb.isOpen ) vbClose()
 		else vbOpen()
 	}
 	
 	vb.isOpen = false
-	vb.addEventListener( 'mousedown', vbToggle )
+	//vb.addEventListener( 'mousedown', vbToggle )
 	// vb.addEventListener( 'touchstart', vbToggle )
+	vb.addEventListener( 'click', vbToggle )
 
 	
 	Array.from( document.querySelectorAll( 'main h2, main h3, main h4' )).forEach( function( el ){
