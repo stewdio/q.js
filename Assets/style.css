@@ -323,6 +323,9 @@ a[ target=_blank ]:hover svg {
 	content:  " \2197 ";
 }*/
 
+
+
+
 .section-anchor {
 	
 	display: inline-block;
@@ -331,6 +334,7 @@ a[ target=_blank ]:hover svg {
 	width: 2rem;
 	font-size: 0.8rem;
 	font-weight: 400;
+	text-align: center;
 }
 .section-anchor a {
 	
@@ -382,8 +386,8 @@ h3, h4 {
 }
 h3 {
 
-	padding-top:    1.6em;
-	padding-bottom: 0.2em;
+	padding-top:    1.4em;
+	padding-bottom: 0.4em;
 	font-size: 2em;
 }
 h4 {
@@ -593,8 +597,8 @@ main {
 }
 main > h3, main > h4, main > p, main > ul, main > footer {
 
-	margin-left:  2rem;
-	margin-right: 2rem;
+	margin-left:  1rem;
+	margin-right: 1rem;
 }
 main a {
 
