@@ -703,13 +703,17 @@ Object.assign( Q.Circuit.prototype, {
 		
 		const moment0Element = document.createElement( 'td' )
 		moment0Element.classList.add( 'qjs-moment-label' )
-		moment0Element.innerText = 't0'
+		//moment0Element.innerText = 't0'
+		//moment0Element.innerHTML = 'moment<br>0'
+		moment0Element.innerHTML = 'moment <strong>0</strong>'
 		timewidthElement.appendChild( moment0Element )
 		table.forEach( function( moment, m ){
 
 			const momentElement = document.createElement( 'td' )
 			momentElement.classList.add( 'qjs-moment-label', 'qjs-moment-label-movable' )
-			momentElement.innerText = 't'+ ( m + 1 )
+			//momentElement.innerText = 't'+ ( m + 1 )
+			//momentElement.innerHTML = 'moment<br>'+ ( m + 1 )
+			momentElement.innerHTML = 'moment <strong>'+ ( m + 1 ) +'</strong>'
 			timewidthElement.appendChild( momentElement )
 		})
 		circuitElement.appendChild( timewidthElement )
@@ -725,7 +729,7 @@ Object.assign( Q.Circuit.prototype, {
 			const registerElement = document.createElement( 'td' )
 			registerElement.classList.add( 'qjs-register', 'qjs-qubit-label' )
 			registerElement.setAttribute( 'title', 'Register #'+ q )
-			registerElement.innerText = 'q'+ q
+			registerElement.innerHTML = 'qubit <strong>'+ q +'</strong>'
 			rowElement.appendChild( registerElement )
 
 

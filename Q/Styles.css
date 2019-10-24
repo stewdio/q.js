@@ -40,6 +40,15 @@ table.qjs-circuit {
 
 
 
+.qjs-moment-label, .qjs-qubit-label {
+
+	font-size:  0.8em;
+	font-family: var( --font-family-sans );
+	line-height: 1.4;
+}
+
+
+
 .qjs-moment-label {
 
 	border-top-left-radius:  1em;
@@ -102,6 +111,8 @@ td.qjs-null-cell:hover {
 	background-color: #FFF;
 	text-align: center;
 	color: #000;
+	font-family: var( --font-family-sans );
+	font-weight: 900;
 }
 .qjs-operation-identity {
 
