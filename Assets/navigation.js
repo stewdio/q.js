@@ -93,6 +93,7 @@ document.addEventListener( 'DOMContentLoaded', function(){
 	//vb.addEventListener( 'mousedown', vbToggle )
 	// vb.addEventListener( 'touchstart', vbToggle )
 	vb.addEventListener( 'click', vbToggle )
+	document.querySelector( 'main' ).addEventListener( 'click', vbClose )
 
 	
 	Array.from( document.querySelectorAll( 'main h2, main h3, main h4' )).forEach( function( el ){

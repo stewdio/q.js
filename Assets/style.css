@@ -1487,6 +1487,10 @@ table#console-open-commands .na {
 /*****************/
 
 
+:root{
+
+	-webkit-tap-highlight-color: transparent;
+}
 header h1 svg {
 
 	transition: width, height;
@@ -1525,8 +1529,9 @@ header h1 svg {
 		left: 0;
 		width: 100%;
 		height: auto;
-		min-height: auto;
-		padding-bottom: 0;
+		min-height: 0;
+		padding: 0;
+		margin: 0;
 		box-shadow: 0 0 0.5rem rgba( 0, 0, 0, 0.5 );
 	}
 	nav li a {
@@ -1554,6 +1559,12 @@ header h1 svg {
 		height: 3rem;
 	}
 
+
+
+nav ul {
+	
+		/*background-color: orange;*/
+}
 
 
 
