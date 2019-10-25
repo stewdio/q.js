@@ -39,8 +39,9 @@ document.addEventListener( 'DOMContentLoaded', function(){
 				</a>
 			</h1>
 			<div id="veggie-burger">
-				<div id="top-dexter"></div>
-				<div id="bottom-sinister"></div>
+				<div id="vb-top-dexter"></div>
+				<div id="vb-middle"></div>
+				<div id="vb-bottom-sinister"></div>
 			</div>
 		</header>
 		<ul>
@@ -52,7 +53,8 @@ document.addEventListener( 'DOMContentLoaded', function(){
 			<li><h2><a href="Circuit.html">Circuit</a></h2></li>
 		</ul>
 	`
-	document.body.appendChild( nav )
+	// document.body.appendChild( nav )
+	document.body.prepend( nav )
 	Array.from( nav.getElementsByTagName( 'a' )).forEach( function( link ){
 
 		if( link.pathname === document.location.pathname ||
@@ -61,6 +63,10 @@ document.addEventListener( 'DOMContentLoaded', function(){
 			link.classList.add( 'selected' )
 		}
 	})
+	if( nav.querySelectorAll( 'h1 a.selected' ).length ){
+
+		nav.classList.add( 'home' )
+	}
 
 
 	const 

@@ -553,7 +553,8 @@ nav li {
 nav li a {
 
 	display: block;
-	padding: 0 0 0 3rem;
+	height: 3.2rem;
+	padding: 0 0 0 3rem;	
 	font-family: var( --font-family-mono );
 }
 nav a.selected {
@@ -673,11 +674,11 @@ td:hover {
 ul.properties {
 
 	margin-top: 0.8em;
-	border-top: 1px solid #DDD;
+	border-top: 1px solid var( --color-newsprint );
 }
 ul.properties li {
 
-	border-bottom: 1px solid #DDD;
+	border-bottom: 1px solid var( --color-newsprint );
 	list-style: none;
 	padding: 0.8em 0;
 }
@@ -1479,17 +1480,69 @@ table#console-open-commands .na {
 
 
 
+    /*****************/
+   /*               */
+  /*   Mini mode   */
+ /*               */
+/*****************/
 
+
+header h1 svg {
+
+	transition: width, height;
+	transition-duration: 0.2s;
+}
 #veggie-burger {
 
 	display: none;
 }
+/*main {
 
+	transition: border-top, left;
+	transition-duration: 0.2s;
+}*/
 @media( max-width: 600px ){
 	
 	html {
 
 		font-size: 16px;
+	}
+	body {
+
+		background-color: var( --color-white );
+		background-image: none;
+		overflow: hidden;
+
+	}
+	
+
+
+
+	nav {
+
+		position: absolute;
+		top:  0;
+		left: 0;
+		width: 100%;
+		height: auto;
+		min-height: auto;
+		padding-bottom: 0;
+		box-shadow: 0 0 0.5rem rgba( 0, 0, 0, 0.5 );
+	}
+	nav li a {
+
+		height: 0;
+		padding-left: 4.5rem;
+		opacity: 0;
+		transition-duration: 0.2s;
+		transition-property: height, opacity;
+		transition-timing-function: ease-out;
+	}
+	nav.expand li a,
+	nav li a.selected {
+
+		height: 3.2rem;
+		opacity: 1;
 	}
 	header {
 
@@ -1500,41 +1553,6 @@ table#console-open-commands .na {
 		width:  6rem;
 		height: 3rem;
 	}
-	nav {
-
-		position: fixed;
-		top:  0;
-		left: 0;
-		width: 100%;
-		height: auto;
-		min-height: auto;
-		padding-bottom: 0;
-		box-shadow: 0 0 1rem rgba( 0, 0, 0, 0.3 );
-	}
-	nav ul li a {
-
-		display: none;
-		padding-left: 4.6rem;
-	}
-	nav h1 a {
-
-		display: block;
-	}
-	/*nav:hover a, */
-
-	nav.expand a {
-
-		display: block;
-	}
-	nav a.selected {
-
-		display: block;
-	}
-
-
-
-
-
 
 
 
@@ -1548,38 +1566,59 @@ table#console-open-commands .na {
 		top:    0;
 		width:  5rem;
 		height: 100%;
-		/*background-color: var( --color-white );*/
+		/*background-color: var( --color-newsprint );*/
 		color: var( --hyperlink-internal-color );
 		text-align: center;
 		cursor: pointer;
 	}
-	#top-dexter, #bottom-sinister {
+	#vb-top-dexter, 
+	#vb-middle, 
+	#vb-bottom-sinister {
 
 		position: absolute;
-		left:  30%;
-		width: 40%;
-		height: 3px;
+		left:  33.3%;
+		width: 33.3%;
+		height: 2px;
 		background-color: var( --hyperlink-internal-color );
 		overflow: hidden;
-		transform-origin: 20% center;
-		transition-duration: 0.3s;
-		transition-property: transform;
-		transition-timing-function: ease-out;
+		transform-origin: center center;
+		transition-delay:    0.1s, 0s;
+		transition-duration: 0.1s, 0.1s;
+		transition-property: top, transform;
+		transition-timing-function: linear, ease-in-out;
 	}
-	#top-dexter {
+	#vb-top-dexter {
 
-		top: 40%;
+		top: calc( 39% - 2px );
 	}
-	#bottom-sinister {
+	#vb-middle {
 
-		bottom: 40%;
+		top: calc( 50% - 2px);
+		transition-property: opacity;
+		transition-delay: 0.1s;
+		transition-duration: 0s;
 	}
-	nav.expand #top-dexter {
+	#vb-bottom-sinister {
 
+		top: calc( 61% - 2px );
+	}
+	nav.expand #vb-top-dexter,
+	nav.expand #vb-bottom-sinister {
+
+		transition-delay: 0s, 0.1s;
+	}
+	nav.expand #vb-top-dexter {
+
+		top: calc( 50% - 1px );
 		transform: rotate( 45deg );
 	}
-	nav.expand #bottom-sinister {
+	nav.expand #vb-middle {
 
+		opacity: 0;
+	}
+	nav.expand #vb-bottom-sinister {
+
+		top: calc( 50% - 1px );
 		transform: rotate( -45deg );
 	}
 
@@ -1588,12 +1627,24 @@ table#console-open-commands .na {
 
 	main {
 
+		position: absolute;
+		top:   0;
 		left:  0;
 		width: 100%;
-		height: auto;
-		padding-top: 12rem;
+		border-top: 8.2rem solid white;
+		/*height: calc( 100% - 100rem);*/
+		height: 100%;
+		padding-top: 2rem;
+		overflow: scroll;
+		box-shadow: none;
+	}
+	nav.home ~ main {
+
+		border-top: 5rem solid white;
 	}
 }
+
+
 
 
 
