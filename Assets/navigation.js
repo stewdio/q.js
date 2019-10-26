@@ -13,13 +13,16 @@ function onHashChange(){
 		setTimeout( function(){
 
 			const 
-			navHeight = document.getElementsByTagName( 'nav' )[ 0 ].offsetHeight,
-			rootEm = parseFloat( window.getComputedStyle( document.body ).fontSize )
+			//nav = document.getElementsByTagName( 'nav' )[ 0 ],
+			//navIsExpanded = nav.classList.contains( 'expand' ),
+			//navHeight = nav.offsetHeight,
+			rootEm = parseFloat( window.getComputedStyle( document.body ).fontSize ),
+			dropAmount = rootEm * 10// + ( navIsExpanded === true ? navHeight : 0 )
 
 			window.scrollTo( 
 
 				hashTarget.offsetLeft,
-				hashTarget.offsetTop - navHeight - rootEm - rootEm
+				hashTarget.offsetTop - dropAmount
 			)
 
 		}, 10 )

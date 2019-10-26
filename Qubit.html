@@ -61,39 +61,244 @@
 			<h3>Perfect pairs</h3>
 			<p>
 				A <a href="https://en.wikipedia.org/wiki/Qubit" target="_blank">qubit</a>
-				is a pair of <a href="ComplexNumber.html">complex numbers</a>, 
-				<span class="symbol">a</span> and <span class="symbol">b</span>,
-				such that |<span class="symbol">a</span>|<sup>2</sup> + |<span class="symbol">b</span>|<sup>2</sup> = 1. 
+				is just a pair of numbers.
+				That’s all they are—two 
+				<a href="https://youtu.be/YYOKMUTTDdA" target="_blank">shiny happy number values,
+				holding hands</a>.
+				Traditionally, we use 
+				“<a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket terminology</a>”
+				to refer to these two numbers—calling
+				the first number 
+				“<code><a href="Qubit.html#this.bra">bra</a></code>” 
+				and the second one 
+				“<code><a href="Qubit.html#this.ket">ket</a></code>.”
+				(I know that sounds a little childish and stupid, but then so is high school.)
+				So when you think of a qubit you can imagine it as 
+				a 1 × 2 <a href="Matrix.html">matrix</a>
+				containing a 
+				<code><a href="Qubit.html#this.bra">bra</a></code> value on the top
+				and a 
+				<code><a href="Qubit.html#this.ket">ket</a></code> value on the bottom,
+				like so:
+			</p>
+			<div class="center">
+				<div class="matrix">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>bra</td></tr>
+						<tr><td>ket</td></tr>
+					</table>
+				</div>
+			</div>
+			<br>
+			<p>
+				Because these two numbers 
+				share a predictable relationship with each other,
+				if we know the value of one number 
+				then we have a pretty good idea what the value of the other is.
+				If you know the 
+				<code><a href="Qubit.html#this.bra">bra</a></code>
+				you know the 
+				<code><a href="Qubit.html#this.ket">ket</a></code>.
+				(Or nearly so.)
+				For this reason, when we discuss the value of a qubit
+				we often only refer to one of these values instead of both.
+				By convention the value we choose to represent a qubit
+				is its 
+				<code><a href="Qubit.html#this.ket">ket</a></code> value.
+				So when we say “this qubit has a value of zero”
+				what we’re really saying is that its 
+				<code><a href="Qubit.html#this.ket">ket</a></code> value is <code>0</code>:
+			</p>
+			<div class="center maths">
+				“zero” =
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>bra: 1</td></tr>
+						<tr><td>ket: 0</td></tr>
+					</table>
+				</div>
+			</div>
+			<br>
+			<p>
+				Conversely, when we say “this qubit has a value of one”
+				we’re claiming that its 
+				<code><a href="Qubit.html#this.ket">ket</a></code> value is <code>1</code>:
+			</p>
+			<div class="center maths">
+				“one” =
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>bra: 0</td></tr>
+						<tr><td>ket: 1</td></tr>
+					</table>
+				</div>
+			</div>
+			<br>
+			<h4>Bra-ket notation</h4>
+			<p>
+				<a href="https://en.wikipedia.org/wiki/Paul_Dirac" target="_blank">Paul Dirac</a>’s 
+				<a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket notation</a>
+				offers us a more compact (and quantum-specific)
+				means of describing qubit states.
+				Let’s look again at the 
+				<a href="Matrix.html">matrix</a> form
+				for a qubit in a “zero” state:
+			</p>
+			<div class="center maths">
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>1</td></tr>
+						<tr><td>0</td></tr>
+					</table>
+				</div>
+			</div>
+			<br>
+			<p>
+				With <a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket notation</a>
+				we can rewrite the 
+				<a href="Matrix.html">matrix</a>
+				in <a href="https://en.wikipedia.org/wiki/Row_and_column_vectors" target="_blank">vector form</a> like so:
+				<span class="complex-vector bra">1</span>
+				<span class="complex-vector ket">0</span>
+				And because we generally only need one of the two
+				<code><a href="Qubit.html#this.bra">bra</a></code> / 
+				<code><a href="Qubit.html#this.ket">ket</a></code> pairs,
+				we can conveniently separate them in to
+				<span class="complex-vector bra">1</span>
+				<span>and</span>
+				<span class="complex-vector ket">0</span>.
+				So now when we refer to a “zero” qubit we can represent that as
+				<span class="complex-vector ket">0</span>,
+				and a “one” qubit as 
+				<span class="complex-vector ket">1</span>.
+			</p>
+			<h3 id="Predictable_couple">A predictable couple</h3>
+			<p>
+				The thing that makes this pair of numbers special
+				is their relationship to each other.
+				We can express this relationship as
+				|<code><a href="Qubit.html#this.bra">bra</a></code>|<sup>2</sup> + 
+				|<code><a href="Qubit.html#this.ket">ket</a></code>|<sup>2</sup> = 1. 
 				That is to the say, 
-				the absolute value of <span class="symbol">a</span> 
-				multiplied by the absolute value of <span class="symbol">a</span>, 
-				added to the absolute value of <span class="symbol">b</span> 
-				multiplied by absolute value of <span class="symbol">b</span>,
+				the absolute value of
+				<code><a href="Qubit.html#this.bra">bra</a></code>
+				multiplied by the absolute value of 
+				<code><a href="Qubit.html#this.bra">bra</a></code>, 
+				added to the absolute value of 
+				<code><a href="Qubit.html#this.ket">ket</a></code>
+				multiplied by the absolute value of 
+				<code><a href="Qubit.html#this.ket">ket</a></code>,
 				equals one.
+				This is what defines a qubit.
+				If a pair of numbers does <em>not</em> satisfy this equation
+				then it is not a qubit. (Sorry.)
 			</p>
 			<p>
-				Qubits are represented by
-				<a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket notation</a>. 
-				Our <span class="symbol">a</span> argument represents our qubit’s “bra” 
-				while our <span class="symbol">b</span> argument 
-				represents our qubit’s “ket”—the part we are ultimately concerned with. 
-				A qubit may be in 
-				<a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>, 
-				ie. its target bit is neither 0 
-				or 1, but somewhere in between.
-				The probability that upon measurement the qubit bit will “collapse” to zero is 
-				|<span class="symbol">a</span>|<sup>2</sup>, while the 
-				probability that the qubit will collapse to one is 
-				|<span class="symbol">b</span>|<sup>2</sup>. 
+				Keen mathematical minds might be asking
+				why we must take the absolute value of a number
+				before squaring it.
+				Doesn’t multiplying a number by itself automatically yield an absolute value?
+				Oh, dear readers…
+				Things are about to get more <em>complex</em>.
+			</p>
+			<h4 id="Complex_couple">But also a complex couple</h4>
+			<p>
+				So far we’ve described qubits as containing
+				<code><a href="Qubit.html#this.bra">bra</a></code>
+				and 
+				<code><a href="Qubit.html#this.ket">ket</a></code>
+				values ranging from <code>0</code> to <code>1</code>,
+				and that remains true—but there’s more to the story.
+				Qubits are actually made of 
+				<a href="ComplexNumber.html">complex number</a> pairs,
+				meaning there is an <em>imaginary component.</em>
+				So <em>one</em> qubit is actually made of <em>four</em> parts:
+				The <code><a href="Qubit.html#this.bra">bra</a></code>
+				has a ① <code><a href="ComplexNumber.html#this.real">real</a></code>
+				component and an ②
+				<code><a href="ComplexNumber.html#this.imaginary">imaginary</a></code>
+				one.
+				The <code><a href="Qubit.html#this.ket">ket</a></code>
+				also has a ③ <code><a href="ComplexNumber.html#this.real">real</a></code>
+				component and an ④
+				<code><a href="ComplexNumber.html#this.imaginary">imaginary</a></code>
+				one.
+				(See <code><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code> for more details.)
+				This makes 
+				<a href="Qubit.html#Visualizing_qubit_states">visualizing qubit states</a> all the more interesting.
+			</p>
+
+			<h3>Superposition</h3>
+			<p>
+				You’ve probably heard the term 
+				“<a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>”—and along with that 
+				you’ve likely been spoonfed some measure of mysticism; 
+				<a href="https://youtu.be/CMdHDHEuOUE">pizza-bagels</a> and whatnot.
+				In the real, physical world, superposition is indeed weird magic.
+				But in quantum computing it’s dead simple.
+				Superposition is any qubit state other than
+				<span class="complex-vector ket">0</span>
+				or
+				<span class="complex-vector ket">1</span>.
+				That’s it.
+				That’s all there is to it.
+			</p>
+			<p>
+				What the 
+				<code><a href="Qubit.html#this.bra">bra</a></code>
+				and 
+				<code><a href="Qubit.html#this.ket">ket</a></code>
+				values represent are the probabilities that a qubit,
+				when measured, will be in either a
+				<span class="complex-vector ket">0</span>
+				or a
+				<span class="complex-vector ket">1</span>
+				state.
+				Measurement itself causes a qubit’s
+				<a href="https://en.wikipedia.org/wiki/Wave_function_collapse"  target="_blank">probability wave to collapse</a>,
+				brining an end to its superposition.
+				The probabilty that upon measurement a qubit will 
+				<a href="#.prototype.collapse">collapse</a> to 
+				<span class="complex-vector ket">0</span>
+				is |<code><a href="Qubit.html#this.bra">bra</a></code>|<sup>2</sup>,
+				while the probabilty that it will 
+				<a href="#.prototype.collapse">collapse</a> to 
+				<span class="complex-vector ket">1</span>
+				is |<code><a href="Qubit.html#this.ket">ket</a></code>|<sup>2</sup>.
 			</p>
 			<br>
 			<ul>
-				<li>A qubit {<span class="symbol">a</span>=1, <span class="symbol">b</span>=0} has a 100% chance of collapsing to 0.</li>
-				<li>A qubit {<span class="symbol">a</span>=0, <span class="symbol">b</span>=1} has a 100% chance of collapsing to 1.</li>
-				<li>A qubit {<span class="symbol">a</span>=1÷√2, <span class="symbol">b</span>=1÷√2} has a 50% chance of collapsing to 0, and a 50% 
-				chance of collapsing to 1.</li>
+				<li>
+					A qubit, <code>{
+						<a href="Qubit.html#this.bra">bra</a>: 1,
+						<a href="Qubit.html#this.bra">ket</a>: 0
+					}</code>, has a 100% chance of collapsing to <span class="complex-vector ket">0</span>.
+				</li>
+				<li>
+					A qubit, <code>{
+						<a href="Qubit.html#this.bra">bra</a>: 0,
+						<a href="Qubit.html#this.bra">ket</a>: 1
+					}</code>, has a 100% chance of collapsing to <span class="complex-vector ket">1</span>.
+				</li>
+				<li>
+					A qubit, <code>{
+						<a href="Qubit.html#this.bra">bra</a>: 1÷√2,
+						<a href="Qubit.html#this.bra">ket</a>: 1÷√2
+					}</code>, 
+					has a 50% chance of collapsing to <span class="complex-vector ket">0</span>
+					and a 50% chance of collapsing to <span class="complex-vector ket">1</span>.
+				</li>
 			</ul>
-			<h3>Unit circle</h3>
+			<br>
+			<h3>Visualizing qubit states</h3>
 			<p>
 				Given the constraints above, if we plot all of the possible <em>real</em> values for 
 				<span class="symbol">a</span>, <span class="symbol">b</span> on a graph 
@@ -164,7 +369,7 @@
 					</table>
 				</div>
 			</div>
-			<h3>Bloch sphere</h3>
+			<h4 id="Bloch_sphere">The Bloch sphere</h4>
 			<p>
 				But a qubit isn’t just a pair of <em>real</em> numbers—it’s a pair of <a href="ComplexNumber.html">complex numbers</a> and plotting those values requires a third dimension.
 				This transforms our unit circle in to a
@@ -490,7 +695,7 @@ var a = new <a href="Q.html">Q</a>.Qubit( 0, 1 )
 				<li>
 					<dt id=".collapse">collapse</dt>
 					<dd>
-						<code class="value-type">Function</code>
+						<code class="value-type">Function ⇒ <a href="Q.html">Q</a>.Qubit</code>
 						Expects a single <code>Q.Qubit</code> instance as argument.
 						Returns a new <code>Q.Qubit</code> randomly chosen to be either
 						<code>new Qubit( 1, 0 )</code> (<code><a href="#.HORIZONTAL">HORIZONTAL</a></code>)

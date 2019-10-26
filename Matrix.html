@@ -62,7 +62,7 @@
 				It is 3 columns wide and 2 rows tall,
 				containing the values 1 through 6.
 			</p>
-			<div class="maths">
+			<div class="maths center">
 				<div class="matrix">
 					<div class="matrix-bracket-left"></div>
 					<div class="matrix-bracket-right"></div>
@@ -76,6 +76,7 @@
 					</table>
 				</div>
 			</div>
+			<br>
 			<p>
 				When describing the dimensions of a matrix 
 				we always specify the number of rows first,
@@ -83,7 +84,7 @@
 				The above is an example of a 3 × 2 matrix,
 				while below is a matrix containing similar data, but in a 2 × 3 configuration.
 			</p>
-			<div class="maths">
+			<div class="maths center">
 				<div class="matrix">
 					<div class="matrix-bracket-left"></div>
 					<div class="matrix-bracket-right"></div>
@@ -100,6 +101,7 @@
 					</table>
 				</div>
 			</div>
+			<h3>Order matters</h3>
 			<p>
 				Q thinks about matrices in 
 				<a href="https://en.wikipedia.org/wiki/Row-_and_column-major_order" target="_blank"><strong>row-major</strong> order</a>.
@@ -140,6 +142,25 @@
 				</div>
 				<a href="https://en.wikipedia.org/wiki/Row-_and_column-major_order" target="_blank"><strong>Column-major</strong> order</a>.
 			</div>
+			<h3>Complex numbers</h3>
+			<p>
+				Instead of just storing 
+				<a href="ComplexNumber.html#Real_numbers">regular old numbers</a>,
+				our matrices are geared to store
+				<a href="ComplexNumber.html#Complex_numbers">complex numbers</a>.
+				(This is because 
+				<a href="Qubit.html">qubits</a> are really just a pair of
+				complex numbers
+				that we store in a 1 × 2 matrix.
+				So, yes—the examples matrices above are actually <em>more complicated</em> than qubits are!)
+				In general, we don’t even have to think about 
+				the fact that our matrices are storing complex numbers
+				because 
+				<code><a href="Q.html">Q</a>.<a href="Matrix.html#Constructor">Matrix</a></code> is
+				happy to accept regular JavaScript <code>Number</code> values as input—and 
+				<code><a href="Q.html">Q</a>.<a href="ComplexNumber.html#Constructor">ComplexNumber</a></code>
+				will silently handle the conversion for us.
+			</p>
 			<hr>
 			<h3 id="Constructor">Constructor</h3>
 			<p>

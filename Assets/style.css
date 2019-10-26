@@ -503,6 +503,10 @@ img.figure {
 	opacity: 0.7;
 	/*font-style: italic;*/
 }
+.center {
+
+	text-align: center;
+}
 
 
 
@@ -737,6 +741,7 @@ footer {
 
 	max-width: 100%;
 	overflow-x: auto;
+	font-family: var( --font-family-sans );
 }
 dd .maths {
 
@@ -816,11 +821,13 @@ svg .st10 {
 
 .matrix {
 
+	
 	display: inline-block;
 	vertical-align: middle;
 	position: relative;
-	margin:  10px;
-	padding: 10px;
+	align: middle;
+	margin:  1em;
+	padding: 1em;
 	font-family: var( --font-family-mono );
 	font-weight: 300;
 	line-height: 1em;
@@ -854,6 +861,35 @@ svg .st10 {
 }
 
 
+.complex-vector {
+
+	font-family: var( --font-family-mono );
+	/*color: var( --color-black );*/
+}
+.complex-vector.bra::before {
+
+	content: '⟨';
+	color: #BBB;
+}
+.complex-vector.bra::after {
+
+	content: '|';
+	color: #BBB;
+}
+.complex-vector.ket::before {
+
+	content: '|';
+	color: #BBB;
+}
+.complex-vector.ket::after {
+
+	content: '⟩';
+	color: #BBB;
+}
+.complex-vector.bra + .complex-vector.ket::before {
+
+	content: '';
+}
 
 
 @keyframes blink {
