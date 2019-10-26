@@ -7,7 +7,23 @@ function onHashChange(){
 
 	if( hashTarget    ) hashTarget.classList.remove( 'hash-target' )
 	if( location.hash ) hashTarget = document.getElementById( location.hash.substr( 1 ))
-	if( hashTarget    ) hashTarget.classList.add( 'hash-target' )
+	if( hashTarget    ){
+
+		hashTarget.classList.add( 'hash-target' )
+		setTimeout( function(){
+
+			const 
+			navHeight = document.getElementsByTagName( 'nav' )[ 0 ].offsetHeight,
+			rootEm = parseFloat( window.getComputedStyle( document.body ).fontSize )
+
+			window.scrollTo( 
+
+				hashTarget.offsetLeft,
+				hashTarget.offsetTop - navHeight - rootEm - rootEm
+			)
+
+		}, 10 )
+	}
 }
 window.addEventListener( 'hashchange', onHashChange, false )
 
@@ -53,8 +69,8 @@ document.addEventListener( 'DOMContentLoaded', function(){
 			<li><h2><a href="Circuit.html">Circuit</a></h2></li>
 		</ul>
 	`
-	// document.body.appendChild( nav )
-	document.body.prepend( nav )
+	document.body.appendChild( nav )
+	// document.body.prepend( nav )
 	Array.from( nav.getElementsByTagName( 'a' )).forEach( function( link ){
 
 		if( link.pathname === document.location.pathname ||

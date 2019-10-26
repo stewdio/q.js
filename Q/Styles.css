@@ -10,10 +10,15 @@
 
 
 
+.qjs-circuit-container {
 
+	position: relative;
+	max-width: 100%;
+	overflow-x: auto;
+}
 table.qjs-circuit {
 
-	margin: 4em;
+	margin: 4em 0;
 	justify-items: center;
 	align-items: center;
 	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;

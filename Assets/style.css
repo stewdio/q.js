@@ -458,8 +458,10 @@ pre {
 	padding:  0  0 2rem 2rem;
 	tab-size: 4;
 	-moz-tab-size: 4;
+	max-width: 100%;
 	overflow: auto;
 	/*white-space: pre-wrap;*/
+	overflow-wrap: normal;
 }
 pre, code, samp {
 
@@ -487,7 +489,9 @@ code .comment {
 img.figure {
 
 	border-radius: 0.4em;
-	overflow: hiidden;
+	overflow: hidden;
+	max-width: 100%;
+	height: auto;
 }
 .value-type {
 
@@ -729,7 +733,10 @@ footer {
 
 .maths {
 
-	margin: 20px 60px 20px 40px;
+	/*margin: 20px 60px 20px 40px;*/
+
+	max-width: 100%;
+	overflow-x: auto;
 }
 dd .maths {
 
@@ -1515,20 +1522,20 @@ header h1 svg {
 
 		background-color: var( --color-white );
 		background-image: none;
-		overflow: hidden;
-
+		/*overflow: hidden;*/
+		/*position: relative;*/
 	}
 	
 
 
 
-	nav {
+	body nav {
 
-		position: absolute;
-		top:  0;
+		position: fixed;
+		bottom: 0 !important;
 		left: 0;
 		width: 100%;
-		height: auto;
+		height: fit-content;
 		min-height: 0;
 		padding: 0;
 		margin: 0;
@@ -1561,10 +1568,10 @@ header h1 svg {
 
 
 
-nav ul {
+	nav ul {
 	
 		/*background-color: orange;*/
-}
+	}
 
 
 
@@ -1582,8 +1589,8 @@ nav ul {
 		text-align: center;
 		cursor: pointer;
 	}
-	#vb-top-dexter, 
-	#vb-middle, 
+	#vb-top-dexter,
+	#vb-middle,
 	#vb-bottom-sinister {
 
 		position: absolute;
@@ -1638,20 +1645,19 @@ nav ul {
 
 	main {
 
-		position: absolute;
+		display: inline-block;
+		position: relative;
 		top:   0;
 		left:  0;
 		width: 100%;
-		border-top: 8.2rem solid white;
-		/*height: calc( 100% - 100rem);*/
-		height: 100%;
-		padding-top: 2rem;
-		overflow: scroll;
+		/*height: 100%;*/
+		padding-top: 10rem;
+		/*overflow: scroll;*/
 		box-shadow: none;
 	}
 	nav.home ~ main {
 
-		border-top: 5rem solid white;
+		border-top: 5rem solid orange;
 	}
 }
 
