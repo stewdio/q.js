@@ -131,6 +131,25 @@ svg, :root {
 }
 
 
+/*
+	Note this hack here!
+	There is no “Roboto Slab italic”
+	so instead we’re subbing in Roboto Slab bold!
+*/
+
+@font-face {
+
+	font-family: 'Roboto Slab';
+	font-style:   italic;
+	font-weight:  400;
+	font-display: swap;
+	src: local( 'Roboto Slab Bold' ),
+	   local( 'RobotoSlab-Bold' ), 
+	   url( https://fonts.gstatic.com/s/robotoslab/v9/BngRUXZYTXPIvIBgJJSb6u92w7CGwR2oefDo.woff2 ) format( 'woff2' );
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+
 /*  Headline text  */
 
 @font-face {
@@ -1129,7 +1148,7 @@ table#console-open-commands .na {
 	border-radius: 16px;
 	width:  100%;
 	height: 100%;
-	background-color: var( --background-callout-color );
+	background-color: var( --color-chalk );
 	overflow: hidden;
 }
 .interactive-component {
@@ -1149,11 +1168,12 @@ table#console-open-commands .na {
 
 	position: relative;
 	display: inline-block;
-	margin: 30px 0 20px 20px;
+	margin: 2rem 4rem 2rem 2rem;
 	top:   50%;
-	width: 60%;
-	padding-bottom: 60%;
+	width: calc( 100% - 4rem );
+	padding-bottom: calc( 100% - 4rem );
 	font-family: var( --font-family-sans );
+	/*background-color: orange;*/
 }
 
 
@@ -1412,110 +1432,86 @@ table#console-open-commands .na {
 
 
 
-#bloch-sphere-qubits {
-
-	margin-top: 15px;
-	font-family: var( --font-family-sans );
-}
-.bloch-sphere-qubit-container {
+#bloch-sphere-qubits, 
+#bloch-sphere-gates {
 
 	display: inline-block;
-	margin:  0px 10px 10px 0;
-	width:  80px; 
-	height: 120px;
-	border-radius: 8px;
-	padding-top:   6px;
+	margin: 1rem 0;
+	border-radius: 0.5rem;
+	background-color: var( --color-newsprint );
+	padding: 0;
+	font-family: var( --font-family-sans );
+	overflow: hidden;
+	box-shadow: 0 0.1rem 0.3rem rgba( 0, 0, 0, 0.3 );	
+}
+.bloch-sphere-qubit-container, 
+.bloch-sphere-gate-container {
+
+	float: left;
+	width:  5rem; 
+	height: 8rem;
+	padding-top: 0.4rem;
 	text-align: center;
 	overflow: hidden;
 	cursor: pointer;
-	background-color: var( --background-callout-color );
 	transition: background-color 0.5s;
 }
-.bloch-sphere-qubit-container:hover {
+.bloch-sphere-qubit-container:hover,
+.bloch-sphere-gate-container:hover  {
 	
 	background-color: #DDD;
 	transition: background-color 0s;
 }
-.bloch-sphere-qubit-container.selected {
+.bloch-sphere-qubit-container.selected,
+.bloch-sphere-gate-container.selected {
 	
-	background-color: #BBB;
-	/*color: #FFF;*/
+	background-color: var( --color-charcoal );
+	color: var( --color-white );
 }
-.bloch-sphere-qubit-container p {
+.bloch-sphere-qubit-container p,
+.bloch-sphere-gate-container p {
 
-	font-size:   12px;
+	font-size:   0.8rem;
 	line-height: 18px;
 }
 .bloch-sphere-qubit {
 
 	display: inline-block;
-	margin:  4px 0 4px 0;
-	width:  40px;
-	height: 40px;
-	border:  1px solid #BBB;
+	margin:  0.3rem 0;
+	width:  3rem;
+	height: 3rem;
 	border-radius: 100%;
-	background-color: #FFF;
+	background-color: var( --color-white );
 	text-align: center;
-	font-weight: bold;
-	line-height: 37px;
-	color: #000;
+	font-weight: 900;
+	font-size:   1.5rem;
+	line-height: 3.0rem;
+	color: var( --color-black );
 }
 
 
-
-
-#bloch-sphere-gates {
-
-	margin-top: 15px;
-	font-family: var( --font-family-sans );
-}
 .bloch-sphere-gate-container {
 
-	display: inline-block;
-	margin:  0 5px 5px 0;
-	width:  80px; 
-	height: 80px;
-	border-radius: 8px;
-	padding-top:   6px;
-	text-align: center;
-	overflow: hidden;
-	cursor: pointer;
-	background-color: var( --background-callout-color );
-	transition: background-color 0.5s;
-}
-.bloch-sphere-gate-container:hover {
-	
-	background-color: #DDD;
-	transition: background-color 0s;
-}
-.bloch-sphere-gate-container.selected {
-	
-	background-color: #BBB;
-	/*color: #FFF;*/
-}
-.bloch-sphere-gate-container p {
-
-	font-size:   12px;
-	line-height: 18px;
+	width:  4.3rem;
+	height: 5rem;
 }
 .bloch-sphere-gate {
 
 	display: inline-block;
-	margin:  4px 0 4px 0;
-	width:  40px;
-	height: 40px;
-	border:  1px solid #BBB;
-	background-color: #FFF;
+	margin:  0.3rem 0;
+	width:  2.2rem;
+	height: 2.2rem;
+	background-color: var( --color-white );
 	text-align: center;
-	font-weight: bold;
-	line-height: 37px;
-	color: #000;
+	font-weight: 900;
+	font-size:   1.5rem;
+	line-height: 2.2rem;
+	color: var( --color-black );
 }
 .interactive-container {
 
 	font-family: var( --font-family-sans );
 }
-
 
 
 

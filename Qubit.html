@@ -128,8 +128,8 @@
 					<div class="matrix-bracket-left"></div>
 					<div class="matrix-bracket-right"></div>
 					<table>
-						<tr><td>bra: 1</td></tr>
-						<tr><td>ket: 0</td></tr>
+						<tr><td>bra: <strong>1</strong></td></tr>
+						<tr><td>ket: <strong>0</strong></td></tr>
 					</table>
 				</div>
 			</div>
@@ -145,8 +145,8 @@
 					<div class="matrix-bracket-left"></div>
 					<div class="matrix-bracket-right"></div>
 					<table>
-						<tr><td>bra: 0</td></tr>
-						<tr><td>ket: 1</td></tr>
+						<tr><td>bra: <strong>0</strong></td></tr>
+						<tr><td>ket: <strong>1</strong></td></tr>
 					</table>
 				</div>
 			</div>
@@ -229,7 +229,6 @@
 				“zero” = 
 				<span class="complex-vector ket">0</span>
 			</div>
-			<!-- <br> -->
 			<div class="center">
 				“one” = 
 				<span class="complex-vector ket">1</span>
@@ -355,9 +354,14 @@
 			<br>
 			<h3>Visualizing qubit states</h3>
 			<p>
-				Given the constraints above, if we plot all of the possible <em>real</em> values for 
-				<span class="symbol">a</span>, <span class="symbol">b</span> on a graph 
-				as <span class="symbol">x</span> and <span class="symbol">y</span> respectively
+				Given the constraint
+				|<code><a href="Qubit.html#this.bra">bra</a></code>|<sup>2</sup> + 
+				|<code><a href="Qubit.html#this.ket">ket</a></code>|<sup>2</sup> = 1, if we plot all of the possible <em>real</em>
+				<code><a href="Qubit.html#this.bra">bra</a></code>
+				and 
+				<code><a href="Qubit.html#this.ket">ket</a></code>
+				values on a graph
+				as <span class="symbol">x</span> and <span class="symbol">y</span> respectively,
 				the outcome is a circle with a radius of 1 centered at the origin (0, 0); 
 				ie. a <a href="https://en.wikipedia.org/wiki/Unit_circle)" target="_blank">unit circle</a>.
 			</p>
@@ -438,11 +442,6 @@
 				By taking the absolute value of <span class="symbol">a</span> or <span class="symbol">b</span>
 				we effectively cancel out this extra dimension.
 				-->
-
-				Our unit circle or Bloch Sphere could be used as a state 
-				machine for quantum compuation, though 
-				<a href="Q.html">Q</a> currently focusses on 
-				matrices for calculation. 
 			</p>
 			<br>
 			<p>
@@ -455,11 +454,13 @@
 			<div id="bloch-sphere-gates"></div>
 			<div class="interactive-container" id="bloch-sphere">
 				<div class="interactive-component" id="bloch-angles">
-					<span class="symbol">a</span> = <span id="bloch-bra">—</span><br>
-					<span class="symbol">b</span> = <span id="bloch-ket">—</span><br>
+					<code>
+						<a href="Qubit.html#this.bra">bra</a> = <span id="bloch-bra">—</span><br>
+						<a href="Qubit.html#this.ket">ket</a> = <span id="bloch-ket">—</span>
+					</code><br>
 					<br>
-					<span id="bloch-theta">—</span>˚ polar angle θ (theta)<br>
-					<span id="bloch-phi">—</span>˚ azimuth angle ϕ (phi)
+					<code><span id="bloch-theta">—</span>˚</code> polar angle θ (theta)<br>
+					<code><span id="bloch-phi">—</span>˚</code> azimuth angle ϕ (phi)
 				</div>
 			</div>
 			<p>
