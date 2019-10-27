@@ -159,7 +159,10 @@
 				means of describing qubit states.
 				Let’s look again at the 
 				<a href="Matrix.html">matrix</a> form
-				for a qubit in a “zero” state:
+				for a qubit in a “zero” state—again the
+				<code><a href="Qubit.html#this.bra">bra</a></code> value is on top
+				and the
+				<code><a href="Qubit.html#this.ket">ket</a></code> value is on the bottom:
 			</p>
 			<div class="center maths">
 				<div class="matrix qubit">
@@ -177,20 +180,61 @@
 				we can rewrite the 
 				<a href="Matrix.html">matrix</a>
 				in <a href="https://en.wikipedia.org/wiki/Row_and_column_vectors" target="_blank">vector form</a> like so:
+			</p>
+			<br>
+			<div class="center">
 				<span class="complex-vector bra">1</span>
 				<span class="complex-vector ket">0</span>
-				And because we generally only need one of the two
-				<code><a href="Qubit.html#this.bra">bra</a></code> / 
-				<code><a href="Qubit.html#this.ket">ket</a></code> pairs,
-				we can conveniently separate them in to
+			</div>
+			<br>
+			<p>
+				Notice how the 
+				<code><a href="Qubit.html#this.bra">bra</a></code> value
+				has moved from its position on the top of a matrix
+				to the left-side of a vector.
+				Similarly, the 
+				<code><a href="Qubit.html#this.ket">ket</a></code> value
+				has moved from its position on the bottom of a matrix
+				to the right-side of a vector.
+				We can reference the 
+				<code><a href="Qubit.html#this.bra">bra</a></code>
+				and
+				<code><a href="Qubit.html#this.ket">ket</a></code>
+				separately without confusion, 
+				writing them as
 				<span class="complex-vector bra">1</span>
 				<span>and</span>
-				<span class="complex-vector ket">0</span>.
-				So now when we refer to a “zero” qubit we can represent that as
-				<span class="complex-vector ket">0</span>,
-				and a “one” qubit as 
-				<span class="complex-vector ket">1</span>.
+				<span class="complex-vector ket">0</span>
+				respectively.
+				The position and direction of the angle brackets 
+				let us know immediately which one is the
+				<code><a href="Qubit.html#this.bra">bra</a></code>
+				(<em>begins</em> with and angle bracket pointing to the <em>left</em>)
+				and which one is the
+				<code><a href="Qubit.html#this.ket">ket</a></code>
+				(<em>ends</em> with and angle bracket pointing to the <em>right</em>).
 			</p>
+			<p>
+				Because we often refer to a qubit’s value
+				using only its 
+				<code><a href="Qubit.html#this.ket">ket</a></code>,
+				we can describe a “zero” qubit as
+				<span class="complex-vector ket">0</span>,
+				and a “one” qubit as
+				<span class="complex-vector ket">1</span>.
+				That’s worth repeating as above:
+			</p>
+			<br>
+			<div class="maths center">
+				“zero” = 
+				<span class="complex-vector ket">0</span>
+			</div>
+			<!-- <br> -->
+			<div class="center">
+				“one” = 
+				<span class="complex-vector ket">1</span>
+			</div>
+			<br>
 			<h3 id="Predictable_couple">A predictable couple</h3>
 			<p>
 				The thing that makes this pair of numbers special
