@@ -129,12 +129,12 @@ Q.Qubit = function( a, b, label, name ){
 	//  Convenience getters and setters for this qubit’s
 	//  controll bit and target bit.
 
-	Object.defineProperty( this, 'bra', { 
+	Object.defineProperty( this, 'alpha', { 
 
 		get: function(){ return this.rows[ 0 ][ 0 ]},
 		set: function( n ){ this.rows[ 0 ][ 0 ] = n }
 	})
-	Object.defineProperty( this, 'ket', { 
+	Object.defineProperty( this, 'beta', { 
 
 		get: function(){ return this.rows[ 1 ][ 0 ]},
 		set: function( n ){ this.rows[ 1 ][ 0 ] = n }
@@ -151,8 +151,8 @@ Q.Qubit = function( a, b, label, name ){
 
 			return (
 
-				a.isEqualTo( qubit.bra ) && 
-				b.isEqualTo( qubit.ket )
+				a.isEqualTo( qubit.alpha ) && 
+				b.isEqualTo( qubit.beta  )
 			)
 		})
 		if( found === undefined ){
@@ -184,38 +184,38 @@ Object.assign( Q.Qubit, {
 
 
 
-	findByKet: function( ket ){
+	findByBeta: function( beta ){
 
-		if( ket instanceof Q.ComplexNumber === false ){
+		if( beta instanceof Q.ComplexNumber === false ){
 
-			ket = new Q.ComplexNumber( ket )
+			beta = new Q.ComplexNumber( beta )
 		}
 		return Object.values( Q.Qubit.constants ).find( function( qubit ){
 
-			return qubit.ket.isEqualTo( ket )
+			return qubit.beta.isEqualTo( beta )
 		})
-	},	
+	},
 	areEqual: function( qubit0, qubit1 ){
 
 		return ( 
 
-			qubit0.bra.isEqualTo( qubit0.bra ) &&
-			qubit1.ket.isEqualTo( qubit1.ket )
+			qubit0.alpha.isEqualTo( qubit1.alpha ) &&
+			qubit0.beta.isEqualTo( qubit1.beta )
 		)
 	},
 	collapse: function( qubit ){
 
 		const 
-		bra2 = Math.pow( qubit.bra.absolute(), 2 ),
-		ket2 = Math.pow( qubit.ket.absolute(), 2 ),
+		alpha2 = Math.pow( qubit.alpha.absolute(), 2 ),
+		beta2 = Math.pow( qubit.beta.absolute(), 2 ),
 		randomNumberRange = Math.pow( 2, 32 ) - 1,
 		randomNumber = new Uint32Array( 1 )
 		
-		// console.log( 'bra^2', bra2 )
-		// console.log( 'ket^2', ket2 )
+		// console.log( 'alpha^2', alpha2 )
+		// console.log( 'beta^2', beta2 )
 		window.crypto.getRandomValues( randomNumber )
 		const randomNumberNormalized = randomNumber / randomNumberRange
-		if( randomNumberNormalized <= bra2 ){
+		if( randomNumberNormalized <= alpha2 ){
 
 			return new Q.Qubit( 1, 0 )
 		}
@@ -243,8 +243,8 @@ Object.assign( Q.Qubit, {
 	},
 	toText: function( qubit ){
 
-		//return `|${qubit.ket.toText()}⟩`
-		return qubit.bra.toText() +'\n'+ qubit.ket.toText()
+		//return `|${qubit.beta.toText()}⟩`
+		return qubit.alpha.toText() +'\n'+ qubit.beta.toText()
 	},
 
 
@@ -275,7 +275,7 @@ Object.assign( Q.Qubit, {
 
 		//  Polar angle θ (theta).
 
-		const theta = Q.ComplexNumber.arcCosine( qubit.bra ).multiply( 2 )
+		const theta = Q.ComplexNumber.arcCosine( qubit.alpha ).multiply( 2 )
 		if( isNaN( theta.real )) theta.real = 0
 		if( isNaN( theta.imaginary )) theta.imaginary = 0
 
@@ -284,7 +284,7 @@ Object.assign( Q.Qubit, {
 		
 		const phi = Q.ComplexNumber.log( 
 
-			qubit.ket.divide( Q.ComplexNumber.sine( theta.divide( 2 )))
+			qubit.beta.divide( Q.ComplexNumber.sine( theta.divide( 2 )))
 		)
 		.divide( Q.ComplexNumber.I )
 		if( isNaN( phi.real )) phi.real = 0
@@ -375,7 +375,7 @@ Object.assign( Q.Qubit.prototype, {
 	},
 	clone: function(){
 
-		return new Q.Qubit( this.bra, this.ket )
+		return new Q.Qubit( this.alpha, this.beta )
 	},
 	isEqualTo: function( otherQubit ){
 

@@ -196,6 +196,12 @@ Object.assign( Q, {
 				.padEnd( length, filler )
 		}
 		else return text
+	},
+	hueToColorName: function( hue ){
+
+		hue = hue % 360
+		hue = Math.floor( hue / 10 )
+		return Q.COLORS[ hue ]
 	}
 })
 
@@ -204,7 +210,7 @@ Object.assign( Q, {
 
 Q.createConstants( 
 
-	'REVISION', 5,
+	'REVISION', 6,
 
 
 	//  Yeah... F’ing floating point numbers, Man!
@@ -217,7 +223,239 @@ Q.createConstants(
 
 	'RADIANS_TO_DEGREES', 180 / Math.PI,
 
-	'ANIMALS', [],
+	'ANIMALS', [ 
+
+		'Aardvark',
+		'Albatross',
+		'Alligator',
+		'Alpaca',
+		'Ant',
+		'Anteater',
+		'Antelope',
+		'Ape',
+		'Armadillo',
+		'Baboon',
+		'Badger',
+		'Barracuda',
+		'Bat',
+		'Bear',
+		'Beaver',
+		'Bee',
+		'Bison',
+		'Boar',
+		'Buffalo',
+		'Butterfly',
+		'Camel',
+		'Caribou',
+		'Cat',
+		'Caterpillar',
+		'Cattle',
+		'Chamois',
+		'Cheetah',
+		'Chicken',
+		'Chimpanzee',
+		'Chinchilla',
+		'Chough',
+		'Clam',
+		'Cobra',
+		'Cod',
+		'Cormorant',
+		'Coyote',
+		'Crab',
+		'Crane',
+		'Crocodile',
+		'Crow',
+		'Curlew',
+		'Deer',
+		'Dinosaur',
+		'Dog',
+		'Dogfish',
+		'Dolphin',
+		'Donkey',
+		'Dotterel',
+		'Dove',
+		'Dragonfly',
+		'Duck',
+		'Dugong',
+		'Dunlin',
+		'Eagle',
+		'Echidna',
+		'Eel',
+		'Eland',
+		'Elephant',
+		'Elephant seal',
+		'Elk',
+		'Emu',
+		'Falcon',
+		'Ferret',
+		'Finch',
+		'Fish',
+		'Flamingo',
+		'Fly',
+		'Fox',
+		'Frog',
+		'Galago',
+		'Gaur',
+		'Gazelle',
+		'Gerbil',
+		'Giant Panda',
+		'Giraffe',
+		'Gnat',
+		'Gnu',
+		'Goat',
+		'Goose',
+		'Goldfinch',
+		'Goldfish',
+		'Gorilla',
+		'Goshawk',
+		'Grasshopper',
+		'Grouse',
+		'Guanaco',
+		'Guinea fowl',
+		'Guinea pig',
+		'Gull',
+		'Guppy',
+		'Hamster',
+		'Hare',
+		'Hawk',
+		'Hedgehog',
+		'Hen',
+		'Heron',
+		'Herring',
+		'Hippopotamus',
+		'Hornet',
+		'Horse',
+		'Human',
+		'Hummingbird',
+		'Hyena',
+		'Ide',
+		'Jackal',
+		'Jaguar',
+		'Jay',
+		'Jellyfish',
+		'Kangaroo',
+		'Koala',
+		'Koi',
+		'Komodo dragon',
+		'Kouprey',
+		'Kudu',
+		'Lapwing',
+		'Lark',
+		'Lemur',
+		'Leopard',
+		'Lion',
+		'Llama',
+		'Lobster',
+		'Locust',
+		'Loris',
+		'Louse',
+		'Lyrebird',
+		'Magpie',
+		'Mallard',
+		'Manatee',
+		'Marten',
+		'Meerkat',
+		'Mink',
+		'Mole',
+		'Monkey',
+		'Moose',
+		'Mouse',
+		'Mosquito',
+		'Mule',
+		'Narwhal',
+		'Newt',
+		'Nightingale',
+		'Octopus',
+		'Okapi',
+		'Opossum',
+		'Oryx',
+		'Ostrich',
+		'Otter',
+		'Owl',
+		'Ox',
+		'Oyster',
+		'Panther',
+		'Parrot',
+		'Partridge',
+		'Peafowl',
+		'Pelican',
+		'Penguin',
+		'Pheasant',
+		'Pig',
+		'Pigeon',
+		'Pony',
+		'Porcupine',
+		'Porpoise',
+		'Prairie Dog',
+		'Quail',
+		'Quelea',
+		'Rabbit',
+		'Raccoon',
+		'Rail',
+		'Ram',
+		'Raven',
+		'Reindeer',
+		'Rhinoceros',
+		'Rook',
+		'Ruff',
+		'Salamander',
+		'Salmon',
+		'Sand Dollar',
+		'Sandpiper',
+		'Sardine',
+		'Scorpion',
+		'Sea lion',
+		'Sea Urchin',
+		'Seahorse',
+		'Seal',
+		'Shark',
+		'Sheep',
+		'Shrew',
+		'Shrimp',
+		'Skunk',
+		'Snail',
+		'Snake',
+		'Sow',
+		'Spider',
+		'Squid',
+		'Squirrel',
+		'Starling',
+		'Stingray',
+		'Stinkbug',
+		'Stork',
+		'Swallow',
+		'Swan',
+		'Tapir',
+		'Tarsier',
+		'Termite',
+		'Tiger',
+		'Toad',
+		'Trout',
+		'Tui',
+		'Turkey',
+		'Turtle',
+		//  U
+		'Vicuña',
+		'Viper',
+		'Vulture',
+		'Wallaby',
+		'Walrus',
+		'Wasp',
+		'Water buffalo',
+		'Weasel',
+		'Whale',
+		'Wolf',
+		'Wolverine',
+		'Wombat',
+		'Woodcock',
+		'Woodpecker',
+		'Worm',
+		'Wren',
+		//  X
+		'Yak',
+		'Zebra'
+
+	],
 	'ANIMALS3', [
 
 		'ape',
@@ -231,8 +469,8 @@ Q.createConstants(
 		'ide',
 		'jay',
 		'koi',
-		//  L ?
-		//  M ?
+		'leo',
+		'moo',
 		'nit',
 		'owl',
 		'pig',
@@ -244,10 +482,48 @@ Q.createConstants(
 		//  V ?
 		//  W ?
 		//  X ?
-		'yak'
-		//  Z ?
+		'yak',
+		'zeb'
 	],
-	'COLORS', []
+	'COLORS', [
+
+		'Red',         //    0  RED
+		'Scarlet',     //   10
+		'Tawny',       //   20
+		'Carrot',      //   30
+		'Pumpkin',     //   40
+		'Mustard',     //   50
+		'Lemon',       //   60  Yellow
+		'Lime',        //   70
+		'Spring bud',  //   80
+		'Spring grass',//   90
+		'Pear',        //  100
+		'Kelly',       //  110
+		'Green',       //  120  GREEN
+		'Malachite',   //  130
+		'Sea green',   //  140
+		'Sea foam',    //  150
+		'Aquamarine',  //  160
+		'Turquoise',   //  170
+		'Cyan',        //  180  Cyan
+		'Pacific blue',//  190
+		'Baby blue',   //  200
+		'Ocean blue',  //  210
+		'Sapphire',    //  220
+		'Azure',       //  230
+		'Blue',        //  240  BLUE
+		'Cobalt',      //  250
+		'Indigo',      //  260
+		'Violet',      //  270
+		'Lavender',    //  280
+		'Purple',      //  290
+		'Magenta',     //  300  Magenta
+		'Hot pink',    //  310
+		'Fuschia',     //  320
+		'Ruby',        //  330
+		'Crimson',     //  340
+		'Carmine'      //  350
+	]
 )
 
 

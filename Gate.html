@@ -255,7 +255,9 @@ new <a href="Q.html">Q</a>.Gate({
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 						Applies a <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Hadamard_(H)_gate" target="_blank">Hadamard transform</a> to a single qubit.
-						For the basis qubit states of <code>|0⟩</code> and <code>|1⟩</code> 
+						For the basis qubit states of 
+						<span class="complex-vector ket">0</span> and 
+						<span class="complex-vector ket">1</span> 
 						this has the effect of putting a qubit in to <a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>.  
 <pre><code>
 new <a href="Q.html">Q</a>.Gate({
@@ -263,8 +265,10 @@ new <a href="Q.html">Q</a>.Gate({
 	name:  'Hadamard',
 	label: 'H',
 	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+			
 			[ Math.SQRT1_2,  Math.SQRT1_2 ],
-			[ Math.SQRT1_2, -Math.SQRT1_2 ]),
+			[ Math.SQRT1_2, -Math.SQRT1_2 ]
+	),
 	operation: function( qubit ){
 
 		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
@@ -302,8 +306,10 @@ new <a href="Q.html">Q</a>.Gate({<span class="comment">//  Rπ</span>
 	name:  'Pauli X',
 	label: 'X',
 	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+		
 		[ 0, 1 ],
-		[ 1, 0 ]),
+		[ 1, 0 ]
+	),
 	operation: function( qubit ){
 
 		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
@@ -336,8 +342,10 @@ new <a href="Q.html">Q</a>.Gate({
 	name:  'Pauli Y',
 	label: 'Y',
 	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+		
 		[ 0, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, -1 )],
-		[ new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 ), 0 ]),
+		[ new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 ), 0 ]
+	),
 	operation: function( qubit ){
 
 		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
@@ -370,8 +378,10 @@ new <a href="Q.html">Q</a>.Gate({
 	name:  'Pauli Z',
 	label: 'Z', 
 	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+		
 		[ 1,  0 ],
-		[ 0, -1 ]),
+		[ 0, -1 ]
+	),
 	operation: function( qubit ){
 
 		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
@@ -404,8 +414,10 @@ new <a href="Q.html">Q</a>.Gate({
 	name:  'Phase',
 	label: 'S',
 	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+		
 		[ 1, 0 ],
-		[ 0, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )]),
+		[ 0, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )]
+	),
 	operation: function( qubit ){
 
 		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
@@ -438,8 +450,10 @@ new <a href="Q.html">Q</a>.Gate({
 	name:  'π ÷ 8',
 	label: 'T',
 	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+		
 		[ 1, 0 ],
-		[ 0, <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>.<a href="ComplexNumber.html#.E">E</a>.<a href="ComplexNumber.html#.prototype.power">power</a>( new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, Math.PI / 4 )) ]),
+		[ 0, <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>.<a href="ComplexNumber.html#.E">E</a>.<a href="ComplexNumber.html#.prototype.power">power</a>( new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, Math.PI / 4 )) ]
+	),
 	operation: function( qubit ){
 
 		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))

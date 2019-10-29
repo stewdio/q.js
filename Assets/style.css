@@ -719,7 +719,7 @@ ul.properties pre {
 
 	margin-left: 0;
 }
-dt {
+dt, .constructor {
 
 	position: relative;
 	display: inline;
@@ -885,27 +885,27 @@ svg .st10 {
 	font-family: var( --font-family-mono );
 	/*color: var( --color-black );*/
 }
-.complex-vector.bra::before {
+.complex-vector.alpha::before {
 
 	content: '⟨';
 	color: #BBB;
 }
-.complex-vector.bra::after {
+.complex-vector.alpha::after {
 
 	content: '|';
 	color: #BBB;
 }
-.complex-vector.ket::before {
+.complex-vector.beta::before {
 
 	content: '|';
 	color: #BBB;
 }
-.complex-vector.ket::after {
+.complex-vector.beta::after {
 
 	content: '⟩';
 	color: #BBB;
 }
-.complex-vector.bra + .complex-vector.ket::before {
+.complex-vector.alpha + .complex-vector.beta::before {
 
 	content: '';
 }
