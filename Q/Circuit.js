@@ -462,7 +462,7 @@ Object.assign( Q.Circuit.prototype, {
 
 			const y3 = q * 3
 			output[ y3 + 1 ] += '        '
-			output[ y3 + 2 ] += 'q'+ q +'  |'+ qubit.ket.toText() +'⟩─'
+			output[ y3 + 2 ] += 'q'+ q +'  |'+ qubit.beta.toText() +'⟩─'
 			output[ y3 + 3 ] += '        '
 		})
 		for( let x = 0; x < table.timewidth; x ++ ){
@@ -572,15 +572,15 @@ Object.assign( Q.Circuit.prototype, {
 			const inputElement = document.createElement( 'div' )
 			inputElement.classList.add( 'qjs-input' )
 			inputElement.setAttribute( 'title', qubit.name )
-			inputElement.innerText = qubit.ket.toText() +'⟩' 
+			inputElement.innerText = qubit.beta.toText() +'⟩' 
 			Object.assign( inputElement.dataset, {
 
 				type:        'Q.Qubit',
 				index:        qubit.index,
-				braReal:      qubit.bra.real,
-				braImaginary: qubit.bra.imaginary,
-				ketReal:      qubit.ket.real,
-				ketImaginary: qubit.ket.imaginary,
+				braReal:      qubit.alpha.real,
+				braImaginary: qubit.alpha.imaginary,
+				ketReal:      qubit.beta.real,
+				ketImaginary: qubit.beta.imaginary,
 			})
 			circuitElement.appendChild( inputElement )
 
@@ -738,15 +738,15 @@ Object.assign( Q.Circuit.prototype, {
 			const inputElement = document.createElement( 'td' )
 			inputElement.classList.add( 'qjs-input' )
 			inputElement.setAttribute( 'title', qubit.name )
-			inputElement.innerText = qubit.ket.toText() +'⟩' 
+			inputElement.innerText = qubit.beta.toText() +'⟩' 
 			Object.assign( inputElement.dataset, {
 
 				type:        'Q.Qubit',
 				index:        qubit.index,
-				braReal:      qubit.bra.real,
-				braImaginary: qubit.bra.imaginary,
-				ketReal:      qubit.ket.real,
-				ketImaginary: qubit.ket.imaginary,
+				braReal:      qubit.alpha.real,
+				braImaginary: qubit.alpha.imaginary,
+				ketReal:      qubit.beta.real,
+				ketImaginary: qubit.beta.imaginary,
 			})
 			rowElement.appendChild( inputElement )
 
@@ -1354,7 +1354,7 @@ Object.assign( Q.Circuit.prototype, {
 	},
 	pasteInsert$: function( other, atMoment, atQubit ){
 
-		// if( other.brandwidth !== this.bandwidth && 
+		// if( other.alphandwidth !== this.bandwidth && 
 		// 	other.timewidth !== this.timewidth ) return Q.error( 'Q.Circuit attempted to pasteInsert Circuit A', other, 'in to circuit B', this, 'but neither their bandwidth or timewidth matches.' )
 
 		
@@ -1490,7 +1490,7 @@ Object.assign( Q.Circuit.prototype, {
 
 			states.push( state.map( function( qubit ){
 				
-				return qubit.ket.real
+				return qubit.beta.real
 			}))
 		}
 		
