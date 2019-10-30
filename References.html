@@ -1,36 +1,226 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Q ⟩ References</title>
+		<meta charset="utf-8">
+		<meta name="viewport"             content="width=device-width,initial-scale=1.0">
+		<meta name="description"          content="Q.js is quantum computing in your browser.">
+		<meta name="copyright"            content="Stewart Smith 2019">
+		<meta name="keywords"             content="
+			Q, Q.js, Qjs,
+			quantum, quantum physics, quantum mechanics, superposition,
+			quantum computer, quantum computer programming, quantum computing, QC, 
+			quantum simulator, quantum computer simulator, 
+			qubit, qbit, gate, Hadamard, Bloch, Bloch Sphere,
+			Web, Web site, website, Web browser, browser, HTML, HTML5, JavaScript, ES6, CSS,
+			Chrome, Firefox, Safari, Opera, Brave, Edge, WebKit, Blink,
+			Stewart Smith, Stewart, Stew, Stuart, Steven, Steve, Stewdio, stew_rtsmith, @stew_rtsmith,
+			Moar, Moar Technologies Corp, MTC,
+			Google, IBM, Microsoft, NASA, DWave, D-Wave,
+			Quil, OpenQASM,
+				ProjectQ, Qiskit, 
+				Quantum Development Kit, Cirq, Strawberry Fields, t|ket>,
+				QCL, Quantum pseudocode, Q#, Q|SI>, Q language, qGCL, QFC, QML, LIQUi|>, Quipper,
+			Stanford CS 269 Q: Quantum Computer Programming">
+		
+		<meta name="twitter:card"         content="summary">
+		<meta name="twitter:site"         content="@stew_rtsmith">
+		<meta name="twitter:creator"      content="@stew_rtsmith">
+		<meta name="twitter:title"        content="Q ⟩ References">
+		<meta name="twitter:description"  content="Quantum computing in your browser.">
+		<meta name="twitter:image"        content="https://stewdio.github.io/q.js/Assets/q-thumbnail.png">
+		
+		<meta property="og:type"          content="website">
+		<meta property="og:title"         content="Q ⟩ References">
+		<meta property="og:description"   content="Quantum computing in your browser.">
+		<meta property="og:image"         content="https://stewdio.github.io/q.js/Assets/q-thumbnail.png">
+		<meta property="og:url"           content="https://stewdio.github.io/q.js/References.html">
+		
+		<link rel="canonical"             href="https://stewdio.github.io/q.js/References.html">
+		<link rel="icon" type="image/png" href="Assets/q-favicon-064.png">
+		<link rel="apple-touch-icon"      href="Assets/q-favicon-144.png">
+		<link rel="stylesheet" type="text/css" href="Assets/style.css">
+		
+		<script async src="https://www.googletagmanager.com/gtag/js"></script>
+		<script src="Assets/ga.js"></script>
+		<script src="Q/Q.js"></script>
+		<script src="Q/ComplexNumber.js"></script>
+		<script src="Q/Matrix.js"></script>
+		<script src="Q/Qubit.js"></script>
+		<script src="Q/Gate.js"></script>
+		<script src="Q/Circuit.js"></script>
+		<script src="Assets/navigation.js"></script>
+		<script src="Assets/Three/three.105.min.js"></script>
+		<script src="Assets/Three/OrbitControls.js"></script>
+		<script src="Assets/Tween/tween.min.js"></script>
+		<script src="Assets/blochSphere.js"></script>
+		<script src="Assets/SurfaceText.js"></script>
+	</head>
+	<body>
+		<main>
 
 
 
 
-Quantum Computing for Computer Scientists
-https://youtu.be/F_Riqjdh2oM
+			<h3>Help! I have no idea what quantum computing is.</h3>
+			
+
+			<h4>Dr. Talia Gershon explains quantum computing for WIRED (2018)</h4>
+			<p>
+				→ <a href="https://youtu.be/OWJCfOvochA" target="_blank">https://youtu.be/OWJCfOvochA</a>
+				<br>
+				Dr. Gershon is the director of research strategy and growth initiatives at IBM.
+				Here she not only expertly explains quantum computing
+				to five levels of understanding—personified by a child, 
+				a teen, undergrad, grad student, and a professional—but also
+				refers to an actual quantum computer apparatus that she’s brought with her to the dialogues. 
+				I have great respect for those who can take rather complex subjects 
+				and make them intuitive. 
+				It is incredibly difficult to do. 
+				Dr. Gershon makes it look easy.
+				<br>
+				<a href="https://www.linkedin.com/in/talia-gershon/" target="_blank">Dr. Gershon on LinkedIn</a>
+				<br>
+				<a href="https://twitter.com/DrTaliaGershon" target="_blank">Dr. Gershon on Twitter</a>
+			</p>
+
+
+			<h4>
+				“The Talk” by 
+				Scott Aaronson and
+				Zach Weinersmith
+				(2016)
+			</h4>
+			<p>
+				→ <a href="https://www.smbc-comics.com/comic/the-talk-3" target="_blank">https://www.smbc-comics.com/comic/the-talk-3</a>
+				<br>
+				Cartoonist Zach Weinersmith teams up with Scott Aaronson, 
+				director of the <a href="http://www.cs.utexas.edu/~qic/" target="_blank">Quantum Information Center</a>
+				at the University of Texas at Austin,
+				to produce this comic that is both humorous and informative. 
+				<br>
+				<a href="https://www.scottaaronson.com/" target="_blank">Scott Aaronson’s website</a>
+				<br>
+				<a href="https://twitter.com/ZachWeiner" target="_blank">Zach Weinersmith on Twitter</a>
+			</p>
 
 
 
-Quantum Computing Expert Explains One Concept in 5 Levels of Difficulty | WIRED
-https://www.youtube.com/watch?v=OWJCfOvochA
+
+			<hr>
+			<h3>Help—I am a programmer.</h3>	
+			<h4>
+				Andrew Helwer’s “Quantum computing for computer scientists”
+				lecture for Microsoft Research (2018)
+			</h4>
+			<p>
+				→ <a href="https://youtu.be/F_Riqjdh2oM" target="_blank">https://youtu.be/F_Riqjdh2oM</a>
+				<br>
+				Named after the book of the same title—a book 
+				Andrew reveres—this lecture explains qubits as matrices,
+				gate operations as matrices, 
+				superposition,
+				and demonstrates an example of quantum computing’s 
+				exponential power over classical computing.
+				This is the video that got me started on building Q.js.
+				I’ve watched it about 100 times, 
+				and each time I’m able to gleen a sliver of new insight. 
+				<br>
+				<a href="https://www.microsoft.com/en-us/research/uploads/prod/2018/05/40655.compressed.pdf" target="_blank">Lecture slides</a>
+				<br>
+				<a href="https://www.microsoft.com/en-us/research/video/quantum-computing-computer-scientists/" target="_blank">Entry on Microsoft Research’s portal</a>
+				<br>
+				<a href="https://www.linkedin.com/in/ahelwer/" target="_blank">Andrew Helwer on LinkedIn</a>
+			</p>
+			
+
+			<h4>Quantum Computing for Computer Scientists (2008)</h4>
+			<p>
+				I’ll let you know when it finally arrives...
+				<br>
+				<a href="https://www.cambridge.org/core/books/quantum-computing-for-computer-scientists/8AEA723BEE5CC9F5C03FDD4BA850C711" target="_blank">Entry on Cambridge University Press</a><br>
+				<a href="https://www.amazon.com/Quantum-Computing-Computer-Scientists-Yanofsky/dp/0521879965" target="_blank">Purchase from Amazon</a><br>
+				<a href="https://www.barnesandnoble.com/w/quantum-computing-for-computer-scientists-noson-s-yanofsky/1100947717?ean=9780521879965" target="_blank">Purchase from Barnes & Noble</a><br>
+				<a href="https://www.target.com/p/quantum-computing-for-computer-scientists-by-noson-s-yanofsky-mirco-a-mannucci-hardcover/-/A-77844810" target="_blank">Purchase from Target</a>
+			</p>
+
+
+			<h4>Quantum computation and quantum information (2000)</h4>
+			<p>
+				This tome is credited to Michael Nielsen and 
+				Isaac Chuang—sometimes referred to as “Mike & Ike” for short. 
+				It is the must-have, foundational book for quantum computing.
+				Get this book.
+				Beware: It is full of maths symbols. 
+				As such I’ve found it useful to breeze-read through some sections,
+				totally unconcerned about if I’m truly absorbing the material or not.
+				Then to go back and read it again.
+				And again.
+				And yet again.
+				And so on.
+				By employing this unanxious repetition across days / moods / contexts it is almost by accident that the puzzle pieces begin to join and the picture comes in to focus.
+				<br>
+				<a href="https://en.wikipedia.org/wiki/Quantum_Computation_and_Quantum_Information" target="_blank">Entry on Wikipedia</a><br>
+				<a href="https://www.amazon.com/Quantum-Computation-Information-10th-Anniversary/dp/1107002176" target="_blank">Purchase from Amazon</a><br>
+				<a href="https://www.barnesandnoble.com/w/quantum-computation-and-quantum-information-michael-a-nielsen/1100942343?ean=9781107002173" target="_blank">Purchase from Barnes & Noble</a><br>
+				<a href="https://www.target.com/p/quantum-computation-and-quantum-information-10-edition-by-michael-a-nielsen-isaac-l-chuang/-/A-78109376" target="_blank">Purchase from Target</a>
+			</p>
 
 
 
-The Talk
-by Scott Aaronson
-and Zach Weinersmith
-https://www.smbc-comics.com/comic/the-talk-3
+
+			<hr>
+			<h3>Arrrgg. I need specifics.</h3>
+			<h4>
+				Playing with the Bloch Sphere (2019)
+			</h4>
+			<p>
+
+				→ <a href="https://quantumcomputing.stackexchange.com/questions/4720/what-circuit-or-operation-corresponds-to-the-tensor-product" target="_blank">https://quantumcomputing.stackexchange.com/questions/4720/what-circuit-or-operation-corresponds-to-the-tensor-product</a>
+				<br>
+				Published just days after I began work on Q.js, 
+				this blog post by Gwilym Newton of IBM solved a problem I was banging my head against the wall over:
+				How to properly convert a qubit’s 
+				<code><a href="Qubit.html#this.alpha">alpha</a></code>
+				and 
+				<code><a href="Qubit.html#this.beta">beta</a></code> 
+				properties in <a href="Qubit.html#.toBlochSphere">to phi and theta angles</a>!
+				If you’re building your own 
+				<a href="Qubit.html#Bloch_sphere">Bloch Sphere visualizer</a>
+				you’ll notice this is surprisingly difficult to find code examples of. This helped me a lot.
+				<br>
+				<a href="https://www.ibm.com/blogs/emerging-technology/author/gwilym-newton/" target="_blank">Gwilym Newton on IBM Blogs</a><br>
+				<a href="https://www.linkedin.com/in/gwilym-newton-91774659/" target="_blank">Gwilym Newton on LinkedIn</a><br>
+				<a href="https://twitter.com/Trevelyan_Panda" target="_blank">Gwilym Newton on Twitter</a>
+			</p>
+
+
+			<hr>
+			<p>
+				Stayed tuned. More is coming.
+			</p>
+
+<!--
+			<h4>CNOT product is factorable</h4>
+			<p>
+				(but then shows an entangled state that is not)
+				https://quantumcomputing.stackexchange.com/questions/4720/what-circuit-or-operation-corresponds-to-the-tensor-product
+			</p>
+
+
+			<p>
+				3 things that make quantum speedup:
+
+				Superposition
+
+				Entanglement 
+
+				Interference
+			</p>
+-->
 
 
 
-CNOT product is factorable
-(but then shows an entangled state that is not)
-https://quantumcomputing.stackexchange.com/questions/4720/what-circuit-or-operation-corresponds-to-the-tensor-product
-
-
-
-
-3 things that make quantum speedup:
-
-Superposition
-
-Entanglement 
-
-Interference
-
+		</main>
+	</body>
+</html>

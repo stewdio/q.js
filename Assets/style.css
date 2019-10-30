@@ -582,7 +582,7 @@ nav li a {
 	display: block;
 	height: 3.2rem;
 	padding: 0 0 0 3rem;	
-	font-family: var( --font-family-mono );
+	/*font-family: var( --font-family-mono );*/
 }
 nav a.selected {
 
@@ -1081,7 +1081,7 @@ table#console-open-commands {
 	
 	width: 100%;
 	border-radius: 1em;
-	background-color: var( --background-callout-color );
+	background-color: var( --color-chalk );
 }
 table#console-open-commands td {
 
