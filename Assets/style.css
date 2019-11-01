@@ -697,19 +697,21 @@ td:hover {
 
 
 
-
-ul.properties {
+ul.properties,
+ol.properties {
 
 	margin-top: 0.8em;
 	border-top: 1px solid var( --color-newsprint );
 }
-ul.properties li {
+ul.properties li,
+ol.properties li {
 
 	border-bottom: 1px solid var( --color-newsprint );
 	list-style: none;
 	padding: 0.8em 0;
 }
-ul.properties li:hover {
+ul.properties li:hover,
+ol.properties li:hover {
 
 	background-color: var( --background-callout-color );
 }

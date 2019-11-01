@@ -71,6 +71,7 @@ Q.Circuit = function( bandwidth, timewidth ){
 	this.fillEmptyOperations$()
 
 
+	this.matrix = null
 
 	this.results = []
 	// Function.call( this )
@@ -88,6 +89,298 @@ Object.assign( Q.Circuit, {
 	constants: {},
 	createConstant:  Q.createConstant,
 	createConstants: Q.createConstants,
+
+
+
+
+
+
+	controlled: function( U ){
+		
+		// console.log( 'U?', U )
+
+		const 
+		size = U.getWidth(),
+		result = Q.Matrix.createIdentity( size * 2 )
+
+		// console.log( 'U', U.toTsv() )
+		// console.log( 'size', size )
+		// console.log( 'result', result.toTsv() )
+		
+		for( let x = 0; x < size; x ++ ){
+			
+			for( let y = 0; y < size; y ++ ){
+				
+				const v = U.read( x, y )
+				// console.log( `value at ${x}, ${y}`, v )
+				result.write$( x + size, y + size, v )
+			}
+		}
+		return result
+	},
+	
+
+
+	//  Return transformation over entire nqubit register that applies U to
+	//  specified qubits (in order given).
+	//  Algorithm from Lee Spector's "Automatic Quantum Computer Programming"
+	//  Page 21 in the 2004 PDF?
+	//  http://148.206.53.84/tesiuami/S_pdfs/AUTOMATIC%20QUANTUM%20COMPUTER%20PROGRAMMING.pdf
+
+	expandMatrix: function( circuitBandwidth, U, qubitIndices ){
+		
+		// console.log( 'EXPANDING THE MATRIX...' )
+		// console.log( 'this one: U', U.toTsv())
+
+		const _qubits = []
+		const n = Math.pow( 2, circuitBandwidth )
+		
+
+		// console.log( 'qubitIndices used by this operation:', qubitIndices )
+		// console.log( 'qubits before slice', qubitIndices )
+		// qubitIndices = qubitIndices.slice( 0 )
+		// console.log( 'qubits AFTER slice', qubitIndices )
+		
+
+		
+
+		for( let i = 0; i < qubitIndices.length; i ++ ){
+			
+			qubitIndices[ i ] = ( circuitBandwidth - 1 ) - qubitIndices[ i ]
+		}
+		// console.log( 'qubits AFTER manipulation', qubitIndices )
+
+		
+		qubitIndices.reverse()
+		for( let i = 0; i < circuitBandwidth; i ++ ){
+			
+			if( qubitIndices.indexOf( i ) == -1 ){
+				
+				_qubits.push( i )
+			}
+		}
+
+
+		// console.log( 'qubitIndices vs _qubits:' )
+		// console.log( 'qubitIndices', qubitIndices )
+		// console.log( '_qubits', _qubits )
+		
+
+
+		const result = new Q.Matrix.createZero( n )
+
+
+		// const X = numeric.rep([n, n], 0);
+		// const Y = numeric.rep([n, n], 0);
+		
+
+		let i = n
+		while( i -- ){
+			
+			let j = n
+			while( j -- ){
+				
+				let
+				bitsEqual = true,
+				k = _qubits.length
+				
+				while( k -- ){
+					
+					if(( i & ( 1 << _qubits[ k ])) != ( j & ( 1 << _qubits[ k ]))){
+						
+						bitsEqual = false
+						break
+					}
+				}
+				if( bitsEqual ){
+
+					// console.log( 'bits ARE equal' )
+					
+					let
+					istar = 0,
+					jstar = 0,
+					k = qubitIndices.length
+					
+					while( k -- ){
+						
+						const q = qubitIndices[ k ]
+						istar |= (( i & ( 1 << q )) >> q ) << k
+						jstar |= (( j & ( 1 << q )) >> q ) << k
+					}
+
+
+					//console.log( 'U.read( istar, jstar )', U.read( istar, jstar ).toText() )
+
+					// console.log( 'before write$', result.toTsv())
+
+					// console.log( 'U.read at ', istar, jstar, '=', U.read( istar, jstar ).toText())
+					result.write$( i, j, U.read( istar, jstar ))
+
+					// console.log( 'after write$', result.toTsv())
+					
+					// X[i][j] = U.x[ istar ][ jstar ]
+					// Y[i][j] = U.y[ istar ][ jstar ]
+				}
+				// else console.log('bits NOT equal')
+			}
+		}
+		//return new numeric.T(X, Y);
+
+		// console.log( 'expanded matrix to:', result.toTsv() )
+		return result
+	},
+
+
+
+
+	run: function( circuit, x ){
+		
+		if( x === undefined ){
+
+			// x = new Q.Matrix(
+			// 	[1],
+			// 	[0],
+			// 	[0],
+			// 	[0])
+
+
+			x = new Q.Matrix( 1, circuit.bandwidth * 2 )
+			x.write$( 0, 0, 1 )
+		}
+
+		// console.log( '\n\n\nabout to eval this circuit!')
+		
+		//console.log( 'what is numeric.T??', numeric.T )
+		// console.log( 'what is X??', x )
+		// console.log( 'what is progress??', progress )//  increases the progress bar DOM element
+		// console.log( 'what is callback??', callback )//  sets progress  bar  DOM element to  display: none when done.
+		//console.log( 'what is circuit??', circuit )
+
+
+		// console.log( 'this circuit', circuit.toDiagram() )
+
+
+
+		const operationsTotal = circuit.moments.reduce( function( sum, moment, m ){
+
+			// console.log( 'moment', m, 'contains the following', moment.length, 'operations\n', moment )
+			return sum + moment.length
+		
+		}, 0 )
+		// console.log( 'operations to perform:', operationsTotal )
+
+
+
+
+
+
+		let operationsCompleted = 0
+		let result = circuit.moments.reduce( function( x, moment, m ){
+
+			return moment.reduce( function( x, operation ){
+
+
+				// operationsCompleted ++
+				// console.log( `\n\nProgress ... ${ Math.round( operationsCompleted / operationsTotal * 100 )}%`)
+				// console.log( 'Moment .....', m )
+				// console.log( 'Registers ..', operation.qubitIndices )
+				// console.log( 'Gate .......', operation.gate.name )
+
+
+
+				let U
+				
+				// console.log( 'operation', operation )
+				if( operation.qubitIndices.length < Infinity ){
+				
+					U = operation.gate.matrix
+					// console.log( 'U = operation.gate.matrix', U )
+				} 
+				else {
+				
+					//  This is for QFT... will have to come back to this!
+					// console.log( 'I don’t even know what’s up! INFINITY!!!' )
+				}
+				
+				// console.log( 'U = operation.gate.matrix', U.toTsv() )
+
+
+
+
+
+/*
+
+WHEN I TAKE THIS OUT IT WORKS !
+
+				for( let j = 0; j < operation.qubitIndices.length; j ++ ){
+				
+					U = Q.Circuit.controlled( U )
+					console.log( 'qubitIndex #', j, 'U = Q.Circuit.controlled( U )', U.toTsv() )
+				}
+*/
+
+
+				//const qubits  = operation.qubitIndices//  I don’t think we need to concat shit here.
+
+
+
+				// console.log( 'ABOUT TO MULTIPLY' )
+				// console.log( 'x???', x.toTsv() )
+
+				if( x instanceof Q.Matrix ){
+				
+					// console.log( 'x is a matrix. good. EXPANDING it...' )
+					x = Q.Circuit.expandMatrix( circuit.bandwidth, U, operation.qubitIndices ).multiply( x )
+					// x = x.multiply( Q.Circuit.expandMatrix( circuit.bandwidth, U, operation.qubitIndices ))
+				}
+				else {
+
+					// console.log( 'huh...  x wants a matrix... and we didn’t have one (BAD!)') 
+					x = Q.Circuit.expandMatrix( circuit.bandwidth, U, operation.qubitIndices )
+				}
+
+				operationsCompleted ++
+				// console.log( `\n\nprogress: ${ Math.round( operationsCompleted / operationsTotal * 100 )}%`)
+				// console.log( 'Intermediate result:', x.toTsv() )
+				
+
+				return x
+			
+			}, x )
+
+
+		}, x )
+
+
+		
+		/*
+		console.log( '\n\n\n\n=================================\nCIRCUIT RESULTS!' )
+		result.rows.forEach( function( r, i ){
+
+			let state = ''
+			for( let j = 0; j < circuit.bandwidth; j ++ ){
+
+				state = (( i & ( 1 << j )) >> j ) + state
+			}
+			console.log( '|'+ state +'⟩', Q.round( 100 * r[ 0 ].power( 2 ).real, 8 ), '%' )
+		})
+		console.log( '\n\n\n\n==============' )
+		*/
+
+		//console.log( 'result', result )
+		//return result
+
+		// this.results = result
+
+		return result
+	},
+
+
+
+	
+
+
+
 
 
 	fromText: function( text ){
@@ -245,7 +538,6 @@ Object.assign( Q.Circuit, {
 
 
 
-
 Object.assign( Q.Circuit.prototype, {
 
 	clone: function(){
@@ -258,6 +550,71 @@ Object.assign( Q.Circuit.prototype, {
 		clone.inputs  = original.inputs.slice()
 		
 		return clone
+	},
+
+
+	run$: function(){
+
+		this.results = Q.Circuit.run( this )
+		// console.log( this.results )
+		return this
+	},
+
+	report: function(){
+
+		const circuit = this
+		circuit.results.rows.forEach( function( r, i ){
+
+			const outcome = r[ 0 ]
+			let state = ''
+			for( let j = 0; j < circuit.bandwidth; j ++ ){
+
+				// console.log( 'state?', i, j, state )
+				state = (( i & ( 1 << j )) >> j ) + state
+			}
+			let outcomeFormatted = Q.round( 100 * outcome.power( 2 ).real, 8 ).toString().padStart( 3, ' ' ) +'% chance.'
+			console.log( '|'+ state +'⟩', outcomeFormatted )
+		})
+		return this
+	},
+	try: function(){
+
+		if( this.results instanceof Q.Matrix ){
+
+			const index = new Array( this.results.getHeight() )
+
+			this.results.rows.reduce( function( sum, row, i ){
+
+				const outcome = row[ 0 ].power( 2 ).real
+				sum += outcome
+				index[ i ] = sum
+
+				return sum
+			
+			}, 0 )
+
+			// console.log( 'index', index )
+
+			const rand = Math.random()
+			for( let i = 0; i < index.length; i ++ ){
+
+				if( rand < index[ i ]){
+
+					// console.log( '#'+ i +'wins!' )
+
+					let state =  ''
+					for( let j = 0; j < this.bandwidth; j ++ ){
+						
+						state = (( i & ( 1 << j )) >> j ) + state
+					}
+					// console.log( '|'+ state +'⟩' )
+
+					return '|'+ state +'⟩'
+					break
+				}
+			}
+		}
+		return this
 	},
 
 
@@ -1438,7 +1795,7 @@ Object.assign( Q.Circuit.prototype, {
 	/////////////////
 
 
-	run$: function( n ){
+	runOLD$: function( n ){
 
 		`
 		Ok, right now this is a really simple, contained “run” solution.
@@ -1527,3 +1884,13 @@ Object.assign( Q.Circuit.prototype, {
 
 
 
+
+
+Q.Circuit.createConstants(
+
+	'BELL', Q.Circuit.fromText(`
+
+		H-C0
+		I-C1
+	`)
+)

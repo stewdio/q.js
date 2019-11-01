@@ -18,6 +18,6 @@ website at
 [https://stewdio.github.io/q.js](https://stewdio.github.io/q.js)
 and paste this in to your JavaScript console:
 ```javascript
-Q`H-M`.run$().results
+Q`H`.run$().try()
 ```  
 

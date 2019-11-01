@@ -43,8 +43,8 @@ Q.ComplexNumber = function( real, imaginary ){
 	}
 	else if( real === undefined ) real = 0
 	if( imaginary === undefined ) imaginary = 0
-	if( Q.ComplexNumber.isNumberLike( real ) !== true || 
-		Q.ComplexNumber.isNumberLike( imaginary ) !== true )
+	if(( Q.ComplexNumber.isNumberLike( real ) !== true && isNaN( real ) !== true ) || 
+	   ( Q.ComplexNumber.isNumberLike( imaginary ) !== true && isNaN( imaginary ) !== true ))
 		return Q.error( 'Q.ComplexNumber attempted to create a new instance but the arguments provided were not actual numbers.' )
 
 	this.real = real
@@ -64,7 +64,7 @@ Object.assign( Q.ComplexNumber, {
 	createConstants: Q.createConstants,
 	isNumberLike: function( n ){
 
-		return typeof n === 'number' || n instanceof Number
+		return isNaN( n ) === false && ( typeof n === 'number' || n instanceof Number )
 	},
 	isNaN: function( n ){
 		

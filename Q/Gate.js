@@ -60,12 +60,14 @@ Q.Gate.createConstants(
 	'IDENTITY', new Q.Gate({//  No operation required!
 
 		name:  'Identity',
+		matrix: Q.Matrix.IDENTITY_2X2,
 		label: 'I' }),
 	
 	'MEASURE', new Q.Gate({
 
 		name:  'Measure',
 		label: 'M', 
+		matrix: Q.Matrix.IDENTITY_2X2,//  This is silly. It’s just preventing an error. Come back and fix!!
 		operation: function( qubit ){
 
 			return qubit.collapse()

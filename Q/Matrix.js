@@ -40,25 +40,55 @@ Q.Matrix = function(){
 	this.index = Q.Matrix.index ++
 
 
-	//  Matrices’ primary organization is by rows,
-	//  which is more congruent with our written langauge
-	//  which primarily organization by horizontally juxtaposed glyphs.
-	//  That means it’s easier to write an instance invocation in code
-	//  and easier to read when inspecting properties in the console.
+	let matrixWidth = null
 
-	let 
-	matrixWidth = null,
-	matrixWidthIsBroken = false
 
-	this.rows = Array.from( arguments )
-	this.rows.forEach( function( row ){
+	//  Has Matrix been called with two numerical arguments?
+	//  If so, we need to create an empty Matrix 
+	//  with dimensions of those values.
+	
+	if( arguments.length == 1 &&
+		Q.ComplexNumber.isNumberLike( arguments[ 0 ])){
 
-		if( row instanceof Array !== true ) row = [ row ]
-		if( matrixWidth === null ) matrixWidth = row.length
-		else if( matrixWidth !== row.length ) matrixWidthIsBroken = true
-	})
-	if( matrixWidthIsBroken )
-		return Q.error( `Q.Matrix found upon initialization that matrix#${this.index} row lengths were not equal. You are going to have a bad time.`, this )
+		matrixWidth = arguments[ 0 ]
+		this.rows = new Array( matrixWidth ).fill( 0 ).map( function(){
+
+			return new Array( matrixWidth ).fill( 0 )
+		})
+	}
+	else if( arguments.length == 2 &&
+		Q.ComplexNumber.isNumberLike( arguments[ 0 ]) &&
+	    Q.ComplexNumber.isNumberLike( arguments[ 1 ])){
+
+		matrixWidth = arguments[ 0 ]
+		this.rows = new Array( arguments[ 1 ]).fill( 0 ).map( function(){
+
+			return new Array( matrixWidth ).fill( 0 )
+		})
+	}
+	else {
+
+		//  Matrices’ primary organization is by rows,
+		//  which is more congruent with our written langauge;
+		//  primarily organizated by horizontally juxtaposed glyphs.
+		//  That means it’s easier to write an instance invocation in code
+		//  and easier to read when inspecting properties in the console.
+
+		let matrixWidthIsBroken = false
+		this.rows = Array.from( arguments )
+		this.rows.forEach( function( row ){
+
+			if( row instanceof Array !== true ) row = [ row ]
+			if( matrixWidth === null ) matrixWidth = row.length
+			else if( matrixWidth !== row.length ) matrixWidthIsBroken = true
+		})
+		if( matrixWidthIsBroken )
+			return Q.error( `Q.Matrix found upon initialization that matrix#${this.index} row lengths were not equal. You are going to have a bad time.`, this )
+	}
+
+
+
+
 
 
 	//  But for convenience we can also organize by columns.
@@ -507,7 +537,7 @@ Object.assign( Q.Matrix.prototype, {
 
 		if( this.isValidAddress( x, y )){
 
-			if( typeof n === 'number' ) n = new Q.ComplexNumber( n )
+			if( Q.ComplexNumber.isNumberLike( n )) n = new Q.ComplexNumber( n )
 			if( n instanceof Q.ComplexNumber !== true ) return Q.error( `Attempted to write an invalid value (${n}) to matrix#${this.index} at x=${x}, y=${y}`, this )
 			this.rows[ y ][ x ] = n
 			return this

@@ -301,33 +301,26 @@ document.body.appendChild( ape.<a href="#.prototype.toDom">toDom</a>() )
 				Let’s do it!
 			</p>
 <pre><code>
-ape.<a href="#.prototype.run$">run$</a>()  <span class="comment">//  Runs our circuit.</span>
-ape.<a href="#.prototype.results">results</a> <span class="comment">//  Outputs the results Array.
-            //  Expecting [ 1, 0 ]
-            //         or [ 1, 1 ].</span>
+ape.<a href="#.prototype.run$">run$</a>()   <span class="comment">//  Runs our circuit.</span>
+ape.<a href="#.prototype.report">report()</a> <span class="comment">//  Reports outcome probabilities.</span>
+<samp>
+|00⟩  50% chance.
+|01⟩   0% chance.
+|10⟩   0% chance.
+|11⟩  50% chance.
+</samp>
 </code></pre>
 			<p>
-				As you can see, running a circuit alters its 
+				Running a circuit updates its probability
 				<code><a href="#.prototype.results">results</a></code> property.
-				But of course running a quantum circuit one single time
-				doesn’t tell us much about the curve of probabilities.
-				Let’s try running our circuit one thousand times
-				and output the results array immediately.
+				We can also try the circuit.
 			</p>
 <pre><code>
-ape.<a href="#.prototype.run$">run$</a>( 1000 ).<a href="#.prototype.results">results</a>
-</code></pre>
-			<p>
-				The first element of the results array will remain <code>1</code>
-				but now the second value should be closer to <code>0.5</code>.
-			</p>
-			<p>
-				<em>
-					Note that these result reflect the early stages of this simulator.
-					Check back in late October 2019 for updates.
-					Better yet, <a href="https://github.com/stewdio/q.js" target="_blank">contribute to Q!</a>
-				</em>
-			</p>			
+ape.<a href="#.prototype.try">try</a>()
+<samp>
+|11⟩
+</samp>
+</code></pre>		
 			<h3 id="Overlapping_multi-qubit_gates">Overlapping multi-qubit gates</h3>
 			<p>
 				Some physical architectures allow for interactioins between qubits that don’t resolve in to the simplest diagrams.
