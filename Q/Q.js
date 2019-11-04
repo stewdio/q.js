@@ -121,6 +121,17 @@ Object.assign( Q, {
 			this.createConstant( arguments[ i ], arguments[ i + 1 ])
 		}
 	},
+
+
+
+
+	isUsefulNumber: function( n ){
+
+		return isNaN( n ) === false && 
+			( typeof n === 'number' || n instanceof Number ) &&
+			n !==  Infinity &&
+			n !== -Infinity
+	},
 	loop: function(){},
 
 
@@ -210,7 +221,7 @@ Object.assign( Q, {
 
 Q.createConstants( 
 
-	'REVISION', 7,
+	'REVISION', 8,
 
 
 	//  Yeah... F’ing floating point numbers, Man!

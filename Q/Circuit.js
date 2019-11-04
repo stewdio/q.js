@@ -16,22 +16,47 @@ Q.Circuit = function( bandwidth, timewidth ){
 
 	`
 
+
+	//  What number Circuit is this
+	//  that we’re attempting to make here?
 	
 	this.index = Q.Circuit.index ++
 
 
-	//  How many qubits (registers) do we use?
+	//  How many qubits (registers) shall we use?
 
-	if( typeof bandwidth !== 'number' ) bandwidth = 3
+	if( !Q.isUsefulNumber( bandwidth )) bandwidth = 3
 	this.bandwidth = bandwidth
 
 
-	//  How many gates can we use per qubit?
-	//  Each one counts as one clock tick.
+	//  How many operations can we perform on each qubit?
+	//  Each operation counts as one moment; one clock tick.
 
-	if( typeof timewidth !== 'number' ) timewidth = 5
+	if( !Q.isUsefulNumber( timewidth )) timewidth = 5
 	this.timewidth = timewidth
 	
+
+	//  Each moment is a collection of operations
+	//  paired with an array of qubit indices to use
+	//  Let’s fill each moment 
+	//  with one IDENTITY operation per qubit.
+
+	this.ensureMomentsAreReady$()		
+	this.fillEmptyOperations$()
+
+
+	//  Does our circuit need evaluation?
+	//  Certainly, yes!
+	// (And will again each time it is modified.)
+
+	this.needsEvaluation = true
+	
+
+	//  When our circuit is evaluated 
+	//  we store that result in its matrix.
+
+	this.matrix = null
+
 
 	//  This is the rational thing to do: assume all input qubits are 0.
 	//  However, let’s say you want to take a section of a circuit
@@ -40,44 +65,14 @@ Q.Circuit = function( bandwidth, timewidth ){
 	//  Just assign those inputs to whatever you need :)
 
 	/* this.inputs = new Array( bandwidth ).fill( Q.Qubit.HORIZONTAL ) */
-	
-	
-
-	//  Each moment is a collection of operations to run (gates),
-	//  including what qubits to use in that operation.
-	//  We’re going to begin by filling each moment with one
-	//  IDENTITY gate per qubit.
-	
-	/* this.moments = new Array( timewidth )
-		.fill( 0 )
-		.map( function( moment, m ){
-
-			const gates = new Array( bandwidth )
-				.fill( 0 )
-				.map( function( qubit, q ){
-
-					return { 
-
-						gate: Q.Gate.IDENTITY,
-						qubitIndices: [ q ]
-					}
-				})
-			gates.momentIndex = m
-			return gates
-		}) */
 
 
-	this.ensureMomentsAreReady$()		
-	this.fillEmptyOperations$()
-
-
-	this.matrix = null
-
-	this.results = []
-	// Function.call( this )
+	this.results = new Q.Matrix( 1, Math.pow( 2, this.bandwidth ))
 }
-// Q.Circuit.prototype = Object.create( Function.prototype )
-// Q.Circuit.prototype.constructor = Q.Circuit
+
+
+
+
 
 
 
@@ -233,7 +228,7 @@ Object.assign( Q.Circuit, {
 
 
 
-	run: function( circuit, x ){
+	evaluate: function( circuit, x ){
 		
 		if( x === undefined ){
 
@@ -275,7 +270,7 @@ Object.assign( Q.Circuit, {
 
 
 		let operationsCompleted = 0
-		let result = circuit.moments.reduce( function( x, moment, m ){
+		let matrix = circuit.moments.reduce( function( x, moment, m ){
 
 			return moment.reduce( function( x, operation ){
 
@@ -352,27 +347,32 @@ WHEN I TAKE THIS OUT IT WORKS !
 		}, x )
 
 
+	
+
+
+
+		const outcomes = matrix.rows.reduce( function( outcomes, row, i ){
+
+			outcomes.push({
+
+				state: '|'+ parseInt( i, 10 ).toString( 2 ).padStart( circuit.bandwidth, '0' ) +'⟩',
+				probability: Math.pow( row[ 0 ].absolute(), 2 )
+			})
+			return outcomes
 		
-		/*
-		console.log( '\n\n\n\n=================================\nCIRCUIT RESULTS!' )
-		result.rows.forEach( function( r, i ){
+		}, [] )
 
-			let state = ''
-			for( let j = 0; j < circuit.bandwidth; j ++ ){
+		
 
-				state = (( i & ( 1 << j )) >> j ) + state
-			}
-			console.log( '|'+ state +'⟩', Q.round( 100 * r[ 0 ].power( 2 ).real, 8 ), '%' )
-		})
-		console.log( '\n\n\n\n==============' )
-		*/
 
-		//console.log( 'result', result )
-		//return result
 
-		// this.results = result
 
-		return result
+
+		return {
+
+			matrix,
+			outcomes
+		}
 	},
 
 
@@ -546,75 +546,67 @@ Object.assign( Q.Circuit.prototype, {
 		original = this,
 		clone    = original.copy()
 
-		clone.results = original.results.slice()
+		clone.results = original.results.clone()
 		clone.inputs  = original.inputs.slice()
 		
 		return clone
 	},
+	evaluate$: function(){
 
-
-	run$: function(){
-
-		this.results = Q.Circuit.run( this )
-		// console.log( this.results )
+		Object.assign( this, Q.Circuit.evaluate( this ))
+		this.needsEvaluation = false
 		return this
 	},
+	report$: function(){
 
-	report: function(){
+		if( this.needsEvaluation ) this.evaluate$()
+		const text = this.outcomes.reduce( function( text, outcome ){
 
-		const circuit = this
-		circuit.results.rows.forEach( function( r, i ){
+			return text +'\n'+ outcome.state 
+				+'  '+ Q.round( 100 * outcome.probability, 8 ).toString().padStart( 3, ' ' ) +'% chance'
+				+'  '+ ''.padStart( Math.round( outcome.probability * 60 ), '█' )
 
-			const outcome = r[ 0 ]
-			let state = ''
-			for( let j = 0; j < circuit.bandwidth; j ++ ){
+		}, '' ) + '\n\n'
+		console.log( text )
+		return this
+	},
+	try$: function(){
 
-				// console.log( 'state?', i, j, state )
-				state = (( i & ( 1 << j )) >> j ) + state
-			}
-			let outcomeFormatted = Q.round( 100 * outcome.power( 2 ).real, 8 ).toString().padStart( 3, ' ' ) +'% chance.'
-			console.log( '|'+ state +'⟩', outcomeFormatted )
+		if( this.needsEvaluation ) this.evaluate$()
+
+		
+		//  We need to “stack” our probabilities from 0..1.
+		
+		const outcomesStacked = new Array( this.outcomes.length )
+		this.outcomes.reduce( function( sum, outcome, i ){
+
+			sum += outcome.probability
+			outcomesStacked[ i ] = sum
+			return sum
+		
+		}, 0 )
+		
+
+		//  Now we can pick a random number
+		//  and return the first outcome 
+		//  with a probability equal to or greater than
+		//  that random number. 
+		
+		const 
+		randomNumber = Math.random(),
+		randomIndex  = outcomesStacked.findIndex( function( index ){
+
+			return randomNumber <= index
 		})
-		return this
-	},
-	try: function(){
+		
 
-		if( this.results instanceof Q.Matrix ){
-
-			const index = new Array( this.results.getHeight() )
-
-			this.results.rows.reduce( function( sum, row, i ){
-
-				const outcome = row[ 0 ].power( 2 ).real
-				sum += outcome
-				index[ i ] = sum
-
-				return sum
-			
-			}, 0 )
-
-			// console.log( 'index', index )
-
-			const rand = Math.random()
-			for( let i = 0; i < index.length; i ++ ){
-
-				if( rand < index[ i ]){
-
-					// console.log( '#'+ i +'wins!' )
-
-					let state =  ''
-					for( let j = 0; j < this.bandwidth; j ++ ){
-						
-						state = (( i & ( 1 << j )) >> j ) + state
-					}
-					// console.log( '|'+ state +'⟩' )
-
-					return '|'+ state +'⟩'
-					break
-				}
-			}
-		}
-		return this
+		//  Output that to the console
+		//  but return the random index
+		//  so we can pipe that to something else
+		//  should we want to :)
+		
+		console.log( this.outcomes[ randomIndex ].state )
+		return randomIndex
 	},
 
 
@@ -1885,12 +1877,41 @@ Object.assign( Q.Circuit.prototype, {
 
 
 
+Q.Circuit.BELL = Q`
 
+	H-C0
+	I-C1
+`
+
+
+
+
+
+
+/*
 Q.Circuit.createConstants(
 
-	'BELL', Q.Circuit.fromText(`
+	'BELL', Q(`
 
 		H-C0
 		I-C1
-	`)
+	`),
+	//https://docs.microsoft.com/en-us/quantum/concepts/circuits?view=qsharp-preview
+	// 'TELEPORT', Q.(`
+		
+	// 	I-I--H-M---v
+	// 	H-C0-I-M-v-v
+	// 	I-C1-I-I-X-Z-
+	// `)
 )
+*/
+
+
+
+
+
+
+
+
+
+

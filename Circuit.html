@@ -292,34 +292,52 @@ document.body.appendChild( ape.<a href="#.prototype.toDom">toDom</a>() )
 			<p class="coming-soon">
 				Note that this feature is still in its early stages
 				and is not yet fully functional.
-				Check back in late November 2019 for updates.
+				Check back in December 2019 for updates.
 				Better yet, <a href="https://github.com/stewdio/q.js" target="_blank">contribute to Q!</a>
 			</p>
 			<h3 id="Executing_quantum_circuits">Executing quantum circuits</h3>
 			<p>
-				Now what good is a quantum circuit that you cannot run?
-				Let’s do it!
+				Once a circuit is created it must be evaluated with 
+				<code><a href="#.prototype.evaluate$">evaluate$</a>()</code>.
+				This resolve’s the circuit’s state <code><a href="#this.matrix">matrix</a></code>
+				and also notes the state names (binary digits)
+				and their corresponding propabilities in 
+				the instance’s <code><a href="#this.outcomes">outcomes</a></code> property.
+				And that’s good.
+				But what’s even better is seeing those results!
+				A circuit’s <code><a href="#.prototype.report">report$</a>()</code> method
+				will internally call 
+				<code><a href="#.prototype.evaluate$">evaluate$</a>()</code> if need be, 
+				then log out the possible outcomes,
+				including bar graphs of the probabilities.
 			</p>
 <pre><code>
-ape.<a href="#.prototype.run$">run$</a>()   <span class="comment">//  Runs our circuit.</span>
-ape.<a href="#.prototype.report">report()</a> <span class="comment">//  Reports outcome probabilities.</span>
+ape.<a href="#.prototype.report">report$</a>()
 <samp>
-|00⟩  50% chance.
-|01⟩   0% chance.
-|10⟩   0% chance.
-|11⟩  50% chance.
+|00⟩   50% chance  ██████████████████████████████
+|01⟩    0% chance  
+|10⟩    0% chance  
+|11⟩   50% chance  ██████████████████████████████
 </samp>
 </code></pre>
 			<p>
-				Running a circuit updates its probability
-				<code><a href="#.prototype.results">results</a></code> property.
-				We can also try the circuit.
+				For fun we can also use 
+				<code><a href="#.prototype.try$">try$</a>()</code>
+				to randomly pick an outcome based on
+				the outcome probabilities.
+				Similar to 
+				<code><a href="#.prototype.report">report$</a>()</code>,
+				the <code><a href="#.prototype.try$">try$</a>()</code> method
+				will internally call 
+				<code><a href="#.prototype.evaluate$">evaluate$</a>()</code>
+				if need be.
 			</p>
 <pre><code>
-ape.<a href="#.prototype.try">try</a>()
-<samp>
-|11⟩
-</samp>
+ape.<a href="#.prototype.try$">try$</a>()
+<samp>|00⟩</samp>
+
+ape.<a href="#.prototype.try$">try$</a>()
+<samp>|11⟩</samp>
 </code></pre>		
 			<h3 id="Overlapping_multi-qubit_gates">Overlapping multi-qubit gates</h3>
 			<p>
@@ -469,7 +487,7 @@ q5  |0⟩───○──┤ X ├───○───┤ M │
 
 			<p class="coming-soon">
 				More to come! More examples! Revised examples! 
-				Check back in November 2019.
+				Check back in December 2019.
 			</p>
 			<hr>
 			<h3>Constructor</h3>

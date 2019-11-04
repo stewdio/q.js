@@ -18,6 +18,9 @@ website at
 [https://stewdio.github.io/q.js](https://stewdio.github.io/q.js)
 and paste this in to your JavaScript console:
 ```javascript
-Q`H`.run$().try()
-```  
+Q`H`.try$()
+``` 
+Each time you run the above code there’s a 50% chance of receiving a 
+"0"—let’s call that heads—and a 50% chance of receiving a "1"—and we’ll call 
+that tails. Go ahead and try it out. 
 
