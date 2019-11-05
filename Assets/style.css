@@ -1519,6 +1519,20 @@ table#console-open-commands .na {
 
 
 
+a.call-out {
+
+	color: var( --color-red );
+	text-decoration-color: var( --color-red );
+}
+a.call-out:hover {
+
+	background-color: var( --color-red );
+	color: var( --color-white );
+}
+
+
+
+
 
 
     /*****************/
