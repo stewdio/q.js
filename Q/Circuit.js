@@ -65,9 +65,6 @@ Q.Circuit = function( bandwidth, timewidth ){
 	//  Just assign those inputs to whatever you need :)
 
 	/* this.inputs = new Array( bandwidth ).fill( Q.Qubit.HORIZONTAL ) */
-
-
-	this.results = new Q.Matrix( 1, Math.pow( 2, this.bandwidth ))
 }
 
 
@@ -546,7 +543,7 @@ Object.assign( Q.Circuit.prototype, {
 		original = this,
 		clone    = original.copy()
 
-		clone.results = original.results.clone()
+		//clone.results = original.results.clone()
 		clone.inputs  = original.inputs.slice()
 		
 		return clone
@@ -564,7 +561,7 @@ Object.assign( Q.Circuit.prototype, {
 
 			return text +'\n'+ outcome.state 
 				+'  '+ Q.round( 100 * outcome.probability, 8 ).toString().padStart( 3, ' ' ) +'% chance'
-				+'  '+ ''.padStart( Math.round( outcome.probability * 60 ), '█' )
+				+'  '+ ''.padStart( Math.round( outcome.probability * 32 ), '█' )
 
 		}, '' ) + '\n\n'
 		console.log( text )

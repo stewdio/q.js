@@ -75,17 +75,17 @@
 				Similarly, quantum circuit diagrams are a series of moments in time,
 				beginning at moment zero on the left edge 
 				and proceeding forward in time by reading to the right.
-				Here we have a quantum circuit that is 5 moments long
+				Here we have a quantum circuit that is 3 moments long
 				and operates on just 2 quantum bits:
 			</p>
-			<div class="ape-diagram qjs-circuit-container"></div>
+			<div class="fox-diagram qjs-circuit-container"></div>
 			<p>
 				Let’s read it from left to right, 
 				observing what happens at each passing moment.
 				We begin at moment zero (<code>t0</code>) with our initial qubit values.
-				Both qubit #0 and qubit #1 begin with a value of <code>0⟩</code>.
+				Both qubit #0 and qubit #1 begin with a value of <span class="complex-vector beta">0</span>.
 				This is a <a href="Qubit.html#.HORIZONTAL">“horizontal” qubit state</a>.
-				In normal quantum circuit design these initial values will always be <code>0⟩</code>.
+				In normal quantum circuit design these initial values will always be <span class="complex-vector beta">0</span>.
 				Q, however, allows us to manually change these input values 
 				to any possible qubit state
 				so that you may simulate a snippet of a complete circuit.
@@ -99,18 +99,26 @@
 				to qubit #1.
 				This puts qubit #0 in to a <a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition state</a>
 				while leaving qubit #1 as-is.
-				Similarly, our second moment (<code>t2</code>)
-				only operates on qubit #0, inverting its superposition
-				by use of a <a href="Gate.html#.PAULI_X">Pauli X</a> gate.
 			</p>
 			<p>
-				In our next moment, <code>t3</code>, we finally operate on both qubits at once
+				In our next moment (<code>t2</code>) we operate on both qubits at once
 				by applying a <a href="Gate.html#.CONTROLLED_NOT">Controlled-Not</a> gate.
 				This operation will flip the value of qubit #1 if, and only if, 
-				the value of qubit #0 is 1.
-				At <code>t4</code> we apply a <a href="Gate.html#.PAULI_Y">Pauli Y</a> gate to each qubit.
-				Finally, at <code>t5</code> we <a href="Gate.html#.MEASURE">measure</a> the value of each qubit
-				which collapses any superpositions to a singular values.
+				the value of qubit #0 is <span class="complex-vector beta">1</span>.
+				This action 
+				<a href="https://en.wikipedia.org/wiki/Qubit#Quantum_entanglement" target="_blank">entangles the two qubits</a>;
+				their states are now dependent on one another.
+				At this point it is impossible to compute the values of either
+				qubit #0 or qubit #1 independently.
+				From here onward the state of the circuit
+				can only be computed as a whole.
+			</p>
+			<p>
+				In our circuit’s final moment (<code>t3</code>)
+				we leave qubit #0 alone
+				while flipping the value of qubit #1
+				by applying a
+				<a href="Gate.html#.PAULI_X">Pauli X</a> gate to it.
 			</p>
 			<h3 id="Writing_quantum_circuits">Writing quantum circuits</h3>
 			<p>
@@ -125,12 +133,13 @@
 				which use backticks rather than single or double quotes, 
 				and <em>do not require parentheses to invoke a function call.</em>
 				Note the backticks and lack of parentheses in this example.
+				We’ll call our example circuit “fox”:
 			</p>
 <pre><code>
-var ape = <a href="Q.html">Q</a>`
+var fox = <a href="Q.html">Q</a>`<strong>
 
-	<strong>H-X-C0-Y-M
-	I-I-C1-Y-M</strong>
+	H-C0-X
+	I-C1-X</strong>
 `
 </code></pre>
 			<p>
@@ -141,8 +150,8 @@ var ape = <a href="Q.html">Q</a>`
 				Therefore, the following (less sensible) input creates a circuit identical to the one above.
 			</p>
 <pre><code>
-var ape = <a href="Q.html">Q</a>`<strong>H X-C0 Y--M
-I  I   C1    Y     M</strong>`
+var fox = <a href="Q.html">Q</a>`<strong>H C0--X
+I  C1   X</strong>`
 </code></pre>
 			<p>
 				Internally, <code><a href="Circuit.html#.fromText">fromText</a></code>
@@ -154,66 +163,50 @@ I  I   C1    Y     M</strong>`
 <pre><code>
 <span class="comment">//  Create a circuit 
 //  that operates on 2 qubits
-//  and lasts for 5 moments.</span>
+//  and lasts for 3 moments.</span>
 
-var ape = new <a href="Q.html">Q</a>.Circuit( 2, 5 )
+var fox = new <a href="Q.html">Q</a>.Circuit( 2, 3 )
 
 
 <span class="comment">//  At moment #1 (the first moment we can operate),
 //  we’ll use a Hadamard gate
 //  to put the value of qubit #0 in to superposition.</span>
 
-ape.<a href="#.prototype.set$">set$</a>( 1, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.HADAMARD">HADAMARD</a>, [ 0 ])
+fox.<a href="#.prototype.set$">set$</a>( 1, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.HADAMARD">HADAMARD</a>, [ 0 ])
 
 
-<span class="comment">//  At moment #2
-//  we’ll use a Pauli X gate
-//  to invert the value of qubit #0.</span>
-
-ape.<a href="#.prototype.set$">set$</a>( 2, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.PAULI_X">PAULI_X</a>, [ 0 ])
-
-
-<span class="comment">//  At moment #3
+<span class="comment">//  Then at moment #2
 //  we’ll use a Controlled-Not gate
 //  to invert the value of qubit #1
 //  if the value of qubit #0 is 1.</span>
 
-ape.<a href="#.prototype.set$">set$</a>( 3, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.CONTROLLED_NOT">CONTROLLED_NOT</a>, [ 0, 1 ])
+fox.<a href="#.prototype.set$">set$</a>( 2, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.CONTROLLED_NOT">CONTROLLED_NOT</a>, [ 0, 1 ])
 
 
-<span class="comment">//  At moment #4
-//  we’ll use a Pauli Y gate
-//  to rotate the value of qubit #0.
-//  Then we’ll do the same to qubit #1.</span>
+<span class="comment">//  Finally, at moment #3
+//  we’ll use a Pauli X gate
+//  to flip the value of qubit #0,
+//  and do the same for qubit #1.</span>
 
-ape.<a href="#.prototype.set$">set$</a>( 4, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.PAULI_Y">PAULI_Y</a>, [ 0 ])
-ape.<a href="#.prototype.set$">set$</a>( 4, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.PAULI_Y">PAULI_Y</a>, [ 1 ])
+fox.<a href="#.prototype.set$">set$</a>( 3, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.PAULI_X">PAULI_X</a>, [ 0 ])
+fox.<a href="#.prototype.set$">set$</a>( 3, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.PAULI_X">PAULI_X</a>, [ 1 ])
 
-
-<span class="comment">//  Finally, at moment #5
-//  we’ll use a Measure operation
-//  to resolve the  value of qubit #0.
-//  And we’ll do the same to qubit #1.</span>
-
-ape.<a href="#.prototype.set$">set$</a>( 5, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.MEASURE">MEASURE</a>, [ 0 ])
-ape.<a href="#.prototype.set$">set$</a>( 5, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.MEASURE">MEASURE</a>, [ 1 ])
 </code></pre>
 			<p>
-				I think you’ll agree the shorter Q syntax is preferable 
-				to having to type all of the above.
+				I think you’ll agree the shorter <code>Q`…`</code> syntax is preferable.
 			</p>
 			<h3 id="Inspecting_quantum_circuits">Inspecting quantum circuits</h3>
 			<p>
-				Let’s create that “ape” circuit again using our compressed Q syntax.
+				Let’s create that fox circuit again using our compressed Q syntax.
 				(This illustrates yet another small variation on the whitespace and gate separator used
 				in the input <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals">Template literal</a>.)
 			</p>
 <pre><code>
-var ape = <a href="Q.html">Q</a>`
+var fox = <a href="Q.html">Q</a>`<strong>
 
-	<strong>H  X  C0  Y  M
+	H  C0  X
 	
-	I  I  C1  Y  M</strong>
+	I  C1  X</strong>
 `
 </code></pre>
 			<p>
@@ -221,14 +214,14 @@ var ape = <a href="Q.html">Q</a>`
 				But we can also get a summary overview with the following command.
 			</p>
 <pre><code>
-ape.<a href="#.prototype.toText">toText</a>()
+fox.<a href="#.prototype.toText">toText</a>()
 </code></pre>
 			<p>
 				This returns the following string.
 			</p>
 <pre><samp>
-H-X-C0-Y-M
-I-I-C1-Y-M
+H-C0-X
+I-C1-X
 </samp></pre>
 			<p>
 				Does that look familiar?
@@ -237,20 +230,20 @@ I-I-C1-Y-M
 				we can clone and test for equality between circuits like so.
 			</p>
 <pre><code>
-var bee = <a href="Q.html">Q</a>( ape.<a href="#.prototype.toText">toText</a>() )
+var dog = <a href="Q.html">Q</a>( fox.<a href="#.prototype.toText">toText</a>() )
 
-ape === bee<span class="comment">//  false.</span>
-ape.<a href="#.prototype.toText">toText</a>() === bee.<a href="#.prototype.toText">toText</a>()<span class="comment">//  true.</span>
+fox === dog<span class="comment">//  false.</span>
+fox.<a href="#.prototype.toText">toText</a>() === dog.<a href="#.prototype.toText">toText</a>()<span class="comment">//  true.</span>
 </code></pre>
 			<p>
 				Though in practice you’re far more likely to clone a circuit 
 				by using its own method for doing so.
 			</p>
 <pre><code>
-var bee = <strong>ape.<a href="#.prototype.clone">clone</a>()</strong>
+var dog = <strong>fox.<a href="#.prototype.clone">clone</a>()</strong>
 
-ape === bee<span class="comment">//  false.</span>
-ape.<a href="#.prototype.toText">toText</a>() === bee.<a href="#.prototype.toText">toText</a>()<span class="comment">//  true.</span>
+dog === fox<span class="comment">//  false.</span>
+fox.<a href="#.prototype.toText">toText</a>() === dog.<a href="#.prototype.toText">toText</a>()<span class="comment">//  true.</span>
 </code></pre>
 			<h4 id="ASCII_circuit_diagrams">ASCII circuit diagrams</h4>
 			<p>
@@ -260,7 +253,7 @@ ape.<a href="#.prototype.toText">toText</a>() === bee.<a href="#.prototype.toTex
 				With this in mind, Q offers full-on ASCII circuit diagrams.
 			</p>
 <pre><code>
-ape.<a href="#.prototype.toDiagram">toDiagram</a>()
+fox.<a href="#.prototype.toDiagram">toDiagram</a>()
 </code></pre>
 			<p>
 				The above command yields the following,
@@ -269,13 +262,13 @@ ape.<a href="#.prototype.toDiagram">toDiagram</a>()
 				and qubits labeled likewise.
 			</p>
 <pre><samp>
-    t0   t1   t2    t3   t4   t5  
-        ┌───┐┌───┐┌────┐┌───┐┌───┐
-q0  |0⟩─┤ H ├┤ X ├┤ C0 ├┤ Y ├┤ M │
-        └───┘└───┘└┬───┘└───┘└───┘
-                  ┌┴───┐┌───┐┌───┐
-q1  |0⟩───○────○──┤ C1 ├┤ Y ├┤ M │
-                  └────┘└───┘└───┘
+    t0   t1    t2   t3  
+        ┌───┐┌────┐┌───┐
+q0  |0⟩─┤ H ├┤ C0 ├┤ X │
+        └───┘└┬───┘└───┘
+             ┌┴───┐┌───┐
+q1  |0⟩───○──┤ C1 ├┤ X │
+             └────┘└───┘
 </samp></pre>
 			<h4 id="Interactive_circuit_diagrams">Interactive circuit diagrams</h4>
 			<p>
@@ -286,7 +279,7 @@ q1  |0⟩───○────○──┤ C1 ├┤ Y ├┤ M │
 				that can be attached to your live document.
 			</p>
 <pre><code>
-document.body.appendChild( ape.<a href="#.prototype.toDom">toDom</a>() )
+document.body.appendChild( fox.<a href="#.prototype.toDom">toDom</a>() )
 </code></pre>			
 			<div class="ape-diagram qjs-circuit-container"></div>
 			<p class="coming-soon">
@@ -312,12 +305,12 @@ document.body.appendChild( ape.<a href="#.prototype.toDom">toDom</a>() )
 				including bar graphs of the probabilities.
 			</p>
 <pre><code>
-ape.<a href="#.prototype.report">report$</a>()
+fox.<a href="#.prototype.report">report$</a>()
 <samp>
-|00⟩   50% chance  ██████████████████████████████
+|00⟩   50% chance  ████████████████
 |01⟩    0% chance  
 |10⟩    0% chance  
-|11⟩   50% chance  ██████████████████████████████
+|11⟩   50% chance  ████████████████
 </samp>
 </code></pre>
 			<p>
@@ -333,10 +326,10 @@ ape.<a href="#.prototype.report">report$</a>()
 				if need be.
 			</p>
 <pre><code>
-ape.<a href="#.prototype.try$">try$</a>()
+fox.<a href="#.prototype.try$">try$</a>()
 <samp>|00⟩</samp>
 
-ape.<a href="#.prototype.try$">try$</a>()
+fox.<a href="#.prototype.try$">try$</a>()
 <samp>|11⟩</samp>
 </code></pre>		
 			<h3 id="Overlapping_multi-qubit_gates">Overlapping multi-qubit gates</h3>
@@ -345,12 +338,12 @@ ape.<a href="#.prototype.try$">try$</a>()
 				Take this circuit, for example, which contains two C-not gates at moment 2:
 			</p>
 <pre><code>
-var cat = <a href="Q.html">Q</a>`
-	<strong>H-C00-M
-	I-C10-M
-	I-C01-M
-	I-C11-M
-	X-I---M</strong>`
+var cat = <a href="Q.html">Q</a>`<strong>
+	H-C00
+	I-C10
+	I-C01
+	I-C11
+	X-I</strong>`
 </code></pre>
 			<p>
 				We can see that they overlap. The first C-not [0] operates on qubit 0 and qubit 2, while the second C-not [1] operates on qubit 1 and qubit 3.
@@ -358,22 +351,22 @@ var cat = <a href="Q.html">Q</a>`
 				with the <code>cat.<a href="#.prototype.toDiagram">toDiagram</a>()</code> command:
 			</p>
 <pre><samp>
-    t0   t1    t2    t3  
-        ┌───┐┌─────┐┌───┐
-q0  |0⟩─┤ H ├┤ C00 ├┤ M │
-        └───┘└┬────┘└───┘
-             ┌─────┐┌───┐
-q1  |0⟩───○──┤ C10 ├┤ M │
-             └─┬───┘└───┘
-             ┌┴────┐┌───┐
-q2  |0⟩───○──┤ C01 ├┤ M │
-             └─────┘└───┘
-             ┌─┴───┐┌───┐
-q3  |0⟩───○──┤ C11 ├┤ M │
-             └─────┘└───┘
-        ┌───┐       ┌───┐
-q4  |0⟩─┤ X ├───○───┤ M │
-        └───┘       └───┘
+    t0   t1    t2   
+        ┌───┐┌─────┐
+q0  |0⟩─┤ H ├┤ C00 │
+        └───┘└┬────┘
+             ┌─────┐
+q1  |0⟩───○──┤ C10 │
+             └─┬───┘
+             ┌┴────┐
+q2  |0⟩───○──┤ C01 │
+             └─────┘
+             ┌─┴───┐
+q3  |0⟩───○──┤ C11 │
+             └─────┘
+        ┌───┐       
+q4  |0⟩─┤ X ├───○──
+        └───┘       
 </samp></pre>
 
 
@@ -390,20 +383,20 @@ q4  |0⟩─┤ X ├───○───┤ M │
 			<h3 id="Editing_quantum_circuits">Editing quantum circuits</h3>
 			<h4 id="Copy,_cut,_paste">Copy, cut, paste</h4>
 			<p>
-				Let’s start with the <code>fox</code> circuit above, 
+				Let’s start with the <code>cat</code> circuit above, 
 				and copy a section of it.
 				In this case we’re copying all of its moments 
 				and all of its qubits
 				so it is effectively equal to 
-				<code>fox.<a href="#.prototype.clone">clone</a>()</code>:
+				<code>cat.<a href="#.prototype.clone">clone</a>()</code>:
 			</p>
 <pre><code>
-var gup = fox.<a href="#.prototype.copy">copy</a>({
+var gup = cat.<a href="#.prototype.copy">copy</a>({
 	
 	qubitFirstIndex:  0,
-	qubitRange:       fox.bandwidth,
+	qubitRange:       cat.<a href="#this.bandwidth">bandwidth</a>,
 	momentFirstIndex: 0,
-	momentRange:      fox.timewidth
+	momentRange:      cat.<a href="#this.timewidth">timewidth</a>
 })
 </code></pre>
 			<p>
@@ -446,21 +439,21 @@ q4  |0⟩───○────○────○
 			<p>
 				Pasting in to a circuit can cause that circuit to expand
 				in both time and qubits.
-				For example, both our <code>fox</code>
+				For example, both our <code>cat</code>
 				and <code>gup</code> circuits are 4 moments long (0, 1, 2, 3)
 				and 5 qubits in bandwidth (0, 1, 2, 3, 4).
-				What if we paste our <code>fox</code> circuit
+				What if we paste our <code>cat</code> circuit
 				in to our empty <code>gup</code> circuit
 				but do so by pushing it one moment further and one qubit further?
 			</p>
 <pre><code>
-gup.<a href="#.prototype.paste$">paste$</a>( fox, 1, 1 )
+gup.<a href="#.prototype.paste$">paste$</a>( cat, 1, 1 )
 </code></pre>
 			<p>
 				Notice how <code>gup</code> has now expanded.
 				The first qubit registers are still empty.
 				The first moment of qubits also remains empty.
-				But the entirety of <code>fox</code>
+				But the entirety of <code>cat</code>
 				is now pasted in there.
 			</p>
 <pre><samp>
@@ -494,10 +487,43 @@ q5  |0⟩───○──┤ X ├───○───┤ M │
 			<p>
 				Description TK.
 			</p>
-			<h3>Static constants</h3>
-			<p>
-				Description TK.
-			</p>
+			<ul class="properties">
+				<li>
+					<dt id="this.index">index</dt>
+					<dd>
+						<code class="value-type">Number</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id="this.bandwidth">bandwidth</dt>
+					<dd>
+						<code class="value-type">Number</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id="this.timewidth">timewidth</dt>
+					<dd>
+						<code class="value-type">Number</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id="this.matrix">needsEvaluation</dt>
+					<dd>
+						<code class="value-type">Boolean</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id="this.matrix">matrix</dt>
+					<dd>
+						<code class="value-type">null or Q.Matrix</code>
+						Description TK.
+					</dd>
+				</li>
+			</ul>
 			<h3>Static properties</h3>
 			<ul class="properties">
 				<li>
@@ -530,6 +556,29 @@ q5  |0⟩───○──┤ X ├───○───┤ M │
 				</li>
 				<li>
 					<dt id=".createConstants">createConstants</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+
+
+				<li>
+					<dt id=".controlled">controlled</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".expandMatrix">expandMatrix</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".evaluate">evaluate</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Description TK.
@@ -583,13 +632,6 @@ q5  |0⟩───○──┤ X ├───○───┤ M │
 					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.results">results</dt>
-					<dd>
-						<code class="value-type">Array</code>
-						Description TK.
-					</dd>
-				</li>
-				<li>
 					<dt id=".prototype.determineRanges">determineRanges</dt>
 					<dd>
 						<code class="value-type">Function</code>
@@ -612,7 +654,7 @@ q5  |0⟩───○──┤ X ├───○───┤ M │
 						<code class="value-type">Function</code>
 						Description TK.
 					</dd>
-				</li>				
+				</li>
 				<li>
 					<dt id=".prototype.fillEmptyOperations$">fillEmptyOperations$</dt>
 					<dd>
@@ -690,8 +732,25 @@ q5  |0⟩───○──┤ X ├───○───┤ M │
 						Description TK.
 					</dd>
 				</li>
+				
+
+
 				<li>
-					<dt id=".prototype.run$">run$</dt>
+					<dt id=".prototype.evaluate$">evaluate$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".prototype.report$">report$</dt>
+					<dd>
+						<code class="value-type">Function</code>
+						Description TK.
+					</dd>
+				</li>
+				<li>
+					<dt id=".prototype.try$">try$</dt>
 					<dd>
 						<code class="value-type">Function</code>
 						Description TK.
@@ -709,24 +768,39 @@ q5  |0⟩───○──┤ X ├───○───┤ M │
 		<script>
 
 
-var ape = Q`
-	H-X-C0-Y-M
-	I-I-C1-Y-M`
-Array.from( document.querySelectorAll( '.ape-diagram' )).forEach( function( el ){
 
-	el.appendChild( ape.toDom() )
+
+//  A simple example.
+
+var fox = Q`
+
+	H-C0-X
+	I-C1-X
+`
+Array.from( document.querySelectorAll( '.fox-diagram' )).forEach( function( el ){
+
+	el.appendChild( fox.toDom() )
 })
 
 
-var bee = ape.clone()
+//  Cloning.
 
+var dog = fox.clone()
+
+
+//  Overlapping multi-qubit gates.
 
 var cat = Q`
-	I-I
-	X-I
-	H-M`
+	H-C00
+	I-C10
+	I-C01
+	I-C11
+	X-I`
 
 
+
+
+/*
 var dog = Q`
 
 I  I
@@ -760,7 +834,7 @@ var hen = gup.cut$()
 
 
 gup.paste$( fox, 1, 1 )
-
+*/
 
 
 

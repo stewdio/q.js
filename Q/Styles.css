@@ -112,7 +112,7 @@ td.qjs-null-cell:hover {
 	position: relative;
 	cursor: move;
 	border: 1px solid rgba( 0, 0, 0, 0.2 );
-	padding: 0.2em 0.6em;
+	padding: 0.4em 0;
 	background-color: #FFF;
 	text-align: center;
 	color: #000;
