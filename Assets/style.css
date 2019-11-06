@@ -281,6 +281,11 @@ body {
 	font-family: var( --font-family-serif );
 	font-weight: 400;
 }
+img {
+
+	max-width: 100%;
+	height: auto;
+}
 
 
 
@@ -323,6 +328,7 @@ a[ target=_blank ]{
 	color: var( --hyperlink-external-color );
 	text-decoration-line: underline;
 	text-decoration-color: #CCC;
+	/*text-underline-offset: 10px;*/
 }
 a[ target=_blank ] svg {
 
@@ -637,6 +643,14 @@ main a {
 
 	margin:  0  -2px;
 	padding: 3px 2px;
+}
+img {
+
+	margin-top: 0.5rem;
+	margin-left: 0.5rem;
+	border-radius: 0.5rem;
+	max-width: calc( 100% - 1rem );
+	height: auto;
 }
 
 
