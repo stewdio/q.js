@@ -1084,7 +1084,8 @@ table#console-open-commands {
 }
 table#console-open-commands td {
 
-	border: 1px solid var( --color-newsprint );
+	/*border: 1px solid var( --color-newsprint );*/
+	border: 1px solid var( --color-white );
 	padding: 0.8em 1em;
 	transition: background-color 0.5s;
 }
