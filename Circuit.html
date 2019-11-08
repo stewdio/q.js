@@ -145,7 +145,7 @@
 
 
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 600 180" style="enable-background:new 0 0 600 180;" xml:space="preserve">
+	 viewBox="70 0 480 180" style="enable-background:new 0 0 600 180;" xml:space="preserve">
 	<g class="clef">
 		<path d="M398.6,29l0.9,0c0.3,0,0.6,0,0.9-0.1c0.3-0.1,0.5-0.2,0.7-0.4s0.4-0.4,0.5-0.6c0.1-0.2,0.2-0.5,0.3-0.8
 			c0-0.3,0-0.5,0-0.7s-0.1-0.4-0.3-0.6c-0.1-0.2-0.3-0.3-0.5-0.4c-0.2-0.1-0.4-0.1-0.7-0.2c-0.3,0-0.6,0-0.8,0.1s-0.5,0.2-0.6,0.4
@@ -266,18 +266,20 @@
 			</p>
 			<p>
 				During our first moment of true operation (<code>t1</code>)
-				we apply a <a href="Gate.html#.HADAMARD">Hadamard</a> gate to qubit #0
-				and an <a href="Gate.html#.IDENTITY">Identity</a> gate 
-				(essentially a <code>null</code> operator or “do nothing” gate)
-				to qubit #1.
-				This puts qubit #0 in to a <a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition state</a>
-				while leaving qubit #1 as-is.
+				we apply a <a href="Gate.html#.HADAMARD">Hadamard</a> gate to qubit #0,
+				putting it in to a <a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition state</a>.
+				(This is represented by the “H” within a square on qubit #0’s circuit wire.)
+				We leave qubit #1 as-is by
+				applying an
+				<a href="Gate.html#.IDENTITY">Identity</a> gate; a
+				<code>null</code> operator or “do nothing” gate.
+				This is represented by the small circle on qubit #1’s circuit wire.
 			</p>
 			<p>
 				In our next moment (<code>t2</code>) we operate on both qubits at once
 				by applying a <a href="Gate.html#.CONTROLLED_NOT">Controlled-Not</a> gate.
 				This operation will flip the value of qubit #1 if, and only if, 
-				the value of qubit #0 is <span class="complex-vector beta">1</span>.
+				the value of qubit #0 collapses to <span class="complex-vector beta">1</span>.
 				This action 
 				<a href="https://en.wikipedia.org/wiki/Qubit#Quantum_entanglement" target="_blank">entangles the two qubits</a>;
 				their states are now dependent on one another.
@@ -288,10 +290,10 @@
 			</p>
 			<p>
 				In our circuit’s final moment (<code>t3</code>)
-				we leave qubit #0 alone
-				while flipping the value of qubit #1
-				by applying a
-				<a href="Gate.html#.PAULI_X">Pauli X</a> gate to it.
+				we apply a
+				<a href="Gate.html#.PAULI_X">Pauli X</a> gate
+				to each qubit, 
+				flipping the value of both.
 			</p>
 			<h3 id="Writing_quantum_circuits">Writing quantum circuits</h3>
 			<p>
