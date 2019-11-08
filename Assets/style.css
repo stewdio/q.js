@@ -63,11 +63,15 @@ svg, :root {
 
 	/*  Grayscale  */
 
-	--color-black:     #000000;
-	--color-charcoal:  #333333;
-	--color-newsprint: #F3F3F3;
-	--color-chalk:     #F9F9F9;
 	--color-white:     #FFFFFF;
+	--color-chalk:     #F9F9F9;
+	--color-newsprint: #F3F3F3;
+	--color-slate:     #777777;
+	--color-charcoal:  #333333;
+	--color-black:     #000000;
+	
+	
+	
 
 
 	/*  Fonts  */
@@ -1543,6 +1547,42 @@ a.call-out:hover {
 
 	background-color: var( --color-red );
 	color: var( --color-white );
+}
+
+
+
+
+
+
+@keyframes doh-ray-egon-notes {
+
+	  0% { fill: var( --color-charcoal ); }
+	  5% { fill: var( --color-red ); }
+	 25% { fill: var( --color-red ); }
+	 30% { fill: var( --color-charcoal ); }
+}
+.clef {
+
+	fill: #DDD;
+}
+.beat {
+
+	fill:  var( --color-charcoal );
+	animation-name: doh-ray-egon-notes;
+	animation-duration: 4s;
+	animation-iteration-count: infinite;
+}
+.beat.doh {
+
+	animation-delay: 0s;
+}
+.beat.ray {
+
+	animation-delay: 1s;
+}
+.beat.egon {
+
+	animation-delay: 2s;
 }
 
 
