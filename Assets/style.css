@@ -1565,6 +1565,10 @@ a.call-out:hover {
 
 	fill: #DDD;
 }
+.clef.label {
+
+	fill: var( --color-white );
+}
 .beat {
 
 	fill:  var( --color-charcoal );
