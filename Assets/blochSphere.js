@@ -1,4 +1,6 @@
 
+//  Copyright © 2019, Stewart Smith. See LICENSE for details.
+
 
 
 

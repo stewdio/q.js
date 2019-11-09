@@ -1,3 +1,8 @@
+/*
+
+	Copyright © 2019, Stewart Smith. See LICENSE for details.
+
+*/
 @charset "utf-8";
 /*
 
@@ -68,10 +73,7 @@ svg, :root {
 	--color-newsprint: #F3F3F3;
 	--color-slate:     #777777;
 	--color-charcoal:  #333333;
-	--color-black:     #000000;
-	
-	
-	
+	--color-black:     #000000;	
 
 
 	/*  Fonts  */
@@ -558,7 +560,7 @@ nav {
 	width: 260px;
 	height: 100%;
 	min-height: 100vh;
-	background-color: var( --color-white );
+	background-color: var( --color-chalk );
 	padding: 0 0 8rem 0;
 	overflow: auto;
 	font-size:   1rem;
@@ -591,7 +593,7 @@ nav li a {
 
 	display: block;
 	height: 3.2rem;
-	padding: 0 0 0 3rem;	
+	padding: 0 0 0 2rem;	
 	/*font-family: var( --font-family-mono );*/
 }
 nav a.selected {

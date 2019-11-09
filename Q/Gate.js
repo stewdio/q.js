@@ -1,4 +1,7 @@
 
+//  Copyright © 2019, Stewart Smith. See LICENSE for details.
+
+
 
 
 Q.Gate = function( params ){
