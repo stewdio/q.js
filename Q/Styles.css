@@ -90,41 +90,31 @@
 }
 
 
-.qjs-circuit-connections-layer {
-
-	position: absolute;
-	top:  0;
-	left: 0;
-	/*background-color: rgba( 0, 255, 0, 0.1 );*/
-}
 
 
-
-
+.qjs-circuit-connections-layer,
 .qjs-circuit-grabables-layer {
 
 	display: grid;
-	
 	grid-auto-rows:     60px;
 	grid-auto-columns:  60px;
-
-	/*grid-auto-flow: row dense;*/
 
 	position: absolute;
 	top:  0;
 	left: 0;
-
-
-	/*grid-area: span 1/span 1;*/
-
-	justify-content: center;
-	align-items: center;
+	/*justify-content: center;
+	align-items: center;*/
 	text-align: center;
+}
+.qjs-circuit-connections-layer div {
+
+	width:   60px;
+	height: 120px;
 }
 .qjs-circuit-grabables-layer div {
 
-	width:  60px;
-	height: 60px;
+	width:   60px;
+	height:  60px;
 	padding: 10px;
 }
 .qjs-circuit-grabables-layer div:hover {
@@ -134,15 +124,13 @@
 
 
 
+.qjs-circuit-menu  {
 
-/*.qjs-circuit-moments {
-
-	display: grid;
-	grid-auto-rows:    60px;
-	grid-auto-columns: 60px;
-	justify-content: center;
-	align-items: center;
-}*/
+	grid-row:    1;
+	grid-column: 1;
+	border-top-left-radius: 1rem;
+	background-color: var( --color-chalk );
+}
 .qjs-circuit-moment {
 
 	grid-row: 1;
@@ -152,24 +140,12 @@
 	color: var( --color-titanium );
 	cursor: ew-resize;
 }
-
-
-
-/*.qjs-circuit-qubits {
-
-	display: grid;
-	grid-auto-rows:    60px;
-	grid-auto-columns: 60px;
-	justify-content: center;
-	align-items: center;
-	border: 1px solid var( --color-green );
-}*/
 .qjs-circuit-qubit {
 
 	grid-column: 1;
+	background-color: var( --color-chalk );
 	cursor: ns-resize;
 }
-
 .qjs-circuit-input {
 
 	grid-column: 2;
@@ -178,28 +154,6 @@
 	font-family: var( --font-family-mono );
 	font-size: 1.5rem
 }
-
-
-/*.qjs-circuit-gates {
-
-	display: grid;
-	grid-auto-rows:    60px;
-	grid-auto-columns: 60px;
-	justify-content: center;
-	align-items: center;
-}*/
-/*.qjs-circuit-cell {
-
-	grid-column: 3; 
-	grid-row: 3;
-	justify-content: center;
-	background-color: var( --color-yellow );
-	align-items: center;
-	width:  60px;
-	height: 60px;
-	text-align: center;
-	padding: 10px;
-}*/
 
 
 
@@ -211,18 +165,12 @@
 	height: 60px;*/
 	fill: var( --color-titanium );
 }
-/*.qjs-gate {
-
-	margin: 10px;
-	width:  40px;
-	height: 40px;
-	cursor: move;
-	fill: var( --color-green );
-}*/
 .qjs-circuit-gate-label {
 
 	fill: var( --color-white );
 }
+#qjs-circuit-control-straight,
+#qjs-circuit-control-curved,
 #qjs-circuit-gate-control,
 #qjs-circuit-gate-controlled {
 
@@ -232,10 +180,6 @@
 
 	fill: var( --color-red );	
 }
-
-
-
-
 .qjs-circuit-gate {
 
 	width:  40px;

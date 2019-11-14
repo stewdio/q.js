@@ -91,17 +91,18 @@ Undo<br>
 
 
 
+
 			<div class="qjs-circuit">
 				<div class="qjs-circuit-background-layer">
 					<div class="qjs-circuit-wire" style="grid-row: 2; "><svg><use xlink:href="#qjs-circuit-wire"/></svg></div>
 					<div class="qjs-circuit-wire" style="grid-row: 3; "><svg><use xlink:href="#qjs-circuit-wire"/></svg></div>
 				</div>
 				<div class="qjs-circuit-connections-layer">
-					<!-- controlled connections! -->
+					<div style="grid-row: 2; grid-column: 4;"><svg><use xlink:href="#qjs-circuit-control-straight"/></svg></div>
 				</div>
 				<div class="qjs-circuit-grabables-layer">
 					
-					<!-- <div style="grid-row: 1; grid-column: 1;">MENU</div> -->
+					<div class="qjs-circuit-menu"></div>
 
 					<div style="grid-column: 2;" class="qjs-circuit-moment">t<code><strong>0</strong></code></div>
 					<div style="grid-column: 3;" class="qjs-circuit-moment">t<code><strong>1</strong></code></div>
@@ -144,14 +145,22 @@ Undo<br>
 
 
 
-<svg style="display:none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+<svg style="display: none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 60 60" style="enable-background:new 0 0 60 60;" xml:space="preserve">
 	<g id="qjs-circuit-wire">
 		<rect y="30" width="60" height="1"/>
 	</g>
 </svg>
-
-<svg style="display:none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+<svg style="display: none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 60 120" style="enable-background:new 0 0 60 120;" xml:space="preserve">
+	<g id="qjs-circuit-control-straight">
+		<rect x="29" y="30" width="2" height="60"/>
+	</g>
+	<g id="qjs-circuit-control-curved">
+		<path d="M30,91v-2c7.6,0,14-13.3,14-29s-6.4-29-14-29v-2c9,0,16,13.6,16,31C46,77.4,39,91,30,91z"/>
+	</g>
+</svg>
+<svg style="display: none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve">
 	<g id="qjs-circuit-qubit-0">
 		<path d="M24.4,21.6c-0.1,0.7-0.3,1.4-0.5,2.1s-0.6,1.3-1,1.8s-1,0.9-1.6,1.2s-1.3,0.5-2.2,0.4c-0.8,0-1.4-0.2-2-0.5
@@ -162,16 +171,15 @@ Undo<br>
 			c-0.4,0-0.8,0.1-1,0.2s-0.5,0.4-0.7,0.7s-0.3,0.6-0.4,1s-0.2,0.7-0.2,1L18.3,20.3z"/>
 		<polygon points="29.9,30.5 28.1,29.5 33.9,19.9 30.1,10.4 31.9,9.6 36.1,20.1"/>
 	</g>
-	<g id="qjs-circuit-qubit-1" class="st0">
+	<g id="qjs-circuit-qubit-1">
 		<path d="M20.9,27h-2.7l1.9-10.8l-3.7,1.3l0.4-2.5l6.3-2.2h0.2L20.9,27z"/>
 		<polygon points="29.9,30.5 28.1,29.5 33.9,19.9 30.1,10.4 31.9,9.6 36.1,20.1"/>
 	</g>
 	<g class="qjs-circuit-gate" id="qjs-circuit-gate-identity">
 		<circle cx="20" cy="20" r="5"/>
 	</g>
-	
 	<g class="qjs-circuit-gate" id="qjs-circuit-gate-control">
-		<circle cx="20" cy="20" r="10"/>
+		<circle cx="20" cy="20" r="8"/>
 	</g>
 	<g class="qjs-circuit-gate" id="qjs-circuit-gate-controlled">
 		<circle cx="20" cy="20" r="15"/>
