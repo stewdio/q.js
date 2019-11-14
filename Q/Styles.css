@@ -14,178 +14,255 @@
 /*
 
 
-	These are the styles necessary for interactive circuit diagrams.
+	CIRCUIT
+		New
+		Save
+		Re-dimension
 
+	EDIT
+		Cut
+		Copy
+		Paste
+		Insert
+
+	CLIPBOARD
+		Do we just paste these as new?
+
+
+	┌─────────────────┬───┐
+	│ H X Y Z S T π M │ @ │
+	└─────────────────┴───┘
+
+────────────────────────────────
+
+	┌────┬────────────────┐
+	│ ≡≡ │ t0  t1  t2  t3 │ +
+	├────┼────────────────┤
+	│ q0 │  0⟩  H  C0  X  │
+	│ q1 │  0⟩  I  C1  X  │
+	└────┴────────────────┘
+      +
 
 */
-
-
-.qjs-circuit-container {
+.qjs-circuit {
 
 	position: relative;
-	max-width: 100%;
-	overflow-x: auto;
-}
-table.qjs-circuit {
 
-	margin: 4em 0;
-	justify-items: center;
+	/*border: 1px solid black;*/
+/*	--bandwidth: 3;
+	--timewidth: 5;
+	width:  calc( var( --timewidth ) * 10rem );
+	height: calc( var( --bandwidth ) * 10rem );
+*/	max-width: 100%;
+	overflow: visible;
+	cursor: crosshair;
+
+	font-family: var( --font-family-sans );
+	font-style: italic;
+	color: var( --color-titanium );
+
+	font-size:   1.0rem;
+	line-height: 2.5rem;
+}
+
+.qjs-circuit-background-layer {
+
+	display: grid;
+	
+	grid-auto-rows:     60px;
+	grid-auto-columns:  60px;
+	position: relative;
+	top:  0;
+	left: 0;
+	width:  100%;
+	height: 100%;
+	/*background-color: rgba( 255, 0, 0, 0.1 );*/
+}
+.qjs-circuit-wire {
+
+	grid-column-start: 3;
+	grid-column-end: 6;
+	/*background-color: rgba( 255, 0, 0, 0.1 );*/
+}
+#qjs-circuit-wire rect {
+
+	width: 100%;
+}
+
+
+.qjs-circuit-connections-layer {
+
+	position: absolute;
+	top:  0;
+	left: 0;
+	/*background-color: rgba( 0, 255, 0, 0.1 );*/
+}
+
+
+
+
+.qjs-circuit-grabables-layer {
+
+	display: grid;
+	
+	grid-auto-rows:     60px;
+	grid-auto-columns:  60px;
+
+	/*grid-auto-flow: row dense;*/
+
+	position: absolute;
+	top:  0;
+	left: 0;
+
+
+	/*grid-area: span 1/span 1;*/
+
+	justify-content: center;
 	align-items: center;
-	font-family: 'Source Code Pro', Menlo, "Courier New", monospace;
-	font-weight: 300;
-	color: rgba( 0, 0, 0, 0.1 );
-}
-.qjs-circuit td {
-
-	position: relative;
-	min-width: 3.5em;
-	padding: 0.6em 0.8em;
 	text-align: center;
 }
-.qjs-circuit td:nth-child( even ){
+.qjs-circuit-grabables-layer div {
 
-	/*background-color: #F9F9F9;*/
+	width:  60px;
+	height: 60px;
+	padding: 10px;
 }
-.qjs-circuit td:hover {
+.qjs-circuit-grabables-layer div:hover {
 
-	/*background-color: #FD0;*/
-	background-color: transparent;
-}
-
-
-
-
-.qjs-moment-label, .qjs-qubit-label {
-
-	font-size:  0.8em;
-	font-family: var( --font-family-sans );
-	line-height: 1.4;
+	color: black;
 }
 
 
 
-.qjs-moment-label {
 
-	border-top-left-radius:  1em;
-	border-top-right-radius: 1em;
-}
-.qjs-moment-label-movable {
+/*.qjs-circuit-moments {
 
+	display: grid;
+	grid-auto-rows:    60px;
+	grid-auto-columns: 60px;
+	justify-content: center;
+	align-items: center;
+}*/
+.qjs-circuit-moment {
+
+	grid-row: 1;
+	width:  100%;
+	height: 100%;
+	background-color: var( --color-chalk );
+	color: var( --color-titanium );
 	cursor: ew-resize;
 }
 
 
 
+/*.qjs-circuit-qubits {
 
-.qjs-qubit-label {
+	display: grid;
+	grid-auto-rows:    60px;
+	grid-auto-columns: 60px;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid var( --color-green );
+}*/
+.qjs-circuit-qubit {
 
-	border-top-left-radius:    1em;
-	border-bottom-left-radius: 1em;
+	grid-column: 1;
 	cursor: ns-resize;
 }
-.qjs-null-cell {
 
-	cursor: default;
-}
-td.qjs-null-cell:hover {
+.qjs-circuit-input {
 
-	background-color: transparent;
-}
-
-
-.qjs-input {
-
-	color: #000;
+	grid-column: 2;
+	width:  100%;
+	font-weight: bold;
+	font-family: var( --font-family-mono );
+	font-size: 1.5rem
 }
 
 
+/*.qjs-circuit-gates {
 
+	display: grid;
+	grid-auto-rows:    60px;
+	grid-auto-columns: 60px;
+	justify-content: center;
+	align-items: center;
+}*/
+/*.qjs-circuit-cell {
 
-.qjs-wire {
-
-	position: absolute;
-	left: 0;
-	/*top: calc( 50% - 0.5px );*/
-	top: 50%;
-	width: 100%;
-	height: 1px;
-	background-color: rgba( 0, 0, 0, 0.1 );
-	overflow: hidden;
-}
-
-
-
-
-.qjs-operation {
-
-	box-sizing: border-box;
-	position: relative;
-	cursor: move;
-	border: 1px solid rgba( 0, 0, 0, 0.2 );
-	padding: 0.4em 0;
-	background-color: #FFF;
+	grid-column: 3; 
+	grid-row: 3;
+	justify-content: center;
+	background-color: var( --color-yellow );
+	align-items: center;
+	width:  60px;
+	height: 60px;
 	text-align: center;
-	color: #000;
-	font-family: var( --font-family-sans );
-	font-weight: 900;
-}
-.qjs-operation-identity {
+	padding: 10px;
+}*/
 
-	margin: auto;
-	width:  0.6em;
-	height: 0.6em;
-	cursor: default;
-	border-radius: 100%;
-	padding: 0;
-	color: transparent;
-	overflow: hidden;
-}
-.qjs-operation-entangled {
 
-	border-radius: 100%;
-	cursor: ns-resize;
-}
-.qjs-operation-control {
 
-	margin: auto;
-	width:  0.8em;
-	height: 0.8em;
-	border: none;
-	border-radius: 100%;
-	background-color: rgba( 0, 0, 0, 0.6 );
-	/*background-color: #000;*/
-	padding: 0;
-	color: transparent;
-	overflow: hidden;
-}
-.qjs-operation-target {
 
-	margin: auto;
-	width:  2em;
-	height: 2em;
-	border-radius: 100%;
-	background-color: transparent;
-	padding: 0;
-	color: transparent;
-	overflow: hidden;
+
+.qjs-circuit svg {
+
+/*	width:  60px;
+	height: 60px;*/
+	fill: var( --color-titanium );
+}
+/*.qjs-gate {
+
+	margin: 10px;
+	width:  40px;
+	height: 40px;
+	cursor: move;
+	fill: var( --color-green );
+}*/
+.qjs-circuit-gate-label {
+
+	fill: var( --color-white );
+}
+#qjs-circuit-gate-control,
+#qjs-circuit-gate-controlled {
+
+	fill: var( --color-blue );
+}
+#qjs-circuit-gate-hadamard {
+
+	fill: var( --color-red );	
 }
 
 
 
 
-.qjs-highlighted {
+.qjs-circuit-gate {
 
-	/*background-color: #FD0;*/
-	color: #000;
+	width:  40px;
+	height: 40px;
+	display: inline-block;
 }
-.qjs-highlighted .qjs-wire {
+svg .qjs-circuit-gate {
 
-	background-color: rgba( 0, 0, 0, 0.6 );
+	fill: var( --color-green );
+	cursor: move;
 }
-.qjs-highlighted .qjs-operation {
+svg #qjs-circuit-gate-identity {
 
-	border: 1px solid rgba( 0, 0, 0, 0.8 );
+	fill: var( --color-titanium );
+	cursor: inherit;
 }
 
 
+
+
+
+
+/*
+
+
+	These are the styles necessary for interactive circuit diagrams.
+
+
+*/
 
