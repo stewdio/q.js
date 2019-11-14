@@ -94,7 +94,8 @@ Undo<br>
 
 			<div class="qjs-circuit">
 				<div class="qjs-circuit-background-layer">
-					<div class="qjs-circuit-wire" style="grid-row: 2; "><svg><use xlink:href="#qjs-circuit-wire"/></svg></div>
+					<svg class="qjs-circuit-wire" style="grid-row: 2; grid-column-end: 5"><use xlink:href="#qjs-circuit-wire"/></svg>
+					<!-- <div class="qjs-circuit-wire" style="grid-row: 2; "><svg><use xlink:href="#qjs-circuit-wire"/></svg></div> -->
 					<div class="qjs-circuit-wire" style="grid-row: 3; "><svg><use xlink:href="#qjs-circuit-wire"/></svg></div>
 				</div>
 				<div class="qjs-circuit-connections-layer">
@@ -131,7 +132,7 @@ Undo<br>
 
 
 			<br><br><br><br><br>
-			<br><br><br><br><br>
+
 
 
 
@@ -258,8 +259,21 @@ Undo<br>
 
 
 
+//document.querySelector( 'main' ).appendChild( Q.Circuit.BELL.toDom() )
+
+
+document.querySelector( 'main' ).appendChild( Q`
+
+H C0 X
+I C1 X
+
+`.toDom() )
+
+
 
 
 		</script>
+					<br><br><br><br><br>
+			<br><br><br><br><br>
 	</body>
 </html>

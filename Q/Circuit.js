@@ -675,6 +675,7 @@ Object.assign( Q.Circuit.prototype, {
 						return index === q
 					}),
 					label = operation.gate.label,
+					nameCss = operation.gate.name.toLowerCase().replace( /\s+/g, '-' ),
 					operationsWithSameGatesThisMoment = moment.reduce( function( siblings, operation ){
 
 						if( operation.gate.bandwidth > 1 && operation.gate.label === label ) siblings.push( operation )
@@ -717,6 +718,7 @@ Object.assign( Q.Circuit.prototype, {
 					table[ m ][ q ] = {
 
 						label: output,
+						nameCss: nameCss,
 						gateInputIndex: inputIndex,              //  This is #n
 						bandwidth: operation.qubitIndices.length,//  of this many inputs.
 						thisGateAmongMultiQubitGatesIndex,
