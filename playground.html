@@ -285,7 +285,7 @@ var whiplash = Q`
 `
 whiplash.sort$()
 document.getElementById( 'whiplash-dom' ).appendChild( whiplash.toDom() )
-document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram()
+document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram( true )
 document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
 // document.getElementById( 'whiplash-report' ).innerText = whiplash.report$()
 

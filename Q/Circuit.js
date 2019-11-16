@@ -862,12 +862,12 @@ Object.assign( Q.Circuit.prototype, {
 		table  = this.toTable(),
 		output = new Array( table.bandwidth * 3 + 1 ).fill( '' )
 
-		output[ 0 ] = '    t0  '
+		output[ 0 ] = '    m0  '
 		scope.inputs.forEach( function( qubit, q ){
 
 			const y3 = q * 3
 			output[ y3 + 1 ] += '        '
-			output[ y3 + 2 ] += 'q'+ q +'  |'+ qubit.beta.toText() +'⟩─'
+			output[ y3 + 2 ] += 'r'+ q +'  |'+ qubit.beta.toText() +'⟩─'
 			output[ y3 + 3 ] += '        '
 		})
 		for( let x = 0; x < table.timewidth; x ++ ){
@@ -876,7 +876,7 @@ Object.assign( Q.Circuit.prototype, {
 				? table.maximumCharacterWidth
 				: table[ x ].maximumCharacterWidth
 
-			output[ 0 ] += Q.centerText( 't'+ ( x + 1 ), padToLength + 4 )
+			output[ 0 ] += Q.centerText( 'm'+ ( x + 1 ), padToLength + 4 )
 			for( let y = 0; y < table.bandwidth; y ++ ){
 
 				let 
@@ -916,7 +916,7 @@ Object.assign( Q.Circuit.prototype, {
 
 					if( operation.isMultiRegisterOperation ){
 
-						let n = operation.multiRegisterOperationIndex % ( table[ x ].maximumCharacterWidth + 1 )// + 1
+						let n = ( operation.multiRegisterOperationIndex * 2 ) % ( table[ x ].maximumCharacterWidth + 1 ) + 1
 						if( operation.siblingExistsAbove ){						
 
 							first = first.substring( 0, n ) +'┴'+ first.substring( n + 1 )
@@ -1276,7 +1276,14 @@ Object.assign( Q.Circuit.prototype, {
 		return circuitElement
 	},
 
+	
 
+
+	//  Oh yes my friends... WebGL is coming!
+
+	toShader: function(){
+
+	},
 
 
 
