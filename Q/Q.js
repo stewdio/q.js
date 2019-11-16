@@ -223,7 +223,7 @@ Object.assign( Q, {
 
 Q.createConstants( 
 
-	'REVISION', 9,
+	'REVISION', 10,
 
 
 	//  Yeah... F’ing floating point numbers, Man!
@@ -551,7 +551,7 @@ QQ      QQ
 QQ      QQ
 QQ  QQ  QQ
 QQ    QQ 
-  QQQQ  R${Q.REVISION}    
+  QQQQ  ${Q.REVISION}    
 
 
 

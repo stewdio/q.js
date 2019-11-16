@@ -404,7 +404,7 @@ dt .section-anchor a {
 /****************/
 
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5 {
 
 	position: relative;
 	margin:  0;
@@ -413,7 +413,7 @@ h1, h2, h3, h4 {
 	font-family: var( --font-family-sans );
 	font-weight: normal;
 }
-h3, h4 {
+h3, h4, h5 {
 
 	font-weight: 900;
 }
@@ -428,6 +428,12 @@ h4 {
 	padding-top:    2em;
 	/*padding-bottom: 0.2em;*/
 	font-size: 1.2em;
+}
+h5  {
+
+	padding-top: 1em;
+	padding-bottom: 0em;
+	font-size: 1em;
 }
 hr {
 
@@ -641,7 +647,7 @@ main {
 
 	box-shadow: 0 0 1rem rgba( 0, 0, 0, 0.2 );
 }
-main > h3, main > h4, main > p, main > ul, main > footer {
+main > h3, main > h4, main > h5, main > p, main > ul, main > footer {
 
 	margin-left:  1rem;
 	margin-right: 1rem;

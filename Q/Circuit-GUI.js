@@ -10,106 +10,220 @@ Q.Circuit.prototype.toDom = function(){
 	const circuitEl = document.createElement( 'div' )
 	circuitEl.classList.add( 'qjs-circuit' )
 
-	const backgroundEl = document.createElement( 'div' )
-	backgroundEl.classList.add( 'qjs-circuit-background-layer' )
-	
-	const connnectionsEl = document.createElement( 'div' )
-	connnectionsEl.classList.add( 'qjs-circuit-connections-layer' )
-	circuitEl.appendChild( connnectionsEl )
-	//  <div style="grid-row: 2; grid-column: 4;"><svg><use xlink:href="#qjs-circuit-control-straight"/></svg></div>
 
-	const grabablesEl = document.createElement( 'div' )
-	grabablesEl.classList.add( 'qjs-circuit-grabables-layer' )
+	//  Circuit layers.
+
+	const layerWiresEl = document.createElement( 'div' )
+	layerWiresEl.classList.add( 'qjs-circuit-layer' )
+	layerWiresEl.classList.add( 'qjs-circuit-layer-wires' )
+	circuitEl.appendChild( layerWiresEl )
+	
+	const layerIdentitiesEl = document.createElement( 'div' )
+	layerIdentitiesEl.classList.add( 'qjs-circuit-layer' )
+	layerIdentitiesEl.classList.add( 'qjs-circuit-layer-identities' )
+	circuitEl.appendChild( layerIdentitiesEl )
+	
+	const layerConnnectionsEl = document.createElement( 'div' )
+	layerConnnectionsEl.classList.add( 'qjs-circuit-layer' )
+	layerConnnectionsEl.classList.add( 'qjs-circuit-layer-connections' )
+	circuitEl.appendChild( layerConnnectionsEl )
+	
+	const layerGrabbablesEl = document.createElement( 'div' )
+	layerGrabbablesEl.classList.add( 'qjs-circuit-layer' )
+	layerGrabbablesEl.classList.add( 'qjs-circuit-layer-grabbables' )
+	circuitEl.appendChild( layerGrabbablesEl )
 
 
 
 
 	this.inputs.forEach( function( input, i ){
 
+/*
 		const wireEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
 		wireEl.classList.add( 'qjs-circuit-wire' )
 		const useEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
 		useEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-wire' )
 		wireEl.appendChild( useEl )
-		wireEl.style.gridRow = ( i + 1 )
-		// wireEl.style.gridColumnEnd = ( circuit.timewidth + 2 )
-		backgroundEl.appendChild( wireEl )
+		wireEl.style.gridRow = ( i + 2 )
+		wireEl.style.gridColumnEnd = ( circuit.timewidth + 2 )
+		layerWiresEl.appendChild( wireEl )
+		*/
 	
 		const qubitEl = document.createElement( 'div' )
 		qubitEl.classList.add( 'qjs-circuit-qubit' )
 		qubitEl.style.gridRow = ( i + 2 )
-		qubitEl.innerHTML = 'q<code><strong>'+ i +'</strong></code>'
-		grabablesEl.appendChild( qubitEl )
+		qubitEl.innerHTML = 'r<code><strong>'+ i +'</strong></code>'
+		layerGrabbablesEl.appendChild( qubitEl )
 
 		const inputEl = document.createElement( 'div' )
 		inputEl.classList.add( 'qjs-circuit-input' )
 		inputEl.style.gridRow = ( i + 2 )
 		inputEl.innerHTML = '0⟩'//FIX later!
-		grabablesEl.appendChild( inputEl )
+		
+		layerGrabbablesEl.appendChild( inputEl )
 
 	})
-	circuitEl.appendChild( backgroundEl )
 
 
 
 
 	const menuEl = document.createElement( 'div' )
 	menuEl.classList.add( 'qjs-circuit-menu' )
-	grabablesEl.appendChild( menuEl )
+	layerGrabbablesEl.appendChild( menuEl )
 
 	const momentZeroEl = document.createElement( 'div' )
 	momentZeroEl.classList.add( 'qjs-circuit-moment' )
 	momentZeroEl.style.gridColumn = 0
-	momentZeroEl.innerHTML = 't<code><strong>0</strong></code>'
-	grabablesEl.appendChild( momentZeroEl )
+	momentZeroEl.innerHTML = 'm<code><strong>0</strong></code>'
+	
+	layerGrabbablesEl.appendChild( momentZeroEl )
 
-	this.moments.forEach( function( moment, m ){
+
+/*	this.moments.forEach( function( moment, m ){
 
 		const momentEl = document.createElement( 'div' )
 		momentEl.classList.add( 'qjs-circuit-moment' )
 		momentEl.style.gridColumn = ( m + 3 )
 		momentEl.innerHTML = 't<code><strong>'+ ( m + 1 ) +'</strong></code>'
-		grabablesEl.appendChild( momentEl )
+		layerGrabbablesEl.appendChild( momentEl )
 	})
-	
+	*/
 
+	
 	table.forEach( function( moment, m ){
+
+
+		const momentEl = document.createElement( 'div' )
+		momentEl.classList.add( 'qjs-circuit-moment' )
+		momentEl.style.gridColumn = ( m + 3 )
+		momentEl.innerHTML = 'm<code><strong>'+ ( m + 1 ) +'</strong></code>'
+		layerGrabbablesEl.appendChild( momentEl )
+
 
 		moment.forEach( function( operation, o ){
 
 
-			//  Background.
+			//  Wires.
 
 			const wireSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
 			wireSvgEl.classList.add( 'qjs-circuit-wire' )
+			wireSvgEl.style.gridRow = ( o + 2 )
+			wireSvgEl.style.gridColumn = ( m + 3 )			
+			
 			const wireUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
 			wireUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-wire' )
 			wireSvgEl.appendChild( wireUseEl )
-			wireSvgEl.style.gridRow = ( o + 2 )
-			wireSvgEl.style.gridColumn = ( m + 3 )
-			backgroundEl.appendChild( wireSvgEl )
+			
+			layerWiresEl.appendChild( wireSvgEl )
 
 
+			//  Place an identity gate on every cell
+			//  even if it will be overlayed by another gate!
 
-			const gateEl = document.createElement( 'div' )
-			gateEl.style.gridRow = ( o + 2 )
-			gateEl.style.gridColumn = ( m + 3 )
+			const identitySvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
+			identitySvgEl.classList.add( 'qjs-circuit-gate' )
+			identitySvgEl.setAttribute( 'title', 'Identity' )//  Sadly this needs to be on a DIV to work!!
+			identitySvgEl.style.gridRow = ( o + 2 )
+			identitySvgEl.style.gridColumn = ( m + 3 )			
 
-			const gateSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
-			gateSvgEl.classList.add( 'qjs-circuit-gate' )
-			gateEl.appendChild( gateSvgEl )
+			const identityUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
+			identityUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-gate-identity' )
+			identityUseEl.classList.add( 'qjs-circuit-gate-identity' )
+			identitySvgEl.appendChild( identityUseEl )
+			
+			layerIdentitiesEl.appendChild( identitySvgEl )
 
-console.log( operation.nameCss )
 
-			const useEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
-			useEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-gate-'+ operation.nameCss )
-			gateSvgEl.appendChild( useEl )
+			//  x
 
-			grabablesEl.appendChild( gateEl )
+			if( operation.nameCss !== 'identity' ){
+
+				const gateEl = document.createElement( 'div' )
+				gateEl.setAttribute( 'title', operation.name )
+				gateEl.style.gridRow = ( o + 2 )
+				gateEl.style.gridColumn = ( m + 3 )
+
+				const gateSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
+				gateSvgEl.classList.add( 'qjs-circuit-gate' )
+				gateEl.appendChild( gateSvgEl )
+
+				const useEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
+				useEl.classList.add( 'qjs-circuit-gate-'+ operation.nameCss )
+				useEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-gate-'+ operation.nameCss )
+				gateSvgEl.appendChild( useEl )
+
+				layerGrabbablesEl.appendChild( gateEl )
+			}
 		})
+
+
+
+		//  Now... did we have any multi-register operations during this moment?
+		//  If so, we need to draw connectors between each register.
+		//  If the operation’s registers are adjacent, use straight connector.
+		//  Otherwise use a curved connector.
+
+
+		multiRegisterOperations = moment.reduce( function( collection, operation ){
+
+			if( operation.isMultiRegisterOperation &&
+				operation.indexAmongSiblings === 0 ){
+
+				collection.push( operation )
+			}
+			return collection
+
+		}, [] ).forEach( function( operation ){
+			
+			circuit.operations[ operation.operationIndex ]
+				.registerIndices.filter( function( element ){
+
+					return element !== operation.registerIndex
+				})
+				.forEach( function( siblingRegisterIndex ){
+
+					const registerDelta = siblingRegisterIndex - operation.registerIndex
+					let connectorType = 'curved'
+					if( Math.abs( registerDelta ) === 1 ) connectorType = 'straight'				
+
+					const
+					start = Math.min( operation.registerIndex, siblingRegisterIndex ),
+					end   = Math.max( operation.registerIndex, siblingRegisterIndex )
+
+					const connectionEl = document.createElement( 'div' )
+					connectionEl.style.gridRowStart = start + 2
+					connectionEl.style.gridRowEnd   = end + 2
+					connectionEl.style.gridColumn   = operation.momentIndex + 3
+
+
+
+
+					const connectionSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
+					// connectionSvgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'preserveAspectRatio', 'none' )
+					// connectionSvgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'width', '100%' )
+					// connectionSvgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'height', '100%' )
+					connectionEl.appendChild( connectionSvgEl )
+
+
+					const connectionUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )					
+					connectionUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-control-'+ connectorType )
+					
+					// connectionUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'preserveAspectRatio', 'none' )
+					// connectionUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'width', '100%' )
+					// connectionUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'height', '150%' )
+					connectionSvgEl.appendChild( connectionUseEl )
+					
+					
+					layerConnnectionsEl.appendChild( connectionEl )
+				})
+		})
+
+
 	})
 
-	circuitEl.appendChild( grabablesEl )
+
+	// console.log( 'circuitEl?', circuitEl )
+
 	return circuitEl
 }
 

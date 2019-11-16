@@ -59,15 +59,59 @@
 		<main>
 
 
-
+			<h3>Just sketching here</h3>
 			<p>
-				Just a little testing ground for circuits.
-				Just a little testing ground for circuits.
-				Just a little testing ground for circuits.
-				Just a little testing ground for circuits.
-				Just a little testing ground for circuits.
+				This is just a nook
+				where I’m sketching some things out. 
+				Right now I’m focussed on circuits rendered a
+				Document Object Models.
+				They aren’t interactive ... yet!
 			</p>
-			<br><br>
+
+
+			<h4>Bell state</h4>
+			<p>
+				This is a regular old Bell state, but with X operations as a finale.
+				That’s kind of fun because the two possible results are 
+				|00⟩ and |11⟩.
+				So it’s all zeros or all ones.
+				All or nothing.
+			</p>
+			<h5>DOM</h5>
+			<div id="bell-plus-dom"></div>
+			<h5>ASCII diagram</h5>
+			<pre><code id="bell-plus-diagram"></code></pre>
+			<h5>Text</h5>
+			<pre><code id="bell-plus-text"></code></pre>
+			<h5>Report</h5>
+			<pre><code id="bell-plus-report"></code></pre>
+			
+
+			<h4>Whiplash</h4>
+			<p>
+				This buddy demonstrates some
+				overlapping mult-register operations.
+				And in the final moment we see an <em>upside-down</em> CNOT!
+				Notice too how in the diagram version
+				the boxes within each column (moment) are equal widths
+				and there’s an attempt to center the text labels within their boxes.
+				Also note how the overlapping connectors are dealt with, eh?
+			</p>
+			<h5>DOM</h5>
+			<div id="whiplash-dom"></div>
+			<h5>ASCII diagram</h5>
+			<pre><code id="whiplash-diagram"></code></pre>
+			<h5>Text</h5>
+			<pre><code id="whiplash-text"></code></pre>
+			<!-- <h5>Report</h5> -->
+			<!-- <pre><code id="whiplash-report"></code></pre> -->
+
+
+
+
+
+
+
 
 
 <!--
@@ -92,52 +136,6 @@ Undo<br>
 
 
 
-			<div class="qjs-circuit">
-				<div class="qjs-circuit-background-layer">
-					<svg class="qjs-circuit-wire" style="grid-row: 2; grid-column-end: 5"><use xlink:href="#qjs-circuit-wire"/></svg>
-					<!-- <div class="qjs-circuit-wire" style="grid-row: 2; "><svg><use xlink:href="#qjs-circuit-wire"/></svg></div> -->
-					<div class="qjs-circuit-wire" style="grid-row: 3; "><svg><use xlink:href="#qjs-circuit-wire"/></svg></div>
-				</div>
-				<div class="qjs-circuit-connections-layer">
-					<div style="grid-row: 2; grid-column: 4;"><svg><use xlink:href="#qjs-circuit-control-straight"/></svg></div>
-				</div>
-				<div class="qjs-circuit-grabables-layer">
-					
-					<div class="qjs-circuit-menu"></div>
-
-					<div style="grid-column: 2;" class="qjs-circuit-moment">t<code><strong>0</strong></code></div>
-					<div style="grid-column: 3;" class="qjs-circuit-moment">t<code><strong>1</strong></code></div>
-					<div style="grid-column: 4;" class="qjs-circuit-moment">t<code><strong>2</strong></code></div>
-					<div style="grid-column: 5;" class="qjs-circuit-moment">t<code><strong>3</strong></code></div>
-
-					<div style="grid-row: 2;" class="qjs-circuit-qubit">q<code><strong>0</strong></code></div>
-					<div style="grid-row: 2;" class="qjs-circuit-input">0⟩</div>
-					<div style="grid-row: 2; grid-column: 3;"><svg class="qjs-circuit-gate"><use xlink:href="#qjs-circuit-gate-hadamard"/></svg></div>
-					<div style="grid-row: 2; grid-column: 4;"><svg class="qjs-circuit-gate"><use xlink:href="#qjs-circuit-gate-control"/></svg></div>
-					<div style="grid-row: 2; grid-column: 5;"><svg class="qjs-circuit-gate"><use xlink:href="#qjs-circuit-gate-pauli-x"/></svg></div>
-
-					<div style="grid-row: 3;" class="qjs-circuit-qubit">q<code><strong>1</strong></code></div>
-					<div style="grid-row: 3;" class="qjs-circuit-input">0⟩</div>
-					<div style="grid-row: 3; grid-column: 3;"><svg class="qjs-circuit-gate"><use xlink:href="#qjs-circuit-gate-identity"/></svg></div>
-					<div style="grid-row: 3; grid-column: 4;"><svg class="qjs-circuit-gate"><use xlink:href="#qjs-circuit-gate-controlled"/></svg></div>
-					<div style="grid-row: 3; grid-column: 5;"><svg class="qjs-circuit-gate"><use xlink:href="#qjs-circuit-gate-pauli-x"/></svg></div>
-
-				</div>
-			</div>
-			
-
-
-
-
-
-
-			<br><br><br><br><br>
-
-
-
-
-
-
 
 
 
@@ -152,14 +150,17 @@ Undo<br>
 		<rect y="30" width="60" height="1"/>
 	</g>
 </svg>
-<svg style="display: none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 60 120" style="enable-background:new 0 0 60 120;" xml:space="preserve">
-	<g id="qjs-circuit-control-straight">
-		<rect x="29" y="30" width="2" height="60"/>
-	</g>
-	<g id="qjs-circuit-control-curved">
-		<path d="M30,91v-2c7.6,0,14-13.3,14-29s-6.4-29-14-29v-2c9,0,16,13.6,16,31C46,77.4,39,91,30,91z"/>
-	</g>
+<svg style="display: none"
+	xmlns="http://www.w3.org/2000/svg" 
+	xmlns:xlink="http://www.w3.org/1999/xlink" 
+	x="0px" y="0px"
+	viewBox="0 30 60 60">
+	<symbol id="qjs-circuit-control-straight">
+		<line x1="30" y1="0" x2="30" y2="60"/>
+	</symbol>
+	<symbol id="qjs-circuit-control-curved" viewBox="0 0 60 60" preserveAspectRatio="none">
+		<path d="M30,0c13.8,0,25,13.4,25,30S43.8,60,30,60"/>
+	</symbol>
 </svg>
 <svg style="display: none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve">
@@ -179,7 +180,7 @@ Undo<br>
 	<g class="qjs-circuit-gate" id="qjs-circuit-gate-identity">
 		<circle cx="20" cy="20" r="5"/>
 	</g>
-	<g class="qjs-circuit-gate" id="qjs-circuit-gate-control">
+	<g class="qjs-circuit-gate" id="qjs-circuit-gate-controller">
 		<circle cx="20" cy="20" r="8"/>
 	</g>
 	<g class="qjs-circuit-gate" id="qjs-circuit-gate-controlled">
@@ -228,19 +229,19 @@ Undo<br>
 	<g class="qjs-circuit-gate" id="qjs-circuit-gate-pauli-y">
 		<rect width="40" height="40"/>
 		<g class="qjs-circuit-gate-label">
-			<path class="st3" d="M20.3,18.9l3.6-6.2h3.8L21.5,22l-0.8,5h-3.4l0.9-5.3l-2.8-8.9l3.5,0L20.3,18.9z"/>
+			<path d="M20.3,18.9l3.6-6.2h3.8L21.5,22l-0.8,5h-3.4l0.9-5.3l-2.8-8.9l3.5,0L20.3,18.9z"/>
 		</g>
 	</g>
 	<g class="qjs-circuit-gate" id="qjs-circuit-gate-pauli-x">
 		<rect width="40" height="40"/>
 		<g class="qjs-circuit-gate-label">
-			<path class="st3" d="M20.4,17.5l3-4.7h4L22.3,20l2.8,7h-3.7l-1.6-4.8L16.8,27h-4l5.2-7.3l-2.7-6.9h3.7L20.4,17.5z"/>
+			<path d="M20.4,17.5l3-4.7h4L22.3,20l2.8,7h-3.7l-1.6-4.8L16.8,27h-4l5.2-7.3l-2.7-6.9h3.7L20.4,17.5z"/>
 		</g>
 	</g>
 	<g class="qjs-circuit-gate" id="qjs-circuit-gate-hadamard">
 		<rect width="40" height="40"/>
 		<g class="qjs-circuit-gate-label">
-			<path class="st3" d="M24.7,27h-3.3l1-5.9h-4.9l-1,5.9h-3.3l2.5-14.2H19l-1,5.6h4.9l1-5.6h3.3L24.7,27z"/>
+			<path d="M24.7,27h-3.3l1-5.9h-4.9l-1,5.9h-3.3l2.5-14.2H19l-1,5.6h4.9l1-5.6h3.3L24.7,27z"/>
 		</g>
 	</g>
 </svg>
@@ -259,15 +260,34 @@ Undo<br>
 
 
 
-//document.querySelector( 'main' ).appendChild( Q.Circuit.BELL.toDom() )
+
+var bellPlus = Q`
+
+	H C0 X
+	I C1 X
+`
+bellPlus.sort$()
+document.getElementById( 'bell-plus-dom' ).appendChild( bellPlus.toDom() )
+document.getElementById( 'bell-plus-diagram' ).innerText = bellPlus.toDiagram()
+document.getElementById( 'bell-plus-text' ).innerText = bellPlus.toText()
+document.getElementById( 'bell-plus-report' ).innerText = bellPlus.report$()
 
 
-document.querySelector( 'main' ).appendChild( Q`
 
-H C0 X
-I C1 X
 
-`.toDom() )
+var whiplash = Q`
+
+	H  C00  Z   I   C1
+	X  C10  C0  I   C0
+	X  C01  Z   C0  S
+	X  Y    C1  C1  S
+	X  C11  Z   I   S
+`
+whiplash.sort$()
+document.getElementById( 'whiplash-dom' ).appendChild( whiplash.toDom() )
+document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram()
+document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
+// document.getElementById( 'whiplash-report' ).innerText = whiplash.report$()
 
 
 
