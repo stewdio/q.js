@@ -287,6 +287,7 @@ body {
 	color: var( --text-color );
 	font-family: var( --font-family-serif );
 	font-weight: 400;
+	hanging-punctuation: first;
 }
 img {
 
@@ -491,14 +492,14 @@ pre {
 
 	margin: 1em 0;
 	border-radius: 0.5rem;
-	/*background-color: var( --background-callout-color );*/
 	background-color: var( --color-chalk );
 	padding:  0  0 2rem 2rem;
 	tab-size: 4;
 	-moz-tab-size: 4;
 	max-width: 100%;
+	
+	white-space: pre;
 	overflow: auto;
-	/*white-space: pre-wrap;*/
 	overflow-wrap: normal;
 }
 pre, code, samp {
@@ -914,27 +915,27 @@ svg .st10 {
 	font-family: var( --font-family-mono );
 	/*color: var( --color-black );*/
 }
-.complex-vector.alpha::before {
+.complex-vector.bra::before {
 
 	content: '⟨';
 	color: #BBB;
 }
-.complex-vector.alpha::after {
+.complex-vector.bra::after {
 
 	content: '|';
 	color: #BBB;
 }
-.complex-vector.beta::before {
+.complex-vector.ket::before {
 
 	content: '|';
 	color: #BBB;
 }
-.complex-vector.beta::after {
+.complex-vector.ket::after {
 
 	content: '⟩';
 	color: #BBB;
 }
-.complex-vector.alpha + .complex-vector.beta::before {
+.complex-vector.bra + .complex-vector.ket::before {
 
 	content: '';
 }

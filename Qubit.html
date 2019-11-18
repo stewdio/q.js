@@ -301,9 +301,9 @@
 				In the real, physical world, superposition is indeed weird magic.
 				But in quantum computing it’s dead simple.
 				Superposition is any qubit state other than
-				<span class="complex-vector beta">0</span>
+				<span class="complex-vector ket">0</span>
 				or
-				<span class="complex-vector beta">1</span>.
+				<span class="complex-vector ket">1</span>.
 				That’s it.
 				That’s all there is to it.
 			</p>
@@ -315,9 +315,9 @@
 				values represent together are the 
 				<a href="https://en.wikipedia.org/wiki/Probability_amplitude" target="_blank">probability amplitude</a> that a qubit,
 				when measured, will be in either a
-				<span class="complex-vector beta">0</span>
+				<span class="complex-vector ket">0</span>
 				or a
-				<span class="complex-vector beta">1</span>
+				<span class="complex-vector ket">1</span>
 				state.
 				Measurement itself causes a qubit’s
 				<a href="https://en.wikipedia.org/wiki/Wave_function_collapse"  target="_blank">probability wave to collapse</a>,
@@ -326,11 +326,11 @@
 				<a href="https://en.wikipedia.org/wiki/Probability_amplitude" target="_blank">probability amplitude</a>
 				will 
 				<a href="#.prototype.collapse">collapse</a> to 
-				<span class="complex-vector beta">0</span>
+				<span class="complex-vector ket">0</span>
 				is |<code><a href="Qubit.html#this.alpha">alpha</a></code>|<sup>2</sup>,
 				while the probabilty that it will 
 				<a href="#.prototype.collapse">collapse</a> to 
-				<span class="complex-vector beta">1</span>
+				<span class="complex-vector ket">1</span>
 				is |<code><a href="Qubit.html#this.beta">beta</a></code>|<sup>2</sup>.
 			</p>
 			<br>
@@ -339,21 +339,21 @@
 					A qubit, <code>{
 						<a href="Qubit.html#this.alpha">alpha</a>: 1,
 						<a href="Qubit.html#this.alpha">beta</a>: 0
-					}</code>, has a 100% chance of collapsing to <span class="complex-vector beta">0</span>.
+					}</code>, has a 100% chance of collapsing to <span class="complex-vector ket">0</span>.
 				</li>
 				<li>
 					A qubit, <code>{
 						<a href="Qubit.html#this.alpha">alpha</a>: 0,
 						<a href="Qubit.html#this.alpha">beta</a>: 1
-					}</code>, has a 100% chance of collapsing to <span class="complex-vector beta">1</span>.
+					}</code>, has a 100% chance of collapsing to <span class="complex-vector ket">1</span>.
 				</li>
 				<li>
 					A qubit, <code>{
 						<a href="Qubit.html#this.alpha">alpha</a>: 1÷√2,
 						<a href="Qubit.html#this.alpha">beta</a>: 1÷√2
 					}</code>, 
-					has a 50% chance of collapsing to <span class="complex-vector beta">0</span>
-					and a 50% chance of collapsing to <span class="complex-vector beta">1</span>.
+					has a 50% chance of collapsing to <span class="complex-vector ket">0</span>
+					and a 50% chance of collapsing to <span class="complex-vector ket">1</span>.
 				</li>
 			</ul>
 			<br>

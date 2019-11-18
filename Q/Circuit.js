@@ -902,17 +902,34 @@ Object.assign( Q.Circuit.prototype, {
 				}
 				else {
 
-					first  += '┌─'
+					if( operation.isMultiRegisterOperation ){
+
+						first  += '╭─'
+						third  += '╰─'
+					}
+					else {
+					
+						first  += '┌─'
+						third  += '└─'
+					}
 					second += '┤ '
-					third  += '└─'
 					
 					first  += '─'.padEnd( padToLength, '─' )
 					second += Q.centerText( operation.labelDisplay, padToLength )
 					third  += '─'.padEnd( padToLength, '─' )
-				
-					first  += '─┐'
+
+
+					if( operation.isMultiRegisterOperation ){
+
+						first  += '─╮'
+						third  += '─╯'
+					}
+					else {
+
+						first  += '─┐'
+						third  += '─┘'
+					}
 					second += x < table.timewidth - 1 ? ' ├' : ' │'
-					third  += '─┘'
 
 					if( operation.isMultiRegisterOperation ){
 
