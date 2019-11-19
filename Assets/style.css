@@ -521,6 +521,10 @@ pre code {
 
 	margin:  0;
 	padding: 0;
+	white-space: pre;
+	word-wrap: normal;/*  OMFG, iOS you make me sad.  */
+	overflow: auto;
+	overflow-wrap: normal;
 }
 code .comment {
 
