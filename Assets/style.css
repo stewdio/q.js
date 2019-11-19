@@ -913,7 +913,6 @@ svg .st10 {
 .complex-vector {
 
 	font-family: var( --font-family-mono );
-	/*color: var( --color-black );*/
 }
 .complex-vector.bra::before {
 

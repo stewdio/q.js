@@ -862,7 +862,7 @@ Object.assign( Q.Circuit.prototype, {
 		table  = this.toTable(),
 		output = new Array( table.bandwidth * 3 + 1 ).fill( '' )
 
-		output[ 0 ] = '    m0  '
+		output[ 0 ] = '        '
 		scope.inputs.forEach( function( qubit, q ){
 
 			const y3 = q * 3

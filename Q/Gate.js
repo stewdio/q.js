@@ -88,6 +88,7 @@ Q.Gate.createConstants(
 
 		name:  'Hadamard',
 		label: 'H',
+		css:   'hadamard',
 		matrix: new Q.Matrix(
 			[ Math.SQRT1_2,  Math.SQRT1_2 ],
 			[ Math.SQRT1_2, -Math.SQRT1_2 ]),
@@ -106,6 +107,7 @@ Q.Gate.createConstants(
 
 		name:  'Pauli X',
 		label: 'X',
+		css:   'pauli-x',
 		matrix: new Q.Matrix(
 			[ 0, 1 ],
 			[ 1, 0 ]),
@@ -124,6 +126,7 @@ Q.Gate.createConstants(
 
 		name:  'Pauli Y',
 		label: 'Y',
+		css:   'pauli-y',
 		matrix: new Q.Matrix(
 			[ 0, new Q.ComplexNumber( 0, -1 )],
 			[ new Q.ComplexNumber( 0, 1 ), 0 ]),
@@ -142,6 +145,7 @@ Q.Gate.createConstants(
 
 		name:  'Pauli Z',
 		label: 'Z',
+		css:   'pauli-z',
 		matrix: new Q.Matrix(
 			[ 1,  0 ],
 			[ 0, -1 ]),
@@ -160,6 +164,7 @@ Q.Gate.createConstants(
 
 		name:  'Phase',
 		label: 'S',
+		css:   'phase',
 		matrix: new Q.Matrix(
 			[ 1, 0 ],
 			[ 0, new Q.ComplexNumber( 0, 1 )]),
@@ -178,6 +183,7 @@ Q.Gate.createConstants(
 
 		name:  'π ÷ 8',
 		label: 'T',
+		css:   'pi8',
 		matrix: new Q.Matrix(
 			[ 1, 0 ],
 			[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, Math.PI / 4 )) ]),
@@ -221,7 +227,8 @@ const result = Q.Matrix.CONTROLLED_NOT.multiply( controlQubit.multiplyTensor( ta
 
 */
 		name:  'Controlled Not (C-Not)',
-		label: 'C', 
+		label: 'C',
+		css:   'controlled-not',
 		bandwidth: 2,
 		matrix: new Q.Matrix(
 			[ 1, 0, 0, 0 ],

@@ -1,6 +1,57 @@
 
 
 
+
+Q.Circuit.createDomMenu = function(){
+
+	const menuEl = document.createElement( 'div' )
+	menuEl.classList.add( 'qjs-circuit-palette' )
+
+	const layerOperationsEl = document.createElement( 'div' )
+	layerOperationsEl.classList.add( 'qjs-circuit-layer' )
+	menuEl.appendChild( layerOperationsEl )
+
+	;[
+
+		'H',
+		'X',
+		'Y',
+		'Z',
+		'S',
+		'T',
+		'C'
+
+	].forEach( function( label, i ){
+
+		const operation = Q.Gate.findByLabel( label )
+
+		const gateEl = document.createElement( 'div' )
+		gateEl.setAttribute( 'title', operation.name )		
+		gateEl.style.gridRow    = 1
+		gateEl.style.gridColumn = ( i + 1 )
+
+		const gateSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
+		gateSvgEl.classList.add( 'qjs-circuit-gate' )
+		gateEl.appendChild( gateSvgEl )
+
+		const useEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
+		useEl.classList.add( 'qjs-circuit-gate-'+ operation.css )
+		useEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-gate-'+ operation.css )
+		useEl.operation = operation
+		gateSvgEl.appendChild( useEl )
+
+		layerOperationsEl.appendChild( gateEl )
+	})
+	return menuEl
+}
+
+
+
+
+
+
+
+
 Q.Circuit.prototype.toDom = function(){
 
 	const 
@@ -17,12 +68,7 @@ Q.Circuit.prototype.toDom = function(){
 	layerWiresEl.classList.add( 'qjs-circuit-layer' )
 	layerWiresEl.classList.add( 'qjs-circuit-layer-wires' )
 	circuitEl.appendChild( layerWiresEl )
-	
-	const layerIdentitiesEl = document.createElement( 'div' )
-	layerIdentitiesEl.classList.add( 'qjs-circuit-layer' )
-	layerIdentitiesEl.classList.add( 'qjs-circuit-layer-identities' )
-	circuitEl.appendChild( layerIdentitiesEl )
-	
+		
 	const layerConnnectionsEl = document.createElement( 'div' )
 	layerConnnectionsEl.classList.add( 'qjs-circuit-layer' )
 	layerConnnectionsEl.classList.add( 'qjs-circuit-layer-connections' )
@@ -34,70 +80,54 @@ Q.Circuit.prototype.toDom = function(){
 	circuitEl.appendChild( layerGrabbablesEl )
 
 
+	//  Labels for registers and input qubit values.
 
+	for( let i = 1; i <= circuit.bandwidth; i ++ ){
 
-	this.inputs.forEach( function( input, i ){
-
-/*
-		const wireEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
-		wireEl.classList.add( 'qjs-circuit-wire' )
-		const useEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
-		useEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-wire' )
-		wireEl.appendChild( useEl )
-		wireEl.style.gridRow = ( i + 2 )
-		wireEl.style.gridColumnEnd = ( circuit.timewidth + 2 )
-		layerWiresEl.appendChild( wireEl )
-		*/
-	
-		const qubitEl = document.createElement( 'div' )
-		qubitEl.classList.add( 'qjs-circuit-qubit' )
-		qubitEl.style.gridRow = ( i + 2 )
-		qubitEl.innerHTML = 'r<code><strong>'+ i +'</strong></code>'
-		layerGrabbablesEl.appendChild( qubitEl )
+		const registerEl = document.createElement( 'div' )
+		registerEl.setAttribute( 'title', 'Register '+ i +' of '+ this.inputs.length )
+		registerEl.classList.add( 'qjs-circuit-register' )
+		registerEl.style.gridRow = i + 1
+		registerEl.innerText     = i
+		layerGrabbablesEl.appendChild( registerEl )
 
 		const inputEl = document.createElement( 'div' )
 		inputEl.classList.add( 'qjs-circuit-input' )
-		inputEl.style.gridRow = ( i + 2 )
-		inputEl.innerHTML = '0⟩'//FIX later!
+		inputEl.style.gridRow = i + 1
+		inputEl.innerText     = circuit.inputs[ i - 1 ].beta.toText()
 		
 		layerGrabbablesEl.appendChild( inputEl )
-
-	})
-
+	}
 
 
+	//  Labels for moments.
+
+	for( let m = 1; m <= circuit.timewidth; m ++ ){
+
+		const momentEl = document.createElement( 'div' )
+		momentEl.setAttribute( 'title', 'Moment '+ m +' of '+ table.length )
+		momentEl.classList.add( 'qjs-circuit-moment' )
+		momentEl.style.gridColumn = ( m + 2 )
+		//momentEl.innerHTML = 'm<code><strong>'+ m +'</strong></code>'
+		momentEl.innerText = m
+		
+		layerGrabbablesEl.appendChild( momentEl )
+	}
+
+
+	//  Circuit menu.
 
 	const menuEl = document.createElement( 'div' )
 	menuEl.classList.add( 'qjs-circuit-menu' )
 	layerGrabbablesEl.appendChild( menuEl )
 
-	const momentZeroEl = document.createElement( 'div' )
-	momentZeroEl.classList.add( 'qjs-circuit-moment' )
-	momentZeroEl.style.gridColumn = 0
-	momentZeroEl.innerHTML = 'm<code><strong>0</strong></code>'
-	
-	layerGrabbablesEl.appendChild( momentZeroEl )
 
 
-/*	this.moments.forEach( function( moment, m ){
 
-		const momentEl = document.createElement( 'div' )
-		momentEl.classList.add( 'qjs-circuit-moment' )
-		momentEl.style.gridColumn = ( m + 3 )
-		momentEl.innerHTML = 't<code><strong>'+ ( m + 1 ) +'</strong></code>'
-		layerGrabbablesEl.appendChild( momentEl )
-	})
-	*/
 
 	
 	table.forEach( function( moment, m ){
 
-
-		const momentEl = document.createElement( 'div' )
-		momentEl.classList.add( 'qjs-circuit-moment' )
-		momentEl.style.gridColumn = ( m + 3 )
-		momentEl.innerHTML = 'm<code><strong>'+ ( m + 1 ) +'</strong></code>'
-		layerGrabbablesEl.appendChild( momentEl )
 
 
 		moment.forEach( function( operation, o ){
@@ -120,31 +150,35 @@ Q.Circuit.prototype.toDom = function(){
 			//  Place an identity gate on every cell
 			//  even if it will be overlayed by another gate!
 
+			const identityEl = document.createElement( 'div' )
+			identityEl.setAttribute( 'title', 'Identity' )
+			identityEl.style.gridRow = o + 2
+			identityEl.style.gridColumn = m + 3
+
 			const identitySvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
 			identitySvgEl.classList.add( 'qjs-circuit-gate' )
-			identitySvgEl.setAttribute( 'title', 'Identity' )//  Sadly this needs to be on a DIV to work!!
-			identitySvgEl.style.gridRow = ( o + 2 )
-			identitySvgEl.style.gridColumn = ( m + 3 )			
+			identityEl.appendChild( identitySvgEl )
 
 			const identityUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
 			identityUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-gate-identity' )
 			identityUseEl.classList.add( 'qjs-circuit-gate-identity' )
 			identitySvgEl.appendChild( identityUseEl )
+						
+			layerGrabbablesEl.appendChild( identityEl)
+
 			
-			layerIdentitiesEl.appendChild( identitySvgEl )
-
-
 			//  x
 
 			if( operation.nameCss !== 'identity' ){
 
 				const gateEl = document.createElement( 'div' )
 				gateEl.setAttribute( 'title', operation.name )
-				gateEl.style.gridRow = ( o + 2 )
-				gateEl.style.gridColumn = ( m + 3 )
+				gateEl.style.gridRow = o + 2
+				gateEl.style.gridColumn = m + 3
 
 				const gateSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
 				gateSvgEl.classList.add( 'qjs-circuit-gate' )
+				gateSvgEl.operation = operation//  hehehehehe.
 				gateEl.appendChild( gateSvgEl )
 
 				const useEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
@@ -163,7 +197,6 @@ Q.Circuit.prototype.toDom = function(){
 		//  If the operation’s registers are adjacent, use straight connector.
 		//  Otherwise use a curved connector.
 
-
 		multiRegisterOperations = moment.reduce( function( collection, operation ){
 
 			if( operation.isMultiRegisterOperation &&
@@ -176,49 +209,35 @@ Q.Circuit.prototype.toDom = function(){
 		}, [] ).forEach( function( operation ){
 			
 			circuit.operations[ operation.operationIndex ]
-				.registerIndices.filter( function( element ){
+			.registerIndices.filter( function( element ){
 
-					return element !== operation.registerIndex
-				})
-				.forEach( function( siblingRegisterIndex ){
+				return element !== operation.registerIndex
+			})
+			.forEach( function( siblingRegisterIndex ){
 
-					const registerDelta = siblingRegisterIndex - operation.registerIndex
-					let connectorType = 'curved'
-					if( Math.abs( registerDelta ) === 1 ) connectorType = 'straight'				
+				const registerDelta = siblingRegisterIndex - operation.registerIndex
+				let connectorType = 'curved'
+				if( Math.abs( registerDelta ) === 1 ) connectorType = 'straight'				
 
-					const
-					start = Math.min( operation.registerIndex, siblingRegisterIndex ),
-					end   = Math.max( operation.registerIndex, siblingRegisterIndex )
+				const
+				start = Math.min( operation.registerIndex, siblingRegisterIndex ),
+				end   = Math.max( operation.registerIndex, siblingRegisterIndex )
 
-					const connectionEl = document.createElement( 'div' )
-					connectionEl.style.gridRowStart = start + 2
-					connectionEl.style.gridRowEnd   = end + 2
-					connectionEl.style.gridColumn   = operation.momentIndex + 3
+				const connectionEl = document.createElement( 'div' )
+				connectionEl.style.gridRowStart = start + 2
+				connectionEl.style.gridRowEnd   = end + 2
+				connectionEl.style.gridColumn   = operation.momentIndex + 3
 
+				const connectionSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
+				connectionEl.appendChild( connectionSvgEl )
 
-
-
-					const connectionSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
-					// connectionSvgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'preserveAspectRatio', 'none' )
-					// connectionSvgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'width', '100%' )
-					// connectionSvgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'height', '100%' )
-					connectionEl.appendChild( connectionSvgEl )
-
-
-					const connectionUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )					
-					connectionUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-control-'+ connectorType )
-					
-					// connectionUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'preserveAspectRatio', 'none' )
-					// connectionUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'width', '100%' )
-					// connectionUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'height', '150%' )
-					connectionSvgEl.appendChild( connectionUseEl )
-					
-					
-					layerConnnectionsEl.appendChild( connectionEl )
-				})
+				const connectionUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )					
+				connectionUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-control-'+ connectorType )
+				connectionSvgEl.appendChild( connectionUseEl )
+				
+				layerConnnectionsEl.appendChild( connectionEl )
+			})
 		})
-
-
 	})
 
 
@@ -244,12 +263,84 @@ https://mdn.github.io/dom-examples/drag-and-drop/copy-move-DataTransferItemList.
 
 */
 
+let
+grabbedItem = null
+
+
+
+
+
 const
+highlight = function( event ){
+
+	let cellEl = event.target
+	while( cellEl.parentNode && cellEl.tagName.toLowerCase() !== 'div' ){
+		
+		cellEl = cellEl.parentNode
+	}
+
+	let layerEl = event.target
+	while( layerEl.parentNode && !layerEl.classList.contains( 'qjs-circuit-layer' )){
+
+		layerEl = layerEl.parentNode
+	}
+
+	let circuitEl = layerEl.parentNode
+
+	const 
+	style  = getComputedStyle( cellEl ),
+	selectedRow    = parseFloat( style.gridRowStart ),
+	selectedColumn = parseFloat( style.gridColumnStart )
+
+	Array.from( circuitEl.querySelectorAll( '.qjs-circuit-layer-grabbables *, .qjs-circuit-layer-wires *' )).forEach( function( el ){
+
+		const 
+		style = getComputedStyle( el ),
+		thisRow    = parseFloat( style.gridRowStart ),
+		thisColumn = parseFloat( style.gridColumnStart )
+
+		if(
+			( thisRow > 1 || thisColumn > 1 ) && (//  Don’t highlight the menu area.
+
+
+				( selectedRow === 1 && thisColumn === selectedColumn ) ||//  If on a moment label, only highlight its column.
+				( selectedColumn < 3 && thisRow === selectedRow      ) ||//  If on a register label, only highlight its row.
+				( 
+					selectedRow > 1 && 
+					selectedColumn > 2 && 
+					( thisRow === selectedRow || thisColumn === selectedColumn )
+				)
+			)
+		){
+
+			el.classList.add( 'qjs-circuit-highlight' )
+		}
+		else {
+
+			el.classList.remove( 'qjs-circuit-highlight' )
+		}
+	})
+},
+unhighlight = function( event ){
+
+
+	let circuitEl = event.target
+	while( circuitEl.parentNode && !circuitEl.classList.contains( 'qjs-circuit' )){
+
+		circuitEl = circuitEl.parentNode
+	}
+	Array.from( circuitEl.querySelectorAll( '.qjs-circuit-layer-grabbables *, .qjs-circuit-layer-wires *' )).forEach( function( el ){
+
+		el.classList.remove( 'qjs-circuit-highlight' )
+	})
+},
 grab = function( event ){
 	
 	event.preventDefault()
 	event.stopPropagation()
-	console.log( 'grabbed', event )
+	grabbedItem = event.target
+	// console.log( 'grabbed', event )
+	console.log( 'grabbing this', grabbedItem.operation )
 },
 move = function(){
 
@@ -257,18 +348,61 @@ move = function(){
 },
 drop = function( event ){
 
-	console.log( 'dropped', event )
+	// console.log( 'dropped', event )
+	if( grabbedItem !== null ){
+	
+		// console.log( 'dropping this:', grabbedItem )
+		// console.log( 'on to this:', event.target )
+
+		let dropTarget = event.target
+		while( dropTarget.classList && !dropTarget.classList.contains( 'qjs-circuit-gate' )){
+
+			dropTarget = dropTarget.parentNode
+		}
+		if( dropTarget.classList && dropTarget.classList.contains( 'qjs-circuit-gate' )){
+
+			const operation = dropTarget.operation
+			console.log( 'found!', operation )
+			console.log( 'remove ops at moment', operation.momentIndex, 'containing register', operation.registerIndex )
+		}
+		else {
+
+			console.log( 'dropped on to NOTHING' )
+		}
+		grabbedItem = null
+	}
 },
 addEvents = function( el = document.body ){
 
-	Array.from( el.querySelectorAll( '.qjs-circuit-gate' )).forEach( function( el ){
+	Array.from( el.querySelectorAll( 'svg.qjs-circuit-gate, .qjs-circuit-moment, .qjs-circuit-register, .qjs-circuit-input' )).forEach( function( el ){
 
+		
 		el.addEventListener( 'mousedown', grab )
 		el.addEventListener( 'touchstart', grab )
 
-		el.addEventListener( 'mouseup', drop )
-		el.addEventListener( 'touchend', drop )
+		// el.addEventListener( 'mouseup', drop )
+		// el.addEventListener( 'touchend', drop )
 	})
+	document.addEventListener( 'mouseup', drop )
+	document.addEventListener( 'touchend', drop )
+
+
+
+
+
+
+	Array.from( document.querySelectorAll( '.qjs-circuit-layer > *' )).forEach( function( el ){
+
+		el.addEventListener( 'mouseover', highlight )		
+	})
+	Array.from( document.querySelectorAll( '.qjs-circuit' )).forEach( function( el ){
+
+		el.addEventListener( 'mouseout', unhighlight )
+	})
+
+
+
+	//  need to add an  unhighlight for mouseout of any circuit.
 }
 
 
