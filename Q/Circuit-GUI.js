@@ -13,6 +13,7 @@ Q.Circuit.createDomMenu = function(){
 
 	;[
 
+		'I',
 		'H',
 		'X',
 		'Y',
@@ -28,7 +29,7 @@ Q.Circuit.createDomMenu = function(){
 		const gateEl = document.createElement( 'div' )
 		gateEl.setAttribute( 'title', operation.name )		
 		gateEl.style.gridRow    = 1
-		gateEl.style.gridColumn = ( i + 1 )
+		gateEl.style.gridColumn = i + 1
 
 		const gateSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
 		gateSvgEl.classList.add( 'qjs-circuit-gate' )
@@ -357,20 +358,25 @@ drop = function( event ){
 
 			circuitEl = circuitEl.parentNode
 		}
+		const circuit = circuitEl.circuit
 
 
 
 		if( dropTarget.classList && dropTarget.classList.contains( 'qjs-circuit-gate' )){
 
-			const operation = dropTarget.operation
-			console.log( 'found!', operation )
-			console.log( 'remove ops at moment', operation.momentIndex, 'containing register', operation.registerIndex )
-			console.log( 'and replace with', grabbedItem.operation )
+			const 
+			operationToInsert  = grabbedItem.operation,
+			operationToReplace = dropTarget.operation
+			
+			// console.log( 'found!', operation )
+			console.log( 'REMOVE ops at moment #', operationToReplace.momentIndex, 'containing register #', operationToReplace.registerIndex )			
+			console.log( 'and replace with: ', operationToInsert.label )
+			// console.log( 'on circuit:', circuit )
 
-			console.log( 'on circuit:', circuitEl.circuit )
-
-			circuitEl.circuit.set$( operation.momentIndex + 1, Q.Gate.findByLabel( operation.label ), [ operation.registerIndex ])
-
+			circuit.set$( operationToReplace.momentIndex + 1, Q.Gate.findByLabel( operationToInsert.label ), [ operationToReplace.registerIndex ])
+			console.log( circuit.toDiagram() )
+			console.log( circuit.evaluate$() )
+			console.log( circuit.report$() )
 		}
 		else {
 

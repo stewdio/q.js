@@ -1469,6 +1469,7 @@ Object.assign( Q.Circuit.prototype, {
 			gate,
 			gateId
 		})
+		this.sort$()	
 	},
 
 

@@ -206,6 +206,10 @@ use.qjs-circuit-gate-identity {
 	transition-property: opacity;
 	transition-duration: 0.5s;
 }
+.qjs-circuit-palette .qjs-circuit-gate-identity {
+
+	opacity: 1;
+}
 .qjs-circuit:hover use.qjs-circuit-gate-identity {
 
 	opacity: 1;
@@ -235,7 +239,7 @@ highlight will only darken the grey text and wires.
 
 The yellow background will be used for actual selection
 	to copy / cut / splice / drag / etc.
-	
+
 
 */
 

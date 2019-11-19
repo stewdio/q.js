@@ -63,8 +63,11 @@ Q.Gate.createConstants(
 	'IDENTITY', new Q.Gate({//  No operation required!
 
 		name:  'Identity',
-		matrix: Q.Matrix.IDENTITY_2X2,
-		label: 'I' }),
+		label: 'I',
+		css:   'identity',
+		matrix: Q.Matrix.IDENTITY_2X2
+	}),
+	
 	
 	'MEASURE', new Q.Gate({
 
