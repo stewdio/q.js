@@ -560,15 +560,17 @@ Object.assign( Q.Circuit.prototype, {
 	report$: function(){
 
 		if( this.needsEvaluation ) this.evaluate$()
-		const text = this.outcomes.reduce( function( text, outcome ){
+		const 
+		circuit = this,
+		text = this.outcomes.reduce( function( text, outcome, i ){
 
-			return text +'\n'+ outcome.state 
-				+'  '+ Q.round( 100 * outcome.probability, 8 ).toString().padStart( 3, ' ' ) +'% chance'
+			return text +'\n'
+				+ ( i + 1 ).toString().padStart( Math.ceil( Math.log10( Math.pow( 2, circuit.inputs.length ))), ' ' ) +'  '
+				+ outcome.state
+				+' '+ Q.round( 100 * outcome.probability, 8 ).toString().padStart( 3, ' ' ) +'% chance'
 				+'  '+ ''.padStart( Math.round( outcome.probability * 32 ), '█' )
 
 		}, '' ) + '\n\n'
-		//console.log( text )
-		// return this
 		return text
 	},
 	try$: function(){

@@ -226,6 +226,19 @@ use.qjs-circuit-gate-identity {
 
 
 
+
+/*
+
+
+In the very near future,
+highlight will only darken the grey text and wires.
+
+The yellow background will be used for actual selection
+	to copy / cut / splice / drag / etc.
+	
+
+*/
+
 .qjs-circuit-highlight {
 
 	/*background-color: var( --color-yellow );	*/
@@ -242,4 +255,17 @@ use.qjs-circuit-gate-identity {
 
 	/*fill: black;*/
 }
+
+
+
+
+.qjs-circuit-register.qjs-circuit-selected,
+.qjs-circuit-input.qjs-circuit-selected,
+.qjs-circuit-moment.qjs-circuit-selected,
+.qjs-circuit-wire.qjs-circuit-selected {
+
+	background-color: var( --color-yellow );
+}
+
+
 

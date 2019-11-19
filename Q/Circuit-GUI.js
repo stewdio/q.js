@@ -364,6 +364,7 @@ drop = function( event ){
 			const operation = dropTarget.operation
 			console.log( 'found!', operation )
 			console.log( 'remove ops at moment', operation.momentIndex, 'containing register', operation.registerIndex )
+			console.log( 'and replace with', grabbedItem.operation )
 		}
 		else {
 
