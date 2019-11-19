@@ -57,28 +57,34 @@
 			<p>
 				Q is <a href="https://en.wikipedia.org/wiki/Quantum_computing" target="_blank">quantum computing</a> in your browser.
 				(What?!)
-				Okay, okay, it’s a quantum circuit <em>simulator</em>—because you can’t do actual quantum computing using whatever non-quantum device you’re reading this on.
+				Okay, okay, it’s a quantum circuit <em>simulator</em>—because you can’t do actual quantum computing using whatever non-quantum device you’re reading this on, eh?
+				So why build Q?
+				The same reason Google, IBM, Microsoft, and more 
+				have built quantum simulators:
+				to enable everyone to explore quantum circuit design 
+				using a cheap and easy medium for sketching
+				before applying those designs to the real (and rather expensive!) hardware.
 			</p>
 			<p>
-				So why build Q?
-				The same reason Google, IBM, and Microsoft build quantum simulators:
-				to explore quantum circuit design using a cheap and easy medium before applying those designs to the real hardware.
 				Q was started by me, <a href="http://stewartsmith.io" target="_blank">Stewart Smith</a>, 
 				in April 2019
-				as a way to learn about quantum computing, 
+				as a way to teach myself quantum computing, 
 				share that learning with others,
 				and do some actual quantum circuit programming.
 				Q’s source code—including this documentation—is available for download from GitHub at
-				<a href="https://github.com/stewdio/q.js" target="_blank">https://github.com/stewdio/q.js</a>.
+				<a class="url" href="https://github.com/stewdio/q.js" target="_blank">https://github.com/stewdio/q.js</a>.
 				(Come join the fun!)
 				This documentation website is live at
-				<a href="https://stewdio.github.io/q.js">https://stewdio.github.io/q.js</a>,
-				which is probably where you’re viewing it from now, eh?
+				<a class="url" href="https://stewdio.github.io/q.js">https://stewdio.github.io/q.js</a>,
+				which is probably where you’re viewing it from now.
 				But it’s built to run just as well right off of your desktop.
+				No packages to install.
+				No settings to configure.
+				Just drop one of the HTML files in to your browser window and you’re up and running!
 			</p>
 			<h3>Open your JavaScript console</h3>
 			<p>
-				In the future, Q will take advantage of the browser
+				In the very future, Q will take advantage of the browser
 				as a graphic user interface, 
 				but for now the action takes place 
 				in your browser’s JavaScript console.
@@ -270,28 +276,45 @@
 			<hr>
 			<h3>Roadmap</h3>
 			<p>
-				Q is a work-in-progress.
-				This documentation is still being written, as is the code it documents.
-				We’re laying railroad track directly in front of the train.
-				The <code><a href="Q.html">Q</a></code> object,
-				<code><a href="ComplexNumber.html">ComplexNumber</a></code>,
-				<code><a href="Matrix.html">Matrix</a></code>,
-				<code><a href="Qubit.html">Qubit</a></code>,
-				<code><a href="Gate.html">Gate</a></code>, 
-				and <code><a href="Circuit.html">Circuit</a></code> components are fully functional as of November 2019.
-				The next 3 steps are as follows:
+				As of November 2019, Q is operational; able to compute simple entanglements!
+				The drag-and-drop interface for circuit building is under development
+				and unstable demos of this are available in the 
+				<a href="playground.html">playground</a>.
+				The next round of milestones include:
 			</p>
-			<p>
-				1. Finish the <a href="https://en.wikipedia.org/wiki/Graphical_user_interface" target="_blank">graphic user interface</a>—as an alternative to the console’s 
-				<a href="https://en.wikipedia.org/wiki/Command-line_interface" target="_blank">commaind-line interface</a>.
-			</p>
-			<p>
-				2. Debug, streamline, and reduce the code footprint.
-			</p>
-			<p>
-				3. Push the computation to the GPU via
-				<a href="https://en.wikipedia.org/wiki/WebGPU" target="_blank">WebGPU</a>.
-			</p>
+			<ol class="properties">
+				<li>
+					Finish the drag-and-drop feature that allows a user to 
+					visually drag individual single-register operations
+					(from a palette of operation icons)
+					on to a circuit diagram, thereby altering the circuit’s visual representation.
+					(This process <em>already</em> alters the actual circuit!)
+					This will be a cloning process that copies and does not remove
+					the icon from the operations palette.
+				</li>
+				<li>
+					Replicate the above within the circuit diagram itself
+					to allow single-register operations to be dragged and dropped within the circuit.
+					This will be a cut-and-paste process, leaving an Identity gate in the “cut” cell.
+					(This process does not yet alter the actual circuit.)
+				</li>
+				<li>
+					Replicate both interactions above for multi-register operations.
+				</li>
+				<li>
+					Create an event system for emitting circuit evaluation progress.
+				</li>
+				<li>
+					Use the above event system to enable live reporting of a circuit’s evaluation
+					as a feature of the interactive circuit diagram.
+				</li>
+				<li>
+					Push the evaluation computation to the GPU via
+					<a href="https://en.wikipedia.org/wiki/WebGPU" target="_blank">WebGPU</a>
+					and possibly offload from the main thread entirely via  
+					<a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers" target="_blank">web workers</a>.
+				</li>
+			</ol>
 			<br>
 			<p>
 				Want to get involved? 

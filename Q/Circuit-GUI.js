@@ -155,6 +155,12 @@ Q.Circuit.prototype.toDom = function(){
 
 			const identitySvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
 			identitySvgEl.classList.add( 'qjs-circuit-gate' )
+			identitySvgEl.operation = {//  hehehehehe.
+				
+				gate: Q.Gate.IDENTITY,
+				momentIndex: m,
+				registerIndex: o
+			}
 			identityEl.appendChild( identitySvgEl )
 
 			const identityUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
@@ -347,6 +353,8 @@ drop = function( event ){
 
 	if( grabbedItem !== null ){
 	
+		console.log(event.target)
+
 		let dropTarget = event.target
 		while( dropTarget.classList && !dropTarget.classList.contains( 'qjs-circuit-gate' )){
 
@@ -368,7 +376,9 @@ drop = function( event ){
 			operationToInsert  = grabbedItem.operation,
 			operationToReplace = dropTarget.operation
 			
-			// console.log( 'found!', operation )
+			console.log( 'operationToInsert', operationToInsert )
+			console.log( 'operationToReplace', operationToReplace )
+			
 			console.log( 'REMOVE ops at moment #', operationToReplace.momentIndex, 'containing register #', operationToReplace.registerIndex )			
 			console.log( 'and replace with: ', operationToInsert.label )
 			// console.log( 'on circuit:', circuit )
@@ -377,6 +387,30 @@ drop = function( event ){
 			console.log( circuit.toDiagram() )
 			console.log( circuit.evaluate$() )
 			console.log( circuit.report$() )
+
+
+			
+			//  ********************************************************************************
+			//  well this is stupid and temporary!
+			//  must come back and fix / make generic / use events?
+			//  and also need to remove event listeners, all that stuff
+			//  because WOW this is just bad practice!
+			//  but the demo works ;)
+
+			if( circuit === bellPlus ){
+
+				const parent = circuitEl.parentNode
+				parent.removeChild( circuitEl )
+				parent.appendChild( circuit.toDom() )
+
+			
+				document.getElementById( 'bell-plus-report' ).innerText = bellPlus.report$()
+			}
+			//  ********************************************************************************
+		
+
+
+
 		}
 		else {
 

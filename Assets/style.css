@@ -314,6 +314,10 @@ a {
 		color 0.2s,
 		text-decoration-color 0.2s;
 }
+a.url {
+
+	word-break: break-all;
+}
 a svg {
 
 	fill: var( --hyperlink-internal-color );
@@ -653,7 +657,7 @@ main {
 
 	box-shadow: 0 0 1rem rgba( 0, 0, 0, 0.2 );
 }
-main > h3, main > h4, main > h5, main > p, main > ul, main > footer {
+main > h3, main > h4, main > h5, main > p, main > ul, main > ol, main > footer {
 
 	margin-left:  1rem;
 	margin-right: 1rem;
@@ -740,8 +744,11 @@ ul.properties li,
 ol.properties li {
 
 	border-bottom: 1px solid var( --color-newsprint );
-	list-style: none;
 	padding: 0.8em 0;
+}
+ul.properties li {
+
+	list-style: none;
 }
 ul.properties li:hover,
 ol.properties li:hover {

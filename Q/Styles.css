@@ -176,7 +176,7 @@
 }
 #qjs-circuit-gate-hadamard {
 
-	fill: var( --color-red );	
+	fill: var( --color-red );
 }
 .qjs-circuit-gate {
 
@@ -185,9 +185,6 @@
 	height: 40px;
 	display: inline-block;
 	z-index: var( --z-index-gate );
-}
-svg .qjs-circuit-gate {
-
 	fill: var( --color-green );
 	cursor: move;
 }
