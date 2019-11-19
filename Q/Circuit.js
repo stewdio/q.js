@@ -212,121 +212,98 @@ Object.assign( Q.Circuit, {
 
 
 	evaluate: function( circuit, x ){
-		
+
 		if( x === undefined ){
 
-			// x = new Q.Matrix(
-			// 	[1],
-			// 	[0],
-			// 	[0],
-			// 	[0])
 
+			//  Create a new matrix (or more precisely, a vector)
+			//  that is a 1 followed by all zeros.
+			//
+			//  ┌   ┐
+			//  │ 1 │
+			//  │ 0 │
+			//  │ 0 │
+			//  │ . │
+			//  │ . │
+			//  │ . │
+			//  └   ┘
 
 			x = new Q.Matrix( 1, circuit.bandwidth * 2 )
 			x.write$( 0, 0, 1 )
 		}
 
+
+
 		// console.log( '\n\n\nabout to eval this circuit!')
-		
-		//console.log( 'what is numeric.T??', numeric.T )
+		// console.log( 'what is circuit??', circuit )
 		// console.log( 'what is X??', x )
-		// console.log( 'what is progress??', progress )//  increases the progress bar DOM element
-		// console.log( 'what is callback??', callback )//  sets progress  bar  DOM element to  display: none when done.
-		//console.log( 'what is circuit??', circuit )
-
-
 		// console.log( 'this circuit', circuit.toDiagram() )
 
-
-
-		// const operationsTotal = circuit.moments.reduce( function( sum, moment, m ){
-
-		// 	// console.log( 'moment', m, 'contains the following', moment.length, 'operations\n', moment )
-		// 	return sum + moment.length
-		
-		// }, 0 )
-		// console.log( 'operations to perform:', operationsTotal )
 		const operationsTotal = circuit.operations.length
-
-
-
-
-
 		let operationsCompleted = 0
 		let matrix = circuit.operations.reduce( function( x, operation ){
 
-			// return moment.reduce( function( x, operation ){
-
-
-				// operationsCompleted ++
-				// console.log( `\n\nProgress ... ${ Math.round( operationsCompleted / operationsTotal * 100 )}%`)
-				// console.log( 'Moment .....', m )
-				// console.log( 'Registers ..', operation.qubitIndices )
-				// console.log( 'Gate .......', operation.gate.name )
-
-
-
-				let U
-				
-				// console.log( 'operation', operation )
-				if( operation.registerIndices.length < Infinity ){
-				
-					U = operation.gate.matrix
-					// console.log( 'U = operation.gate.matrix', U )
-				} 
-				else {
-				
-					//  This is for QFT... will have to come back to this!
-					// console.log( 'I don’t even know what’s up! INFINITY!!!' )
-				}
-				
-				// console.log( 'U = operation.gate.matrix', U.toTsv() )
-
-
-
-
-
-/*
-
-WHEN I TAKE THIS OUT IT WORKS !
-
-				for( let j = 0; j < operation.qubitIndices.length; j ++ ){
-				
-					U = Q.Circuit.controlled( U )
-					console.log( 'qubitIndex #', j, 'U = Q.Circuit.controlled( U )', U.toTsv() )
-				}
-*/
-
-
-				//const qubits  = operation.qubitIndices//  I don’t think we need to concat shit here.
-
-
-
-				// console.log( 'ABOUT TO MULTIPLY' )
-				// console.log( 'x???', x.toTsv() )
-
-				if( x instanceof Q.Matrix ){
-				
-					// console.log( 'x is a matrix. good. EXPANDING it...' )
-					x = Q.Circuit.expandMatrix( circuit.bandwidth, U, operation.registerIndices ).multiply( x )
-					// x = x.multiply( Q.Circuit.expandMatrix( circuit.bandwidth, U, operation.qubitIndices ))
-				}
-				else {
-
-					// console.log( 'huh...  x wants a matrix... and we didn’t have one (BAD!)') 
-					x = Q.Circuit.expandMatrix( circuit.bandwidth, U, operation.registerIndices )
-				}
-
-				operationsCompleted ++
-				// console.log( `\n\nprogress: ${ Math.round( operationsCompleted / operationsTotal * 100 )}%`)
-				// console.log( 'Intermediate result:', x.toTsv() )
-				
-
-				return x
+			let U
+			if( operation.registerIndices.length < Infinity ){
 			
-			// }, x )
+				U = operation.gate.matrix
+			} 
+			else {
+			
+				//  This is for Quantum Fourier Transforms (QFT). 
+				//  Will have to come back to this at a later date!
+			}			
+			// console.log( 'U = operation.gate.matrix', U.toTsv() )
 
 
+
+			/*
+
+			WHEN I TAKE THIS OUT IT WORKS !
+
+			for( let j = 0; j < operation.qubitIndices.length; j ++ ){
+			
+				U = Q.Circuit.controlled( U )
+				console.log( 'qubitIndex #', j, 'U = Q.Circuit.controlled( U )', U.toTsv() )
+			}*/
+
+
+
+
+			//  We need to send a COPY of the registerIndices Array
+			//  to .expandMatrix()
+			//  otherwise it *may* modify the actual registerIndices Array
+			//  and wow -- tracking down that bug was painful!
+
+			const registerIndices = operation.registerIndices.slice()
+
+
+			// console.log( 'ABOUT TO MULTIPLY' )
+			// console.log( 'x???', x.toTsv() )
+
+			if( x instanceof Q.Matrix ){
+			
+				// console.log( 'x is a matrix. good. EXPANDING it...' )
+				x = Q.Circuit.expandMatrix( circuit.bandwidth, U, registerIndices ).multiply( x )
+				// x = x.multiply( Q.Circuit.expandMatrix( circuit.bandwidth, U, operation.qubitIndices ))
+			}
+			else {
+
+				// console.log( 'huh...  x wants a matrix... and we didn’t have one (BAD!)') 
+				x = Q.Circuit.expandMatrix( circuit.bandwidth, U, registerIndices )
+			}
+
+
+			operationsCompleted ++
+			// console.log( `\n\nProgress ... ${ Math.round( operationsCompleted / operationsTotal * 100 )}%`)
+			// console.log( 'Moment .....', operation.momentIndex )
+			// console.log( 'Registers ..', JSON.stringify( operation.registerIndices ))
+			// console.log( 'Gate .......', operation.gate.name )
+			// console.log( 'Intermediate result:', x.toTsv() )
+			
+
+			return x
+			
 		}, x )
 
 
@@ -482,7 +459,6 @@ WHEN I TAKE THIS OUT IT WORKS !
 
 						operation = circuit.operations.find( function( operation ){
 
-							// console.log( 'gateId', gateId, 'operation.gateId',  operation.gateId )
 							return (
 
 								operation.momentIndex === m &&
@@ -490,8 +466,6 @@ WHEN I TAKE THIS OUT IT WORKS !
 								operation.gateId === gateId
 							)
 						})
-						// console.log( 'gateId?', gateId )
-						// console.log( 'found this gate!', operation )
 					}
 
 				
@@ -512,22 +486,18 @@ WHEN I TAKE THIS OUT IT WORKS !
 						//  but we’ll only supply this particular qubit’s index
 						//  for the gate’s input indices.
 
-						const inputIndices = []
-						inputIndices[ inputIndex ] = r
+						const registerIndices = []
+						registerIndices[ inputIndex ] = r
 						// if( gateId !== undefined ){
 
 						// 	console.log( 'setting gate.id to gateId', gateId )
 						// 	gate.id = gateId
 						// }
-						circuit.set$( m + 1, gate, inputIndices, gateId )
+						circuit.set$( m + 1, gate, registerIndices, gateId )
 					}
 				}
 			})
 		})
-		
-
-
-		// console.log( 'circuit?', circuit )
 		return circuit
 	}
 })

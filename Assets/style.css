@@ -499,6 +499,7 @@ pre {
 	max-width: 100%;
 	
 	white-space: pre;
+	word-wrap: normal;/*  OMFG, iOS you make me sad.  */
 	overflow: auto;
 	overflow-wrap: normal;
 }

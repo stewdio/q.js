@@ -60,6 +60,7 @@ Q.Circuit.prototype.toDom = function(){
 
 	const circuitEl = document.createElement( 'div' )
 	circuitEl.classList.add( 'qjs-circuit' )
+	circuitEl.circuit = circuit//  EVIL LAUGH !
 
 
 	//  Circuit layers.
@@ -107,8 +108,7 @@ Q.Circuit.prototype.toDom = function(){
 		const momentEl = document.createElement( 'div' )
 		momentEl.setAttribute( 'title', 'Moment '+ m +' of '+ table.length )
 		momentEl.classList.add( 'qjs-circuit-moment' )
-		momentEl.style.gridColumn = ( m + 2 )
-		//momentEl.innerHTML = 'm<code><strong>'+ m +'</strong></code>'
+		momentEl.style.gridColumn = m + 2
 		momentEl.innerText = m
 		
 		layerGrabbablesEl.appendChild( momentEl )
@@ -122,13 +122,9 @@ Q.Circuit.prototype.toDom = function(){
 	layerGrabbablesEl.appendChild( menuEl )
 
 
-
-
-
+	//  Loop through each operation of each moment.
 	
 	table.forEach( function( moment, m ){
-
-
 
 		moment.forEach( function( operation, o ){
 
@@ -147,7 +143,8 @@ Q.Circuit.prototype.toDom = function(){
 			layerWiresEl.appendChild( wireSvgEl )
 
 
-			//  Place an identity gate on every cell
+			//  Identity gates.
+			//  We’ll place one on EVERY cell,
 			//  even if it will be overlayed by another gate!
 
 			const identityEl = document.createElement( 'div' )
@@ -167,7 +164,7 @@ Q.Circuit.prototype.toDom = function(){
 			layerGrabbablesEl.appendChild( identityEl)
 
 			
-			//  x
+			//  Create non-identity gates.
 
 			if( operation.nameCss !== 'identity' ){
 
@@ -189,7 +186,6 @@ Q.Circuit.prototype.toDom = function(){
 				layerGrabbablesEl.appendChild( gateEl )
 			}
 		})
-
 
 
 		//  Now... did we have any multi-register operations during this moment?
@@ -241,7 +237,7 @@ Q.Circuit.prototype.toDom = function(){
 	})
 
 
-	// console.log( 'circuitEl?', circuitEl )
+	//  All done. Return our document fragment.
 
 	return circuitEl
 }
@@ -348,23 +344,33 @@ move = function(){
 },
 drop = function( event ){
 
-	// console.log( 'dropped', event )
 	if( grabbedItem !== null ){
 	
-		// console.log( 'dropping this:', grabbedItem )
-		// console.log( 'on to this:', event.target )
-
 		let dropTarget = event.target
 		while( dropTarget.classList && !dropTarget.classList.contains( 'qjs-circuit-gate' )){
 
 			dropTarget = dropTarget.parentNode
 		}
+		
+		let circuitEl = event.target
+		while( circuitEl.parentNode && !circuitEl.classList.contains( 'qjs-circuit' )){
+
+			circuitEl = circuitEl.parentNode
+		}
+
+
+
 		if( dropTarget.classList && dropTarget.classList.contains( 'qjs-circuit-gate' )){
 
 			const operation = dropTarget.operation
 			console.log( 'found!', operation )
 			console.log( 'remove ops at moment', operation.momentIndex, 'containing register', operation.registerIndex )
 			console.log( 'and replace with', grabbedItem.operation )
+
+			console.log( 'on circuit:', circuitEl.circuit )
+
+			circuitEl.circuit.set$( operation.momentIndex + 1, Q.Gate.findByLabel( operation.label ), [ operation.registerIndex ])
+
 		}
 		else {
 
