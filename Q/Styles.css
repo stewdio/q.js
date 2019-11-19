@@ -160,15 +160,16 @@
 
 .qjs-circuit svg {
 
-/*	width:  60px;
-	height: 60px;*/
 	fill: var( --color-titanium );
+}
+#qjs-circuit-wire {
+
+	fill: var( --color-newsprint );
 }
 .qjs-circuit-gate-label {
 
 	fill: var( --color-white );
 }
-
 #qjs-circuit-gate-controller,
 #qjs-circuit-gate-controlled {
 
@@ -194,14 +195,14 @@
 }
 #qjs-circuit-gate-identity {
 
-	fill: var( --color-titanium );
+	fill: var( --color-slate );
 	cursor: inherit;
 }
 use.qjs-circuit-gate-identity {
 
 	opacity: 0;
 	transition-property: opacity;
-	transition-duration: 0.5s;
+	transition-duration: 1s;
 }
 .qjs-circuit-palette .qjs-circuit-gate-identity {
 
@@ -250,7 +251,7 @@ The yellow background will be used for actual selection
 .qjs-circuit-moment.qjs-circuit-highlight,
 .qjs-circuit-wire.qjs-circuit-highlight {
 
-	background-color: var( --color-yellow );
+	/*background-color: var( --color-yellow );*/
 }
 .qjs-circuit-wire.qjs-circuit-highlight {
 
