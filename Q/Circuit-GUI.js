@@ -529,16 +529,23 @@ Q.Circuit.GUI = {
 				//  because WOW this is just bad practice!
 				//  but the demo works ;)
 
-				if( circuit === bellPlus ){
 
-					const parent = circuitEl.parentNode
-					parent.removeChild( circuitEl )
-					parent.appendChild( circuit.toDom() )
-					circuit.evaluate$()
-				
+				const parent = circuitEl.parentNode
+				parent.removeChild( circuitEl )
+				parent.appendChild( circuit.toDom() )
+
+
+				if( circuit === bellPlus ){
+					
+					circuit.evaluate$()				
 					document.getElementById( 'bell-plus-report' ).innerText = bellPlus.report$()
 					document.getElementById( 'bell-plus-diagram' ).innerText = bellPlus.toDiagram()
 					document.getElementById( 'bell-plus-text' ).innerText = bellPlus.toText()
+				}
+				if( circuit === whiplash ){
+								
+					document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram()
+					document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
 				}
 				//  ********************************************************************************
 			
