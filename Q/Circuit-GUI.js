@@ -499,10 +499,13 @@ Q.Circuit.GUI = {
 					if( grabbedFromCircuit ){
 
 						grabbedFromCircuit.clearThisInput$( grabbedMomentIndex, grabbedRegisterIndex )
-					
-
-						console.log( grabbedFromCircuit === circuit )
-
+						if( grabbedFromCircuit !== circuit ){
+							
+							const parent = grabbedFromCircuitEl.parentNode
+							parent.removeChild( grabbedFromCircuitEl )
+							parent.appendChild( grabbedFromCircuit.toDom() )
+						}
+						grabbedFromCircuit.needsEvaluation = true
 					}
 				}
 
@@ -533,11 +536,11 @@ Q.Circuit.GUI = {
 				const parent = circuitEl.parentNode
 				parent.removeChild( circuitEl )
 				parent.appendChild( circuit.toDom() )
+				circuit.needsEvaluation = true
 
 
 				if( circuit === bellPlus ){
-					
-					circuit.evaluate$()				
+							
 					document.getElementById( 'bell-plus-report' ).innerText = bellPlus.report$()
 					document.getElementById( 'bell-plus-diagram' ).innerText = bellPlus.toDiagram()
 					document.getElementById( 'bell-plus-text' ).innerText = bellPlus.toText()
