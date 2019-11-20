@@ -379,8 +379,10 @@ Q.Circuit.GUI = {
 		}
 		Q.Circuit.GUI.grabbedItem = grabbedItem
 	},
-	move: function(){
+	move: function( event ){
 
+
+		console.log( event )
 
 	},
 	drop: function( event ){
@@ -455,11 +457,10 @@ Q.Circuit.GUI = {
 
 
 
-				console.log( 'operationToInsert',  operationToInsert )
-				console.log( 'operationToReplace', operationToReplace )
-				
-				console.log( 'REMOVE op at moment #', receivingMomentIndex, ', register #', receivingRegisterIndex )			
-				console.log( 'and replace with: ', operationToInsert.label )
+				// console.log( 'operationToInsert',  operationToInsert )
+				// console.log( 'operationToReplace', operationToReplace )
+				// console.log( 'REMOVE op at moment #', receivingMomentIndex, ', register #', receivingRegisterIndex )			
+				// console.log( 'and replace with: ', operationToInsert.label )
 				// console.log( 'on circuit:', circuit )
 
 
@@ -483,6 +484,9 @@ Q.Circuit.GUI = {
 
 					
 					//  Find the circuit that grabbedEl came from.
+					//  Sure, it’s probably the SAME circuit we’re dropping on to
+					//  but since that’s not a constraint of ours
+					//  we don’t truly know, do we?
 
 					let grabbedFromCircuitEl = grabbedEl
 					while( grabbedFromCircuitEl.parentNode && 
@@ -494,13 +498,17 @@ Q.Circuit.GUI = {
 
 					if( grabbedFromCircuit ){
 
+						grabbedFromCircuit.clearThisInput$( grabbedMomentIndex, grabbedRegisterIndex )
+					
 
-						//  REMOVE the operation from this circuit!
-						//***********
+						console.log( grabbedFromCircuit === circuit )
+
 					}
-
 				}
 
+
+
+			
 
 
 				//operationToInsert.momentIndex = operationToReplace.momentIndex

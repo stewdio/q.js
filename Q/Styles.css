@@ -40,10 +40,10 @@
 ────────────────────────────────
 
 	┌────┬────────────────┐
-	│ ≡≡ │ t0  t1  t2  t3 │ +
+	│ ≡≡ │ m0  m1  m2  m3 │ +
 	├────┼────────────────┤
-	│ q0 │  0⟩  H  C0  X  │
-	│ q1 │  0⟩  I  C1  X  │
+	│ r0 │  0⟩  H  C0  X  │
+	│ r1 │  0⟩  I  C1  X  │
 	└────┴────────────────┘
       +
 
@@ -57,7 +57,7 @@
 	margin: 20px 0;
 	position: relative;
 	max-width: 100%;
-	/*overflow: hidden;*/
+	/*overflow-x: auto;*//*  This is causing VERTICAL scrolling. WHY?!  */
 	cursor: crosshair;
 	font-family: var( --font-family-sans );
 	font-style: italic;

@@ -1381,6 +1381,10 @@ Object.assign( Q.Circuit.prototype, {
 
 	clearThisInput$: function( momentIndex, registerIndices ){
 
+		if( registerIndices instanceof Array === false ){
+
+			registerIndices = [ registerIndices ]
+		}
 		let operationsToRemove = 0
 		while( operationsToRemove >= 0 ){
 			
@@ -1404,6 +1408,7 @@ Object.assign( Q.Circuit.prototype, {
 				this.operations.splice( operationsToRemove, 1 )
 			}
 		}
+		return this
 	},
 	
 
@@ -1412,8 +1417,14 @@ Object.assign( Q.Circuit.prototype, {
 
 
 
+	get: function( momentIndex, registerIndex ){
 
+		return this.operations.find( function( op ){
 
+			return op.momentIndex === momentIndex && 
+				op.registerIndices.includes( registerIndex )
+		})
+	},
 	set$: function( momentIndex, gate, registerIndices, gateId, allowOverrun ){
 
 		const circuit = this
@@ -1842,105 +1853,6 @@ Object.assign( Q.Circuit.prototype, {
 		
 		this.removeHangingOperations$()
 		this.fillEmptyOperations$()
-
-		return this
-	},
-	
-
-
-
-
-
-
-	    /////////////////
-	   //             //
-	  //   Execute   //
-	 //             //
-	/////////////////
-
-
-	runOLD$: function( n ){
-
-		`
-		Ok, right now this is a really simple, contained “run” solution.
-		But we probably want threading and a Q{} render queue, yeah?
-		Also likely need a “run$” solution that mutates circuit state
-		to keep track of averages always -- unless circuit is modified.
-		(Even then, do we track averages / state across UNDO branches??)
-
-		`
-		
-
-		//  Quantum circuits deal in probabilities.
-		//  Running a circuit once doesn’t mean all that much.
-		//  We ought to run it many, many times.
-
-		const states = []
-		if( n === undefined ) n = 1
-		for( let i = 0; i < n; i ++ ){
-
-			const state = this.inputs.slice()
-
-
-			//  Step through this quantum circuit one step at a time,
-			//  applying each moment’s operation to our state.
-
-			this.moments.forEach( function( moment ){
-
-				moment.forEach( function( operation ){
-
-					operation.gate.applyTo(
-
-						...operation.qubitIndices.reduce( function( accumulation, qubitIndex ){
-
-							accumulation.push( state[ qubitIndex ])
-							return accumulation
-
-						}, [] )
-					
-					).forEach( function( outputQubit, qubitIndex ){
-
-						state[ operation.qubitIndices[ qubitIndex ]] = outputQubit
-					})
-				})
-			})
-
-
-			//  We have our result for this run. 
-			//  Push it to the stack.
-
-			states.push( state.map( function( qubit ){
-				
-				return qubit.beta.real
-			}))
-		}
-		
-
-		//  This averages operation may need to be in the loop itself,
-		//  possibly on a clutch so it only executes every X number of loops.
-		//  This way we can set n = Infinity so it runs 
-		//  until we tell it to stop :)
-
-		const results = states
-			.reduce( function( accumulation, state, s ){
-
-				state.forEach( function( qubit, q ){
-
-					accumulation[ q ] += qubit
-				})
-				return accumulation
-
-			}, new Array( this.bandwidth ).fill( 0 ))
-			.map( function( qubit ){
-
-				return qubit / n
-			})
-
-
-		//console.log( 'Ran circuit', n, 'times with average result of:', results )
-		
-		//  ***** Def come back and clean this idea up!! threading??
-		this.results = results
 
 		return this
 	}
