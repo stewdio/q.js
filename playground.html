@@ -280,9 +280,11 @@ var bellPlus = Q`
 	I C1 X
 `
 bellPlus.sort$()
-document.getElementById( 'qjs-circuit-menu' ).appendChild( Q.Circuit.createDomMenu() )
-document.getElementById( 'bell-plus-dom' ).appendChild( bellPlus.toDom() )
-document.getElementById( 'bell-plus-diagram' ).innerText = bellPlus.toDiagram()
+//document.getElementById( 'qjs-circuit-menu' ).appendChild( Q.Circuit.createDomMenu() )
+Q.Circuit.createDomMenu( document.getElementById( 'qjs-circuit-menu' ))
+//document.getElementById( 'bell-plus-dom' ).appendChild( bellPlus.toDom() )
+bellPlus.toDom( document.getElementById( 'bell-plus-dom' ))
+document.getElementById( 'bell-plus-diagram' ).innerText = bellPlus.toDiagram( true )
 document.getElementById( 'bell-plus-text' ).innerText = bellPlus.toText()
 document.getElementById( 'bell-plus-report' ).innerText = bellPlus.report$()
 

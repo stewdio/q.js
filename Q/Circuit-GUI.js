@@ -2,7 +2,7 @@
 
 
 
-Q.Circuit.createDomMenu = function(){
+Q.Circuit.createDomMenu = function( targetEl ){
 
 	const menuEl = document.createElement( 'div' )
 	menuEl.classList.add( 'qjs-circuit-palette' )
@@ -57,6 +57,14 @@ Q.Circuit.createDomMenu = function(){
 		el.addEventListener( 'touchstart', Q.Circuit.GUI.grab )
 	})
 	
+
+
+
+	if( targetEl !== undefined && 
+		typeof targetEl.appendChild === 'function' ){
+
+		targetEl.appendChild( menuEl )
+	}
 	return menuEl
 }
 
@@ -67,7 +75,7 @@ Q.Circuit.createDomMenu = function(){
 
 
 
-Q.Circuit.prototype.toDom = function(){
+Q.Circuit.prototype.toDom = function( targetEl ){
 
 	const 
 	circuit = this,
@@ -281,9 +289,15 @@ Q.Circuit.prototype.toDom = function(){
 
 
 
-	//  All done. Return our document fragment.
+	//  All done.
 
-	return circuitEl
+	if( targetEl !== undefined &&
+		typeof targetEl.appendChild === 'function' ){
+
+		targetEl.appendChild(  circuitEl )
+		return this
+	}
+	else return circuitEl
 }
 
 
@@ -406,7 +420,8 @@ Q.Circuit.GUI = {
 			//  then we’re in business!
 
 			if( receivingEl.classList && 
-				receivingEl.classList.contains( 'qjs-circuit-gate' )){
+				receivingEl.classList.contains( 'qjs-circuit-gate' ) &&
+				receivingEl !== Q.Circuit.GUI.grabbedItem ){
 				
 
 				//  What element did we drag and drop on to here?
@@ -542,12 +557,12 @@ Q.Circuit.GUI = {
 				if( circuit === bellPlus ){
 							
 					document.getElementById( 'bell-plus-report' ).innerText = bellPlus.report$()
-					document.getElementById( 'bell-plus-diagram' ).innerText = bellPlus.toDiagram()
+					document.getElementById( 'bell-plus-diagram' ).innerText = bellPlus.toDiagram( true )
 					document.getElementById( 'bell-plus-text' ).innerText = bellPlus.toText()
 				}
 				if( circuit === whiplash ){
 								
-					document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram()
+					document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram( true )
 					document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
 				}
 				//  ********************************************************************************
