@@ -531,6 +531,7 @@ console.log( event.pageX, window.pageXOffset, bounds.left )
 					changedTouch.clientX, 
 					changedTouch.clientY 
 				)
+				document.getElementById( 'bell-plus-text' ).innerText = (!!receivingEl) +'   \n'+ JSON.stringify( changedTouch )
 			}
 			while( receivingEl.parentNode && 
 				receivingEl.operation === undefined ){
