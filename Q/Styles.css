@@ -52,7 +52,9 @@
 
 
 
-.qjs-circuit, .qjs-circuit-palette {
+.qjs-circuit, 
+.qjs-circuit-palette,
+.qjs-circuit-clipboard {
 
 	margin: 20px 0;
 	position: relative;
@@ -68,6 +70,17 @@
 .qjs-circuit-palette {
 
 	min-height: 60px;
+}
+.qjs-circuit-clipboard {
+
+	position: absolute;
+	z-index: 200;
+	top:  600px;
+	left: 200px;
+	background-color: var( --color-yellow );
+	padding: 10px;
+	box-shadow: 0 4px 10px rgba( 0, 0, 0, 0.5 );
+	pointer-events: none;
 }
 
 

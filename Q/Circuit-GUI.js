@@ -312,6 +312,8 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 
 Q.Circuit.GUI = {
 
+	clipboard: null,
+	clipboardElement: null,
 	grabbedItem: null,
 	highlight: function( event ){
 
@@ -387,19 +389,131 @@ Q.Circuit.GUI = {
 		//  Either way we’ll find the operation we’re intending to drag!
 
 		let grabbedItem = event.target
-		while( grabbedItem.parentNode && grabbedItem.operation === undefined ){
+		while( grabbedItem.parentNode && 
+			grabbedItem.operation === undefined ){
 
 			grabbedItem = grabbedItem.parentNode
 		}
 		Q.Circuit.GUI.grabbedItem = grabbedItem
+
+
+		//  We need to find the containing circuit DOM element
+		//  and likewise find the circuit object reference.
+
+		let circuitElement = grabbedItem
+		while( circuitElement.parentNode && 
+			circuitElement.circuit === undefined ){
+
+			circuitElement = circuitElement.parentNode
+		}
+		const circuit = circuitElement.circuit		
+
+
+
+
+
+
+
+		//  Now we can construct the clipboard.
+
+		const clip = [ grabbedItem ]//  Temporary measure as we transition to new system here:
+		clip.circuitElement = circuitElement
+		clip.circuit = circuitElement.circuit
+		
+		const clipboardElement = document.createElement( 'div' )
+		clipboardElement.classList.add( 'qjs-circuit-clipboard' )
+
+const bounds = grabbedItem.getBoundingClientRect()
+
+console.log( event.pageX, window.pageXOffset, bounds.left )
+
+		clipboardElement.offsetX = window.pageXOffset + bounds.left - event.pageX - 10
+		clipboardElement.offsetY = window.pageYOffset + bounds.top  - event.pageY - 30
+		document.body.appendChild( clipboardElement )
+		
+
+		Q.Circuit.GUI.clipboardElement = clipboardElement
+
+
+		clip.forEach( function( selectedElement, i, selectedElements ){
+
+
+			//  This seems superfluous because these values
+			//  should remain accessible from the DOM element, yes??
+			
+			selectedElements[ i ].momentIndex = selectedElement.getAttribute( 'momentIndex' )
+			selectedElements[ i ].registerIndex = selectedElement.getAttribute( 'registerIndex' )
+
+
+			//  ONLY if not clonable!
+
+			//clipboardElement.appendChild( selectedElement )
+			clipboardElement.appendChild( selectedElement.cloneNode( true ))
+		})
+		Q.Circuit.GUI.move( event )
+
+
+
+
+		/*
+
+
+			ok. we need to actually collect an ARRAY of grabbed items
+			in case we grab multiple items at once
+			(like if we grab a ROW or COLUMN or AREA of shit)
+
+			and we need to -- at the moment of the grab --
+			note each momentIndex, registerIndex, and what circuit they all came from.
+
+			clip.circuitElement
+			clip.circuit
+			clip[ 0 ] = {
+	
+				operation: { gate, momentIndex, registerIndices }
+				momentIndex
+				registerIndex
+			}
+			clip[ 1 ]...
+			...
+
+			
+			REMOVE all of these elements from the circuitEl
+			and APPEND them to a new clipboard
+			so this will be a “circuit clip” or “circuit snippet”
+
+			give that snippetEl a “selected” state (yellow)
+			and also a “dragging” state (box shadow)
+
+			and make it follow the mouse’s movements!
+
+
+		*/
 	},
 	move: function( event ){
 
+		if( Q.Circuit.GUI.clipboardElement !== null ){
+			
+			// console.log( event.pageX, event.pageY )
+			
+			const 
+			clipboardElement = Q.Circuit.GUI.clipboardElement,
+			offsetX = clipboardElement.offsetX,
+			offsetY = clipboardElement.offsetY
 
-		console.log( event )
-
+			clipboardElement.style.top  = ( event.pageY + offsetY ) +'px'
+			clipboardElement.style.left = ( event.pageX + offsetX ) +'px'
+		}
 	},
 	drop: function( event ){
+
+
+		//  Come back and fix this:
+
+		Q.Circuit.GUI.clipboard = null
+		document.body.removeChild( Q.Circuit.GUI.clipboardElement )
+		Q.Circuit.GUI.clipboardElement = null
+		
+
 
 		if( Q.Circuit.GUI.grabbedItem !== null ){
 
@@ -588,7 +702,10 @@ Q.Circuit.GUI = {
 
 const addEvents = function( el = document.body ){
 
-	document.addEventListener( 'mouseup',  Q.Circuit.GUI.drop )
+	document.addEventListener( 'mousemove',  Q.Circuit.GUI.move )
+	document.addEventListener( 'touchmove',  Q.Circuit.GUI.move )
+
+	document.addEventListener( 'mouseup',  Q.Circuit.GUI.drop )	
 	document.addEventListener( 'touchend', Q.Circuit.GUI.drop )
 }
 
