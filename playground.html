@@ -59,63 +59,93 @@
 		<main>
 
 
-			<h3>Just sketching</h3>
+			<h3>Playground sketches</h3>
 			<p>
-				This page is just a nook
-				where I’m sketching some bits out. 
-				Some things are functional.
-				Some less so.
-				Right now I’m focussed on circuits rendered as
-				document fragments (aka bits of a webpage).
-				They aren’t interactive ... yet!
+				This is your behind-the-curtain look
+				at ideas I’m sketching out.
+				Because these bits are in-progress,
+				some things will be less funcational than others.
+				And certainly less designed.
+				Here are some drag-and-drop circuit sketches.
+				(While some multi-register operations are included here,
+				they are not draggable yet.)
 			</p>
 
 
 			<h4>Bell state</h4>
 			<p>
-				This is a regular old Bell state, but with X operations as a finale.
-				That’s kind of fun because the two possible results are 
+				This is a regular old <a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>
+				(which produces <a href="https://en.wikipedia.org/wiki/Quantum_entanglement" target="_blank">quantum entanglement</a>), 
+				but with X operations on both registers as a finale.
+				That’s kind of fun because the only two possible results are 
 				<span class="complex-vector ket">00</span>
 				and
 				<span class="complex-vector ket">11</span>.
-				So it’s all zeros or all ones.
-				All or nothing.
+				All or nothing!
+				(But of course you can alter the circuit yourself to change the possible results.)
 			</p>
-			<h5>Document fragment</h5>
 			<p>
-				Drag and drop an operation from here on to the circuit.
-				You can also drag operations within the circuit to copy 
-				them, though this won’t work for multi-register operations—yet!
-				More is coming :)
-				Note how changing the circuit changes the probabilities report,
-				as well as the ASCII diagram and text representation of the circuit.
+				Drag and drop an operation from here on to the circuit 
+				to <em>copy</em> it in to the circuit.
+				You can also drag operations within the circuit itself to <em>move</em> them.
+				As you alter the circuit you’ll notice the probabilities report,
+				ASCII diagram, and text representation of the circuit also update.
+				(Sorry—for now you cannot drag multi-register operations. Check back soon!)
 			</p>
+			<h5>Palette of operations</h5>
 			<div id="qjs-circuit-menu"></div>
+			<h5>Circuit as DOM elements</h5>
 			<div id="bell-plus-dom"></div>
-			<pre><code id="bell-plus-report"></code></pre>
+			<h5>Probabilities report</h5>
+			<pre><code>
+bellState.report$()
+</code><samp id="bell-plus-report"></samp></pre>
 			<div id="bell-plus-report-live" for="bell-plus-dom"></div>
-			<h5>ASCII diagram</h5>
-			<pre><code id="bell-plus-diagram"></code></pre>
-			<h5>Text</h5>
-			<pre><code id="bell-plus-text"></code></pre>
+			<h5>Circuit as ASCII diagram</h5>
+			<p>
+				Yes—you can interact with these example circuits 
+				right in your JavaScript console!
+				These examples are right in the global scope so go poke around.
+				You can generate the report above, the diagram below, and make edits directly to the circuit in code.
+			</p>
+			<pre><code>
+bellState.toDiagram()
+</code><samp id="bell-plus-diagram"></samp></pre>
+			<h5>Circuit as text</h5>
+			<pre><code>
+bellState.toText()</code>
+<samp id="bell-plus-text"></samp></pre>
 			
 
 			<h4>Whiplash</h4>
 			<p>
-				This buddy demonstrates some
-				overlapping mult-register operations.
-				And in the final moment we see an <em>upside-down</em> CNOT!
+				This monster demonstrates some
+				overlapping mult-register operations
+				and an  “upside-down CNOT” finale.
 				Notice too how in the diagram version
 				the boxes within each column (moment) are equal widths
 				and there’s an attempt to center the text labels within their boxes.
 				Also note how the overlapping connectors are dealt with, eh?
+				Of course this circuit would make little sense in the real world.
+				It’s here purely to test different aspects of rendering a circuit visually.
 			</p>
-			<h5>Document fragment</h5>
+			<p>
+				Also—have you noticed that you can drag operations from one circuit to another?
+				You’ll have to get creative with scrolling,
+				but you can drag operations between here and the Bell state above ;)
+			</p>
+			<h5>Palette of operations</h5>
+			<div id="qjs-circuit-menu2"></div>
+			<h5>Circuit as DOM elements</h5>
 			<div id="whiplash-dom"></div>
-			<h5>ASCII diagram</h5>
-			<pre><code id="whiplash-diagram"></code></pre>
-			<h5>Text</h5>
-			<pre><code id="whiplash-text"></code></pre>
+			<h5>Circuit as ASCII diagram</h5>
+			<pre><code>
+whiplash.toDiagram()
+</code><samp id="whiplash-diagram"></samp></pre>
+			<h5>Circuit as text</h5>
+			<pre><code>
+whiplash.toText()
+</code><samp id="whiplash-text"></samp></pre>
 			<!-- <h5>Report</h5> -->
 			<!-- <pre><code id="whiplash-report"></code></pre> -->
 
@@ -274,19 +304,19 @@ Undo<br>
 
 
 
-var bellPlus = Q`
+var bellState = Q`
 
 	H C0 X
 	I C1 X
 `
-bellPlus.sort$()
+bellState.sort$()
 //document.getElementById( 'qjs-circuit-menu' ).appendChild( Q.Circuit.createDomMenu() )
 Q.Circuit.createDomMenu( document.getElementById( 'qjs-circuit-menu' ))
 //document.getElementById( 'bell-plus-dom' ).appendChild( bellPlus.toDom() )
-bellPlus.toDom( document.getElementById( 'bell-plus-dom' ))
-document.getElementById( 'bell-plus-diagram' ).innerText = bellPlus.toDiagram( true )
-document.getElementById( 'bell-plus-text' ).innerText = bellPlus.toText()
-document.getElementById( 'bell-plus-report' ).innerText = bellPlus.report$()
+bellState.toDom( document.getElementById( 'bell-plus-dom' ))
+document.getElementById( 'bell-plus-diagram' ).innerText = bellState.toDiagram( true )
+document.getElementById( 'bell-plus-text' ).innerText = bellState.toText()
+document.getElementById( 'bell-plus-report' ).innerText = bellState.report$()
 
 
 
@@ -300,6 +330,7 @@ var whiplash = Q`
 	X  C11  Z   I   S
 `
 whiplash.sort$()
+Q.Circuit.createDomMenu( document.getElementById( 'qjs-circuit-menu2' ))
 document.getElementById( 'whiplash-dom' ).appendChild( whiplash.toDom() )
 document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram( true )
 document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()

@@ -70,6 +70,8 @@
 .qjs-circuit-palette {
 
 	min-height: 60px;
+	margin-bottom: 0;
+	padding: 10px;
 }
 .qjs-circuit-clipboard {
 
@@ -81,6 +83,12 @@
 	padding: 10px;
 	box-shadow: 0 4px 10px rgba( 0, 0, 0, 0.5 );
 	pointer-events: none;
+}
+h5 + div .qjs-circuit, 
+h5 + div .qjs-circuit-palette,
+h5 + div .qjs-circuit-clipboard {
+
+	margin-top: 0.5rem;
 }
 
 
@@ -208,10 +216,11 @@
 }
 #qjs-circuit-gate-identity {
 
-	fill: var( --color-slate );
+	/*fill: var( --color-slate );*/
+	fill: var( --color-titanium );
 	cursor: inherit;
 }
-use.qjs-circuit-gate-identity {
+/*use.qjs-circuit-gate-identity {
 
 	opacity: 0;
 	transition-property: opacity;
@@ -225,7 +234,7 @@ use.qjs-circuit-gate-identity {
 
 	opacity: 1;
 	transition-duration: 0.1s;
-}
+}*/
 
 
 

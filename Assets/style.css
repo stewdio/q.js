@@ -534,6 +534,13 @@ code .comment {
 
 	color: var( --text-code-comment-color );
 }
+h5 + pre {
+
+	margin-top: 0.5rem;
+}
+
+
+
 img.figure {
 
 	border-radius: 0.4em;

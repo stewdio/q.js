@@ -425,7 +425,7 @@ Q.Circuit.GUI = {
 
 const bounds = grabbedItem.getBoundingClientRect()
 
-console.log( event.pageX, window.pageXOffset, bounds.left )
+// console.log( event.pageX, window.pageXOffset, bounds.left )
 
 		clipboardElement.offsetX = window.pageXOffset + bounds.left - event.pageX - 10
 		clipboardElement.offsetY = window.pageYOffset + bounds.top  - event.pageY - 30
@@ -509,9 +509,12 @@ console.log( event.pageX, window.pageXOffset, bounds.left )
 
 		//  Come back and fix this:
 
-		Q.Circuit.GUI.clipboard = null
-		document.body.removeChild( Q.Circuit.GUI.clipboardElement )
-		Q.Circuit.GUI.clipboardElement = null
+		if( Q.Circuit.GUI.clipboardElement !== null ){
+			
+			Q.Circuit.GUI.clipboard = null
+			document.body.removeChild( Q.Circuit.GUI.clipboardElement )
+			Q.Circuit.GUI.clipboardElement = null
+		}
 		
 
 
@@ -678,11 +681,11 @@ console.log( event.pageX, window.pageXOffset, bounds.left )
 				circuit.needsEvaluation = true
 
 
-				if( circuit === bellPlus ){
+				if( circuit === bellState ){
 							
-					document.getElementById( 'bell-plus-report' ).innerText = bellPlus.report$()
-					document.getElementById( 'bell-plus-diagram' ).innerText = bellPlus.toDiagram( true )
-					document.getElementById( 'bell-plus-text' ).innerText = bellPlus.toText()
+					document.getElementById( 'bell-plus-report' ).innerText = bellState.report$()
+					document.getElementById( 'bell-plus-diagram' ).innerText = bellState.toDiagram( true )
+					document.getElementById( 'bell-plus-text' ).innerText = bellState.toText()
 				}
 				if( circuit === whiplash ){
 								
