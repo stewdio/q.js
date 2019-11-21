@@ -525,8 +525,12 @@ console.log( event.pageX, window.pageXOffset, bounds.left )
 			let receivingEl = event.target
 			if( event.type === 'touchend' ){
 
-				const changedTouch = event.changedTouches[ 0 ],
-				receivingEl = document.elementFromPoint( changedTouch.clientX, changedTouch.clientY )
+				const changedTouch = event.changedTouches[ 0 ]
+				receivingEl = document.elementFromPoint( 
+				
+					changedTouch.clientX, 
+					changedTouch.clientY 
+				)
 			}
 			while( receivingEl.parentNode && 
 				receivingEl.operation === undefined ){
