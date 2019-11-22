@@ -490,6 +490,8 @@ Q.Circuit.GUI = {
 		clip.circuitElement = circuitElement
 		clip.circuit = circuitElement.circuit
 		
+
+
 		const clipboardElement = document.createElement( 'div' )
 		clipboardElement.circuit = clip.circuit//  OMG this is all very messy.
 		clipboardElement.classList.add( 'qjs-circuit-clipboard' )
@@ -503,9 +505,12 @@ Q.Circuit.GUI = {
 		cellEl.classList.add( 'qjs-circuit-cell' )
 		gateLayer.appendChild( cellEl )
 
-const bounds = grabbedItem.getBoundingClientRect()
 
-// console.log( event.pageX, window.pageXOffset, bounds.left )
+
+
+		const bounds = grabbedItem.getBoundingClientRect()
+
+		// console.log( event.pageX, window.pageXOffset, bounds.left )
 
 		clipboardElement.offsetX = window.pageXOffset + bounds.left - event.pageX - 10
 		clipboardElement.offsetY = window.pageYOffset + bounds.top  - event.pageY - 10
@@ -532,13 +537,47 @@ const bounds = grabbedItem.getBoundingClientRect()
 			// const cellContainer = documen.createElement( 'div' )
 			// cellContainer.classList.add( '.qjs-circuit-layer' )
 
+			
+
+
+			// THIS F’D UP I-OS!!
+
+			// if( clip.circuit === undefined || 
+			// 	grabbedItem.operation.label === 'I' ){
+
+			// 	cellEl.appendChild( selectedElement.cloneNode( true ))
+			// }
+			// else cellEl.appendChild( selectedElement )
+		
+
+			
+
+			cellEl.appendChild( selectedElement.cloneNode( true ))
 			if( clip.circuit === undefined || 
 				grabbedItem.operation.label === 'I' ){
 
-				cellEl.appendChild( selectedElement.cloneNode( true ))
+				//cellEl.appendChild( selectedElement.cloneNode( true ))
 			}
-			else cellEl.appendChild( selectedElement )
+			else {
+
+				selectedElement.style.display = 'none'
+			}
+
+
 		})
+		
+
+// console.log( 'ok did we do it?' )
+// console.log( 'cellEl', cellEl )
+
+
+		// if( event.type === 'touchstart' ){
+
+		// 	console.log( 'attempting BAD touch fix here....' )
+		// 	event.target.addEventListener( 'touchmove', Q.Circuit.GUI.move )
+		// }
+
+
 		Q.Circuit.GUI.move( event )
 
 
@@ -580,9 +619,13 @@ const bounds = grabbedItem.getBoundingClientRect()
 	},
 	move: function( event ){
 
+
+		// console.log( 'Q.Circuit.GUI.clipboardElement:', Q.Circuit.GUI.clipboardElement )
 		if( Q.Circuit.GUI.clipboardElement !== null ){
 			
-			// console.log( event.pageX, event.pageY )
+			event.preventDefault()
+			event.stopPropagation()
+			// console.log( 'X,Y:', event.pageX, event.pageY )
 			
 			const 
 			clipboardElement = Q.Circuit.GUI.clipboardElement,
@@ -623,7 +666,7 @@ const bounds = grabbedItem.getBoundingClientRect()
 					changedTouch.clientX, 
 					changedTouch.clientY 
 				)
-				document.getElementById( 'bell-plus-text' ).innerText = (!!receivingEl) +'   \n'+ JSON.stringify( changedTouch )
+				//document.getElementById( 'bell-plus-text' ).innerText = (!!receivingEl) +'   \n'+ JSON.stringify( changedTouch )
 			}
 			while( receivingEl.parentNode && 
 				receivingEl.operation === undefined ){
