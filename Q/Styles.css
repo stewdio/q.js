@@ -15,113 +15,135 @@
 }
 
 
+
+
 /*
 
 
-	CIRCUIT
-		New
-		Save
-		Re-dimension
+	Circuit	
 
-	EDIT
-		Cut
-		Copy
-		Paste
-		Insert
+	   Menu     Moments
+	  ╭───────┬───┬───┬───┬───╮
+	  │ ≡     │ 1 │ 2 │ 3 │ + │ Add moment
+	  ├───┬───┼───┼───┼───┼───╯
+	R │ 0 │|0⟩│ H │ C0│ X │ -
+	e ├───┼───┼───┼───┼───┤
+	g │ 1 │|0⟩│ I │ C1│ X │ -
+	s ├───┼───┴───┴───┴───┘
+      │ + │ -   -   -   -
+	  ╰───╯
+	    Add
+	    register
 
-	CLIPBOARD
-		Do we just paste these as new?
+
+	Circuit Palette
+
+	╭───────────────────┬───╮
+	│ H X Y Z S T π M … │ @ │
+	╰───────────────────┴───╯
 
 
-	┌─────────────────┬───┐
-	│ H X Y Z S T π M │ @ │
-	└─────────────────┴───┘
+	Circuit clipboard
 
-────────────────────────────────
+	 ┌───────────┐
+	▟│ ┌───┬───┐ │
+	█│ │ H │ C0│ │
+	█│ ├───┼───┤ │
+	█│ │ I │ C1│ │
+	█│ └───┴───┘ │
+	█└───────────┘
+	████████████▛
 
-	┌────┬────────────────┐
-	│ ≡≡ │ m0  m1  m2  m3 │ +
-	├────┼────────────────┤
-	│ r0 │  0⟩  H  C0  X  │
-	│ r1 │  0⟩  I  C1  X  │
-	└────┴────────────────┘
-      +
 
 */
-
-
 
 
 .qjs-circuit, 
 .qjs-circuit-palette,
 .qjs-circuit-clipboard {
-
-	margin: 20px 0;
+	
 	position: relative;
+	margin: 0.5rem 0;
 	max-width: 100%;
-	/*overflow-x: auto;*//*  This is causing VERTICAL scrolling. WHY?!  */
+	padding: 0;
 	cursor: crosshair;
 	font-family: var( --font-family-sans );
 	font-style: italic;
 	color: var( --color-titanium );
 	font-size:   1.0rem;
 	line-height: 2.5rem;
+	overflow: auto;
 }
 .qjs-circuit-palette {
 
-	min-height: 60px;
-	margin-bottom: 0;
-	padding: 10px;
+	min-height: 80px;
+	border-radius: 0.5rem;	
+	background-color: var( --color-chalk );
 }
+
 .qjs-circuit-clipboard {
 
 	position: absolute;
 	z-index: 200;
-	top:  600px;
-	left: 200px;
-	background-color: var( --color-yellow );
-	padding: 10px;
-	box-shadow: 0 4px 10px rgba( 0, 0, 0, 0.5 );
+	min-width:  60px;
+	min-height: 60px;
+	/*background-color: var( --color-yellow );*/
+	/*background-color: rgba( 255, 255, 255, 0.97 );*/
+	background-color: white;
+	box-shadow: 0 2px 6px rgba( 0, 0, 0, 0.5 );
 	pointer-events: none;
 }
-h5 + div .qjs-circuit, 
-h5 + div .qjs-circuit-palette,
-h5 + div .qjs-circuit-clipboard {
+.qjs-circuit svg {
 
-	margin-top: 0.5rem;
+	fill: var( --color-titanium );
 }
 
 
+
+
+    /***************/
+   /*             */
+  /*   Layers    */
+ /*             */
+/***************/
 
 
 .qjs-circuit-layer {
 
+	box-sizing: border-box;
+	position: absolute;
 	display: grid;	
 	grid-auto-rows:     60px;
-	grid-auto-columns:  60px;
-	position: absolute;
+	grid-auto-columns:  60px;	
 	top:  0;
 	left: 0;
 	width:  100%;
 	height: 100%;
 	text-align: center;
 }
-.qjs-circuit-layer > div, .qjs-circuit-layer > svg { 
+.qjs-circuit-palette .qjs-circuit-layer {
+
+	position: relative;
+	padding: 10px;
+}
+/*.qjs-circuit-layer > div, .qjs-circuit-layer > svg { 
 
 	width:  60px;
 	height: 60px;
 }
-.qjs-circuit-layer-wires {
+*/.qjs-circuit-layer-wires {
 
 	position: relative;
 }
 .qjs-circuit-layer-connections {
 
 	top: 30px;
+	height: calc( 100% - 30px );
+	overflow: hidden;
 }
 .qjs-circuit-layer-connections div {
 
-	width:   60px;
+	width:  60px;
 	height: auto;
 }
 .qjs-circuit-layer-connections svg {
@@ -129,18 +151,27 @@ h5 + div .qjs-circuit-clipboard {
 	width:  100%;
 	height: 100%;
 }
-.qjs-circuit-layer-grabbables div {
 
+
+
+
+    /*************/
+   /*           */
+  /*   Cells   */
+ /*           */
+/*************/
+
+
+div.qjs-circuit-cell {
+
+	box-sizing: border-box;
+	width:   60px;
+	height:  60px;
 	padding: 10px;
+	/*z-index: var( --z-index-operation );*/
+	/*z-index: var( --z-index-operation-identity );*/
+	overflow: hidden;
 }
-.qjs-circuit-layer-grabbables div:hover {
-
-	color: black;
-}
-
-
-
-
 .qjs-circuit-menu,
 .qjs-circuit-moment,
 .qjs-circuit-register {
@@ -175,71 +206,60 @@ h5 + div .qjs-circuit-clipboard {
 	font-weight: bold;
 	font-size: 1.5rem
 }
-
-
-
-
-.qjs-circuit svg {
-
-	fill: var( --color-titanium );
-}
 #qjs-circuit-wire {
 
 	fill: var( --color-newsprint );
 }
-.qjs-circuit-gate-label {
+svg.qjs-circuit-wire {
+
+	width:  60px;
+	height: 60px;
+}
+
+
+
+
+    /******************/
+   /*                */
+  /*   Operations   */
+ /*                */
+/******************/
+
+
+svg.qjs-circuit-operation {
+
+	width:  40px;
+	height: 40px;
+	cursor: move;	
+	fill: var( --color-green );
+	overflow: hidden;
+}
+svg.qjs-circuit-operation:hover {
+
+	/*outline: 1px solid white;*/
+	background-color: var( --color-white );
+	box-shadow: -1px 2px 6px rgba( 0, 0, 0, 0.5 );
+}
+svg .qjs-circuit-operation-label {
 
 	fill: var( --color-white );
 }
-#qjs-circuit-gate-controller,
-#qjs-circuit-gate-controlled {
+svg #qjs-circuit-operation-identity {
 
-	fill: var( --color-blue );
-}
-#qjs-circuit-gate-hadamard {
-
-	fill: var( --color-red );
-}
-.qjs-circuit-gate {
-
-	position: relative;
-	width:  40px;
-	height: 40px;
-	display: inline-block;
-	z-index: var( --z-index-gate );
-	fill: var( --color-green );
-	cursor: move;
-}
-.qjs-circuit-gate-identity {
-
-	z-index: var( --z-index-gate-identity );
-}
-#qjs-circuit-gate-identity {
-
-	/*fill: var( --color-slate );*/
 	fill: var( --color-titanium );
 	cursor: inherit;
 }
-/*use.qjs-circuit-gate-identity {
+svg #qjs-circuit-operation-hadamard {
 
-	opacity: 0;
-	transition-property: opacity;
-	transition-duration: 1s;
+	fill: var( --color-red );
 }
-.qjs-circuit-palette .qjs-circuit-gate-identity {
+svg #qjs-circuit-operation-controller,
+svg #qjs-circuit-operation-controlled {
 
-	opacity: 1;
+	fill: var( --color-blue );
 }
-.qjs-circuit:hover use.qjs-circuit-gate-identity {
-
-	opacity: 1;
-	transition-duration: 0.1s;
-}*/
-
-
-
-#qjs-circuit-control-straight,
-#qjs-circuit-control-curved {
+svg #qjs-circuit-control-straight,
+svg #qjs-circuit-control-curved {
 
 	fill: none;
 	stroke: var( --color-blue );
@@ -250,18 +270,12 @@ h5 + div .qjs-circuit-clipboard {
 
 
 
+    /**************/
+   /*            */
+  /*   States   */
+ /*            */
+/**************/
 
-/*
-
-
-In the very near future,
-highlight will only darken the grey text and wires.
-
-The yellow background will be used for actual selection
-	to copy / cut / splice / drag / etc.
-
-
-*/
 
 .qjs-circuit-highlight {
 
@@ -273,15 +287,14 @@ The yellow background will be used for actual selection
 .qjs-circuit-moment.qjs-circuit-highlight,
 .qjs-circuit-wire.qjs-circuit-highlight {
 
-	/*background-color: var( --color-yellow );*/
+	background-color: var( --color-newsprint );
+	/*background-color: var( --color-white );
+	box-shadow: 1px 2px 6px rgba( 0, 0, 0, 0.5 );*/
 }
 .qjs-circuit-wire.qjs-circuit-highlight {
 
 	/*fill: black;*/
 }
-
-
-
 
 .qjs-circuit-register.qjs-circuit-selected,
 .qjs-circuit-input.qjs-circuit-selected,
@@ -290,6 +303,16 @@ The yellow background will be used for actual selection
 
 	background-color: var( --color-yellow );
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

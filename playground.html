@@ -92,14 +92,15 @@
 				ASCII diagram, and text representation of the circuit also update.
 				(Sorry—for now you cannot drag multi-register operations. Check back soon!)
 			</p>
-			<h5>Palette of operations</h5>
-			<div id="qjs-circuit-menu"></div>
-			<h5>Circuit as DOM elements</h5>
+			<br>
+			<p><code>Q.Circuit.createDomPalette()</code></p>
+			<div class="qjs-circuit-palette"></div>
+			<br>
+			<p><code>bellState.toDom()</code></p>
 			<div id="bell-plus-dom"></div>
-			<h5>Probabilities report</h5>
-			<pre><code>
-bellState.report$()
-</code><samp id="bell-plus-report"></samp></pre>
+			<br>
+			<p><code>bellState.report$()</code></p>
+			<pre><samp id="bell-plus-report"></samp></pre>
 			<div id="bell-plus-report-live" for="bell-plus-dom"></div>
 			<h5>Circuit as ASCII diagram</h5>
 			<p>
@@ -108,13 +109,12 @@ bellState.report$()
 				These examples are right in the global scope so go poke around.
 				You can generate the report above, the diagram below, and make edits directly to the circuit in code.
 			</p>
-			<pre><code>
-bellState.toDiagram()
-</code><samp id="bell-plus-diagram"></samp></pre>
-			<h5>Circuit as text</h5>
-			<pre><code>
-bellState.toText()</code>
-<samp id="bell-plus-text"></samp></pre>
+			<br>
+			<p><code>bellState.toDiagram()</code></p>
+			<pre><samp id="bell-plus-diagram"></samp></pre>
+			<br>
+			<p><code>bellState.toText()</code></p>
+			<pre><samp id="bell-plus-text"></samp></pre>
 			
 
 			<h4>Whiplash</h4>
@@ -134,18 +134,18 @@ bellState.toText()</code>
 				You’ll have to get creative with scrolling,
 				but you can drag operations between here and the Bell state above ;)
 			</p>
-			<h5>Palette of operations</h5>
-			<div id="qjs-circuit-menu2"></div>
-			<h5>Circuit as DOM elements</h5>
+			<br>
+			<p><code>Q.Circuit.createDomPalette()</code></p>
+			<div class="qjs-circuit-palette"></div>
+			<br>
+			<p><code>whiplash.toDom()</code></p>
 			<div id="whiplash-dom"></div>
-			<h5>Circuit as ASCII diagram</h5>
-			<pre><code>
-whiplash.toDiagram()
-</code><samp id="whiplash-diagram"></samp></pre>
-			<h5>Circuit as text</h5>
-			<pre><code>
-whiplash.toText()
-</code><samp id="whiplash-text"></samp></pre>
+			<br>
+			<p><code>whiplash.toDiagram()</code></p>
+			<pre><samp id="whiplash-diagram"></samp></pre>
+			<br>
+			<p><code>whiplash.toText()</code></p>
+			<pre><samp id="whiplash-text"></samp></pre>
 			<!-- <h5>Report</h5> -->
 			<!-- <pre><code id="whiplash-report"></code></pre> -->
 
@@ -220,19 +220,19 @@ Undo<br>
 		<path d="M20.9,27h-2.7l1.9-10.8l-3.7,1.3l0.4-2.5l6.3-2.2h0.2L20.9,27z"/>
 		<polygon points="29.9,30.5 28.1,29.5 33.9,19.9 30.1,10.4 31.9,9.6 36.1,20.1"/>
 	</g>
-	<g class="qjs-circuit-gate" id="qjs-circuit-gate-identity">
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-identity">
 		<circle cx="20" cy="20" r="5"/>
 	</g>
-	<g class="qjs-circuit-gate" id="qjs-circuit-gate-controller">
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-controller">
 		<circle cx="20" cy="20" r="8"/>
 	</g>
-	<g class="qjs-circuit-gate" id="qjs-circuit-gate-controlled">
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-controlled">
 		<circle cx="20" cy="20" r="15"/>
-		<polygon class="qjs-circuit-gate-label" points="27,19 21,19 21,13 19,13 19,19 13,19 13,21 19,21 19,27 21,27 21,21 27,21 	"/>
+		<polygon class="qjs-circuit-operation-label" points="27,19 21,19 21,13 19,13 19,19 13,19 13,21 19,21 19,27 21,27 21,21 27,21 	"/>
 	</g>
-	<g class="qjs-circuit-gate" id="qjs-circuit-gate-unknown">
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-unknown">
 		<rect width="40" height="40"/>
-		<g class="qjs-circuit-gate-label">
+		<g class="qjs-circuit-operation-label">
 			<path d="M18.1,22.5c0.1-1.5,0.6-2.7,1.5-3.5l0.8-0.6c0.4-0.4,0.8-0.7,1-1.1s0.3-0.8,0.3-1.3c0-0.6-0.3-0.9-0.9-0.9
 				c-0.4,0-0.7,0.1-1,0.4s-0.4,0.7-0.5,1.2l-3.2,0c0.1-1.3,0.6-2.3,1.5-3.1s2-1.1,3.4-1.1c0.8,0,1.6,0.2,2.2,0.5s1.1,0.8,1.4,1.3
 				s0.4,1.2,0.4,2c-0.1,1.1-0.7,2.1-1.9,3.1l-1.1,0.9c-0.7,0.6-1.1,1.3-1.2,2.1L18.1,22.5z M17.1,25.5c0-0.5,0.2-0.9,0.5-1.2
@@ -240,22 +240,22 @@ Undo<br>
 				S17.1,26,17.1,25.5z"/>
 		</g>
 	</g>
-	<g class="qjs-circuit-gate" id="qjs-circuit-gate-pi">
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-pi">
 		<rect width="40" height="40"/>
-		<g class="qjs-circuit-gate-label">
+		<g class="qjs-circuit-operation-label">
 			<path d="M26.4,18.8h-1.7l-0.8,4.7l0,0.4c0,0.4,0.3,0.6,0.8,0.6c0.1,0,0.4,0,0.8,0l-0.2,2.4c-0.6,0.2-1.1,0.3-1.7,0.3
 				c-1,0-1.7-0.3-2.2-0.9s-0.7-1.3-0.6-2.3l0.8-5.1h-2L17.9,27h-3.2l1.4-8.2h-1.7l0.4-2.4h11.9L26.4,18.8z"/>
 		</g>
 	</g>
-	<g class="qjs-circuit-gate" id="qjs-circuit-gate-t">
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-t">
 		<rect width="40" height="40"/>
-		<g class="qjs-circuit-gate-label">
+		<g class="qjs-circuit-operation-label">
 			<path d="M27,15.4h-4.1l-2,11.6h-3.3l2-11.6h-4.1l0.5-2.6h11.5L27,15.4z"/>
 		</g>
 	</g>
-	<g class="qjs-circuit-gate" id="qjs-circuit-gate-phase">
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-phase">
 		<rect width="40" height="40"/>
-		<g class="qjs-circuit-gate-label">
+		<g class="qjs-circuit-operation-label">
 			<path class="st3" d="M21.7,23.2c0.1-0.7-0.3-1.3-1.2-1.7l-1.6-0.7c-2.2-1-3.3-2.4-3.2-4.1c0-0.8,0.3-1.5,0.8-2.1s1.2-1.1,2.1-1.5
 				s1.9-0.5,2.9-0.5c1.4,0,2.5,0.4,3.4,1.2s1.3,1.9,1.3,3.2h-3.3c0-0.5-0.1-1-0.3-1.3s-0.7-0.5-1.2-0.5c-0.6,0-1.1,0.1-1.5,0.4
 				s-0.7,0.6-0.8,1.1c-0.1,0.7,0.4,1.2,1.5,1.6s1.9,0.8,2.4,1.1c1.6,0.9,2.3,2.2,2.2,3.8c-0.1,0.8-0.3,1.5-0.8,2.2s-1.1,1.1-2,1.4
@@ -263,27 +263,27 @@ Undo<br>
 				c0.6,0,1-0.1,1.4-0.4S21.6,23.6,21.7,23.2z"/>
 		</g>
 	</g>
-	<g class="qjs-circuit-gate" id="qjs-circuit-gate-pauli-z">
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-pauli-z">
 		<rect width="40" height="40"/>
-		<g class="qjs-circuit-gate-label">
+		<g class="qjs-circuit-operation-label">
 			<path d="M18.3,24.3l6.6,0L24.4,27H13.6l0.3-2l8.2-9.6l-6.6,0l0.5-2.6h10.7l-0.3,1.9L18.3,24.3z"/>
 		</g>
 	</g>
-	<g class="qjs-circuit-gate" id="qjs-circuit-gate-pauli-y">
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-pauli-y">
 		<rect width="40" height="40"/>
-		<g class="qjs-circuit-gate-label">
+		<g class="qjs-circuit-operation-label">
 			<path d="M20.3,18.9l3.6-6.2h3.8L21.5,22l-0.8,5h-3.4l0.9-5.3l-2.8-8.9l3.5,0L20.3,18.9z"/>
 		</g>
 	</g>
-	<g class="qjs-circuit-gate" id="qjs-circuit-gate-pauli-x">
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-pauli-x">
 		<rect width="40" height="40"/>
-		<g class="qjs-circuit-gate-label">
+		<g class="qjs-circuit-operation-label">
 			<path d="M20.4,17.5l3-4.7h4L22.3,20l2.8,7h-3.7l-1.6-4.8L16.8,27h-4l5.2-7.3l-2.7-6.9h3.7L20.4,17.5z"/>
 		</g>
 	</g>
-	<g class="qjs-circuit-gate" id="qjs-circuit-gate-hadamard">
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-hadamard">
 		<rect width="40" height="40"/>
-		<g class="qjs-circuit-gate-label">
+		<g class="qjs-circuit-operation-label">
 			<path d="M24.7,27h-3.3l1-5.9h-4.9l-1,5.9h-3.3l2.5-14.2H19l-1,5.6h4.9l1-5.6h3.3L24.7,27z"/>
 		</g>
 	</g>
@@ -310,9 +310,6 @@ var bellState = Q`
 	I C1 X
 `
 bellState.sort$()
-//document.getElementById( 'qjs-circuit-menu' ).appendChild( Q.Circuit.createDomMenu() )
-Q.Circuit.createDomMenu( document.getElementById( 'qjs-circuit-menu' ))
-//document.getElementById( 'bell-plus-dom' ).appendChild( bellPlus.toDom() )
 bellState.toDom( document.getElementById( 'bell-plus-dom' ))
 document.getElementById( 'bell-plus-diagram' ).innerText = bellState.toDiagram( true )
 document.getElementById( 'bell-plus-text' ).innerText = bellState.toText()
@@ -330,11 +327,16 @@ var whiplash = Q`
 	X  C11  Z   I   S
 `
 whiplash.sort$()
-Q.Circuit.createDomMenu( document.getElementById( 'qjs-circuit-menu2' ))
 document.getElementById( 'whiplash-dom' ).appendChild( whiplash.toDom() )
 document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram( true )
 document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
 // document.getElementById( 'whiplash-report' ).innerText = whiplash.report$()
+
+
+Array.from( document.querySelectorAll( '.qjs-circuit-palette' )).forEach( function( el ){
+
+	Q.Circuit.createDomPalette( el )	
+})
 
 
 

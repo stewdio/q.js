@@ -512,16 +512,11 @@ pre, code, samp {
 	font-family: var( --font-family-mono );
 	line-height: 1.3em;
 }
-code, samp {
-
-	/*background-color: var( --color-white );*/
-}
 samp {
 
-	/*color: var( --text-code-output-color );*/
 	color: var( --color-green );
 }
-pre code {
+pre code, pre samp {
 
 	margin:  0;
 	padding: 0;

@@ -839,7 +839,7 @@ Object.assign( Q.Circuit.prototype, {
 
 			const y3 = q * 3
 			output[ y3 + 1 ] += '        '
-			output[ y3 + 2 ] += 'r'+ q +'  |'+ qubit.beta.toText() +'⟩─'
+			output[ y3 + 2 ] += 'r'+ ( q + 1 ) +'  |'+ qubit.beta.toText() +'⟩─'
 			output[ y3 + 3 ] += '        '
 		})
 		for( let x = 0; x < table.timewidth; x ++ ){
