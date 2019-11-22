@@ -583,7 +583,7 @@ nav {
 	left: 0;
 	width: 260px;
 	height: 100%;
-	min-height: 100vh;
+
 	background-color: var( --color-chalk );
 	padding: 0 0 8rem 0;
 	overflow: auto;
@@ -1667,11 +1667,10 @@ header h1 svg {
 	body nav {
 
 		position: fixed;
-		bottom: 0 !important;
 		left: 0;
 		width: 100%;
 		height: fit-content;
-		min-height: 0;
+		height: -moz-fit-content;
 		padding: 0;
 		margin: 0;
 		box-shadow: 0 0 0.5rem rgba( 0, 0, 0, 0.5 );
