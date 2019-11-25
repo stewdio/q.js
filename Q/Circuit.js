@@ -577,9 +577,10 @@ Object.assign( Q.Circuit.prototype, {
 		Q.Circuit.evaluate( this )
 		return this
 	},
-	report$: function(){
+	report$: function( length ){
 
 		if( this.needsEvaluation ) this.evaluate$()
+		if( !Q.isUsefulInteger( length )) length = 20
 		
 		const 
 		circuit = this,
@@ -587,10 +588,10 @@ Object.assign( Q.Circuit.prototype, {
 
 			return text +'\n'
 				+ ( i + 1 ).toString().padStart( Math.ceil( Math.log10( Math.pow( 2, circuit.qubits.length ))), ' ' ) +'  '
-				+ outcome.state
+				+ outcome.state				
+				+'  '+ ''.padStart( Math.round( outcome.probability * length ), '█' )
+				+ ''.padStart( Math.round(( 1 - outcome.probability ) * length ), '░' )
 				+' '+ Q.round( 100 * outcome.probability, 8 ).toString().padStart( 3, ' ' ) +'% chance'
-				+'  '+ ''.padStart( Math.round( outcome.probability * 20 ), '█' )
-				+ ''.padStart( Math.round(( 1 - outcome.probability ) * 20 ), '░' )
 
 		}, '' ) + '\n'
 		return text

@@ -63,21 +63,16 @@
 			<p>
 				This is your behind-the-curtain look
 				at ideas I’m sketching out.
-				Because these bits are in-progress,
-				some things will be less funcational than others.
-				And certainly less designed.
-				Here are some drag-and-drop circuit sketches.
-				(While some multi-register operations are included here,
-				they are not draggable yet.)
+				Play at your own risk.
 			</p>
 
 
 			<h4>Bell state</h4>
 			<p>
-				This is a regular old <a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>
+				Here’s <a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>
 				(which produces <a href="https://en.wikipedia.org/wiki/Quantum_entanglement" target="_blank">quantum entanglement</a>), 
-				but with X operations on both registers as a finale just for giggles.
-				The only two possible results are 
+				but with X operations on both registers as a finale—so
+				the only two possible results are 
 				<span class="complex-vector ket">00</span>
 				and
 				<span class="complex-vector ket">11</span>.
@@ -85,21 +80,26 @@
 				(But of course you can alter the circuit yourself to change the possible results.)
 			</p>
 			<p>
-				Drag and drop an operation from here on to the circuit 
+				Drag and drop an operation from the palette on to the circuit 
 				to <em>copy</em> it in to the circuit.
-				You can also drag operations within the circuit itself to <em>move</em> them.
+				Drag operations within the circuit itself to <em>move</em> them.
 				As you alter the circuit you’ll notice the probabilities report,
 				ASCII diagram, and text representation of the circuit also update.
-				(Sorry—for now you cannot drag multi-register operations. Check back soon!)
+				Update from the console and you’ll also see these update.
+			</p>
+			<p>
+				<strong>You cannot drag multi-register operations yet.</strong> 
+				It’s coming.
+				Check back soon!
 			</p>
 			<br>
 			<p><code>Q.Circuit.createDomPalette()</code></p>
 			<div class="qjs-circuit-palette"></div>
 			<br>
-			<p><code>bellState.toDom()</code></p>
+			<p><code>bell.toDom()</code></p>
 			<div id="bell-dom"></div>
 			<br>
-			<p><code>bellState.report$()</code></p>
+			<p><code>bell.report$()</code></p>
 			<pre><samp id="bell-report"></samp></pre>
 			<div id="bell-report-live" for="bell-dom"></div>
 			<h5>Circuit as ASCII diagram</h5>
@@ -110,10 +110,10 @@
 				You can generate the report above, the diagram below, and make edits directly to the circuit in code.
 			</p>
 			<br>
-			<p><code>bellState.toDiagram()</code></p>
+			<p><code>bell.toDiagram()</code></p>
 			<pre><samp id="bell-diagram"></samp></pre>
 			<br>
-			<p><code>bellState.toText()</code></p>
+			<p><code>bell.toText()</code></p>
 			<pre><samp id="bell-text"></samp></pre>
 			
 
@@ -353,11 +353,12 @@ window.addEventListener( 'qjs evaluation began', function( event ){
 window.addEventListener( 'qjs evaluation progress', function( event ){
 
 	const 
+	length       = 20,
 	percent      = Math.round( event.detail.progress * 100 ),
 	percentText  = ( ''+ percent ).padStart( 3 ) +'%',
-	barLength    = Math.round( 20 * event.detail.progress ),
+	barLength    = Math.round( length * event.detail.progress ),
 	barComplete  = ''.padStart( barLength, '█' ),
-	barRemaining = ''.padStart( 20 - barLength, '░' ),
+	barRemaining = ''.padStart( length - barLength, '░' ),
 	opsTotal     = event.detail.operationsTotal,
 	opsCompleted = ( ''+ event.detail.operationsCompleted ).padStart( Math.log( opsTotal ) * Math.LOG10E + 1 | 0, ' ' )
 
