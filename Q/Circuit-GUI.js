@@ -50,9 +50,9 @@ Q.Circuit.createDomPalette = function( targetEl ){
 	'IHXYZS'.split( '' ).forEach( function( label, i ){// T? C?
 
 
-		//  Find the actual operation.
+		//  Find the actual gate.
 
-		const operation = Q.Gate.findByLabel( label )
+		const gate = Q.Gate.findByLabel( label )
 
 
 		//  Create the grid cell.
@@ -61,7 +61,7 @@ Q.Circuit.createDomPalette = function( targetEl ){
 
 		const cellEl = document.createElement( 'div' )
 		cellEl.classList.add( 'qjs-circuit-cell' )
-		cellEl.setAttribute( 'title', operation.name )
+		cellEl.setAttribute( 'title', gate.name )
 		cellEl.style.gridRow    = 1
 		cellEl.style.gridColumn = i + 1
 
@@ -70,7 +70,7 @@ Q.Circuit.createDomPalette = function( targetEl ){
 
 		const svgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
 		svgEl.classList.add( 'qjs-circuit-operation' )
-		svgEl.operation = operation
+		svgEl.operation = { gate }
 		cellEl.appendChild( svgEl )
 
 
@@ -78,8 +78,12 @@ Q.Circuit.createDomPalette = function( targetEl ){
 		//  and attach it to the SVG tag we just created.
 
 		const useEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
-		useEl.classList.add( 'qjs-circuit-operation-'+ operation.css )
-		useEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-operation-'+ operation.css )
+		useEl.setAttributeNS(
+
+			'http://www.w3.org/1999/xlink',
+			'xlink:href',
+			'#qjs-circuit-operation-'+ gate.css
+		)
 		svgEl.appendChild( useEl )
 
 		layerOperationsEl.appendChild( cellEl )
@@ -139,9 +143,7 @@ Q.Circuit.createDomPalette = function( targetEl ){
 
 Q.Circuit.prototype.toDom = function( targetEl ){
 
-	const 
-	circuit = this,
-	table = this.toTable()
+	const circuit = this
 
 	const circuitEl = document.createElement( 'div' )
 	circuitEl.classList.add( 'qjs-circuit' )
@@ -151,19 +153,22 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 	//  Circuit layers.
 
 	const layerWiresEl = document.createElement( 'div' )
+	circuitEl.appendChild( layerWiresEl )
 	layerWiresEl.classList.add( 'qjs-circuit-layer' )
 	layerWiresEl.classList.add( 'qjs-circuit-layer-wires' )
-	circuitEl.appendChild( layerWiresEl )
+	
 		
 	const layerConnnectionsEl = document.createElement( 'div' )
+	circuitEl.appendChild( layerConnnectionsEl )
 	layerConnnectionsEl.classList.add( 'qjs-circuit-layer' )
 	layerConnnectionsEl.classList.add( 'qjs-circuit-layer-connections' )
-	circuitEl.appendChild( layerConnnectionsEl )
+	
 	
 	const layerGrabbablesEl = document.createElement( 'div' )
+	circuitEl.appendChild( layerGrabbablesEl )
 	layerGrabbablesEl.classList.add( 'qjs-circuit-layer' )
 	layerGrabbablesEl.classList.add( 'qjs-circuit-layer-grabbables' )
-	circuitEl.appendChild( layerGrabbablesEl )
+	
 
 
 	//  Labels for registers and input qubit values.
@@ -180,7 +185,7 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 		const inputEl = document.createElement( 'div' )
 		inputEl.classList.add( 'qjs-circuit-cell', 'qjs-circuit-input' )
 		inputEl.style.gridRow = i + 1
-		inputEl.innerText     = circuit.inputs[ i - 1 ].beta.toText()
+		inputEl.innerText     = circuit.qubits[ i - 1 ].beta.toText()
 		layerGrabbablesEl.appendChild( inputEl )
 	}
 
@@ -190,39 +195,24 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 	for( let m = 1; m <= circuit.timewidth; m ++ ){
 
 		const momentEl = document.createElement( 'div' )
-		momentEl.setAttribute( 'title', 'Moment '+ m +' of '+ table.length )
+		momentEl.setAttribute( 'title', 'Moment '+ m +' of '+ circuit.timewidth )
 		momentEl.classList.add( 'qjs-circuit-cell', 'qjs-circuit-moment' )
 		momentEl.style.gridColumn = m + 2
 		momentEl.innerText = m
 		layerGrabbablesEl.appendChild( momentEl )
-	}
-
-
-	//  Circuit menu.
-
-	const menuEl = document.createElement( 'div' )
-	menuEl.classList.add( 'qjs-circuit-menu' )
-	layerGrabbablesEl.appendChild( menuEl )
-
-
-
-
-	//  Loop through each operation of each moment.
 	
-	table.forEach( function( moment, m ){
-
-		moment.forEach( function( operation, o ){
+		for( let r = 1; r <= circuit.bandwidth; r ++ ){
 
 
-			//  Wires.
+			//  Register wires.
 
 			const wireEl = document.createElement( 'div' )
 			wireEl.classList.add( 'qjs-circuit-cell' )
 
 			const wireSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
 			wireSvgEl.classList.add( 'qjs-circuit-wire' )
-			wireSvgEl.style.gridRow    = o + 2
-			wireSvgEl.style.gridColumn = m + 3
+			wireSvgEl.style.gridRow    = r + 1
+			wireSvgEl.style.gridColumn = m + 2
 			wireEl.appendChild( wireSvgEl )
 			
 			const wireUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
@@ -238,14 +228,17 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 			const identityEl = document.createElement( 'div' )
 			identityEl.classList.add( 'qjs-circuit-cell' )
 			identityEl.setAttribute( 'title', 'Identity' )
-			identityEl.style.gridRow    = o + 2
-			identityEl.style.gridColumn = m + 3
+			identityEl.style.gridRow    = r + 1
+			identityEl.style.gridColumn = m + 2
 
 			const identitySvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
 			identitySvgEl.classList.add( 'qjs-circuit-operation' )
-			identitySvgEl.operation = Q.Gate.IDENTITY
+			identitySvgEl.operation = { 
+
+				gate: Q.Gate.IDENTITY
+			}
 			identitySvgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'momentIndex', m )
-			identitySvgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'registerIndex', o )
+			identitySvgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'registerIndex', r )
 			identityEl.appendChild( identitySvgEl )
 
 			const identityUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
@@ -253,90 +246,106 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 			identityUseEl.classList.add( 'qjs-circuit-operation-identity' )
 			identitySvgEl.appendChild( identityUseEl )			
 			layerGrabbablesEl.appendChild( identityEl)
+		}
+	}
 
-			
-			//  Create non-identity gates.
 
-			if( operation.nameCss !== 'identity' ){
+	//  Circuit menu.
 
-				const cellEl = document.createElement( 'div' )
-				cellEl.classList.add( 'qjs-circuit-cell' )
-				cellEl.setAttribute( 'title', operation.name )
-				cellEl.style.gridRow    = o + 2
-				cellEl.style.gridColumn = m + 3
+	const menuEl = document.createElement( 'div' )
+	menuEl.classList.add( 'qjs-circuit-menu' )
+	layerGrabbablesEl.appendChild( menuEl )
 
-				const svgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
-				svgEl.classList.add( 'qjs-circuit-operation' )
-				svgEl.operation = operation
-				svgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'momentIndex', m )
-				svgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'registerIndex', o )
-				cellEl.appendChild( svgEl )
 
-				const useEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
-				// useEl.classList.add( 'qjs-circuit-operation-'+ operation.nameCss )
-				useEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-operation-'+ operation.nameCss )
-				svgEl.appendChild( useEl )
+	//  Operations.
 
-				layerGrabbablesEl.appendChild( cellEl )
+	circuit.operations.forEach( function( operation ){
+
+		operation.registerIndices.forEach( function( registerIndex, i ){
+
+			const cellEl = document.createElement( 'div' )
+			layerGrabbablesEl.appendChild( cellEl )
+			cellEl.classList.add( 'qjs-circuit-cell' )
+			cellEl.setAttribute( 'title', operation.gate.name )
+			cellEl.style.gridColumn = operation.momentIndex + 2
+			cellEl.style.gridRow    = registerIndex + 1	
+
+			const svgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
+			cellEl.appendChild( svgEl )
+			svgEl.classList.add( 'qjs-circuit-operation' )
+			svgEl.operation = operation
+			svgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'momentIndex', operation.momentIndex )
+			svgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'registerIndex', registerIndex )
+
+			const useEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
+			svgEl.appendChild( useEl )
+			let css = operation.gate.css
+			if( operation.registerIndices.length > 1 ){
+
+				if( i === operation.registerIndices.length - 1 ){
+
+					css = 'controlled'
+				}
+				else css = 'controller'
 			}
+			useEl.setAttributeNS(
+
+				'http://www.w3.org/1999/xlink',
+				'xlink:href',
+				'#qjs-circuit-operation-'+ css
+			)
 		})
 
 
-		//  Now... did we have any multi-register operations during this moment?
-		//  If so, we need to draw connectors between each register.
-		//  If the operation’s registers are adjacent, use straight connector.
-		//  Otherwise use a curved connector.
-		
-		multiRegisterOperations = moment.reduce( function( collection, operation ){
+		//  Control wires.
 
-			if( operation.isMultiRegisterOperation &&
-				operation.indexAmongSiblings === 0 ){
+		if( operation.registerIndices.length > 1 ){
 
-				collection.push( operation )
-			}
-			return collection
+			operation.registerIndices.forEach( function( registerIndex, i ){
 
-		}, [] ).forEach( function( operation ){
-			
-			circuit.operations[ operation.operationIndex ]
-			.registerIndices.filter( function( element ){
+				if( i < operation.registerIndices.length - 1 ){			
 
-				return element !== operation.registerIndex
+					const 
+					siblingRegisterIndex = operation.registerIndices[ i + 1 ],
+					registerDelta = Math.abs( siblingRegisterIndex - registerIndex )
+					
+					let connectorType = 'curved'
+					if( registerDelta === 1 ) connectorType = 'straight'
+
+					const
+					start = Math.min( registerIndex, siblingRegisterIndex ),
+					end   = Math.max( registerIndex, siblingRegisterIndex )
+
+					const connectionEl = document.createElement( 'div' )
+					connectionEl.style.gridRowStart = start + 1
+					connectionEl.style.gridRowEnd   = end + 1
+					connectionEl.style.gridColumn   = operation.momentIndex + 2
+
+					const connectionSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
+					connectionEl.appendChild( connectionSvgEl )
+
+					const connectionUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )					
+					connectionUseEl.setAttributeNS( 
+
+						'http://www.w3.org/1999/xlink', 
+						'xlink:href', 
+						'#qjs-circuit-control-'+ connectorType
+					)
+					connectionSvgEl.appendChild( connectionUseEl )
+					
+					layerConnnectionsEl.appendChild( connectionEl )
+				}
 			})
-			.forEach( function( siblingRegisterIndex ){
-
-				const registerDelta = siblingRegisterIndex - operation.registerIndex
-				let connectorType = 'curved'
-				if( Math.abs( registerDelta ) === 1 ) connectorType = 'straight'				
-
-				const
-				start = Math.min( operation.registerIndex, siblingRegisterIndex ),
-				end   = Math.max( operation.registerIndex, siblingRegisterIndex )
-
-				const connectionEl = document.createElement( 'div' )
-				connectionEl.style.gridRowStart = start + 2
-				connectionEl.style.gridRowEnd   = end + 2
-				connectionEl.style.gridColumn   = operation.momentIndex + 3
-
-				const connectionSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
-				connectionEl.appendChild( connectionSvgEl )
-
-				const connectionUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )					
-				connectionUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-control-'+ connectorType )
-				connectionSvgEl.appendChild( connectionUseEl )
-				
-				layerConnnectionsEl.appendChild( connectionEl )
-			})
-		})
-
-
-		
+		}
 	})
 
 
 
 
 	//  Add events to our circuit.
+	//  COME BACK AND FIX: these should be done PER OPERATION via a mini function call
+	//  so we can dynamically add ops later complete w events.
+	//  (and also remove ops piecemeal, including their events)
 
 	// svg.qjs-circuit-operation, 
 	// .qjs-circuit-moment, 
@@ -513,7 +522,7 @@ Q.Circuit.GUI = {
 		// console.log( event.pageX, window.pageXOffset, bounds.left )
 
 		clipboardElement.offsetX = window.pageXOffset + bounds.left - event.pageX - 10
-		clipboardElement.offsetY = window.pageYOffset + bounds.top  - event.pageY - 10
+		clipboardElement.offsetY = window.pageYOffset + bounds.top  - event.pageY - 20
 		document.body.appendChild( clipboardElement )
 		
 
@@ -733,111 +742,159 @@ Q.Circuit.GUI = {
 
 				// console.log( 'operationToInsert',  operationToInsert )
 				// console.log( 'operationToReplace', operationToReplace )
-				// console.log( 'REMOVE op at moment #', receivingMomentIndex, ', register #', receivingRegisterIndex )			
-				// console.log( 'and replace with: ', operationToInsert.label )
+				// console.log( 'REPLACE op at moment #', receivingMomentIndex, ', register #', receivingRegisterIndex )			
+				// console.log( 'with this: ', operationToInsert.gate.name )
 				// console.log( 'on circuit:', circuit )
 
 
 
 
-				//  x
+				//  Find the circuit that grabbedEl came from.
+				//  Sure, it’s probably the SAME circuit we’re dropping on to
+				//  but since that’s not a constraint of ours
+				//  we don’t truly know, do we?
 
-				circuit.set$(
+				let grabbedFromCircuitEl = grabbedEl
+				while( grabbedFromCircuitEl.parentNode && 
+					!grabbedFromCircuitEl.classList.contains( 'qjs-circuit' )){
 
-					receivingMomentIndex + 1, 
-					//operationToInsert,
-					Q.Gate.findByLabel( operationToInsert.label ),
-					[ receivingRegisterIndex ]
-				)
-
-
-				//  Do we need to find the circuit that grabbedEl came from?
-
-				if( Q.isUsefulNumber( grabbedMomentIndex ) && 
-					Q.isUsefulNumber( grabbedRegisterIndex )){
-
-					
-					//  Find the circuit that grabbedEl came from.
-					//  Sure, it’s probably the SAME circuit we’re dropping on to
-					//  but since that’s not a constraint of ours
-					//  we don’t truly know, do we?
-
-					let grabbedFromCircuitEl = grabbedEl
-					while( grabbedFromCircuitEl.parentNode && 
-						!grabbedFromCircuitEl.classList.contains( 'qjs-circuit' )){
-
-						grabbedFromCircuitEl = grabbedFromCircuitEl.parentNode
-					}
-					const grabbedFromCircuit = grabbedFromCircuitEl.circuit
-
-
-
-					if( grabbedFromCircuit ){
-
-						grabbedFromCircuit.clearThisInput$( grabbedMomentIndex, grabbedRegisterIndex )
-						if( grabbedFromCircuit !== circuit ){
-							
-							const parent = grabbedFromCircuitEl.parentNode
-							if( parent ){
-							
-								parent.removeChild( grabbedFromCircuitEl )
-								parent.appendChild( grabbedFromCircuit.toDom() )
-							}
-						}
-						grabbedFromCircuit.needsEvaluation = true
-					}
+					grabbedFromCircuitEl = grabbedFromCircuitEl.parentNode
 				}
+				const grabbedFromCircuit = grabbedFromCircuitEl.circuit
 
 
 
-			
+				// console.log( 'grabbedFromCircuitEl', grabbedFromCircuitEl )
+				// console.log( 'circuitEl', circuitEl )
+				// console.log( 'self own??', 
+
+				// 	grabbedFromCircuitEl === circuitEl &&
+				// 	grabbedMomentIndex === receivingMomentIndex &&
+				// 	grabbedRegisterIndex === receivingRegisterIndex
+				// )
 
 
-				//operationToInsert.momentIndex = operationToReplace.momentIndex
-				//operationToInsert.registerIndex = operationToReplace.registerIndex
+				if( grabbedFromCircuitEl === circuitEl &&
+					grabbedMomentIndex === receivingMomentIndex &&
+					grabbedRegisterIndex === receivingRegisterIndex ){
+
+					console.log( 'self-own!' )
+					console.log( Q.Circuit.GUI.grabbedItem )
+					Q.Circuit.GUI.grabbedItem.style.display = 'block'
+				}
+				else {
 
 
-				// console.log( circuit.toDiagram() )
-				// console.log( circuit.evaluate$() )
-				// console.log( circuit.report$() )
+					//  x
+
+					circuit.set$(
+
+						receivingMomentIndex, 
+						operationToInsert.gate,
+						// Q.Gate.findByLabel( operationToInsert.gate.label ),
+						[ receivingRegisterIndex ]
+					)
+
+
+					//  Do we need to find the circuit that grabbedEl came from?
+
+					if( Q.isUsefulNumber( grabbedMomentIndex ) && 
+						Q.isUsefulNumber( grabbedRegisterIndex )){
+
+						
+
+
+
+
+						if( grabbedFromCircuit ){
+
+							
+
+							// console.log( 'Removing this op from its old position:', grabbedMomentIndex, grabbedRegisterIndex )
+							// console.log( 'BEFORE', grabbedFromCircuit.toDiagram() )
+							grabbedFromCircuit.clearThisInput$( grabbedMomentIndex, grabbedRegisterIndex )
+							// console.log( 'AFTER', grabbedFromCircuit.toDiagram() )
+							
+
+
+							if( grabbedFromCircuit !== circuit ){
+								
+								const parent = grabbedFromCircuitEl.parentNode
+								if( parent ){
+								
+									parent.removeChild( grabbedFromCircuitEl )
+									parent.appendChild( grabbedFromCircuit.toDom() )
+								}
+							}
+							grabbedFromCircuit.needsEvaluation = true
+						}
+					}
 
 
 
 				
-				//  ********************************************************************************
-				//  well this is stupid and temporary!
-				//  must come back and fix / make generic / use events?
-				//  and also need to remove event listeners, all that stuff
-				//  because WOW this is just bad practice!
-				//  but the demo works ;)
 
 
-				const parent = circuitEl.parentNode
-				parent.removeChild( circuitEl )
-				parent.appendChild( circuit.toDom() )
-				circuit.needsEvaluation = true
+					//operationToInsert.momentIndex = operationToReplace.momentIndex
+					//operationToInsert.registerIndex = operationToReplace.registerIndex
 
 
-				if( circuit === bellState ){
-							
-					document.getElementById( 'bell-plus-report' ).innerText = bellState.report$()
-					document.getElementById( 'bell-plus-diagram' ).innerText = bellState.toDiagram( true )
-					document.getElementById( 'bell-plus-text' ).innerText = bellState.toText()
-				}
-				if( circuit === whiplash ){
+					// console.log( circuit.toDiagram() )
+					// console.log( circuit.evaluate$() )
+					// console.log( circuit.report$() )
+
+
+
+					
+					//  ********************************************************************************
+					//  well this is stupid and temporary!
+					//  must come back and fix / make generic / use events?
+					//  and also need to remove event listeners, all that stuff
+					//  because WOW this is just bad practice!
+					//  but the demo works ;)
+
+
+					const parent = circuitEl.parentNode
+					parent.removeChild( circuitEl )
+					parent.appendChild( circuit.toDom() )
+					circuit.needsEvaluation = true
+
+
+					if( circuit === bellState ){
 								
-					document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram( true )
-					document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
+						document.getElementById( 'bell-plus-report' ).innerText = bellState.report$()
+						document.getElementById( 'bell-plus-diagram' ).innerText = bellState.toDiagram( true )
+						document.getElementById( 'bell-plus-text' ).innerText = bellState.toText()
+					}
+					if( circuit === whiplash ){
+									
+						document.getElementById( 'whiplash-report' ).innerText = whiplash.report$()
+						document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram( true )
+						document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
+					}
+					//  ********************************************************************************
+				
+
+
+
+
+
 				}
-				//  ********************************************************************************
-			
-
-
-
 			}
 			else {
 
+
+
+
 				console.log( 'dropped on to NOTHING' )
+
+				// console.log(Q.Circuit.GUI.grabbedItem)
+				Q.Circuit.GUI.grabbedItem.style.display = 'block'
+
+
+			
+
+
 			}
 			Q.Circuit.GUI.grabbedItem = null
 		}

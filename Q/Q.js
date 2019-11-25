@@ -134,6 +134,10 @@ Object.assign( Q, {
 			n !==  Infinity &&
 			n !== -Infinity
 	},
+	isUsefulInteger: function( n ){
+
+		return Q.isUsefulNumber( n ) && Number.isInteger( n )
+	},
 	loop: function(){},
 
 
@@ -223,7 +227,7 @@ Object.assign( Q, {
 
 Q.createConstants( 
 
-	'REVISION', 10,
+	'REVISION', 11,
 
 
 	//  Yeah... F’ing floating point numbers, Man!

@@ -76,8 +76,8 @@
 			<p>
 				This is a regular old <a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>
 				(which produces <a href="https://en.wikipedia.org/wiki/Quantum_entanglement" target="_blank">quantum entanglement</a>), 
-				but with X operations on both registers as a finale.
-				That’s kind of fun because the only two possible results are 
+				but with X operations on both registers as a finale just for giggles.
+				The only two possible results are 
 				<span class="complex-vector ket">00</span>
 				and
 				<span class="complex-vector ket">11</span>.
@@ -140,6 +140,10 @@
 			<br>
 			<p><code>whiplash.toDom()</code></p>
 			<div id="whiplash-dom"></div>
+			<br>
+			<p><code>whiplash.report$()</code></p>
+			<pre><samp id="whiplash-report"></samp></pre>
+			<div id="whiplash-report-live" for="whiplash-dom"></div>
 			<br>
 			<p><code>whiplash.toDiagram()</code></p>
 			<pre><samp id="whiplash-diagram"></samp></pre>
@@ -330,12 +334,16 @@ whiplash.sort$()
 document.getElementById( 'whiplash-dom' ).appendChild( whiplash.toDom() )
 document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram( true )
 document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
-// document.getElementById( 'whiplash-report' ).innerText = whiplash.report$()
+setTimeout( function(){
+	
+	document.getElementById( 'whiplash-report' ).innerText = whiplash.report$()
+
+}, 1 )
 
 
 Array.from( document.querySelectorAll( '.qjs-circuit-palette' )).forEach( function( el ){
 
-	Q.Circuit.createDomPalette( el )	
+	Q.Circuit.createDomPalette( el )
 })
 
 

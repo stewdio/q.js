@@ -15,27 +15,24 @@ Q.Circuit = function( bandwidth, timewidth ){
 
 	//  How many qubits (registers) shall we use?
 
-	if( !Q.isUsefulNumber( bandwidth )) bandwidth = 3
+	if( !Q.isUsefulInteger( bandwidth )) bandwidth = 3
 	this.bandwidth = bandwidth
 
 
 	//  How many operations can we perform on each qubit?
 	//  Each operation counts as one moment; one clock tick.
 
-	if( !Q.isUsefulNumber( timewidth )) timewidth = 5
+	if( !Q.isUsefulInteger( timewidth )) timewidth = 5
 	this.timewidth = timewidth
 
 
-	//  This is the rational thing to do: assume all input qubits are 0.
-	//  However, let’s say you want to take a section of a circuit
-	//  and snip that out to work on it separately. 
-	//  You cannot do that in real life -- but here you can!
-	//  Just assign those inputs to whatever you need :)
+	//  We’ll start with Horizontal qubits (zeros) as inputs
+	//  but we can of course modify this after initialization.
 
-	this.inputs = new Array( bandwidth ).fill( Q.Qubit.HORIZONTAL )
+	this.qubits = new Array( bandwidth ).fill( Q.Qubit.HORIZONTAL )
 
 
-	//  x
+	//  What operations will we perform on our qubits?
 	
 	this.operations = []
 
@@ -48,14 +45,11 @@ Q.Circuit = function( bandwidth, timewidth ){
 	
 
 	//  When our circuit is evaluated 
-	//  we store that result in its matrix.
+	//  we store those results in this array.
 
-	this.matrix = null
+	this.results = []
+	this.matrix  = null
 }
-
-
-
-
 
 
 
@@ -69,16 +63,187 @@ Object.assign( Q.Circuit, {
 	createConstants: Q.createConstants,
 
 
+	fromText: function( text ){
+
+
+		//  Is this a String Template -- as opposed to a regular String?
+		//  If so, let’s convert it to a regular String.
+		//  Yes, this maintains the line breaks.
+
+		if( text.raw !== undefined ) text = ''+text.raw
+
+
+		//  Break this text up in to registers (by line returns)
+		//  and then each register in to moments (by non-word chars).
+
+		const 
+		lines = text.split( '\n' ).reduce( function( cleaned, line ){
+
+			const trimmed = line.trim()			
+			if( trimmed.length ) cleaned.push( trimmed.toUpperCase().split( /\W+/ ))
+			return cleaned
+
+		}, [] ),
+		bandwidth = lines.length
+
+
+		//  Validate the circuit’s moments.
+		//  They should be equal for each series of qubit operations.
+
+		const timewidth = lines[ 0 ].length
+		lines.forEach( function( line, l ){
+
+			if( line.length !== timewidth ) return Q.error( `Q.Circuit attempted to create a new circuit from text input but the amount of time implied in the submitted text is not consistent.` )
+		})
+
+
+		//  Create the new circuit
+		//  then attempt to populate it with actual gates.
+
+		const circuit = new Q.Circuit( bandwidth, timewidth )
+		lines.forEach( function( register, r ){
+
+			register.forEach( function( moment, m ){
+
+
+				//  We’re iterating via forEach which is zero-indexed,
+				//  but our moments and registers are one-indexed.
+
+				const
+				momentIndex   = m + 1,
+				registerIndex = r + 1
+
+
+				//  We’re expecting that
+				//  for each MOMENT of each REGISTER
+				//  there is an OPERATION
+				//  and it is identified by a letter,
+				//  and possibly disambiguated by a number.
+
+				let
+				letters = moment.match( /^[A-Za-z]+/ ),
+				numbers = moment.match( /\d+$/ )
+
+
+				//  Let’s see if we can find this operation
+				//  by its letter code.
+
+				if( letters !== null ) letters = letters[ 0 ]
+				const gate = new Q.Gate.findByLabel( letters )
+				if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to create a new circuit from text input but could not identify this submitted gate: ${ moment }.` )
+
+
+				if( gate !== Q.Gate.IDENTITY ){
+
+
+					//  If this operation only operates on a single register
+					//  then we are done and done here.
+
+					if( gate.bandwidth == 1 ){
+
+						circuit.set$( momentIndex, gate, [ registerIndex ])
+					}
+
+
+					//  But if this gate accepts more than one input
+					//  we need to do some fancy footwork.
+
+					else if( gate.bandwidth > 1 ){
+
+						let operation, gateId, inputIndex
+						if( numbers !== null ) numbers = numbers[ 0 ]
+						
+
+						//  If we receive a single digit number
+						//  then we know this digit is just an input index
+						//  and NOT a gateId.
+
+						if( numbers.length === 1 ){
+
+							inputIndex = numbers.substr( 0, 1 )
+
+
+							//  We may already have this gate on file.
+							//  If so, we’d better find it!
+
+							operation = circuit.operations.find( function( operation ){
+
+								return operation.momentIndex === momentIndex &&
+									operation.gate.label === gate.label
+							})
+						}
+
+						
+						//  If we received a double digit number
+						//  then the first number is a gate id
+						//  and the second one is an input index.
+						
+						else if( numbers.length === 2 ){
+
+							gateId = numbers.substr( 0, 1 )
+							inputIndex = numbers.substr( 1, 1 )
+
+
+							//  Similar to above, 
+							//  but there might be more than one gate of this type
+							//  so we need to check IDs.
+
+							operation = circuit.operations.find( function( operation ){
+
+								return (
+
+									operation.momentIndex === momentIndex &&
+									operation.gate.label === gate.label &&
+									operation.gateId === gateId
+								)
+							})
+						}
+					
+
+						//  If we’ve found this gate for this moment already
+						//  all we need to do is set this input index to this qubit index.
+
+						if( operation !== undefined ){
+
+							circuit.clearThisInput$( momentIndex, [ registerIndex ])
+							operation.registerIndices[ inputIndex ] = registerIndex			
+						}
+						else {
+						
+							
+							//  Looks like this gate isn’t attached to this moment yet
+							//  so we’ll attach it,
+							//  but we’ll only supply this particular qubit’s index
+							//  for the gate’s input indices.
+
+							const registerIndices = []
+							registerIndices[ inputIndex ] = registerIndex
+							// if( gateId !== undefined ){
+
+							// 	console.log( 'setting gate.id to gateId', gateId )
+							// 	gate.id = gateId
+							// }
+							circuit.set$( momentIndex, gate, registerIndices, gateId )
+						}
+					}
+				}
+			})
+		})
+		return circuit
+	},
 
 
 
 
 	controlled: function( U ){
 		
+
+		//  we should really just replace this with a nice Matrix.copy({}) command!!!!
+
 		// console.log( 'U?', U )
 
 		const 
-		size = U.getWidth(),
+		size   = U.getWidth(),
 		result = Q.Matrix.createIdentity( size * 2 )
 
 		// console.log( 'U', U.toTsv() )
@@ -124,7 +289,8 @@ Object.assign( Q.Circuit, {
 
 		for( let i = 0; i < qubitIndices.length; i ++ ){
 			
-			qubitIndices[ i ] = ( circuitBandwidth - 1 ) - qubitIndices[ i ]
+			//qubitIndices[ i ] = ( circuitBandwidth - 1 ) - qubitIndices[ i ]
+			qubitIndices[ i ] = ( circuitBandwidth - 0 ) - qubitIndices[ i ]
 		}
 		// console.log( 'qubits AFTER manipulation', qubitIndices )
 
@@ -211,41 +377,59 @@ Object.assign( Q.Circuit, {
 
 
 
-	evaluate: function( circuit, x ){
-
-		if( x === undefined ){
+	evaluate: function( circuit ){
 
 
-			//  Create a new matrix (or more precisely, a vector)
-			//  that is a 1 followed by all zeros.
-			//
-			//  ┌   ┐
-			//  │ 1 │
-			//  │ 0 │
-			//  │ 0 │
-			//  │ . │
-			//  │ . │
-			//  │ . │
-			//  └   ┘
+		// console.log( circuit.toDiagram() )
 
-			x = new Q.Matrix( 1, circuit.bandwidth * 2 )
-			x.write$( 0, 0, 1 )
-		}
+
+		//  Create a state matrix from this circuit’s input qubits.
+		/*
+		const state = circuit.qubits.reduce( function( state, qubit, i ){
+
+			if( i > 0 ) return state.multiplyTensor( qubit )
+			else return state
+
+		}, circuit.qubits[ 0 ])
+		// console.log( 'Initial state', state.toTsv() )
+		*/
 
 
 
-		// console.log( '\n\n\nabout to eval this circuit!')
-		// console.log( 'what is circuit??', circuit )
-		// console.log( 'what is X??', x )
-		// console.log( 'this circuit', circuit.toDiagram() )
+
+
+		//  Create a new matrix (or more precisely, a vector)
+		//  that is a 1 followed by all zeros.
+		//
+		//  ┌   ┐
+		//  │ 1 │
+		//  │ 0 │
+		//  │ 0 │
+		//  │ . │
+		//  │ . │
+		//  │ . │
+		//  └   ┘
+
+		const state = new Q.Matrix( 1, Math.pow( 2, circuit.bandwidth ))
+		state.write$( 0, 0, 1 )
+
+
+
+
 
 		const operationsTotal = circuit.operations.length
 		let operationsCompleted = 0
-		let matrix = circuit.operations.reduce( function( x, operation ){
+		let matrix = circuit.operations.reduce( function( state, operation, i ){
+
+
 
 			let U
 			if( operation.registerIndices.length < Infinity ){
 			
+				if( operation.registerIndices.length > 1 ){
+
+					operation.gate = Q.Gate.PAULI_X
+				}
 				U = operation.gate.matrix
 			} 
 			else {
@@ -253,21 +437,20 @@ Object.assign( Q.Circuit, {
 				//  This is for Quantum Fourier Transforms (QFT). 
 				//  Will have to come back to this at a later date!
 			}			
-			// console.log( 'U = operation.gate.matrix', U.toTsv() )
+			// console.log( operation.gate.name, U.toTsv() )
 
 
 
-			/*
 
-			WHEN I TAKE THIS OUT IT WORKS !
 
-			for( let j = 0; j < operation.qubitIndices.length; j ++ ){
+			//  Yikes. May need to separate registerIndices in to controls[] and targets[] ??
+			//  Works for now tho..... 
+
+			for( let j = 0; j < operation.registerIndices.length - 1; j ++ ){
 			
 				U = Q.Circuit.controlled( U )
-				console.log( 'qubitIndex #', j, 'U = Q.Circuit.controlled( U )', U.toTsv() )
-			}*/
-
-
+				// console.log( 'qubitIndex #', j, 'U = Q.Circuit.controlled( U )', U.toTsv() )
+			}
 
 
 			//  We need to send a COPY of the registerIndices Array
@@ -278,20 +461,13 @@ Object.assign( Q.Circuit, {
 			const registerIndices = operation.registerIndices.slice()
 
 
-			// console.log( 'ABOUT TO MULTIPLY' )
-			// console.log( 'x???', x.toTsv() )
+			state = Q.Circuit.expandMatrix( 
 
-			if( x instanceof Q.Matrix ){
-			
-				// console.log( 'x is a matrix. good. EXPANDING it...' )
-				x = Q.Circuit.expandMatrix( circuit.bandwidth, U, registerIndices ).multiply( x )
-				// x = x.multiply( Q.Circuit.expandMatrix( circuit.bandwidth, U, operation.qubitIndices ))
-			}
-			else {
+				circuit.bandwidth, 
+				U, 
+				registerIndices
 
-				// console.log( 'huh...  x wants a matrix... and we didn’t have one (BAD!)') 
-				x = Q.Circuit.expandMatrix( circuit.bandwidth, U, registerIndices )
-			}
+			).multiply( state )
 
 
 			operationsCompleted ++
@@ -299,14 +475,16 @@ Object.assign( Q.Circuit, {
 			// console.log( 'Moment .....', operation.momentIndex )
 			// console.log( 'Registers ..', JSON.stringify( operation.registerIndices ))
 			// console.log( 'Gate .......', operation.gate.name )
-			// console.log( 'Intermediate result:', x.toTsv() )
+			// console.log( 'Intermediate result:', state.toTsv() )
+			// console.log( '\n' )
 			
 
-			return x
+			return state
 			
-		}, x )
+		}, state )
 
 
+		// console.log( 'result matrix', matrix.toTsv() )
 	
 
 
@@ -324,181 +502,11 @@ Object.assign( Q.Circuit, {
 
 		
 
-
-
-
-
 		return {
 
 			matrix,
-			outcomes
+			results: outcomes
 		}
-	},
-
-
-
-	
-
-
-
-
-
-	fromText: function( text ){
-
-
-		//  Is this a String Template -- as opposed to a regular String?
-		//  If so, let’s convert it to a regular String.
-		//  Yes, this maintains the line breaks.
-
-		if( text.raw !== undefined ) text = ''+text.raw
-
-
-		//  Break this text up in to registers (by line returns)
-		//  and then each register in to moments (by non-word chars).
-
-		const 
-		lines = text.split( '\n' ).reduce( function( cleaned, line ){
-
-			const trimmed = line.trim()			
-			if( trimmed.length ) cleaned.push( trimmed.toUpperCase().split( /\W+/ ))
-			return cleaned
-
-		}, [] ),
-		bandwidth = lines.length
-
-
-		//  Validate the circuit’s moments.
-		//  They should be equal for each series of qubit operations.
-
-		const timewidth = lines[ 0 ].length
-		lines.forEach( function( line, l ){
-
-			if( line.length !== timewidth ) return Q.error( `Q.Circuit attempted to create a new circuit from text input but the amount of time implied in the submitted text is not consistent.` )
-		})
-
-
-		//  Create the new circuit
-		//  then attempt to populate it with actual gates.
-
-		const circuit = new Q.Circuit( bandwidth, timewidth )
-		lines.forEach( function( register, r ){
-
-			register.forEach( function( moment, m ){
-
-
-				//  We’re expecting that
-				//  for each MOMENT of each REGISTER
-				//  there is an OPERATION
-				//  and it is identified by a letter,
-				//  and possibly disambiguated by a number.
-
-				let
-				letters = moment.match( /^[A-Za-z]+/ ),
-				numbers = moment.match( /\d+$/ )
-
-
-				//  Let’s see if we can find this operation
-				//  by its letter code.
-
-				if( letters !== null ) letters = letters[ 0 ]
-				const gate = new Q.Gate.findByLabel( letters )
-				if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to create a new circuit from text input but could not identify this submitted gate: ${ moment }.` )
-
-
-				//  If this operation only accepts a single qubit input
-				//  then we are done and done here.
-
-				if( gate.bandwidth == 1 ){
-
-					circuit.set$( m + 1, gate, [ r ])
-				}
-
-
-				//  But if this gate accepts more than one input
-				//  we need to do some fancy footwork.
-
-				else if( gate.bandwidth > 1 ){
-
-					let operation, gateId, inputIndex
-					if( numbers !== null ) numbers = numbers[ 0 ]
-					
-
-					//  If we receive a single digit number
-					//  then we know this digit is just an input index
-					//  and NOT a gateId.
-
-					if( numbers.length === 1 ){
-
-						inputIndex = numbers.substr( 0, 1 )
-
-
-						//  We may already have this gate on file.
-						//  If so, we’d better find it!
-
-						operation = circuit.operations.find( function( operation ){
-
-							return operation.momentIndex === m &&
-								operation.gate.label === gate.label
-						})
-					}
-
-					
-					//  If we received a double digit number
-					//  then the first number is a gate id
-					//  and the second one is an input index.
-					
-					else if( numbers.length === 2 ){
-
-						gateId = numbers.substr( 0, 1 )
-						inputIndex = numbers.substr( 1, 1 )
-
-
-						//  Similar to above, 
-						//  but there might be more than one gate of this type
-						//  so we need to check IDs.
-
-						operation = circuit.operations.find( function( operation ){
-
-							return (
-
-								operation.momentIndex === m &&
-								operation.gate.label === gate.label &&
-								operation.gateId === gateId
-							)
-						})
-					}
-
-				
-
-					//  If we’ve found this gate for this moment already
-					//  all we need to do is set this input index to this qubit index.
-
-					if( operation !== undefined ){
-
-						circuit.clearThisInput$( m, [ r ])
-						operation.registerIndices[ inputIndex ] = r					
-					}
-					else {
-					
-						
-						//  Looks like this gate isn’t attached to this moment yet
-						//  so we’ll attach it,
-						//  but we’ll only supply this particular qubit’s index
-						//  for the gate’s input indices.
-
-						const registerIndices = []
-						registerIndices[ inputIndex ] = r
-						// if( gateId !== undefined ){
-
-						// 	console.log( 'setting gate.id to gateId', gateId )
-						// 	gate.id = gateId
-						// }
-						circuit.set$( m + 1, gate, registerIndices, gateId )
-					}
-				}
-			})
-		})
-		return circuit
 	}
 })
 
@@ -514,10 +522,11 @@ Object.assign( Q.Circuit.prototype, {
 
 		const 
 		original = this,
-		clone    = original.copy()
+		clone = original.copy()
 
-		//clone.results = original.results.clone()
-		clone.inputs  = original.inputs.slice()
+		clone.qubits  = original.qubits.slice()
+		clone.results = original.results.slice()
+		clone.needsEvaluation = original.needsEvaluation
 		
 		return clone
 	},
@@ -532,10 +541,10 @@ Object.assign( Q.Circuit.prototype, {
 		if( this.needsEvaluation ) this.evaluate$()
 		const 
 		circuit = this,
-		text = this.outcomes.reduce( function( text, outcome, i ){
+		text = this.results.reduce( function( text, outcome, i ){
 
 			return text +'\n'
-				+ ( i + 1 ).toString().padStart( Math.ceil( Math.log10( Math.pow( 2, circuit.inputs.length ))), ' ' ) +'  '
+				+ ( i + 1 ).toString().padStart( Math.ceil( Math.log10( Math.pow( 2, circuit.qubits.length ))), ' ' ) +'  '
 				+ outcome.state
 				+' '+ Q.round( 100 * outcome.probability, 8 ).toString().padStart( 3, ' ' ) +'% chance'
 				+'  '+ ''.padStart( Math.round( outcome.probability * 32 ), '█' )
@@ -550,8 +559,8 @@ Object.assign( Q.Circuit.prototype, {
 		
 		//  We need to “stack” our probabilities from 0..1.
 		
-		const outcomesStacked = new Array( this.outcomes.length )
-		this.outcomes.reduce( function( sum, outcome, i ){
+		const outcomesStacked = new Array( this.results.length )
+		this.results.reduce( function( sum, outcome, i ){
 
 			sum += outcome.probability
 			outcomesStacked[ i ] = sum
@@ -671,7 +680,7 @@ Object.assign( Q.Circuit.prototype, {
 		//  prior to the .toTable() call.
 		
 		let 
-		momentIndex = 0,
+		momentIndex = 1,
 		multiRegisterOperationIndex = 0,
 		operationsThisMoment = {}
 
@@ -691,7 +700,7 @@ Object.assign( Q.Circuit.prototype, {
 			}
 			if( operation.registerIndices.length > 1 ){
 
-				table[ momentIndex ].multiRegisterOperationIndex = multiRegisterOperationIndex
+				table[ momentIndex - 1 ].multiRegisterOperationIndex = multiRegisterOperationIndex
 				multiRegisterOperationIndex ++
 			}
 			if( operationsThisMoment[ operation.gate.label ] === undefined ){
@@ -726,7 +735,7 @@ Object.assign( Q.Circuit.prototype, {
 					//  May need to re-visit the code above in consideration of SWAPs.
 
 				}
-				table[ operation.momentIndex ][ registerIndex ] = {
+				table[ operation.momentIndex - 1 ][ registerIndex - 1 ] = {
 
 					label:        operation.gate.label,
 					labelDisplay: operation.gate.label,
@@ -745,7 +754,7 @@ Object.assign( Q.Circuit.prototype, {
 			})
 			if( operationIndex === operations.length - 1 ){
 				
-				table[ momentIndex ].operationsThisMoment = operationsThisMoment
+				table[ momentIndex - 1 ].operationsThisMoment = operationsThisMoment
 			}
 		})
 
@@ -835,7 +844,7 @@ Object.assign( Q.Circuit.prototype, {
 		output = new Array( table.bandwidth * 3 + 1 ).fill( '' )
 
 		output[ 0 ] = '        '
-		scope.inputs.forEach( function( qubit, q ){
+		scope.qubits.forEach( function( qubit, q ){
 
 			const y3 = q * 3
 			output[ y3 + 1 ] += '        '
@@ -963,15 +972,6 @@ Object.assign( Q.Circuit.prototype, {
 	//////////////
 
 
-	ensureMomentsAreReady$: function(){
-
-		if( this.moments instanceof Array !== true ) this.moments = []
-		for( let m = 0; m < this.timewidth; m ++ ){
-
-			if( this.moments[ m ] instanceof Array !== true ) this.moments[ m ] = []
-		}
-		return this
-	},
 	fillEmptyOperations$: function(){
 
 		`
@@ -1090,16 +1090,14 @@ Object.assign( Q.Circuit.prototype, {
 		const circuit = this
 
 
-		//  We’re pretending that this Array is ONE-indexed, 
-		//  rather than ZERO-indexed.
-		//  This is because “moment 0” is the raw input state.
-
-		momentIndex --
-
-
 		//  Is this a valid moment index?
 		
-		if( momentIndex < 0 || momentIndex > this.timewidth - 1 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at a moment index that is not valid:`, momentIndex )
+		if( Q.isUsefulNumber( momentIndex ) !== true ||
+			Number.isInteger( momentIndex ) !== true ||
+			momentIndex < 1 || momentIndex > this.timewidth ){
+
+			return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at a moment index that is not valid:`, momentIndex )
+		}
 
 
 		//  Is this a valid gate?
@@ -1107,31 +1105,26 @@ Object.assign( Q.Circuit.prototype, {
 		if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} that is not a gate:`, gate )
 
 
-		//  Are these valid input indices?
+		//  Are these valid register indices?
 
 		if( allowOverrun !== true ){
 		
-			if( registerIndices instanceof Array !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an invalid qubit indices array:`, registerIndices )
-			if( registerIndices.length === 0 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an empty input qubit array:`, registerIndices )
-			
-			
-			//  We’ve had to comment this check out because 
-			//  we can’t know in a single pass 
-			//  if we have all the indices needed
-			//  for a multi-qubit gate:
+			if( registerIndices instanceof Array !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an invalid register indices array:`, registerIndices )
+			if( registerIndices.length === 0 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an empty register indices array:`, registerIndices )
+			//if( registerIndices.length !== gate.bandwidth ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} but the number of register indices (${registerIndices}) did not match the gate’s bandwidth (${gate.bandwidth}).` )
+			if( registerIndices.reduce( function( accumulator, registerIndex ){
 
-			//if( qubitIndices.length !== gate.bandwidth ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} but the number of qubit indices (${qubitIndices}) did not match the gate’s bandwidth (${gate.bandwidth}).` )
-			
-
-			if( registerIndices.reduce( function( accumulator, qubitIndex ){
-
-				return accumulator && qubitIndex >= 0 && qubitIndex < circuit.bandwidth
+				return accumulator && registerIndex > 0 && registerIndex <= circuit.bandwidth
 
 			}, false )){
 
 				return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with some out of range qubit indices:`, registerIndices )
 			}
 		}
+
+
+		//  Ok, we’re clear to proceed.
+
 		this.clearThisInput$( momentIndex, registerIndices )
 		this.operations.push({
 
@@ -1140,7 +1133,12 @@ Object.assign( Q.Circuit.prototype, {
 			gate,
 			gateId
 		})
-		this.sort$()	
+		this.sort$()
+
+
+		//  Now emit an event to notify everyone of what we’ve done.
+
+		//x
 	},
 
 
