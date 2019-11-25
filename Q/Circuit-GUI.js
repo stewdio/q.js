@@ -859,18 +859,25 @@ Q.Circuit.GUI = {
 					parent.appendChild( circuit.toDom() )
 					circuit.needsEvaluation = true
 
+					setTimeout( function(){ circuit.evaluate$() }, 10 )
+					// window.dispatchEvent( new CustomEvent( 'qjs gui altered circuit', { detail: {
 
-					if( circuit === bellState ){
-								
-						document.getElementById( 'bell-plus-report' ).innerText = bellState.report$()
-						document.getElementById( 'bell-plus-diagram' ).innerText = bellState.toDiagram( true )
-						document.getElementById( 'bell-plus-text' ).innerText = bellState.toText()
+					// 	circuit
+					// }}))
+
+					
+
+					if( circuit === bell ){
+						
+						// document.getElementById( 'bell-report' ).innerText = bell.report$()
+						// document.getElementById( 'bell-diagram' ).innerText = bell.toDiagram( true )
+						// document.getElementById( 'bell-text' ).innerText = bell.toText()
 					}
 					if( circuit === whiplash ){
 									
-						document.getElementById( 'whiplash-report' ).innerText = whiplash.report$()
-						document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram( true )
-						document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
+						// document.getElementById( 'whiplash-report' ).innerText = whiplash.report$()
+						// document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram( true )
+						// document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
 					}
 					//  ********************************************************************************
 				
@@ -895,7 +902,7 @@ Q.Circuit.GUI = {
 			
 
 
-			}
+			}			
 			Q.Circuit.GUI.grabbedItem = null
 		}
 	}

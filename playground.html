@@ -97,11 +97,11 @@
 			<div class="qjs-circuit-palette"></div>
 			<br>
 			<p><code>bellState.toDom()</code></p>
-			<div id="bell-plus-dom"></div>
+			<div id="bell-dom"></div>
 			<br>
 			<p><code>bellState.report$()</code></p>
-			<pre><samp id="bell-plus-report"></samp></pre>
-			<div id="bell-plus-report-live" for="bell-plus-dom"></div>
+			<pre><samp id="bell-report"></samp></pre>
+			<div id="bell-report-live" for="bell-dom"></div>
 			<h5>Circuit as ASCII diagram</h5>
 			<p>
 				Yes—you can interact with these example circuits 
@@ -111,10 +111,10 @@
 			</p>
 			<br>
 			<p><code>bellState.toDiagram()</code></p>
-			<pre><samp id="bell-plus-diagram"></samp></pre>
+			<pre><samp id="bell-diagram"></samp></pre>
 			<br>
 			<p><code>bellState.toText()</code></p>
-			<pre><samp id="bell-plus-text"></samp></pre>
+			<pre><samp id="bell-text"></samp></pre>
 			
 
 			<h4>Whiplash</h4>
@@ -308,16 +308,76 @@ Undo<br>
 
 
 
-var bellState = Q`
+
+
+Array.from( document.querySelectorAll( '.qjs-circuit-palette' )).forEach( function( el ){
+
+	Q.Circuit.createDomPalette( el )
+})
+
+function updateEverything( circuit ){
+
+	document.getElementById( circuit.name +'-diagram' ).innerText = circuit.toDiagram( true )
+	document.getElementById( circuit.name +'-text' ).innerText = circuit.toText()
+	document.getElementById( circuit.name +'-report' ).innerText = circuit.report$()
+}
+
+
+
+var bell = Q`
 
 	H C0 X
 	I C1 X
 `
-bellState.sort$()
-bellState.toDom( document.getElementById( 'bell-plus-dom' ))
-document.getElementById( 'bell-plus-diagram' ).innerText = bellState.toDiagram( true )
-document.getElementById( 'bell-plus-text' ).innerText = bellState.toText()
-document.getElementById( 'bell-plus-report' ).innerText = bellState.report$()
+bell.name = 'bell'
+bell.sort$()
+bell.toDom( document.getElementById( 'bell-dom' ))
+
+// bell.evaluate$()
+// document.getElementById( 'bell-diagram' ).innerText = bell.toDiagram( true )
+// document.getElementById( 'bell-text' ).innerText = bell.toText()
+// document.getElementById( 'bell-report' ).innerText = bell.report$()
+
+
+
+
+window.addEventListener( 'qjs gui altered circuit', function( event ){
+
+	event.detail.circuit.evaluate$()
+})
+window.addEventListener( 'qjs evaluation began', function( event ){
+
+	console.log( '\n\nBeginning evaluation for “'+ event.detail.circuit.name +'”' )
+	console.log( event.detail.circuit.toDiagram() +'\n\n' )
+})
+window.addEventListener( 'qjs evaluation progress', function( event ){
+
+	const 
+	percent      = Math.round( event.detail.progress * 100 ),
+	percentText  = ( ''+ percent ).padStart( 3 ) +'%',
+	barLength    = Math.round( 20 * event.detail.progress ),
+	barComplete  = ''.padStart( barLength, '█' ),
+	barRemaining = ''.padStart( 20 - barLength, '░' ),
+	opsTotal     = event.detail.operationsTotal,
+	opsCompleted = ( ''+ event.detail.operationsCompleted ).padStart( Math.log( opsTotal ) * Math.LOG10E + 1 | 0, ' ' )
+
+	console.log( 
+
+		barComplete + 
+		barRemaining +' '+ 
+		percentText +'  '+
+		opsCompleted +' of '+
+		opsTotal
+	)
+})
+window.addEventListener( 'qjs evaluation completed', function( event ){
+
+	console.log( '\nEvaluation completed for “'+ event.detail.circuit.name +'”' )
+	updateEverything( event.detail.circuit )
+	console.log( 'Results:\n'+ event.detail.circuit.report$() +'\n\n\n' )
+})
+
+
 
 
 
@@ -330,21 +390,27 @@ var whiplash = Q`
 	X  Y    C1  C1  S
 	X  C11  Z   I   S
 `
+whiplash.name = 'whiplash'
 whiplash.sort$()
 document.getElementById( 'whiplash-dom' ).appendChild( whiplash.toDom() )
-document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram( true )
-document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
-setTimeout( function(){
+
+// document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram( true )
+// document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
+// setTimeout( function(){
 	
-	document.getElementById( 'whiplash-report' ).innerText = whiplash.report$()
+// 	document.getElementById( 'whiplash-report' ).innerText = whiplash.report$()
 
-}, 1 )
+// }, 1 )
 
 
-Array.from( document.querySelectorAll( '.qjs-circuit-palette' )).forEach( function( el ){
 
-	Q.Circuit.createDomPalette( el )
+
+window.addEventListener( 'DOMContentLoaded', function(){
+
+	updateEverything( bell )
+	updateEverything( whiplash )
 })
+
 
 
 

@@ -383,17 +383,12 @@ Object.assign( Q.Circuit, {
 		// console.log( circuit.toDiagram() )
 
 
-		//  Create a state matrix from this circuit’s input qubits.
-		/*
-		const state = circuit.qubits.reduce( function( state, qubit, i ){
 
-			if( i > 0 ) return state.multiplyTensor( qubit )
-			else return state
+		window.dispatchEvent( new CustomEvent( 'qjs evaluation began', { detail: {
 
-		}, circuit.qubits[ 0 ])
-		// console.log( 'Initial state', state.toTsv() )
-		*/
+			circuit
 
+		}}))
 
 
 
@@ -413,6 +408,20 @@ Object.assign( Q.Circuit, {
 		const state = new Q.Matrix( 1, Math.pow( 2, circuit.bandwidth ))
 		state.write$( 0, 0, 1 )
 
+
+
+
+		//  Create a state matrix from this circuit’s input qubits.
+		
+		// const state2 = circuit.qubits.reduce( function( state, qubit, i ){
+
+		// 	if( i > 0 ) return state.multiplyTensor( qubit )
+		// 	else return state
+
+		// }, circuit.qubits[ 0 ])
+		// console.log( 'Initial state', state2.toTsv() )
+		// console.log( 'multiplied', state2.multiplyTensor( state ).toTsv() )
+		
 
 
 
@@ -470,7 +479,26 @@ Object.assign( Q.Circuit, {
 			).multiply( state )
 
 
+
+
 			operationsCompleted ++
+			const progress = operationsCompleted / operationsTotal
+
+
+			window.dispatchEvent( new CustomEvent( 'qjs evaluation progress', { detail: {
+
+				circuit,
+				progress,
+				operationsCompleted,
+				operationsTotal,
+				momentIndex: operation.momentIndex,
+				registerIndices: operation.registerIndices,
+				gate: operation.gate.name,
+				state
+
+			}}))
+
+
 			// console.log( `\n\nProgress ... ${ Math.round( operationsCompleted / operationsTotal * 100 )}%`)
 			// console.log( 'Moment .....', operation.momentIndex )
 			// console.log( 'Registers ..', JSON.stringify( operation.registerIndices ))
@@ -500,13 +528,27 @@ Object.assign( Q.Circuit, {
 		
 		}, [] )
 
+
+
+		circuit.needsEvaluation = false
+		circuit.matrix = matrix
+		circuit.results = outcomes
+
+
+
+		window.dispatchEvent( new CustomEvent( 'qjs evaluation completed', { detail: {
+		// circuit.dispatchEvent( new CustomEvent( 'evaluation complete', { detail: {
+
+			circuit,
+			results: outcomes
+
+		}}))
+
+
+
 		
 
-		return {
-
-			matrix,
-			results: outcomes
-		}
+		return matrix
 	}
 })
 
@@ -532,13 +574,13 @@ Object.assign( Q.Circuit.prototype, {
 	},
 	evaluate$: function(){
 
-		Object.assign( this, Q.Circuit.evaluate( this ))
-		this.needsEvaluation = false
+		Q.Circuit.evaluate( this )
 		return this
 	},
 	report$: function(){
 
 		if( this.needsEvaluation ) this.evaluate$()
+		
 		const 
 		circuit = this,
 		text = this.results.reduce( function( text, outcome, i ){
@@ -547,9 +589,10 @@ Object.assign( Q.Circuit.prototype, {
 				+ ( i + 1 ).toString().padStart( Math.ceil( Math.log10( Math.pow( 2, circuit.qubits.length ))), ' ' ) +'  '
 				+ outcome.state
 				+' '+ Q.round( 100 * outcome.probability, 8 ).toString().padStart( 3, ' ' ) +'% chance'
-				+'  '+ ''.padStart( Math.round( outcome.probability * 32 ), '█' )
+				+'  '+ ''.padStart( Math.round( outcome.probability * 20 ), '█' )
+				+ ''.padStart( Math.round(( 1 - outcome.probability ) * 20 ), '░' )
 
-		}, '' ) + '\n\n'
+		}, '' ) + '\n'
 		return text
 	},
 	try$: function(){
@@ -1126,13 +1169,16 @@ Object.assign( Q.Circuit.prototype, {
 		//  Ok, we’re clear to proceed.
 
 		this.clearThisInput$( momentIndex, registerIndices )
-		this.operations.push({
+		if( gate !== Q.Gate.IDENTITY ){
+		
+			this.operations.push({
 
-			momentIndex,
-			registerIndices,
-			gate,
-			gateId
-		})
+				momentIndex,
+				registerIndices,
+				gate,
+				gateId
+			})
+		}
 		this.sort$()
 
 
