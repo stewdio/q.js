@@ -240,31 +240,31 @@ svg.qjs-circuit-operation:hover {
 	background-color: var( --color-white );
 	box-shadow: -1px 2px 6px rgba( 0, 0, 0, 0.5 );
 }
-svg .qjs-circuit-operation-label {
-
-	fill: var( --color-white );
-}
-svg #qjs-circuit-operation-identity {
+#qjs-circuit-operation-identity {
 
 	fill: var( --color-titanium );
 	cursor: inherit;
 }
-svg #qjs-circuit-operation-hadamard {
+#qjs-circuit-operation-hadamard {
 
 	fill: var( --color-red );
 }
-svg #qjs-circuit-operation-controller,
-svg #qjs-circuit-operation-controlled {
+#qjs-circuit-operation-controller,
+#qjs-circuit-operation-controlled {
 
 	fill: var( --color-blue );
 }
-svg #qjs-circuit-control-straight,
-svg #qjs-circuit-control-curved {
+#qjs-circuit-control-straight,
+#qjs-circuit-control-curved {
 
 	fill: none;
 	stroke: var( --color-blue );
 	stroke-width: 2;
 	stroke-miterlimit: 10;
+}
+.qjs-circuit-operation-label {
+
+	fill: var( --color-white );
 }
 
 

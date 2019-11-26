@@ -340,6 +340,29 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 	})
 
 
+	//  SELECT.
+	//  Tapping adds to selection basket.
+
+	circuitEl.setAttribute( 'mode', 'select' )
+	
+
+	//  MOVE.
+	//  Tapping grabs the object to move and drop it elsewhere.
+
+	circuitEl.setAttribute( 'mode', 'move' )
+
+
+
+	
+
+
+
+
+
+
+
+
+
 
 
 	//  Add events to our circuit.
@@ -908,6 +931,49 @@ Q.Circuit.GUI = {
 
 			}			
 			Q.Circuit.GUI.grabbedItem = null
+		}
+	},
+
+
+
+
+
+	
+
+
+	//  Attached to .qjs-cricuit-cell.
+	
+	onTapBegan: function( event ){
+
+		if( circuit.getAttribute( 'mode' ) === 'select' ){
+
+			event.target.classList.add( 'selected' )
+		}
+		else {
+
+
+		}
+	},
+
+
+	//  Attached to document.
+	
+	onMove: function( event ){
+
+		if( circuit.getAttribute( 'mode' ) === 'move' && isDragging ){
+
+			
+		}
+	},
+
+
+	//  Attached to document.
+	
+	onTapEnded: function( event ){
+
+		if( circuit.getAttribute( 'mode' ) === 'move' && isDragging ){
+
+
 		}
 	}
 }
