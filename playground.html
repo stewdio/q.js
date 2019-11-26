@@ -69,7 +69,7 @@
 
 			<h4>Bell state</h4>
 			<p>
-				Here’s <a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>
+				Here’s a <a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>
 				(which produces <a href="https://en.wikipedia.org/wiki/Quantum_entanglement" target="_blank">quantum entanglement</a>), 
 				but with X operations on both registers as a finale—so
 				the only two possible results are 
@@ -108,6 +108,8 @@
 				right in your JavaScript console!
 				These examples are right in the global scope so go poke around.
 				You can generate the report above, the diagram below, and make edits directly to the circuit in code.
+				<!-- Edit it via code in the JavaScript console,
+				see the live updates right here! -->
 			</p>
 			<br>
 			<p><code>bell.toDiagram()</code></p>
@@ -347,8 +349,11 @@ window.addEventListener( 'qjs gui altered circuit', function( event ){
 })
 window.addEventListener( 'qjs evaluation began', function( event ){
 
-	console.log( '\n\nBeginning evaluation for “'+ event.detail.circuit.name +'”' )
-	console.log( event.detail.circuit.toDiagram() +'\n\n' )
+	console.log( 
+
+		'\n\nBeginning evaluation for “'+ event.detail.circuit.name +'”\n'+
+		event.detail.circuit.toDiagram() +'\n\n'
+	)
 })
 window.addEventListener( 'qjs evaluation progress', function( event ){
 
@@ -366,16 +371,20 @@ window.addEventListener( 'qjs evaluation progress', function( event ){
 
 		barComplete + 
 		barRemaining +' '+ 
-		percentText +'  '+
+		percentText +'   '+
 		opsCompleted +' of '+
 		opsTotal
 	)
+	// console.log( event.detail.state.getWidth(), event.detail.state.getHeight() )
 })
 window.addEventListener( 'qjs evaluation completed', function( event ){
 
-	console.log( '\nEvaluation completed for “'+ event.detail.circuit.name +'”' )
+	console.log( 
+
+		'\nEvaluation completed for “'+ event.detail.circuit.name +'”'+
+		'\nwith these results:\n'+ event.detail.circuit.report$() +'\n\n\n'
+	)
 	updateEverything( event.detail.circuit )
-	console.log( 'Results:\n'+ event.detail.circuit.report$() +'\n\n\n' )
 })
 
 

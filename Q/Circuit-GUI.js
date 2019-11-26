@@ -859,7 +859,8 @@ Q.Circuit.GUI = {
 					parent.appendChild( circuit.toDom() )
 					circuit.needsEvaluation = true
 
-					setTimeout( function(){ circuit.evaluate$() }, 10 )
+					circuit.evaluate$()
+					//setTimeout( function(){ circuit.evaluate$() }, 10 )
 					// window.dispatchEvent( new CustomEvent( 'qjs gui altered circuit', { detail: {
 
 					// 	circuit
@@ -867,23 +868,23 @@ Q.Circuit.GUI = {
 
 					
 
-					if( circuit === bell ){
+					// if( circuit === bell ){
 						
 						// document.getElementById( 'bell-report' ).innerText = bell.report$()
 						// document.getElementById( 'bell-diagram' ).innerText = bell.toDiagram( true )
 						// document.getElementById( 'bell-text' ).innerText = bell.toText()
-					}
-					if( circuit === whiplash ){
+					// }
+					// if( circuit === whiplash ){
 									
 						// document.getElementById( 'whiplash-report' ).innerText = whiplash.report$()
 						// document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram( true )
 						// document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
-					}
+					// }
 					//  ********************************************************************************
 				
 
 
-
+					
 
 
 				}
@@ -896,7 +897,10 @@ Q.Circuit.GUI = {
 				console.log( 'dropped on to NOTHING' )
 
 				// console.log(Q.Circuit.GUI.grabbedItem)
-				Q.Circuit.GUI.grabbedItem.style.display = 'block'
+				if( Q.Circuit.GUI.grabbedItem ){
+
+					Q.Circuit.GUI.grabbedItem.style.display = 'block'	
+				}
 
 
 			

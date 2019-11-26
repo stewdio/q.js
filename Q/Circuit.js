@@ -586,12 +586,16 @@ Object.assign( Q.Circuit.prototype, {
 		circuit = this,
 		text = this.results.reduce( function( text, outcome, i ){
 
+			const
+			probabilityPositive = Math.round( outcome.probability * length ),
+			probabilityNegative = length - probabilityPositive
+
 			return text +'\n'
 				+ ( i + 1 ).toString().padStart( Math.ceil( Math.log10( Math.pow( 2, circuit.qubits.length ))), ' ' ) +'  '
-				+ outcome.state				
-				+'  '+ ''.padStart( Math.round( outcome.probability * length ), '█' )
-				+ ''.padStart( Math.round(( 1 - outcome.probability ) * length ), '░' )
-				+' '+ Q.round( 100 * outcome.probability, 8 ).toString().padStart( 3, ' ' ) +'% chance'
+				+ outcome.state +'  '
+				+ ''.padStart( probabilityPositive, '█' )
+				+ ''.padStart( probabilityNegative, '░' )
+				+ Q.round( Math.round( 100 * outcome.probability ), 8 ).toString().padStart( 4, ' ' ) +'% chance'
 
 		}, '' ) + '\n'
 		return text
@@ -1593,10 +1597,26 @@ Q.Circuit.createConstants(
 	// 	I-C1-I-I-X-Z-
 	// `)
 )
+
+
+
+
+
+
+
 */
 
 
 
+
+var grover = 
+
+//  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20
+`	H  X  W  C0 I  C0 I  I  I  C0 I  I  I  C0 I  X  H  X  I  W
+	H  X  I  C1 W  C1 W  C0 I  I  I  C0 X  I  H  X  I  I  I  I
+	H  X  I  I  I  I  I  C1 W  C1 W  C1 W  C1 I  W  X  H  X  I
+	H  X  W  I  W  I  W  I  W  I  W  I  W  I  I  W  X  H  X  W
+`
 
 
 
