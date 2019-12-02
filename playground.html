@@ -71,26 +71,42 @@
 			<p>
 				Here’s a <a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>
 				(which produces <a href="https://en.wikipedia.org/wiki/Quantum_entanglement" target="_blank">quantum entanglement</a>), 
-				but with X operations on both registers as a finale—so
+				but with 
+				<a href="Gate.html#.PAULI_X">Pauli X</a>
+				operations added to both registers as a finale—so
 				the only two possible results are 
 				<span class="complex-vector ket">00</span>
 				and
-				<span class="complex-vector ket">11</span>.
-				All or nothing!
-				(But of course you can alter the circuit yourself to change the possible results.)
+				<span class="complex-vector ket">11</span>; all or nothing.
+				Look how simple it was for me to create this in code:
+				<!-- You can try this out <em>right now!</em>
+				Just <a href="index.html#Open_your_JavaScript_console" target="_blank">open your browser’s JavaScript console</a>
+				and paste this in:-->
 			</p>
+<pre><code>
+var bell = Q`
+
+	H C0 X
+	I C1 X
+`
+</code></pre>
 			<p>
-				Drag and drop an operation from the palette on to the circuit 
+				Now you can alter the circuit yourself 
+				and thereby change the possible results.
+				Drag and drop an operation from the palette (below) 
+				on to the interactive circuit diagram (further below)
 				to <em>copy</em> it in to the circuit.
 				Drag operations within the circuit itself to <em>move</em> them.
 				As you alter the circuit you’ll notice the probabilities report,
 				ASCII diagram, and text representation of the circuit also update.
-				Update from the console and you’ll also see these update.
+				<!-- Update from the console and you’ll also see these update. -->
 			</p>
 			<p>
 				<strong>You cannot drag multi-register operations yet.</strong> 
 				It’s coming.
 				Check back soon!
+				Better yet, join the movement and help me build it: 
+				<a href="https://github.com/stewdio/q.js" target="_blank">https://github.com/stewdio/q.js</a>
 			</p>
 			<br>
 			<p><code>Q.Circuit.createDomPalette()</code></p>
