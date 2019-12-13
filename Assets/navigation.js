@@ -67,14 +67,13 @@ document.addEventListener( 'DOMContentLoaded', function(){
 		</header>
 		<ul>
 			<li><h2><a href="references.html">What’s quantum?</a></h2></li>
-			
+			<li><h2><a href="playground.html">Playground</a></h2></li>
 			<li><h2><a href="Q.html"><code>Q</code></a></h2></li>
 			<li><h2><a href="ComplexNumber.html"><code>ComplexNumber</code></a></h2></li>
 			<li><h2><a href="Matrix.html"><code>Matrix</code></a></h2></li>
 			<li><h2><a href="Qubit.html"><code>Qubit</code></a></h2></li>
 			<li><h2><a href="Gate.html"><code>Gate</code></a></h2></li>
-			<li><h2><a href="Circuit.html"><code>Circuit</code></a></h2></li>
-			<li><h2><a href="playground.html">Playground</a></h2></li>
+			<li><h2><a href="Circuit.html"><code>Circuit</code></a></h2></li>			
 		</ul>
 	`
 	document.body.appendChild( nav )

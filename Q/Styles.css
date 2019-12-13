@@ -66,13 +66,13 @@
 	margin: 0.5rem 0;
 	max-width: 100%;
 	padding: 0;
-	cursor: crosshair;
+	/*cursor: crosshair;*/
 	font-family: var( --font-family-sans );
 	font-style: italic;
 	color: var( --color-titanium );
 	font-size:   1.0rem;
 	line-height: 2.5rem;
-	overflow: auto;
+	/*overflow: auto;*/
 }
 .qjs-circuit-palette {
 
@@ -80,7 +80,6 @@
 	border-radius: 0.5rem;	
 	background-color: var( --color-chalk );
 }
-
 .qjs-circuit-clipboard {
 
 	position: absolute;
@@ -89,9 +88,12 @@
 	min-height: 60px;
 	/*background-color: var( --color-yellow );*/
 	/*background-color: rgba( 255, 255, 255, 0.97 );*/
-	background-color: white;
+	/*background-color: white;*/
 	box-shadow: 0 2px 6px rgba( 0, 0, 0, 0.5 );
-	pointer-events: none;
+	/*pointer-events: none;*/
+	cursor: grabbing;
+	cursor: -webkit-grabbing; 
+	cursor: -moz-grabbing;
 }
 .qjs-circuit svg {
 
@@ -123,15 +125,22 @@
 }
 .qjs-circuit-palette .qjs-circuit-layer {
 
+	display: block;
 	position: relative;
 	padding: 10px;
 }
-/*.qjs-circuit-layer > div, .qjs-circuit-layer > svg { 
-
-	width:  60px;
-	height: 60px;
+.qjs-circuit-palette .qjs-circuit-layer::after { 
+  
+	content: '';
+	display: block; 
+	clear: both;
 }
-*/.qjs-circuit-layer-wires {
+.qjs-circuit-palette .qjs-circuit-operation {
+
+	/*display: inline-block;*/
+	float: left;
+}
+.qjs-circuit-layer-wires {
 
 	position: relative;
 }
@@ -226,20 +235,33 @@ svg.qjs-circuit-wire {
 /******************/
 
 
-svg.qjs-circuit-operation {
+.qjs-circuit-operation {
+
+	box-sizing: border-box;
+	width:   60px;
+	height:  60px;
+	padding: 10px;	
+	overflow: hidden;
+}
+.qjs-circuit-palette,
+.qjs-circuit[qjs-circuit-mode="qjs-circuit-operation-move"] .qjs-circuit-operation {
+
+	cursor: grab;
+}
+.qjs-circuit-operation:hover {
+
+	/*background-color: var( --color-white );*/
+	box-shadow: -1px 2px 8px rgba( 0, 0, 0, 0.5 );
+}
+
+
+.qjs-circuit-operation svg {
 
 	width:  40px;
 	height: 40px;
-	cursor: move;	
 	fill: var( --color-green );
-	overflow: hidden;
 }
-svg.qjs-circuit-operation:hover {
 
-	/*outline: 1px solid white;*/
-	background-color: var( --color-white );
-	box-shadow: -1px 2px 6px rgba( 0, 0, 0, 0.5 );
-}
 #qjs-circuit-operation-identity {
 
 	fill: var( --color-titanium );
@@ -296,10 +318,12 @@ svg.qjs-circuit-operation:hover {
 	/*fill: black;*/
 }
 
-.qjs-circuit-register.qjs-circuit-selected,
+/*.qjs-circuit-register.qjs-circuit-selected,
 .qjs-circuit-input.qjs-circuit-selected,
 .qjs-circuit-moment.qjs-circuit-selected,
-.qjs-circuit-wire.qjs-circuit-selected {
+.qjs-circuit-wire.qjs-circuit-selected 
+*/
+.qjs-selected {
 
 	background-color: var( --color-yellow );
 }

@@ -62,8 +62,9 @@
 			<h3>Playground sketches</h3>
 			<p>
 				This is your behind-the-curtain look
-				at ideas I’m sketching out.
-				Play at your own risk.
+				at interface ideas I’m just sketching out.
+				While the code API already functions (browse the other pages!)
+				you should play here at your own risk ;)
 			</p>
 
 
@@ -97,6 +98,8 @@ var bell = Q`
 				on to the interactive circuit diagram (further below)
 				to <em>copy</em> it in to the circuit.
 				Drag operations within the circuit itself to <em>move</em> them.
+				Just tapping on an operation toggles its selection.
+				Multiple operations selected? You can drag them all at once!
 				As you alter the circuit you’ll notice the probabilities report,
 				ASCII diagram, and text representation of the circuit also update.
 				<!-- Update from the console and you’ll also see these update. -->
@@ -326,21 +329,7 @@ Undo<br>
 
 
 
-
-
-Array.from( document.querySelectorAll( '.qjs-circuit-palette' )).forEach( function( el ){
-
-	Q.Circuit.createDomPalette( el )
-})
-
-function updateEverything( circuit ){
-
-	document.getElementById( circuit.name +'-diagram' ).innerText = circuit.toDiagram( true )
-	document.getElementById( circuit.name +'-text' ).innerText = circuit.toText()
-	document.getElementById( circuit.name +'-report' ).innerText = circuit.report$()
-}
-
-
+//  Here are the two circuits we’ll play with:
 
 var bell = Q`
 
@@ -351,19 +340,60 @@ bell.name = 'bell'
 bell.sort$()
 bell.toDom( document.getElementById( 'bell-dom' ))
 
-// bell.evaluate$()
-// document.getElementById( 'bell-diagram' ).innerText = bell.toDiagram( true )
-// document.getElementById( 'bell-text' ).innerText = bell.toText()
-// document.getElementById( 'bell-report' ).innerText = bell.report$()
+
+var whiplash = Q`
+
+	H  C00  Y   Z   C1
+	H  C10  C0  I   C0
+	H  C01  Y   C0  S
+	H  X    C1  C1  I
+	H  C11  Y   Z   S
+`
+whiplash.name = 'whiplash'
+whiplash.sort$()
+whiplash.toDom( document.getElementById( 'whiplash-dom' ))
 
 
 
 
-window.addEventListener( 'qjs gui altered circuit', function( event ){
+//  Let’s also place circuit palettes
+//  inside anything with the class '.qjs-circuit-palette'.
 
-	event.detail.circuit.evaluate$()
+Array.from( document.querySelectorAll( '.qjs-circuit-palette' )).forEach( function( el ){
+
+	Q.Circuit.createDomPalette( el )
 })
-window.addEventListener( 'qjs evaluation began', function( event ){
+
+
+
+
+//  When our document loads
+//  we want to display our ASCII diagrams, 
+//  text representations, 
+//  and probability reports.
+
+function updateEverything( circuit ){
+
+	document.getElementById( circuit.name +'-diagram' ).innerText = circuit.toDiagram( true )
+	document.getElementById( circuit.name +'-text' ).innerText = circuit.toText()
+	document.getElementById( circuit.name +'-report' ).innerText = circuit.report$()
+}
+window.addEventListener( 'DOMContentLoaded', function(){
+
+	updateEverything( bell )
+	updateEverything( whiplash )
+})
+
+
+
+
+
+
+
+
+//  EVALUATION.
+
+window.addEventListener( 'qjs evaluate began', function( event ){
 
 	console.log( 
 
@@ -371,7 +401,7 @@ window.addEventListener( 'qjs evaluation began', function( event ){
 		event.detail.circuit.toDiagram() +'\n\n'
 	)
 })
-window.addEventListener( 'qjs evaluation progress', function( event ){
+window.addEventListener( 'qjs evaluate progressed', function( event ){
 
 	const 
 	length       = 20,
@@ -385,15 +415,22 @@ window.addEventListener( 'qjs evaluation progress', function( event ){
 
 	console.log( 
 
-		barComplete + 
+		barComplete  + 
 		barRemaining +' '+ 
-		percentText +'   '+
+		percentText  +'   '+
 		opsCompleted +' of '+
 		opsTotal
 	)
-	// console.log( event.detail.state.getWidth(), event.detail.state.getHeight() )
+
+	
+	//  What’s the actual state of the circuit at this moment?
+	//  We should come back and do a cool animated version of this data :)
+
+	const state = event.detail.state
+	// console.log( 'state width', state.getWidth(), 'state height', state.getHeight() )
+	// console.log( 'state', state.toTsv() )
 })
-window.addEventListener( 'qjs evaluation completed', function( event ){
+window.addEventListener( 'qjs evaluate completed', function( event ){
 
 	console.log( 
 
@@ -406,43 +443,20 @@ window.addEventListener( 'qjs evaluation completed', function( event ){
 
 
 
+//  Going to give this a rethink...
+//  Right now it does nothing.
 
+window.addEventListener( 'qjs gui altered circuit', function( event ){
 
-var whiplash = Q`
-
-	H  C00  Z   I   C1
-	X  C10  C0  I   C0
-	X  C01  Z   C0  S
-	X  Y    C1  C1  S
-	X  C11  Z   I   S
-`
-whiplash.name = 'whiplash'
-whiplash.sort$()
-document.getElementById( 'whiplash-dom' ).appendChild( whiplash.toDom() )
-
-// document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram( true )
-// document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
-// setTimeout( function(){
-	
-// 	document.getElementById( 'whiplash-report' ).innerText = whiplash.report$()
-
-// }, 1 )
-
-
-
-
-window.addEventListener( 'DOMContentLoaded', function(){
-
-	updateEverything( bell )
-	updateEverything( whiplash )
+	event.detail.circuit.evaluate$()
 })
 
 
 
 
 
+
+
 		</script>
-					<br><br><br><br><br>
-			<br><br><br><br><br>
 	</body>
 </html>

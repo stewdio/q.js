@@ -383,12 +383,13 @@ Object.assign( Q.Circuit, {
 		// console.log( circuit.toDiagram() )
 
 
+		window.dispatchEvent( new CustomEvent( 
 
-		window.dispatchEvent( new CustomEvent( 'qjs evaluation began', { detail: {
+			'qjs evaluate began', { 
 
-			circuit
-
-		}}))
+				detail: { circuit }
+			}
+		))
 
 
 
@@ -485,7 +486,7 @@ Object.assign( Q.Circuit, {
 			const progress = operationsCompleted / operationsTotal
 
 
-			window.dispatchEvent( new CustomEvent( 'qjs evaluation progress', { detail: {
+			window.dispatchEvent( new CustomEvent( 'qjs evaluate progressed', { detail: {
 
 				circuit,
 				progress,
@@ -536,7 +537,7 @@ Object.assign( Q.Circuit, {
 
 
 
-		window.dispatchEvent( new CustomEvent( 'qjs evaluation completed', { detail: {
+		window.dispatchEvent( new CustomEvent( 'qjs evaluate completed', { detail: {
 		// circuit.dispatchEvent( new CustomEvent( 'evaluation complete', { detail: {
 
 			circuit,
@@ -1089,14 +1090,17 @@ Object.assign( Q.Circuit.prototype, {
 
 	clearThisInput$: function( momentIndex, registerIndices ){
 
+		const circuit = this
+
 		if( registerIndices instanceof Array === false ){
 
 			registerIndices = [ registerIndices ]
 		}
+		
 		let operationsToRemove = 0
 		while( operationsToRemove >= 0 ){
 			
-			operationsToRemove = this.operations.findIndex( function( operation, o ){
+			operationsToRemove = circuit.operations.findIndex( function( operation, o ){
 
 				return (
 
@@ -1109,14 +1113,31 @@ Object.assign( Q.Circuit.prototype, {
 			})
 			if( operationsToRemove >= 0 ){
 
+				circuit.operations.splice( operationsToRemove, 1 )
+				// window.dispatchEvent( new CustomEvent( 
 
-				//  NOTE: Should we call remove$() here instead?
-				//  and within there add that to an UNDO stack!
-				
-				this.operations.splice( operationsToRemove, 1 )
+				// 	'qjs clearThisInput$', { detail: { 
+
+				// 		circuit,
+				// 		momentIndex,
+				// 		registerIndex: operationsToRemove
+				// 	}}
+				// ))
 			}
 		}
-		return this
+
+
+		window.dispatchEvent( new CustomEvent( 
+
+			'qjs clearThisInput$', { detail: { 
+
+				circuit,
+				momentIndex,
+				registerIndices
+			}}
+		))
+		
+		return circuit
 	},
 	
 
@@ -1171,25 +1192,53 @@ Object.assign( Q.Circuit.prototype, {
 		}
 
 
-		//  Ok, we’re clear to proceed.
+		//  Ok, now we can check if this set$ command
+		//  is redundant.
 
-		this.clearThisInput$( momentIndex, registerIndices )
-		if( gate !== Q.Gate.IDENTITY ){
+		const 
+		existingOperation = circuit.get( momentIndex, registerIndices[ 0 ]),
+		isRedundant = !!(
+
+			existingOperation &&
+			existingOperation.gate &&
+			existingOperation.gate === gate &&
+			JSON.stringify( existingOperation.registerIndices ) === JSON.stringify( registerIndices )
+		)
 		
-			this.operations.push({
 
-				momentIndex,
-				registerIndices,
-				gate,
-				gateId
-			})
+		//  If it’s NOT redudant 
+		//  then we’re clear to proceed.
+
+		if( isRedundant !== true ){
+
+			this.clearThisInput$( momentIndex, registerIndices )
+			if( gate !== Q.Gate.IDENTITY ){
+			
+				this.operations.push({
+
+					momentIndex,
+					registerIndices,
+					gate,
+					gateId
+				})
+			}
+			this.sort$()
+
+			
+			//  Emit an event that we have set an operation
+			//  on this circuit.
+
+			window.dispatchEvent( new CustomEvent( 
+
+				'qjs set$ completed', { detail: { 
+
+					circuit,
+					gate,
+					momentIndex,
+					registerIndices
+				}}
+			))
 		}
-		this.sort$()
-
-
-		//  Now emit an event to notify everyone of what we’ve done.
-
-		//x
 	},
 
 

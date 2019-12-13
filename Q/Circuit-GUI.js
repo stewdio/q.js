@@ -47,7 +47,7 @@ Q.Circuit.createDomPalette = function( targetEl ){
 	//  Now we can create and attach individual operations
 	//  to our palette.
 
-	'IHXYZS'.split( '' ).forEach( function( label, i ){// T? C?
+	'IHXYZS'.split( '' ).forEach( function( label, i ){
 
 
 		//  Find the actual gate.
@@ -60,17 +60,14 @@ Q.Circuit.createDomPalette = function( targetEl ){
 		// (Is that just unecessary precaution here?)
 
 		const cellEl = document.createElement( 'div' )
-		cellEl.classList.add( 'qjs-circuit-cell' )
+		cellEl.classList.add( 'qjs-circuit-operation' )
 		cellEl.setAttribute( 'title', gate.name )
-		cellEl.style.gridRow    = 1
-		cellEl.style.gridColumn = i + 1
+		cellEl.operation = { gate }//  Note: Obviously no momentIndex or registerIndices!
 
 
 		//  Create an SVG container to hold our reference.
 
 		const svgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
-		svgEl.classList.add( 'qjs-circuit-operation' )
-		svgEl.operation = { gate }
 		cellEl.appendChild( svgEl )
 
 
@@ -94,12 +91,12 @@ Q.Circuit.createDomPalette = function( targetEl ){
 	//  so we can grab and drag these operations
 	//  on to circuits.
 
-	Array.from( containerEl.querySelectorAll( '.qjs-circuit-cell' ))
+	Array.from( containerEl.querySelectorAll( '.qjs-circuit-operation' ))
 
 		.forEach( function( el ){
 		
-			el.addEventListener( 'mousedown',  Q.Circuit.GUI.grab )
-			el.addEventListener( 'touchstart', Q.Circuit.GUI.grab )
+			el.addEventListener( 'mousedown',  Q.Circuit.GUI.onGrab )
+			el.addEventListener( 'touchstart', Q.Circuit.GUI.onGrab )
 		}
 	)
 	
@@ -147,7 +144,7 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 
 	const circuitEl = document.createElement( 'div' )
 	circuitEl.classList.add( 'qjs-circuit' )
-	circuitEl.circuit = circuit//  EVIL LAUGH !
+	circuitEl.circuit = circuit
 
 
 	//  Circuit layers.
@@ -157,19 +154,16 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 	layerWiresEl.classList.add( 'qjs-circuit-layer' )
 	layerWiresEl.classList.add( 'qjs-circuit-layer-wires' )
 	
-		
 	const layerConnnectionsEl = document.createElement( 'div' )
 	circuitEl.appendChild( layerConnnectionsEl )
 	layerConnnectionsEl.classList.add( 'qjs-circuit-layer' )
-	layerConnnectionsEl.classList.add( 'qjs-circuit-layer-connections' )
-	
+	layerConnnectionsEl.classList.add( 'qjs-circuit-layer-connections' )	
 	
 	const layerGrabbablesEl = document.createElement( 'div' )
 	circuitEl.appendChild( layerGrabbablesEl )
 	layerGrabbablesEl.classList.add( 'qjs-circuit-layer' )
 	layerGrabbablesEl.classList.add( 'qjs-circuit-layer-grabbables' )
 	
-
 
 	//  Labels for registers and input qubit values.
 
@@ -211,8 +205,8 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 
 			const wireSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
 			wireSvgEl.classList.add( 'qjs-circuit-wire' )
-			wireSvgEl.style.gridRow    = r + 1
 			wireSvgEl.style.gridColumn = m + 2
+			wireSvgEl.style.gridRow    = r + 1
 			wireEl.appendChild( wireSvgEl )
 			
 			const wireUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
@@ -226,19 +220,16 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 			//  even if it will be overlayed by another operation.
 
 			const identityEl = document.createElement( 'div' )
-			identityEl.classList.add( 'qjs-circuit-cell' )
+			identityEl.classList.add( 'qjs-circuit-operation' )
+			identityEl.classList.add( 'qjs-circuit-operation-identity' )
 			identityEl.setAttribute( 'title', 'Identity' )
-			identityEl.style.gridRow    = r + 1
 			identityEl.style.gridColumn = m + 2
+			identityEl.style.gridRow    = r + 1
+			identityEl.setAttribute( 'momentIndex',   m )
+			identityEl.setAttribute( 'registerIndex', r )
+			identityEl.operation = { gate: Q.Gate.IDENTITY }
 
 			const identitySvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
-			identitySvgEl.classList.add( 'qjs-circuit-operation' )
-			identitySvgEl.operation = { 
-
-				gate: Q.Gate.IDENTITY
-			}
-			identitySvgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'momentIndex', m )
-			identitySvgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'registerIndex', r )
 			identityEl.appendChild( identitySvgEl )
 
 			const identityUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
@@ -265,20 +256,20 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 
 			const cellEl = document.createElement( 'div' )
 			layerGrabbablesEl.appendChild( cellEl )
-			cellEl.classList.add( 'qjs-circuit-cell' )
+			cellEl.classList.add( 'qjs-circuit-operation' )
+			cellEl.classList.add( 'qjs-circuit-operation-'+ operation.gate.css )
 			cellEl.setAttribute( 'title', operation.gate.name )
+			cellEl.setAttribute( 'momentIndex',   operation.momentIndex )
+			cellEl.setAttribute( 'registerIndex', registerIndex )
 			cellEl.style.gridColumn = operation.momentIndex + 2
-			cellEl.style.gridRow    = registerIndex + 1	
+			cellEl.style.gridRow    = registerIndex + 1
+			cellEl.operation        = operation
 
 			const svgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
 			cellEl.appendChild( svgEl )
-			svgEl.classList.add( 'qjs-circuit-operation' )
-			svgEl.operation = operation
-			svgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'momentIndex', operation.momentIndex )
-			svgEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'registerIndex', registerIndex )
-
 			const useEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
 			svgEl.appendChild( useEl )
+			
 			let css = operation.gate.css
 			if( operation.registerIndices.length > 1 ){
 
@@ -343,45 +334,31 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 	//  SELECT.
 	//  Tapping adds to selection basket.
 
-	circuitEl.setAttribute( 'mode', 'select' )
+	circuitEl.setAttribute( 'qjs-circuit-mode', 'qjs-circuit-operation-select' )
 	
+
+	//  CONTROL.
+	//  Drag one circuit to other ... controls??
+
+	circuitEl.setAttribute( 'qjs-circuit-mode', 'qjs-circuit-operation-control' )
+
 
 	//  MOVE.
 	//  Tapping grabs the object to move and drop it elsewhere.
 
-	circuitEl.setAttribute( 'mode', 'move' )
+	circuitEl.setAttribute( 'qjs-circuit-mode', 'qjs-circuit-operation-move' )
 
 
 
+
+	//  Add event listeners for selecting and grabbing.
+
+	circuitEl.addEventListener( 'mousedown',  Q.Circuit.GUI.onGrab )
+	circuitEl.addEventListener( 'touchstart', Q.Circuit.GUI.onGrab )
 	
 
+	//  Add event listeners for highlighting.
 
-
-
-
-
-
-
-
-
-
-	//  Add events to our circuit.
-	//  COME BACK AND FIX: these should be done PER OPERATION via a mini function call
-	//  so we can dynamically add ops later complete w events.
-	//  (and also remove ops piecemeal, including their events)
-
-	// svg.qjs-circuit-operation, 
-	// .qjs-circuit-moment, 
-	// .qjs-circuit-register, 
-	// .qjs-circuit-input
-	Array.from( circuitEl.querySelectorAll( 'svg.qjs-circuit-operation' ))
-
-		.forEach( function( el ){
-			
-			el.addEventListener( 'mousedown',  Q.Circuit.GUI.grab )
-			el.addEventListener( 'touchstart', Q.Circuit.GUI.grab )
-		}
-	)
 	Array.from( circuitEl.querySelectorAll( '.qjs-circuit-layer > *' )).forEach( function( el ){
 
 		el.addEventListener( 'mouseover', Q.Circuit.GUI.highlight )		
@@ -389,6 +366,97 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 	circuitEl.addEventListener( 'mouseout', Q.Circuit.GUI.unhighlight )
 
 
+
+
+
+	window.addEventListener( 'qjs clearThisInput$', function( event ){
+
+		if( circuit === event.detail.circuit ){
+			
+			const {
+
+				momentIndex,
+				registerIndices
+			
+			} = event.detail
+
+
+			Array.from( circuitEl.querySelectorAll( 
+
+				'.qjs-circuit-layer-grabbables [momentIndex="'+ momentIndex +'"][registerIndex]' 
+			
+			)).filter( function( op ){
+
+				return (
+
+					registerIndices.includes( +op.getAttribute( 'registerIndex' )) &&
+					!op.classList.contains( 'qjs-circuit-operation-identity' )
+				)
+			}).forEach( function( el ){
+
+				el.parentNode.removeChild( el )
+			})
+			
+
+			//  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			//  NOW... WTF do we do about wires between registers
+			//  that we might need to remove?!?!?!?!?!?!?
+		}
+	})
+	window.addEventListener( 'qjs set$ completed', function( event ){
+
+		if( circuit === event.detail.circuit ){
+		
+			const {
+
+				gate,
+				momentIndex,
+				registerIndices
+			
+			} = event.detail
+
+
+			console.log( 'operation has been added. \nDOM should match this:\n'+ event.detail.circuit.toDiagram() )
+
+
+			registerIndices.forEach( function( registerIndex, i ){
+
+				const cellEl = document.createElement( 'div' )
+				layerGrabbablesEl.appendChild( cellEl )
+				cellEl.classList.add( 'qjs-circuit-operation' )
+				cellEl.setAttribute( 'title', gate.name )
+				cellEl.setAttribute( 'momentIndex',   momentIndex )
+				cellEl.setAttribute( 'registerIndex', registerIndex )
+				cellEl.style.gridColumn = momentIndex   + 2
+				cellEl.style.gridRow    = registerIndex + 1
+				cellEl.operation = { gate }
+
+				const svgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
+				cellEl.appendChild( svgEl )
+				const useEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
+				svgEl.appendChild( useEl )
+				let css = gate.css
+				if( registerIndices.length > 1 ){
+
+					if( i === registerIndices.length - 1 ){
+
+						css = 'controlled'
+					}
+					else css = 'controller'
+				}
+				useEl.setAttributeNS(
+
+					'http://www.w3.org/1999/xlink',
+					'xlink:href',
+					'#qjs-circuit-operation-'+ css
+				)
+			})
+
+
+			//  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			//  NOW... WTF do we do about wires between registers
+		}
+	})
 
 
 	//  All done.
@@ -407,16 +475,388 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 
 
 
-
-
-
-
-
 Q.Circuit.GUI = {
 
-	clipboard: null,
 	clipboardElement: null,
-	grabbedItem: null,
+
+	
+
+
+	//  Attached to a .qjs-circuit element.
+	
+	onGrab: function( event ){
+
+		event.preventDefault()
+		event.stopPropagation()
+
+		
+		//  Our first order of business is 
+		//  to find the operation we grabbed to trigger this.		
+
+		let operationEl = event.target
+		while( operationEl.parentNode && 
+			operationEl.operation === undefined ){
+
+			operationEl = operationEl.parentNode
+		}
+
+		const 
+		momentIndex   = +operationEl.getAttribute( 'momentIndex' )
+		registerIndex = +operationEl.getAttribute( 'registerIndex' )
+		
+
+		//  Now we need to find the containing circuit DOM element
+		//  and likewise find the circuit object reference.
+
+		let circuitEl = operationEl
+		while( circuitEl.parentNode && 
+			!circuitEl.classList.contains( 'qjs-circuit' ) &&
+			!circuitEl.classList.contains( 'qjs-circuit-palette' )){
+
+			circuitEl = circuitEl.parentNode
+		}
+		const circuit = circuitEl.circuit
+		
+
+		//  We need a reference to the actual Q.Circuit instance,
+		//  and to know its interaction mode.
+
+		let circuitMode = null
+		if( circuit ){
+
+			circuitMode = circuitEl.getAttribute( 'qjs-circuit-mode' )
+		}
+
+
+		operationEl.wasSelected = operationEl.classList.contains( 'qjs-selected' )
+		operationEl.classList.add( 'qjs-selected' )
+		const selectedElements = Array.from( circuitEl.querySelectorAll( '.qjs-selected' ))
+		
+
+		if( selectedElements.length ){
+
+
+			//  Create the clipboard container elements.
+
+			const clipboardElement = document.createElement( 'div' )
+			clipboardElement.circuit = circuit
+			clipboardElement.classList.add( 'qjs-circuit-clipboard' )
+
+			const operationsEl = document.createElement( 'div' )
+			operationsEl.classList.add( 'qjs-circuit-layer' )
+			operationsEl.classList.add( 'qjs-circuit-layer-grabbables' )
+			clipboardElement.appendChild( operationsEl )
+			
+			
+			//  Before we can attach the selected operation to the clipboard
+			//  we need to know what the lowest momentIndex is
+			//  and what the lowest registerIndex is.
+
+			const 
+			momentIndexMin = selectedElements.reduce( function( min, el ){
+
+				return Math.min( min, +el.getAttribute( 'momentIndex' ))
+
+			}, Infinity ),
+			registerIndexMin = selectedElements.reduce( function( min, el ){
+
+				return Math.min( min, +el.getAttribute( 'registerIndex' ))
+
+			}, Infinity )
+
+
+			//  Where are we supposed to make this clipboard appear? 
+
+			const bounds = ( circuit ?
+
+				circuitEl.querySelector( 
+
+					'[momentIndex="'+ momentIndexMin +'"]'+
+					'[registerIndex="'+ registerIndexMin +'"]'
+				)
+				: operationEl
+			
+			).getBoundingClientRect()
+			clipboardElement.offsetX = window.pageXOffset + bounds.left - event.pageX
+			clipboardElement.offsetY = window.pageYOffset + bounds.top  - event.pageY - 7
+			document.body.appendChild( clipboardElement )
+
+
+			//  We’ll need these values for checking for “self-drops”
+			//  when we do onDrop later.
+
+			clipboardElement.setAttribute( 'momentIndex', momentIndex )
+			clipboardElement.setAttribute( 'registerIndex', registerIndex )
+			clipboardElement.setAttribute( 'momentIndexMin', momentIndexMin )
+			clipboardElement.setAttribute( 'registerIndexMin', registerIndexMin )
+			clipboardElement.circuit   = circuit
+			clipboardElement.circuitEl = circuitEl
+
+
+			//  Attach each selected operation to the clipboard element.
+			
+			selectedElements.forEach( function( selectedElement ){
+
+
+				//  We cannot remove the selected element from its current DOM node
+				//  otherwise iOS freaks out because it was the event target
+				//  so instead we must clone.
+
+				const cloneEl      = selectedElement.cloneNode( true )
+				cloneEl.operation  = selectedElement.operation
+				cloneEl.originalEl = selectedElement
+				cloneEl.style.gridColumn = 1 + ( +selectedElement.getAttribute( 'momentIndex' ) - momentIndexMin )
+				cloneEl.style.gridRow    = 1 + ( +selectedElement.getAttribute( 'registerIndex' ) - registerIndexMin )
+				operationsEl.appendChild( cloneEl )
+				
+
+				//  Should we hide the original element?
+				//  If it’s not an Identity operation, then yes.
+
+				if( circuitMode !== null && 
+					operationEl.operation.gate.label !== 'I' ){
+
+					selectedElement.style.display = 'none'
+				}
+			})
+
+
+			//  Ok. Let’s make the clipboard official and trigger a redraw!
+
+			Q.Circuit.GUI.clipboardElement = clipboardElement
+			Q.Circuit.GUI.onMove( event )
+		}
+	},
+
+
+
+
+	//  Attached with document.addEventListener
+	//  and NOT attached to a circuit element.
+	
+	onMove: function( event ){
+
+		if( Q.Circuit.GUI.clipboardElement !== null ){
+
+			event.preventDefault()
+			event.stopPropagation()
+
+			const 
+			clipboardElement = Q.Circuit.GUI.clipboardElement,
+			offsetX = clipboardElement.offsetX,
+			offsetY = clipboardElement.offsetY,
+			displayState = clipboardElement.style.display
+
+
+			//  Move the clipboard to match the location
+			//  of our mouse cursor or finger.
+			
+			clipboardElement.style.top  = ( event.pageY + offsetY ) +'px'
+			clipboardElement.style.left = ( event.pageX + offsetX ) +'px'
+		}
+	},
+
+
+
+
+	//  Attached with document.addEventListener
+	//  and NOT attached to a circuit element.
+
+	onDrop: function( event ){
+
+		if( Q.Circuit.GUI.clipboardElement !== null ){
+
+			document.body.removeChild( Q.Circuit.GUI.clipboardElement )
+
+
+			//  Receiving element, ie. What are we dropping on to?
+			
+			let 
+			receivingEls = document.elementsFromPoint( event.clientX, event.clientY ),
+			receivingEl  = Array.from( receivingEls ).find( function( el ){
+
+				return el.classList.contains( 'qjs-circuit-operation' )
+			})
+
+
+			//  If our receiving element is a Qjs Circuit operation,
+			//  then we’re in business!
+
+			if( receivingEl &&
+				receivingEl.classList && 
+				receivingEl.classList.contains( 'qjs-circuit-operation' )){
+				
+
+				//  What cell have we dropped on to?
+				
+				const
+				receivingMomentIndex   = +receivingEl.getAttribute( 'momentIndex' ),
+				receivingRegisterIndex = +receivingEl.getAttribute( 'registerIndex' ),
+				receivingOperation     =  receivingEl.operation
+
+
+				//  Find the receiving circuit element
+				//  and a reference to the receiving circuit object itself.
+
+				let receivingCircuitEl = receivingEl
+				while( receivingCircuitEl.parentNode && 
+					!receivingCircuitEl.circuit ){
+
+					receivingCircuitEl = receivingCircuitEl.parentNode
+				}
+				const receivingCircuit = receivingCircuitEl.circuit
+
+
+				const
+				grabbedCircuitTasks   = [],
+				receivingCircuitTasks = []
+
+				const 
+				clipboardEl = Q.Circuit.GUI.clipboardElement,
+				clipboardMomentIndex   = +clipboardEl.getAttribute( 'momentIndex' ),
+				clipboardRegisterIndex = +clipboardEl.getAttribute( 'registerIndex' )
+
+				const
+				grabbedCircuit   = clipboardEl.circuit,
+				grabbedCircuitEl = clipboardEl.circuitEl
+
+
+				//  For each operation contained within the clipboard:
+
+				Array.from( Q.Circuit.GUI.clipboardElement.querySelectorAll( '.qjs-circuit-operation' )).forEach( function( grabbedEl, i ){
+
+
+					//  What element did we drag and drop on to here?
+					//  Note that these momentIndex and registerIndex attributes
+					//  may be undefined. That’s ok! 
+					//  That just means there’s no “cut” operation to perform after.
+					//  Also note that storing the momentIndex as a tag attribute
+					//  is redudant because it is indeed contained within operation.
+					//  However -- operation does NOT contain the cell’s registerIndex!
+					//  It instead contains a registerIndices Array, remember? ;)
+					//  And that may contain multiple elements; some unrelated to this cell!
+					//  So we must store the registerIndex in this way.
+					
+					const
+					grabbedMomentIndex   = +grabbedEl.getAttribute( 'momentIndex' ),
+					grabbedRegisterIndex = +grabbedEl.getAttribute( 'registerIndex' ),
+					grabbedOperation     =  grabbedEl.operation
+
+
+					//  Did we drop an operation right on to itself??
+					//  If so, we should NOT update the circuit!
+					
+					if( grabbedCircuit &&
+						grabbedCircuitEl === receivingCircuitEl &&
+						clipboardMomentIndex   === receivingMomentIndex &&
+						clipboardRegisterIndex === receivingRegisterIndex ){
+
+						grabbedEl.originalEl.style.display = 'block'
+
+
+						//  Tapping an operation and NOT moving it
+						//  is a way to toggle selection state.
+						
+						if( grabbedEl.originalEl.wasSelected ){
+
+							grabbedEl.originalEl.classList.remove( 'qjs-selected' )
+						}
+						else {
+
+							grabbedEl.originalEl.classList.add( 'qjs-selected' )
+						}
+					}
+					
+
+					//  This is NOT a self-drop.
+					//  But is it a drop on to or from a circuit PALETTE?
+					//  Is it a drop between different circuits?
+					//  Still some unknowns going on up to this point.
+
+					else {
+
+						grabbedEl.originalEl.classList.remove( 'qjs-selected' )
+
+
+						//  Are we actually dropping on to a valid circuit?
+						//  If so, then we’re going to need to do some circuit updating.
+
+						if( receivingCircuit ){
+
+
+							//  If this came from a valid circuit
+							//  and not a circuit PALETTE
+							//  then we need to update that circuit.
+
+							if( grabbedCircuit ){
+
+								grabbedCircuitTasks.push({
+
+									momentIndex:   grabbedMomentIndex,
+									registerIndex: grabbedRegisterIndex
+								})
+							}
+
+
+							//  Time to update this receiving circuit.
+
+							receivingCircuitTasks.push({
+
+								momentIndex: receivingMomentIndex + grabbedMomentIndex - clipboardMomentIndex,
+								gate: grabbedOperation.gate,
+								registerIndices: [ receivingRegisterIndex + grabbedRegisterIndex - clipboardRegisterIndex ]
+							})
+						}
+					}
+				})
+				if( grabbedCircuit ){
+				
+					grabbedCircuitTasks.forEach( function( task ){
+
+						grabbedCircuit.clearThisInput$( task.momentIndex, task.registerIndex )
+					})
+				}
+				receivingCircuitTasks.forEach( function( task ){
+
+					receivingCircuit.set$( 
+
+						task.momentIndex,
+						task.gate,
+						task.registerIndices
+					)
+				})
+				if( receivingCircuitTasks ) receivingCircuit.evaluate$()
+				if( grabbedCircuit && 
+					grabbedCircuit !== receivingCircuit && 
+					grabbedCircuitTasks ){
+
+					grabbedCircuit.evaluate$()
+				}
+			}
+
+
+			//  We dragged an operation, sure...
+			//  But we dropped on to nothing useful!
+
+			else {
+				
+				console.log( 'dropped on nothing' )
+				Array.from( Q.Circuit.GUI.clipboardElement.querySelectorAll( '.qjs-circuit-operation' )).forEach( function( grabbedEl ){
+
+					grabbedEl.originalEl.style.display = 'block'
+				})
+			}
+		}
+		
+
+		//  Very important to kill this on any mouse-up event.
+
+		Q.Circuit.GUI.clipboardElement = null
+	},
+
+
+
+
 	highlight: function( event ){
 
 		let cellEl = event.target
@@ -479,502 +919,6 @@ Q.Circuit.GUI = {
 
 			el.classList.remove( 'qjs-circuit-highlight' )
 		})
-	},
-	grab: function( event ){
-		
-		event.preventDefault()
-		event.stopPropagation()
-
-		
-		//  We might be grabbing directly on the USE element
-		//  or more broadly on the SVG element (where the operation is stored).
-		//  Either way we’ll find the operation we’re intending to drag!
-
-		let grabbedItem = event.target
-		while( grabbedItem.parentNode && 
-			grabbedItem.operation === undefined ){
-
-			grabbedItem = grabbedItem.parentNode
-		}
-		Q.Circuit.GUI.grabbedItem = grabbedItem
-
-
-		//  We need to find the containing circuit DOM element
-		//  and likewise find the circuit object reference.
-
-		let circuitElement = grabbedItem
-		while( circuitElement.parentNode && 
-			circuitElement.circuit === undefined ){
-
-			circuitElement = circuitElement.parentNode
-		}
-		const circuit = circuitElement.circuit		
-
-
-
-
-
-
-
-		//  Now we can construct the clipboard.
-
-		const clip = [ grabbedItem ]//  Temporary measure as we transition to new system here:
-		clip.circuitElement = circuitElement
-		clip.circuit = circuitElement.circuit
-		
-
-
-		const clipboardElement = document.createElement( 'div' )
-		clipboardElement.circuit = clip.circuit//  OMG this is all very messy.
-		clipboardElement.classList.add( 'qjs-circuit-clipboard' )
-
-		const gateLayer = document.createElement( 'div' )
-		gateLayer.classList.add( 'qjs-circuit-layer' )
-		gateLayer.classList.add( 'qjs-circuit-layer-grabbables' )
-		clipboardElement.appendChild( gateLayer )
-
-		const cellEl = document.createElement( 'div' )
-		cellEl.classList.add( 'qjs-circuit-cell' )
-		gateLayer.appendChild( cellEl )
-
-
-
-
-		const bounds = grabbedItem.getBoundingClientRect()
-
-		// console.log( event.pageX, window.pageXOffset, bounds.left )
-
-		clipboardElement.offsetX = window.pageXOffset + bounds.left - event.pageX - 10
-		clipboardElement.offsetY = window.pageYOffset + bounds.top  - event.pageY - 20
-		document.body.appendChild( clipboardElement )
-		
-
-		Q.Circuit.GUI.clipboardElement = clipboardElement
-
-
-		clip.forEach( function( selectedElement, i, selectedElements ){
-
-
-			//  This seems superfluous because these values
-			//  should remain accessible from the DOM element, yes??
-			
-			selectedElements[ i ].momentIndex = selectedElement.getAttribute( 'momentIndex' )
-			selectedElements[ i ].registerIndex = selectedElement.getAttribute( 'registerIndex' )
-
-
-			//  ONLY if not clonable!
-
-			//clipboardElement.appendChild( selectedElement )
-
-			// const cellContainer = documen.createElement( 'div' )
-			// cellContainer.classList.add( '.qjs-circuit-layer' )
-
-			
-
-
-			// THIS F’D UP I-OS!!
-
-			// if( clip.circuit === undefined || 
-			// 	grabbedItem.operation.label === 'I' ){
-
-			// 	cellEl.appendChild( selectedElement.cloneNode( true ))
-			// }
-			// else cellEl.appendChild( selectedElement )
-		
-
-			
-
-			cellEl.appendChild( selectedElement.cloneNode( true ))
-			if( clip.circuit === undefined || 
-				grabbedItem.operation.label === 'I' ){
-
-				//cellEl.appendChild( selectedElement.cloneNode( true ))
-			}
-			else {
-
-				selectedElement.style.display = 'none'
-			}
-
-
-		})
-		
-
-// console.log( 'ok did we do it?' )
-// console.log( 'cellEl', cellEl )
-
-
-		// if( event.type === 'touchstart' ){
-
-		// 	console.log( 'attempting BAD touch fix here....' )
-		// 	event.target.addEventListener( 'touchmove', Q.Circuit.GUI.move )
-		// }
-
-
-		Q.Circuit.GUI.move( event )
-
-
-
-
-		/*
-
-
-			ok. we need to actually collect an ARRAY of grabbed items
-			in case we grab multiple items at once
-			(like if we grab a ROW or COLUMN or AREA of shit)
-
-			and we need to -- at the moment of the grab --
-			note each momentIndex, registerIndex, and what circuit they all came from.
-
-			clip.circuitElement
-			clip.circuit
-			clip[ 0 ] = {
-	
-				operation: { gate, momentIndex, registerIndices }
-				momentIndex
-				registerIndex
-			}
-			clip[ 1 ]...
-			...
-
-			
-			REMOVE all of these elements from the circuitEl
-			and APPEND them to a new clipboard
-			so this will be a “circuit clip” or “circuit snippet”
-
-			give that snippetEl a “selected” state (yellow)
-			and also a “dragging” state (box shadow)
-
-			and make it follow the mouse’s movements!
-
-
-		*/
-	},
-	move: function( event ){
-
-
-		// console.log( 'Q.Circuit.GUI.clipboardElement:', Q.Circuit.GUI.clipboardElement )
-		if( Q.Circuit.GUI.clipboardElement !== null ){
-			
-			event.preventDefault()
-			event.stopPropagation()
-			// console.log( 'X,Y:', event.pageX, event.pageY )
-			
-			const 
-			clipboardElement = Q.Circuit.GUI.clipboardElement,
-			offsetX = clipboardElement.offsetX,
-			offsetY = clipboardElement.offsetY
-
-			clipboardElement.style.top  = ( event.pageY + offsetY ) +'px'
-			clipboardElement.style.left = ( event.pageX + offsetX ) +'px'
-		}
-	},
-	drop: function( event ){
-
-
-		//  Come back and fix this:
-
-		if( Q.Circuit.GUI.clipboardElement !== null ){
-			
-			Q.Circuit.GUI.clipboard = null
-			document.body.removeChild( Q.Circuit.GUI.clipboardElement )
-			Q.Circuit.GUI.clipboardElement = null
-		}
-		
-
-
-		if( Q.Circuit.GUI.grabbedItem !== null ){
-
-
-			//  What element are we dropping on to?
-			//  Note that it may not be the event’s target element,
-			//  if may be an ancestor node.
-
-			let receivingEl = event.target
-			if( event.type === 'touchend' ){
-
-				const changedTouch = event.changedTouches[ 0 ]
-				receivingEl = document.elementFromPoint( 
-				
-					changedTouch.clientX, 
-					changedTouch.clientY 
-				)
-				//document.getElementById( 'bell-plus-text' ).innerText = (!!receivingEl) +'   \n'+ JSON.stringify( changedTouch )
-			}
-			while( receivingEl.parentNode && 
-				receivingEl.operation === undefined ){
-
-				receivingEl = receivingEl.parentNode
-			}
-			
-
-			//  If our receiving element is a Qjs Circuit Gate,
-			//  then we’re in business!
-
-			if( receivingEl.classList && 
-				receivingEl.classList.contains( 'qjs-circuit-operation' ) &&
-				receivingEl !== Q.Circuit.GUI.grabbedItem ){
-				
-
-				//  What element did we drag and drop on to here?
-				//  Note that these momentIndex and registerIndex attributes
-				//  may be undefined. That’s ok! 
-				//  That just means there’s no “cut” operation to perform after.
-				//  Also note that storing the momentIndex as a tag attribute
-				//  is redudant because it is indeed contained within operation.
-				//  However -- operation does NOT contain the cell’s registerIndex!
-				//  It instead contains a registerIndices Array, remember? ;)
-				//  And that may contain multiple elements; some unrelated to this cell!
-				//  So we must store the registerIndex in this way.
-				
-				const 
-				grabbedEl = Q.Circuit.GUI.grabbedItem,
-				grabbedMomentIndex   = +grabbedEl.getAttribute( 'momentIndex' ),
-				grabbedRegisterIndex = +grabbedEl.getAttribute( 'registerIndex' )
-
-
-				//  What operation did we drag on to here?
-				//  And what operation will we be replacing?
-				
-				const 
-				operationToInsert  = grabbedEl.operation,
-				operationToReplace = receivingEl.operation
-				
-
-				//  What cell have we dropped on to?
-				
-				const
-				receivingMomentIndex   = +receivingEl.getAttribute( 'momentIndex' ),
-				receivingRegisterIndex = +receivingEl.getAttribute( 'registerIndex' )
-
-
-				//  We expect that the containing DIV for the circuit
-				//  is an ancestor of the receiving element.
-				//  Our actual Q.Circuit reference will be attached to that!
-
-				let circuitEl = receivingEl
-				while( circuitEl.parentNode && 
-					!circuitEl.classList.contains( 'qjs-circuit' )){
-
-					circuitEl = circuitEl.parentNode
-				}
-				const circuit = circuitEl.circuit
-
-
-
-
-
-				// console.log( 'operationToInsert',  operationToInsert )
-				// console.log( 'operationToReplace', operationToReplace )
-				// console.log( 'REPLACE op at moment #', receivingMomentIndex, ', register #', receivingRegisterIndex )			
-				// console.log( 'with this: ', operationToInsert.gate.name )
-				// console.log( 'on circuit:', circuit )
-
-
-
-
-				//  Find the circuit that grabbedEl came from.
-				//  Sure, it’s probably the SAME circuit we’re dropping on to
-				//  but since that’s not a constraint of ours
-				//  we don’t truly know, do we?
-
-				let grabbedFromCircuitEl = grabbedEl
-				while( grabbedFromCircuitEl.parentNode && 
-					!grabbedFromCircuitEl.classList.contains( 'qjs-circuit' )){
-
-					grabbedFromCircuitEl = grabbedFromCircuitEl.parentNode
-				}
-				const grabbedFromCircuit = grabbedFromCircuitEl.circuit
-
-
-
-				// console.log( 'grabbedFromCircuitEl', grabbedFromCircuitEl )
-				// console.log( 'circuitEl', circuitEl )
-				// console.log( 'self own??', 
-
-				// 	grabbedFromCircuitEl === circuitEl &&
-				// 	grabbedMomentIndex === receivingMomentIndex &&
-				// 	grabbedRegisterIndex === receivingRegisterIndex
-				// )
-
-
-				if( grabbedFromCircuitEl === circuitEl &&
-					grabbedMomentIndex === receivingMomentIndex &&
-					grabbedRegisterIndex === receivingRegisterIndex ){
-
-					console.log( 'self-own!' )
-					console.log( Q.Circuit.GUI.grabbedItem )
-					Q.Circuit.GUI.grabbedItem.style.display = 'block'
-				}
-				else {
-
-
-					//  x
-
-					circuit.set$(
-
-						receivingMomentIndex, 
-						operationToInsert.gate,
-						// Q.Gate.findByLabel( operationToInsert.gate.label ),
-						[ receivingRegisterIndex ]
-					)
-
-
-					//  Do we need to find the circuit that grabbedEl came from?
-
-					if( Q.isUsefulNumber( grabbedMomentIndex ) && 
-						Q.isUsefulNumber( grabbedRegisterIndex )){
-
-						
-
-
-
-
-						if( grabbedFromCircuit ){
-
-							
-
-							// console.log( 'Removing this op from its old position:', grabbedMomentIndex, grabbedRegisterIndex )
-							// console.log( 'BEFORE', grabbedFromCircuit.toDiagram() )
-							grabbedFromCircuit.clearThisInput$( grabbedMomentIndex, grabbedRegisterIndex )
-							// console.log( 'AFTER', grabbedFromCircuit.toDiagram() )
-							
-
-
-							if( grabbedFromCircuit !== circuit ){
-								
-								const parent = grabbedFromCircuitEl.parentNode
-								if( parent ){
-								
-									parent.removeChild( grabbedFromCircuitEl )
-									parent.appendChild( grabbedFromCircuit.toDom() )
-								}
-							}
-							grabbedFromCircuit.needsEvaluation = true
-						}
-					}
-
-
-
-				
-
-
-					//operationToInsert.momentIndex = operationToReplace.momentIndex
-					//operationToInsert.registerIndex = operationToReplace.registerIndex
-
-
-					// console.log( circuit.toDiagram() )
-					// console.log( circuit.evaluate$() )
-					// console.log( circuit.report$() )
-
-
-
-					
-					//  ********************************************************************************
-					//  well this is stupid and temporary!
-					//  must come back and fix / make generic / use events?
-					//  and also need to remove event listeners, all that stuff
-					//  because WOW this is just bad practice!
-					//  but the demo works ;)
-
-
-					const parent = circuitEl.parentNode
-					parent.removeChild( circuitEl )
-					parent.appendChild( circuit.toDom() )
-					circuit.needsEvaluation = true
-
-					circuit.evaluate$()
-					//setTimeout( function(){ circuit.evaluate$() }, 10 )
-					// window.dispatchEvent( new CustomEvent( 'qjs gui altered circuit', { detail: {
-
-					// 	circuit
-					// }}))
-
-					
-
-					// if( circuit === bell ){
-						
-						// document.getElementById( 'bell-report' ).innerText = bell.report$()
-						// document.getElementById( 'bell-diagram' ).innerText = bell.toDiagram( true )
-						// document.getElementById( 'bell-text' ).innerText = bell.toText()
-					// }
-					// if( circuit === whiplash ){
-									
-						// document.getElementById( 'whiplash-report' ).innerText = whiplash.report$()
-						// document.getElementById( 'whiplash-diagram' ).innerText = whiplash.toDiagram( true )
-						// document.getElementById( 'whiplash-text' ).innerText = whiplash.toText()
-					// }
-					//  ********************************************************************************
-				
-
-
-					
-
-
-				}
-			}
-			else {
-
-
-
-
-				console.log( 'dropped on to NOTHING' )
-
-				// console.log(Q.Circuit.GUI.grabbedItem)
-				if( Q.Circuit.GUI.grabbedItem ){
-
-					Q.Circuit.GUI.grabbedItem.style.display = 'block'	
-				}
-
-
-			
-
-
-			}			
-			Q.Circuit.GUI.grabbedItem = null
-		}
-	},
-
-
-
-
-
-	
-
-
-	//  Attached to .qjs-cricuit-cell.
-	
-	onTapBegan: function( event ){
-
-		if( circuit.getAttribute( 'mode' ) === 'select' ){
-
-			event.target.classList.add( 'selected' )
-		}
-		else {
-
-
-		}
-	},
-
-
-	//  Attached to document.
-	
-	onMove: function( event ){
-
-		if( circuit.getAttribute( 'mode' ) === 'move' && isDragging ){
-
-			
-		}
-	},
-
-
-	//  Attached to document.
-	
-	onTapEnded: function( event ){
-
-		if( circuit.getAttribute( 'mode' ) === 'move' && isDragging ){
-
-
-		}
 	}
 }
 
@@ -984,18 +928,14 @@ Q.Circuit.GUI = {
 
 
 
+
 const addEvents = function( el = document.body ){
 
-	document.addEventListener( 'mousemove',  Q.Circuit.GUI.move )
-	document.addEventListener( 'touchmove',  Q.Circuit.GUI.move )
-
-	document.addEventListener( 'mouseup',  Q.Circuit.GUI.drop )	
-	document.addEventListener( 'touchend', Q.Circuit.GUI.drop )
+	document.addEventListener( 'mousemove', Q.Circuit.GUI.onMove )
+	document.addEventListener( 'touchmove', Q.Circuit.GUI.onMove )
+	document.addEventListener( 'mouseup',   Q.Circuit.GUI.onDrop )
+	document.addEventListener( 'touchend',  Q.Circuit.GUI.onDrop )
 }
-
-
-
-
 window.addEventListener( 'DOMContentLoaded', function(){
 
 	addEvents()
