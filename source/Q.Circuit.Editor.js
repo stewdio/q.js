@@ -5,6 +5,122 @@
 
 
 
+Q.Circuit.Editor = function(){}
+
+Q.Circuit.Editor.SPRITEMAP = `<svg style="display: none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 60 60" style="enable-background:new 0 0 60 60;" xml:space="preserve">
+	<g id="qjs-circuit-wire">
+		<rect y="30" width="60" height="1"/>
+	</g>
+</svg>
+<svg style="display: none"
+	xmlns="http://www.w3.org/2000/svg" 
+	xmlns:xlink="http://www.w3.org/1999/xlink" 
+	x="0px" y="0px"
+	viewBox="0 30 60 60">
+	<symbol id="qjs-circuit-control-straight">
+		<line x1="30" y1="0" x2="30" y2="60"/>
+	</symbol>
+	<symbol id="qjs-circuit-control-curved" viewBox="0 0 60 60" preserveAspectRatio="none">
+		<path d="M30,0c13.8,0,25,13.4,25,30S43.8,60,30,60"/>
+	</symbol>
+</svg>
+<svg style="display: none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve">
+	<g id="qjs-circuit-qubit-0">
+		<path d="M24.4,21.6c-0.1,0.7-0.3,1.4-0.5,2.1s-0.6,1.3-1,1.8s-1,0.9-1.6,1.2s-1.3,0.5-2.2,0.4c-0.8,0-1.4-0.2-2-0.5
+			s-0.9-0.8-1.2-1.3s-0.5-1.1-0.5-1.8s-0.1-1.3,0-2l0.5-3.4c0.1-0.7,0.3-1.4,0.5-2.1s0.6-1.3,1-1.8s1-0.9,1.6-1.2s1.3-0.5,2.2-0.4
+			c0.5,0,1,0.1,1.4,0.3s0.7,0.4,1,0.6s0.5,0.6,0.7,0.9s0.3,0.7,0.4,1.1s0.2,0.8,0.2,1.3s0,0.9-0.1,1.4L24.4,21.6z M22.1,19.5
+			L18,22.3c0,0.3,0,0.6,0,0.9s0,0.6,0.1,0.9s0.2,0.5,0.4,0.7S19,25,19.3,25c0.4,0,0.8-0.1,1-0.3s0.5-0.4,0.7-0.7s0.3-0.6,0.4-1
+			s0.2-0.7,0.2-1L22.1,19.5z M18.3,20.3l4.1-2.8c0-0.3,0.1-0.6,0.1-0.9s0-0.6-0.1-0.9s-0.2-0.5-0.4-0.7s-0.5-0.3-0.8-0.3
+			c-0.4,0-0.8,0.1-1,0.2s-0.5,0.4-0.7,0.7s-0.3,0.6-0.4,1s-0.2,0.7-0.2,1L18.3,20.3z"/>
+		<polygon points="29.9,30.5 28.1,29.5 33.9,19.9 30.1,10.4 31.9,9.6 36.1,20.1"/>
+	</g>
+	<g id="qjs-circuit-qubit-1">
+		<path d="M20.9,27h-2.7l1.9-10.8l-3.7,1.3l0.4-2.5l6.3-2.2h0.2L20.9,27z"/>
+		<polygon points="29.9,30.5 28.1,29.5 33.9,19.9 30.1,10.4 31.9,9.6 36.1,20.1"/>
+	</g>
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-identity">
+		<circle cx="20" cy="20" r="5"/>
+	</g>
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-controller">
+		<circle cx="20" cy="20" r="8"/>
+	</g>
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-controlled">
+		<circle cx="20" cy="20" r="15"/>
+		<polygon class="qjs-circuit-operation-label" points="27,19 21,19 21,13 19,13 19,19 13,19 13,21 19,21 19,27 21,27 21,21 27,21 	"/>
+	</g>
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-unknown">
+		<rect width="40" height="40"/>
+		<g class="qjs-circuit-operation-label">
+			<path d="M18.1,22.5c0.1-1.5,0.6-2.7,1.5-3.5l0.8-0.6c0.4-0.4,0.8-0.7,1-1.1s0.3-0.8,0.3-1.3c0-0.6-0.3-0.9-0.9-0.9
+				c-0.4,0-0.7,0.1-1,0.4s-0.4,0.7-0.5,1.2l-3.2,0c0.1-1.3,0.6-2.3,1.5-3.1s2-1.1,3.4-1.1c0.8,0,1.6,0.2,2.2,0.5s1.1,0.8,1.4,1.3
+				s0.4,1.2,0.4,2c-0.1,1.1-0.7,2.1-1.9,3.1l-1.1,0.9c-0.7,0.6-1.1,1.3-1.2,2.1L18.1,22.5z M17.1,25.5c0-0.5,0.2-0.9,0.5-1.2
+				s0.8-0.5,1.3-0.5c0.5,0,0.9,0.2,1.2,0.5s0.5,0.7,0.5,1.1c0,0.5-0.2,0.9-0.5,1.2s-0.8,0.5-1.3,0.5c-0.5,0-0.9-0.1-1.2-0.4
+				S17.1,26,17.1,25.5z"/>
+		</g>
+	</g>
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-pi">
+		<rect width="40" height="40"/>
+		<g class="qjs-circuit-operation-label">
+			<path d="M26.4,18.8h-1.7l-0.8,4.7l0,0.4c0,0.4,0.3,0.6,0.8,0.6c0.1,0,0.4,0,0.8,0l-0.2,2.4c-0.6,0.2-1.1,0.3-1.7,0.3
+				c-1,0-1.7-0.3-2.2-0.9s-0.7-1.3-0.6-2.3l0.8-5.1h-2L17.9,27h-3.2l1.4-8.2h-1.7l0.4-2.4h11.9L26.4,18.8z"/>
+		</g>
+	</g>
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-t">
+		<rect width="40" height="40"/>
+		<g class="qjs-circuit-operation-label">
+			<path d="M27,15.4h-4.1l-2,11.6h-3.3l2-11.6h-4.1l0.5-2.6h11.5L27,15.4z"/>
+		</g>
+	</g>
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-phase">
+		<rect width="40" height="40"/>
+		<g class="qjs-circuit-operation-label">
+			<path class="st3" d="M21.7,23.2c0.1-0.7-0.3-1.3-1.2-1.7l-1.6-0.7c-2.2-1-3.3-2.4-3.2-4.1c0-0.8,0.3-1.5,0.8-2.1s1.2-1.1,2.1-1.5
+				s1.9-0.5,2.9-0.5c1.4,0,2.5,0.4,3.4,1.2s1.3,1.9,1.3,3.2h-3.3c0-0.5-0.1-1-0.3-1.3s-0.7-0.5-1.2-0.5c-0.6,0-1.1,0.1-1.5,0.4
+				s-0.7,0.6-0.8,1.1c-0.1,0.7,0.4,1.2,1.5,1.6s1.9,0.8,2.4,1.1c1.6,0.9,2.3,2.2,2.2,3.8c-0.1,0.8-0.3,1.5-0.8,2.2s-1.1,1.1-2,1.4
+				s-1.8,0.5-2.8,0.5c-0.8,0-1.5-0.1-2.1-0.4s-1.2-0.6-1.7-1c-1-0.9-1.4-2-1.4-3.5l3.3,0c0,0.7,0.1,1.3,0.4,1.7s0.9,0.6,1.6,0.6
+				c0.6,0,1-0.1,1.4-0.4S21.6,23.6,21.7,23.2z"/>
+		</g>
+	</g>
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-pauli-z">
+		<rect width="40" height="40"/>
+		<g class="qjs-circuit-operation-label">
+			<path d="M18.3,24.3l6.6,0L24.4,27H13.6l0.3-2l8.2-9.6l-6.6,0l0.5-2.6h10.7l-0.3,1.9L18.3,24.3z"/>
+		</g>
+	</g>
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-pauli-y">
+		<rect width="40" height="40"/>
+		<g class="qjs-circuit-operation-label">
+			<path d="M20.3,18.9l3.6-6.2h3.8L21.5,22l-0.8,5h-3.4l0.9-5.3l-2.8-8.9l3.5,0L20.3,18.9z"/>
+		</g>
+	</g>
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-pauli-x">
+		<rect width="40" height="40"/>
+		<g class="qjs-circuit-operation-label">
+			<path d="M20.4,17.5l3-4.7h4L22.3,20l2.8,7h-3.7l-1.6-4.8L16.8,27h-4l5.2-7.3l-2.7-6.9h3.7L20.4,17.5z"/>
+		</g>
+	</g>
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-hadamard">
+		<rect width="40" height="40"/>
+		<g class="qjs-circuit-operation-label">
+			<path d="M24.7,27h-3.3l1-5.9h-4.9l-1,5.9h-3.3l2.5-14.2H19l-1,5.6h4.9l1-5.6h3.3L24.7,27z"/>
+		</g>
+	</g>
+</svg>`
+Q.Circuit.Editor.addSpriteMap = function(){
+
+	const spritemapEl = document.createElement( 'div' )
+	spritemapEl.style.display =  'none'
+	spritemapEl.innerHTML = Q.Circuit.Editor.SPRITEMAP 
+	document.body.appendChild( spritemapEl )
+}
+
+
+
+
+
+
 
 //  Circuit Palette
 
@@ -47,7 +163,7 @@ Q.Circuit.createDomPalette = function( targetEl ){
 	//  Now we can create and attach individual operations
 	//  to our palette.
 
-	'IHXYZS'.split( '' ).forEach( function( label, i ){
+	'HXYZSI'.split( '' ).forEach( function( label, i ){
 
 
 		//  Find the actual gate.
@@ -416,7 +532,7 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 			} = event.detail
 
 
-			console.log( 'operation has been added. \nDOM should match this:\n'+ event.detail.circuit.toDiagram() )
+			// console.log( 'operation has been added. \nDOM should match this:\n'+ event.detail.circuit.toDiagram() )
 
 
 			registerIndices.forEach( function( registerIndex, i ){
@@ -670,10 +786,13 @@ Q.Circuit.GUI = {
 
 
 			//  Receiving element, ie. What are we dropping on to?
-			
-			let 
-			receivingEls = document.elementsFromPoint( event.clientX, event.clientY ),
-			receivingEl  = Array.from( receivingEls ).find( function( el ){
+
+			const
+			receivingEls = event.type === 'touchend' ? 
+				document.elementsFromPoint( event.changedTouches[ 0 ].clientX, event.changedTouches[ 0 ].clientY ) :
+				document.elementsFromPoint( event.clientX, event.clientY )
+
+			let receivingEl = Array.from( receivingEls ).find( function( el ){
 
 				return el.classList.contains( 'qjs-circuit-operation' )
 			})
@@ -825,10 +944,10 @@ Q.Circuit.GUI = {
 						task.registerIndices
 					)
 				})
-				if( receivingCircuitTasks ) receivingCircuit.evaluate$()
+				if( receivingCircuitTasks.length ) receivingCircuit.evaluate$()
 				if( grabbedCircuit && 
 					grabbedCircuit !== receivingCircuit && 
-					grabbedCircuitTasks ){
+					grabbedCircuitTasks.length ){
 
 					grabbedCircuit.evaluate$()
 				}
@@ -938,6 +1057,7 @@ const addEvents = function( el = document.body ){
 }
 window.addEventListener( 'DOMContentLoaded', function(){
 
+	Q.Circuit.Editor.addSpriteMap()
 	addEvents()
 })
 

@@ -4,10 +4,10 @@
 		<title>Q ⟩ JS</title>
 		<meta charset="utf-8">
 		<meta name="viewport"             content="width=device-width,initial-scale=1.0">
-		<meta name="description"          content="Q.js is quantum computing in your browser.">
+		<meta name="description"          content="Quantum computing in your browser.">
 		<meta name="copyright"            content="Stewart Smith 2019">
 		<meta name="keywords"             content="
-			Q, Q.js, Qjs,
+			Q, Q.js, Q-js, Qjs, quantum JavaScript,
 			quantum, quantum physics, quantum mechanics, superposition,
 			quantum computer, quantum computer programming, quantum computing, QC, 
 			quantum simulator, quantum computer simulator, 
@@ -16,79 +16,85 @@
 			Chrome, Firefox, Safari, Opera, Brave, Edge, WebKit, Blink,
 			Stewart Smith, Stewart, Stew, Stuart, Steven, Steve, Stewdio, stew_rtsmith, @stew_rtsmith,
 			Moar, Moar Technologies Corp, MTC,
-			Google, IBM, Microsoft, NASA, DWave, D-Wave,
+			Google, IBM, Microsoft, Amazon, NASA, DWave, D-Wave,
 			Quil, OpenQASM,
 				ProjectQ, Qiskit, 
 				Quantum Development Kit, Cirq, Strawberry Fields, t|ket>,
 				QCL, Quantum pseudocode, Q#, Q|SI>, Q language, qGCL, QFC, QML, LIQUi|>, Quipper,
 			Stanford CS 269 Q: Quantum Computer Programming">
-
-		<meta name="twitter:card"         content="summary">
+		
+		<meta name="twitter:card"         content="summary_large_image">
 		<meta name="twitter:site"         content="@stew_rtsmith">
 		<meta name="twitter:creator"      content="@stew_rtsmith">
 		<meta name="twitter:title"        content="Q ⟩ JS">
 		<meta name="twitter:description"  content="Quantum computing in your browser.">
-		<meta name="twitter:image"        content="https://stewdio.github.io/q.js/Assets/q-thumbnail.png">
+		<meta name="twitter:image"        content="https://stewdio.github.io/q.js/other/q-thumbnail.png">
 		
 		<meta property="og:type"          content="website">
 		<meta property="og:title"         content="Q ⟩ JS">
 		<meta property="og:description"   content="Quantum computing in your browser.">
-		<meta property="og:image"         content="https://stewdio.github.io/q.js/Assets/q-thumbnail.png">
+		<meta property="og:image"         content="https://stewdio.github.io/q.js/other/q-thumbnail.png">
 		<meta property="og:url"           content="https://stewdio.github.io/q.js/">
 		
-		<link rel="canonical"             href="https://stewdio.github.io/q.js/">
-		<link rel="icon" type="image/png" href="Assets/q-favicon-064.png">
-		<link rel="apple-touch-icon"      href="Assets/q-favicon-144.png">
-		<link rel="stylesheet" type="text/css" href="Assets/style.css">
+		<link rel="canonical" href="https://stewdio.github.io/q.js/">
 		
-		<script async src="https://www.googletagmanager.com/gtag/js"></script>
-		<script src="Assets/ga.js"></script>
-		<script src="Q/Q.js"></script>
-		<script src="Q/ComplexNumber.js"></script>
-		<script src="Q/Matrix.js"></script>
-		<script src="Q/Qubit.js"></script>
-		<script src="Q/Gate.js"></script>
-		<script src="Q/Circuit.js"></script>
-		<script src="Assets/navigation.js"></script>
+		<script src="https://www.googletagmanager.com/gtag/js" async></script>
+		<link  href="other/q-favicon-064.png" rel="icon" type="image/png">
+		<link  href="other/q-favicon-144.png" rel="apple-touch-icon">
+		<script src="other/ga.js"></script>
+		<link  href="other/style.css" rel="stylesheet" type="text/css">
+		
+		<script src="source/Q.js"></script>
+		<script src="source/Q.ComplexNumber.js"></script>
+		<script src="source/Q.Matrix.js"></script>
+		<script src="source/Q.Qubit.js"></script>
+		<script src="source/Q.Gate.js"></script>
+		<script src="source/Q.Circuit.js"></script>
+		<script src="source/Q.Circuit.Editor.js"></script>
+		<link  href="source/Q.Circuit.Editor.css" rel="stylesheet" type="text/css">
+
+		<script src="other/navigation.js"></script>
+		
 	</head>
 	<body>
 		<main>
 			<h3>Hello, this is Q</h3>
 			<p>
-				Q is <a href="https://en.wikipedia.org/wiki/Quantum_computing" target="_blank">quantum computing</a> in your browser.
-				(What?!)
-				Okay, okay, it’s a quantum circuit <em>simulator</em>—because you can’t do actual quantum computing using whatever non-quantum device you’re reading this on, eh?
-				So why build Q?
-				The same reason Google, IBM, Microsoft, and more 
-				have built quantum simulators:
-				to enable everyone to explore quantum circuit design 
-				using a cheap and easy medium for sketching
-				before applying those designs to the real (and rather expensive!) hardware.
+				Q is a quantum circuit editor and simulator that runs right in your Web browser.
+				There is nothing to install and nothing to configure.
+				Just by loading this website you have already loaded Q’s entire sweet of quantum tools.
+				In fact, here’s your first quantum circuit—a 
+				<a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>.
+				Tap and drag the pieces around to get a feel for the Q editor.
+				It’s okay to make mistakes.
+				(Support for dragging multi-register gates coming in January 2020. Stay tuned.)
 			</p>
+			<div class="qjs-circuit-palette"></div>
+			<div id="example-dom"></div>
+			<pre><samp id="example-report" for="example-dom"></samp></pre>
 			<p>
-				Q was started by me, <a href="http://stewartsmith.io" target="_blank">Stewart Smith</a>, 
-				in April 2019
-				as a way to teach myself quantum computing, 
-				share that learning with others,
-				and do some actual quantum circuit programming.
-				Q’s source code—including this documentation—is available for download from GitHub at
-				<a class="url" href="https://github.com/stewdio/q.js" target="_blank">https://github.com/stewdio/q.js</a>.
-				(Come join the fun!)
-				This documentation website is live at
-				<a class="url" href="https://stewdio.github.io/q.js">https://stewdio.github.io/q.js</a>,
-				which is probably where you’re viewing it from now.
-				But it’s built to run just as well right off of your desktop.
-				No packages to install.
-				No settings to configure.
-				Just drop one of the HTML files in to your browser window and you’re up and running!
+				Q is free to use, open-source, 
+				and includes simple explanations 
+				to get you up to speed 
+				on the basics of quantum computing.
+				This makes Q ideal for the classroom 
+				as well as autodidacts at home.
+				Q just might be the most accessible quantum circuit suite in the world.
+				You can even export your circuit designs 
+				and port them over to other quantum suites.
+				Q’s source code—including this documentation—is 
+				available for download from GitHub at
+				<a class="url" href="https://github.com/stewdio/q.js" target="_blank">https://github.com/stewdio/q.js</a>
+				and this documentation website is live at
+				<a class="url" href="https://stewdio.github.io/q.js">https://stewdio.github.io/q.js</a>
 			</p>
 			<h3>Open your JavaScript console</h3>
 			<p>
-				In the very future, Q will take advantage of the browser
-				as a graphic user interface, 
-				but for now the action takes place 
-				in your browser’s JavaScript console.
-				Use one of the following key commands to open your JavaScript console and start exploring:
+				Do you code? Are you reading this on a desktop or laptop?
+				Pop open your browser’s JavaScript console
+				to begin exploring Q’s API right now.
+				Not sure how to open your browser’s JavaScript console?
+				Here’s a handy key-command chart:
 			</p>
 			<table id="console-open-commands"> 
 				<tr>
@@ -245,86 +251,35 @@
 					<td><span class="key"><small>F12</small></span></td>
 				</tr>
 			</table>
-			<h3>My first superposition</h3>
+			<h3>Quantum JavaScript</h3>
 			<p>
-				Have you opened up your browser’s JavaScript console yet? 
-				(See above.)
-				You don’t have to know anything about quantum physics or JavaScript
-				to launch your first qubit in to <a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>!
-				Just copy and paste the following in to your console.
-				(Note those are backticks, not quotation marks.)
+				You don’t need to know a thing about quantum physics
+				or JavaScript
+				to launch your first qubit in to 
+				<a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>.
+				Just copy and paste the following line
+				in to your 
+				<a href="#Open_your_JavaScript_console">JavaScript console</a>.
+				(Note that those are backticks, not single quotation marks.)
 			</p>
 <pre><code>
 <a href="Q.html">Q</a>`H`.<a href="Circuit.html#.prototype.try$">try$</a>()
 </code></pre>
 			<p>
 				Did you try it?
-				You just performed the most superfluous coin flip ever.
-				Each time you run the above code there’s a 50% chance of receiving a 
-				<code>"0"</code>—let’s call that heads—and a 50% chance of receiving a 
-				<code>"1"</code>—and we’ll call that tails.
+				You just performed a quantum coin flip.
+				Each time you run the above code 
+				there’s a 50% chance of landing on 
+				<strong>heads</strong> (<code>0</code>)
+				and a 50% chance of landing on 
+				<strong>tails</strong> (<code>1</code>).
 				Go ahead and try it out.
+				When you’re ready for more,
+				give
+				<a href="Circuit.html#Writing_quantum_circuits">“Writing quantum circuits”</a>
+				a quick read.
 			</p>
-			<p>
-				Note what’s taking place here:
-				You haven’t installed or configured any fancy software, 
-				yet you’re already doing quantum computation.
-				You must be a genius!
-				To learn more about what you’ve just accomplished,
-				see <a href="Circuit.html#Writing_quantum_circuits">“Writing quantum circuits.”</a>
-			</p>
-			<hr>
-			<h3>Roadmap</h3>
-			<p>
-				As of November 2019, Q is operational; able to compute simple entanglements!
-				The drag-and-drop interface for circuit building is under development
-				and unstable demos of this are available in the 
-				<a href="playground.html">playground</a>.
-				The next round of milestones include:
-			</p>
-			<ol class="properties">
-				<li>
-					Finish the drag-and-drop feature that allows a user to 
-					visually drag individual single-register operations
-					(from a palette of operation icons)
-					on to a circuit diagram, thereby altering the circuit’s visual representation.
-					(This process <em>already</em> alters the actual circuit!)
-					This will be a cloning process that copies and does not remove
-					the icon from the operations palette.
-				</li>
-				<li>
-					Replicate the above within the circuit diagram itself
-					to allow single-register operations to be dragged and dropped within the circuit.
-					This will be a cut-and-paste process, leaving an Identity gate in the “cut” cell.
-					(This process does not yet alter the actual circuit.)
-				</li>
-				<li>
-					Replicate both interactions above for multi-register operations.
-				</li>
-				<li>
-					Create an event system for emitting circuit evaluation progress.
-				</li>
-				<li>
-					Use the above event system to enable live reporting of a circuit’s evaluation
-					as a feature of the interactive circuit diagram.
-				</li>
-				<li>
-					Push the evaluation computation to the GPU via
-					<a href="https://en.wikipedia.org/wiki/WebGPU" target="_blank">WebGPU</a>
-					and possibly offload from the main thread entirely via  
-					<a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers" target="_blank">web workers</a>.
-				</li>
-			</ol>
-			<br>
-			<p>
-				Want to get involved? 
-				Are you a quantum computation expert?
-				Do you love JavaScript and the free Web?
-				How about breaking down complex subjects in to simple bite-sized chunks of 
-				<a href="https://en.wikipedia.org/wiki/Copywriting" target="_blank">copywriting</a> and minimalist diagrams?
-				Help us by <a href="https://github.com/stewdio/q.js/issues" target="_blank">creating (or resolving) issues</a> on <a href="https://github.com/stewdio/q.js" target="_blank">Q’s GitHub repository</a>.
-				Let’s make quantum computing accessible!
-			</p>
+			<hr>			
 			<h3>Code style</h3>
 			<p>
 				Q’s source code is verbose, heavily commented, and there’s great empathy for fellow learners.
@@ -368,6 +323,28 @@ cat.<a href="ComplexNumber.html#.toText">toText</a>()   <span class="comment">//
 cat.<a href="ComplexNumber.html#.add$"><strong>add$</strong></a>( dog )<span class="comment">//  Destructive. Note the ‘$’ suffix.</span>
 cat.<a href="ComplexNumber.html#.toText">toText</a>()   <span class="comment">//  Now returns '4 - 2i'</span>
 </pre></code>
+			<h3>Roadmap</h3>
+			<p>
+				As of December 2019
+				we are focussed on refining the editor interface
+				and adding features to it.
+				The highest priority is including editor support for controlled gates.
+				(Controlled gates are already supported directly in code.)
+				Following these editor updates
+				the priority will shift back to the simulator itself.
+				Optimization is key,
+				including <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers" target="_blank">multiple execution threads</a> and hardware acceleration via
+				<a href="https://en.wikipedia.org/wiki/WebGPU" target="_blank">WebGPU</a>.
+			</p>
+			<p>
+				Want to get involved? 
+				Are you a quantum computation expert?
+				Do you love JavaScript and the free Web?
+				How about breaking down complex subjects in to simple bite-sized chunks of 
+				<a href="https://en.wikipedia.org/wiki/Copywriting" target="_blank">copywriting</a> and minimalist diagrams?
+				Help us by <a href="https://github.com/stewdio/q.js/issues" target="_blank">creating (or resolving) issues</a> on <a href="https://github.com/stewdio/q.js" target="_blank">Q’s GitHub repository</a>.
+				Let’s make quantum computing accessible!
+			</p>
 			<hr>
 			<footer>
 				<p class="keywords">
@@ -391,6 +368,82 @@ cat.<a href="ComplexNumber.html#.toText">toText</a>()   <span class="comment">//
 console.log( '\n\n\nYou did it! You opened your browser’s JavaScript console!!\n\n\n\n' )
 console.log( '\n\n\nNow try navigating to the other topic pages to learn more and experiment with Q.\n\n\n\n' )
 
+
+
+var example = Q`
+
+	H C0 I I I
+	I C1 I I I
+	I I  I I I
+`
+example.name = 'example'
+example.sort$()
+example.toDom( document.getElementById( 'example-dom' ))
+
+
+
+//  Let’s also place circuit palettes
+//  inside anything with the class '.qjs-circuit-palette'.
+
+Array.from( document.querySelectorAll( '.qjs-circuit-palette' )).forEach( function( el ){
+
+	Q.Circuit.createDomPalette( el )
+	document.getElementById( 'example-report' )
+		.innerText = example.report$()
+})
+
+
+
+//  EVALUATION.
+
+window.addEventListener( 'qjs evaluate began', function( event ){
+
+	console.log( 
+
+		'\n\nBeginning evaluation for “'+ event.detail.circuit.name +'”\n'+
+		event.detail.circuit.toDiagram() +'\n\n'
+	)
+})
+window.addEventListener( 'qjs evaluate progressed', function( event ){
+
+	const 
+	length       = 20,
+	percent      = Math.round( event.detail.progress * 100 ),
+	percentText  = ( ''+ percent ).padStart( 3 ) +'%',
+	barLength    = Math.round( length * event.detail.progress ),
+	barComplete  = ''.padStart( barLength, '█' ),
+	barRemaining = ''.padStart( length - barLength, '░' ),
+	opsTotal     = event.detail.operationsTotal,
+	opsCompleted = ( ''+ event.detail.operationsCompleted ).padStart( Math.log( opsTotal ) * Math.LOG10E + 1 | 0, ' ' )
+
+	console.log( 
+
+		barComplete  + 
+		barRemaining +' '+ 
+		percentText  +'   '+
+		opsCompleted +' of '+
+		opsTotal
+	)
+
+	
+	//  What’s the actual state of the circuit at this moment?
+	//  We should come back and do a cool animated version of this data :)
+
+	const state = event.detail.state
+	// console.log( 'state width', state.getWidth(), 'state height', state.getHeight() )
+	// console.log( 'state', state.toTsv() )
+})
+window.addEventListener( 'qjs evaluate completed', function( event ){
+
+	console.log( 
+
+		'\nEvaluation completed for “'+ event.detail.circuit.name +'”'+
+		'\nwith these results:\n'+ event.detail.circuit.report$() +'\n\n\n'
+	)
+	// updateEverything( event.detail.circuit )
+	document.getElementById( event.detail.circuit.name +'-report' )
+		.innerText = event.detail.circuit.report$()
+})
 
 
 

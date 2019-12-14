@@ -200,11 +200,13 @@ div.qjs-circuit-cell {
 
 	grid-row: 1;
 	cursor: ew-resize;
+	cursor: s-resize;
 }
 .qjs-circuit-register {
 
 	grid-column: 1;
 	cursor: ns-resize;
+	cursor: e-resize;
 }
 .qjs-circuit-input {
 
@@ -259,6 +261,7 @@ svg.qjs-circuit-wire {
 
 	width:  40px;
 	height: 40px;
+	fill: var( --color-slate );
 	fill: var( --color-green );
 }
 
@@ -274,12 +277,14 @@ svg.qjs-circuit-wire {
 #qjs-circuit-operation-controller,
 #qjs-circuit-operation-controlled {
 
+	fill: var( --color-charcoal );
 	fill: var( --color-blue );
 }
 #qjs-circuit-control-straight,
 #qjs-circuit-control-curved {
 
 	fill: none;
+	stroke: var( --color-charcoal );
 	stroke: var( --color-blue );
 	stroke-width: 2;
 	stroke-miterlimit: 10;
