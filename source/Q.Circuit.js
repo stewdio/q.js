@@ -1096,11 +1096,44 @@ Object.assign( Q.Circuit.prototype, {
 
 			registerIndices = [ registerIndices ]
 		}
+
+
+		//  We need to dispatch an event based on the actual 
+		//  operations found, with its full registerIndices intact.
+
+		circuit.operations.filter( function( operation ){
+
+			return (
+
+				operation.momentIndex === momentIndex && 
+				operation.registerIndices.some( function( registerIndex ){
+
+					return registerIndices.includes( registerIndex )
+				})
+			)
 		
-		let operationsToRemove = 0
-		while( operationsToRemove >= 0 ){
+		}).forEach( function( operation ){
+
+			window.dispatchEvent( new CustomEvent( 
+
+				'qjs clearThisInput$', { detail: { 
+
+					circuit,
+					momentIndex,
+					registerIndices: operation.registerIndices
+				}}
+			))
+		})
+		
+
+		//  And we need the operations’ indices -- not REGISTER indices,
+		//  but the actual index of the operation itself -- so we can
+		//  splice the operations array.
+
+		let spliceIndex = 0
+		while( spliceIndex >= 0 ){
 			
-			operationsToRemove = circuit.operations.findIndex( function( operation, o ){
+			spliceIndex = circuit.operations.findIndex( function( operation, o ){
 
 				return (
 
@@ -1111,37 +1144,13 @@ Object.assign( Q.Circuit.prototype, {
 					})
 				)
 			})
-			if( operationsToRemove >= 0 ){
+			if( spliceIndex >= 0 ){
 
-				circuit.operations.splice( operationsToRemove, 1 )
-				// window.dispatchEvent( new CustomEvent( 
-
-				// 	'qjs clearThisInput$', { detail: { 
-
-				// 		circuit,
-				// 		momentIndex,
-				// 		registerIndex: operationsToRemove
-				// 	}}
-				// ))
+				circuit.operations.splice( spliceIndex, 1 )
 			}
 		}
-
-
-		window.dispatchEvent( new CustomEvent( 
-
-			'qjs clearThisInput$', { detail: { 
-
-				circuit,
-				momentIndex,
-				registerIndices
-			}}
-		))
-		
 		return circuit
 	},
-	
-
-
 
 
 

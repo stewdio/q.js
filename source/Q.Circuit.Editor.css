@@ -45,14 +45,40 @@
 
 	Circuit clipboard
 
-	 ┌───────────┐
-	▟│ ┌───┬───┐ │
-	█│ │ H │ C0│ │
-	█│ ├───┼───┤ │
-	█│ │ I │ C1│ │
-	█│ └───┴───┘ │
-	█└───────────┘
-	████████████▛
+	 ┌───────────────┐
+	▟│ ┌───┬───────┐ │
+	█│ │ H │ X#0.0 │ │
+	█│ ├───┼───────┤ │
+	█│ │ I │ X#0.1 │ │
+	█│ └───┴───────┘ │
+	█└───────────────┘
+	███████████████▛
+
+
+
+    ◢◣
+  ◢■■■■◣
+◢■■■■■■■■◣
+◥■■■■■■■■◤
+  ◥■■■■◤
+    ◥◤
+
+
+    ◢■■■■■■◤
+  ◢◤    ◢◤
+◢■■■■■■◤
+
+
+ ───────────
+  ╲ ╱  ╱  ╱
+   ╳  ╱  ╱
+  ╱ ╲╱  ╱
+ ───────
+
+
+  ─────⦢
+ ╱    ╱
+⦣─────
 
 
 */
@@ -62,17 +88,16 @@
 .qjs-circuit-palette,
 .qjs-circuit-clipboard {
 	
+	display: inline-block;
 	position: relative;
 	margin: 0.5rem 0;
 	max-width: 100%;
 	padding: 0;
-	/*cursor: crosshair;*/
 	font-family: var( --font-family-sans );
 	font-style: italic;
 	color: var( --color-titanium );
 	font-size:   1.0rem;
-	line-height: 2.5rem;
-	/*overflow: auto;*/
+	line-height: 2.7rem;
 }
 .qjs-circuit-palette {
 
@@ -86,18 +111,13 @@
 	z-index: 200;
 	min-width:  60px;
 	min-height: 60px;
-	/*background-color: var( --color-yellow );*/
-	/*background-color: rgba( 255, 255, 255, 0.97 );*/
-	/*background-color: white;*/
-	box-shadow: 0 2px 6px rgba( 0, 0, 0, 0.5 );
-	/*pointer-events: none;*/
 	cursor: grabbing;
 	cursor: -webkit-grabbing; 
 	cursor: -moz-grabbing;
 }
 .qjs-circuit svg {
 
-	fill: var( --color-titanium );
+	/*fill: var( --color-titanium );*/
 }
 
 
@@ -115,8 +135,8 @@
 	box-sizing: border-box;
 	position: absolute;
 	display: grid;	
-	grid-auto-rows:     60px;
-	grid-auto-columns:  60px;	
+	grid-auto-rows:    60px;
+	grid-auto-columns: 60px;	
 	top:  0;
 	left: 0;
 	width:  100%;
@@ -137,12 +157,16 @@
 }
 .qjs-circuit-palette .qjs-circuit-operation {
 
-	/*display: inline-block;*/
 	float: left;
 }
-.qjs-circuit-layer-wires {
+.qjs-circuit-layer-wires,
+.qjs-circuit-layer-background {
 
 	position: relative;
+}
+.qjs-circuit-layer-background div.qjs-circuit-cell {
+
+	padding: 0;
 }
 .qjs-circuit-layer-connections {
 
@@ -177,15 +201,13 @@ div.qjs-circuit-cell {
 	width:   60px;
 	height:  60px;
 	padding: 10px;
-	/*z-index: var( --z-index-operation );*/
-	/*z-index: var( --z-index-operation-identity );*/
 	overflow: hidden;
 }
 .qjs-circuit-menu,
 .qjs-circuit-moment,
 .qjs-circuit-register {
 
-	background-color: var( --color-chalk );
+	/*background-color: var( --color-chalk );*/
 }
 .qjs-circuit-menu  {
 	
@@ -198,28 +220,30 @@ div.qjs-circuit-cell {
 }
 .qjs-circuit-moment {
 
+	border-top-left-radius:  100%;
+	border-top-right-radius: 100%;
 	grid-row: 1;
-	cursor: ew-resize;
 	cursor: s-resize;
 }
 .qjs-circuit-register {
 
+	border-top-left-radius:    100%;
+	border-bottom-left-radius: 100%;
 	grid-column: 1;
-	cursor: ns-resize;
 	cursor: e-resize;
 }
 .qjs-circuit-input {
 
 	padding-left:  0;
 	padding-right: 0;
-	grid-column: 2;
+	grid-column:   2;
 	font-family: var( --font-family-mono );	
 	font-weight: bold;
-	font-size: 1.5rem
+	font-size: 1.8rem;
 }
 #qjs-circuit-wire {
 
-	fill: var( --color-newsprint );
+	fill: #EEE;
 }
 svg.qjs-circuit-wire {
 
@@ -244,6 +268,8 @@ svg.qjs-circuit-wire {
 	height:  60px;
 	padding: 10px;	
 	overflow: hidden;
+	fill: #888;
+	/*fill: var( --color-green );*/
 }
 .qjs-circuit-palette,
 .qjs-circuit[qjs-circuit-mode="qjs-circuit-operation-move"] .qjs-circuit-operation {
@@ -252,8 +278,9 @@ svg.qjs-circuit-wire {
 }
 .qjs-circuit-operation:hover {
 
-	/*background-color: var( --color-white );*/
-	box-shadow: -1px 2px 8px rgba( 0, 0, 0, 0.5 );
+	/*background-color: #EEE;*/
+	/*background-color: rgba( 0, 0, 0, 0.05 );*/
+	/*box-shadow: -1px 2px 8px rgba( 0, 0, 0, 0.5 );*/
 }
 
 
@@ -261,31 +288,29 @@ svg.qjs-circuit-wire {
 
 	width:  40px;
 	height: 40px;
-	fill: var( --color-slate );
-	fill: var( --color-green );
 }
+.qjs-circuit-operation-identity {
 
-#qjs-circuit-operation-identity {
-
-	fill: var( --color-titanium );
+	fill: #EEE;
 	cursor: inherit;
 }
 #qjs-circuit-operation-hadamard {
 
-	fill: var( --color-red );
+	fill: var( --color-charcoal );
+	/*fill: var( --color-red );*/
 }
 #qjs-circuit-operation-controller,
 #qjs-circuit-operation-controlled {
 
 	fill: var( --color-charcoal );
-	fill: var( --color-blue );
+	/*fill: var( --color-blue );*/
 }
 #qjs-circuit-control-straight,
 #qjs-circuit-control-curved {
 
 	fill: none;
 	stroke: var( --color-charcoal );
-	stroke: var( --color-blue );
+	/*stroke: var( --color-blue );*/
 	stroke-width: 2;
 	stroke-miterlimit: 10;
 }
@@ -306,21 +331,40 @@ svg.qjs-circuit-wire {
 
 .qjs-circuit-highlight {
 
-	/*background-color: var( --color-yellow );	*/
 	color: black;
 }
+.qjs-circuit-highlight .qjs-circuit-operation-identity {
+
+	fill: #BBB;
+}
+.qjs-circuit-layer-background .qjs-circuit-highlight {
+
+	background-color: rgba( 0, 0, 0, 0.03 );
+}
+.qjs-circuit-layer-background  {
+/*
+	border-top-left-radius:  100%;
+	border-top-right-radius: 100%;*/
+/*	border-top-left-radius:    100%;
+	border-bottom-left-radius: 100%;*/
+}
+
+
+
+
 .qjs-circuit-register.qjs-circuit-highlight,
 .qjs-circuit-input.qjs-circuit-highlight,
 .qjs-circuit-moment.qjs-circuit-highlight,
 .qjs-circuit-wire.qjs-circuit-highlight {
 
-	background-color: var( --color-newsprint );
+	/*background-color: var( --color-newsprint );*/
 	/*background-color: var( --color-white );
 	box-shadow: 1px 2px 6px rgba( 0, 0, 0, 0.5 );*/
 }
 .qjs-circuit-wire.qjs-circuit-highlight {
 
 	/*fill: black;*/
+	/*stroke: black;*/
 }
 
 /*.qjs-circuit-register.qjs-circuit-selected,
@@ -330,10 +374,18 @@ svg.qjs-circuit-wire {
 */
 .qjs-selected {
 
+	background-color: rgba( 0, 0, 0, 0.2 );
 	background-color: var( --color-yellow );
 }
+.qjs-circuit-clipboard .qjs-circuit-operation-identity,
+.qjs-selected.qjs-circuit-operation-identity {
 
+	fill: #888;
+}
+.qjs-circuit-palette .qjs-circuit-operation-identity {
 
+	fill: #BBB;
+}
 
 
 

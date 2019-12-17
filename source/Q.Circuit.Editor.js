@@ -4,9 +4,7 @@
 
 
 
-
 Q.Circuit.Editor = function(){}
-
 Q.Circuit.Editor.SPRITEMAP = `<svg style="display: none" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 60 60" style="enable-background:new 0 0 60 60;" xml:space="preserve">
 	<g id="qjs-circuit-wire">
@@ -122,6 +120,7 @@ Q.Circuit.Editor.addSpriteMap = function(){
 
 
 
+
 //  Circuit Palette
 
 //  ╭───────────────────┬───╮
@@ -176,7 +175,12 @@ Q.Circuit.createDomPalette = function( targetEl ){
 		// (Is that just unecessary precaution here?)
 
 		const cellEl = document.createElement( 'div' )
-		cellEl.classList.add( 'qjs-circuit-operation' )
+		cellEl.classList.add( 
+
+			'qjs-circuit-cell',
+			'qjs-circuit-operation',
+			'qjs-circuit-operation-'+ gate.css
+		)
 		cellEl.setAttribute( 'title', gate.name )
 		cellEl.operation = { gate }//  Note: Obviously no momentIndex or registerIndices!
 
@@ -263,23 +267,78 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 	circuitEl.circuit = circuit
 
 
-	//  Circuit layers.
 
-	const layerWiresEl = document.createElement( 'div' )
-	circuitEl.appendChild( layerWiresEl )
-	layerWiresEl.classList.add( 'qjs-circuit-layer' )
-	layerWiresEl.classList.add( 'qjs-circuit-layer-wires' )
-	
+
+	//  CIRCUIT LAYERS.
+
+
+	//  Our background layer does 3 things:
+	//  1. Holds space for the circuit’s width and height
+	//     by creating cells that take up space regardless
+	//     of whether or not they contain anything.
+	//  2. Visually indicates if an item is highlighted,
+	//     selected, etc. by holding a background color.
+	//  3. Contains the horizontal “wires” where appropriate.
+
+	const layerBackgroundEl = document.createElement( 'div' )
+	circuitEl.appendChild( layerBackgroundEl )
+	layerBackgroundEl.classList.add( 
+
+		'qjs-circuit-layer',
+		'qjs-circuit-layer-background'
+	)
+
 	const layerConnnectionsEl = document.createElement( 'div' )
 	circuitEl.appendChild( layerConnnectionsEl )
-	layerConnnectionsEl.classList.add( 'qjs-circuit-layer' )
-	layerConnnectionsEl.classList.add( 'qjs-circuit-layer-connections' )	
+	layerConnnectionsEl.classList.add( 
+
+		'qjs-circuit-layer',
+		'qjs-circuit-layer-connections'
+	)
 	
 	const layerGrabbablesEl = document.createElement( 'div' )
 	circuitEl.appendChild( layerGrabbablesEl )
-	layerGrabbablesEl.classList.add( 'qjs-circuit-layer' )
-	layerGrabbablesEl.classList.add( 'qjs-circuit-layer-grabbables' )
+	layerGrabbablesEl.classList.add(
+
+		'qjs-circuit-layer',
+		'qjs-circuit-layer-grabbables'
+	)
 	
+
+
+
+	//  Create background layer.
+
+	for( let m = 0; m < circuit.timewidth + 2; m ++ ){
+
+		for( let r = 0; r < circuit.bandwidth + 1; r ++ ){
+
+			const cellEl = document.createElement( 'div' )
+			cellEl.classList.add( 'qjs-circuit-cell' )
+			cellEl.style.gridColumn = m + 1
+			cellEl.style.gridRow    = r + 1
+			layerBackgroundEl.appendChild( cellEl )
+
+			if( m === 0 ) cellEl.classList.add( 'qjs-circuit-register' )
+			if( m === 1 ) cellEl.classList.add( 'qjs-circuit-input' )
+			if( r === 0 ) cellEl.classList.add( 'qjs-circuit-moment' )
+			if( m > 1 && r > 0 ){
+
+				cellEl.classList.add( 'qjs-circuit-wire' )
+
+				const wireSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
+				wireSvgEl.classList.add( 'qjs-circuit-wire' )
+				cellEl.appendChild( wireSvgEl )
+				
+				const wireUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
+				wireUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-wire' )
+				wireSvgEl.appendChild( wireUseEl )
+			}
+		}
+	}
+
+
+
 
 	//  Labels for registers and input qubit values.
 
@@ -300,6 +359,11 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 	}
 
 
+
+
+
+
+
 	//  Labels for moments.
 
 	for( let m = 1; m <= circuit.timewidth; m ++ ){
@@ -310,25 +374,9 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 		momentEl.style.gridColumn = m + 2
 		momentEl.innerText = m
 		layerGrabbablesEl.appendChild( momentEl )
+		momentEl.addEventListener( 'click', Q.Circuit.GUI.select )
 	
 		for( let r = 1; r <= circuit.bandwidth; r ++ ){
-
-
-			//  Register wires.
-
-			const wireEl = document.createElement( 'div' )
-			wireEl.classList.add( 'qjs-circuit-cell' )
-
-			const wireSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
-			wireSvgEl.classList.add( 'qjs-circuit-wire' )
-			wireSvgEl.style.gridColumn = m + 2
-			wireSvgEl.style.gridRow    = r + 1
-			wireEl.appendChild( wireSvgEl )
-			
-			const wireUseEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'use' )
-			wireUseEl.setAttributeNS( 'http://www.w3.org/1999/xlink', 'xlink:href', '#qjs-circuit-wire' )
-			wireSvgEl.appendChild( wireUseEl )
-			layerWiresEl.appendChild( wireSvgEl )
 
 
 			//  Identity gates.
@@ -336,13 +384,17 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 			//  even if it will be overlayed by another operation.
 
 			const identityEl = document.createElement( 'div' )
-			identityEl.classList.add( 'qjs-circuit-operation' )
-			identityEl.classList.add( 'qjs-circuit-operation-identity' )
+			identityEl.classList.add( 
+
+				'qjs-circuit-cell', 
+				'qjs-circuit-operation',
+				'qjs-circuit-operation-identity'
+			)
 			identityEl.setAttribute( 'title', 'Identity' )
 			identityEl.style.gridColumn = m + 2
 			identityEl.style.gridRow    = r + 1
-			identityEl.setAttribute( 'momentIndex',   m )
-			identityEl.setAttribute( 'registerIndex', r )
+			identityEl.setAttribute( 'momentindex',   m )
+			identityEl.setAttribute( 'registerindex', r )
 			identityEl.operation = { gate: Q.Gate.IDENTITY }
 
 			const identitySvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
@@ -372,11 +424,15 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 
 			const cellEl = document.createElement( 'div' )
 			layerGrabbablesEl.appendChild( cellEl )
-			cellEl.classList.add( 'qjs-circuit-operation' )
-			cellEl.classList.add( 'qjs-circuit-operation-'+ operation.gate.css )
+			cellEl.classList.add( 
+			
+				'qjs-circuit-cell',
+				'qjs-circuit-operation',
+				'qjs-circuit-operation-'+ operation.gate.css
+			)
 			cellEl.setAttribute( 'title', operation.gate.name )
-			cellEl.setAttribute( 'momentIndex',   operation.momentIndex )
-			cellEl.setAttribute( 'registerIndex', registerIndex )
+			cellEl.setAttribute( 'momentindex',   operation.momentIndex )
+			cellEl.setAttribute( 'registerindex', registerIndex )
 			cellEl.style.gridColumn = operation.momentIndex + 2
 			cellEl.style.gridRow    = registerIndex + 1
 			cellEl.operation        = operation
@@ -427,6 +483,8 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 					connectionEl.style.gridRowStart = start + 1
 					connectionEl.style.gridRowEnd   = end + 1
 					connectionEl.style.gridColumn   = operation.momentIndex + 2
+					connectionEl.setAttribute( 'momentindex', operation.momentIndex )
+					connectionEl.setAttribute( 'registerindices', operation.registerIndices )
 
 					const connectionSvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
 					connectionEl.appendChild( connectionSvgEl )
@@ -475,11 +533,15 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 
 	//  Add event listeners for highlighting.
 
-	Array.from( circuitEl.querySelectorAll( '.qjs-circuit-layer > *' )).forEach( function( el ){
+	Array.from( circuitEl.querySelectorAll( 
 
-		el.addEventListener( 'mouseover', Q.Circuit.GUI.highlight )		
+		'.qjs-circuit-cell'
+
+	)).forEach( function( el ){
+
+		el.addEventListener( 'mouseenter', Q.Circuit.GUI.highlight )
 	})
-	circuitEl.addEventListener( 'mouseout', Q.Circuit.GUI.unhighlight )
+	circuitEl.addEventListener( 'mouseleave', Q.Circuit.GUI.unhighlight )
 
 
 
@@ -497,15 +559,18 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 			} = event.detail
 
 
+			//  Remove any operation at this moment
+			//  with any overlap in the provided register indices.
+
 			Array.from( circuitEl.querySelectorAll( 
 
-				'.qjs-circuit-layer-grabbables [momentIndex="'+ momentIndex +'"][registerIndex]' 
+				'.qjs-circuit-layer-grabbables [momentindex="'+ momentIndex +'"][registerindex]' 
 			
 			)).filter( function( op ){
 
 				return (
 
-					registerIndices.includes( +op.getAttribute( 'registerIndex' )) &&
+					registerIndices.includes( +op.getAttribute( 'registerindex' )) &&
 					!op.classList.contains( 'qjs-circuit-operation-identity' )
 				)
 			}).forEach( function( el ){
@@ -514,14 +579,34 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 			})
 			
 
-			//  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			//  NOW... WTF do we do about wires between registers
-			//  that we might need to remove?!?!?!?!?!?!?
+			//  Remove any wires connected to this moment and register indices.
+
+			Array.from( circuitEl.querySelectorAll(
+
+				'.qjs-circuit-layer-connections [momentindex="'+ momentIndex +'"]'
+
+			)).filter( function( el ){
+
+				const wireRegisterIndices = el
+					.getAttribute( 'registerindices' )
+					.split( ',' )
+					.reduce( function( array, n ){
+
+						return +n
+
+					}, [] )
+				
+				return registerIndices.includes( wireRegisterIndices )
+
+			}).forEach( function( connectionEl ){
+
+				connectionEl.parentNode.removeChild( connectionEl )
+			})
 		}
 	})
 	window.addEventListener( 'qjs set$ completed', function( event ){
 
-		if( circuit === event.detail.circuit ){
+		if( circuit === event.detail.circuit && event.detail.gate !== Q.Gate.IDENTITY ){
 		
 			const {
 
@@ -541,8 +626,8 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 				layerGrabbablesEl.appendChild( cellEl )
 				cellEl.classList.add( 'qjs-circuit-operation' )
 				cellEl.setAttribute( 'title', gate.name )
-				cellEl.setAttribute( 'momentIndex',   momentIndex )
-				cellEl.setAttribute( 'registerIndex', registerIndex )
+				cellEl.setAttribute( 'momentindex',   momentIndex )
+				cellEl.setAttribute( 'registerindex', registerIndex )
 				cellEl.style.gridColumn = momentIndex   + 2
 				cellEl.style.gridRow    = registerIndex + 1
 				cellEl.operation = { gate }
@@ -566,6 +651,8 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 					'xlink:href',
 					'#qjs-circuit-operation-'+ css
 				)
+
+				cellEl.addEventListener( 'mouseenter', Q.Circuit.GUI.highlight )
 			})
 
 
@@ -602,9 +689,6 @@ Q.Circuit.GUI = {
 	
 	onGrab: function( event ){
 
-		event.preventDefault()
-		event.stopPropagation()
-
 		
 		//  Our first order of business is 
 		//  to find the operation we grabbed to trigger this.		
@@ -616,131 +700,143 @@ Q.Circuit.GUI = {
 			operationEl = operationEl.parentNode
 		}
 
-		const 
-		momentIndex   = +operationEl.getAttribute( 'momentIndex' )
-		registerIndex = +operationEl.getAttribute( 'registerIndex' )
-		
 
-		//  Now we need to find the containing circuit DOM element
-		//  and likewise find the circuit object reference.
+		//  Did we really find an operation to grab?
 
-		let circuitEl = operationEl
-		while( circuitEl.parentNode && 
-			!circuitEl.classList.contains( 'qjs-circuit' ) &&
-			!circuitEl.classList.contains( 'qjs-circuit-palette' )){
+		if( operationEl.operation ){
 
-			circuitEl = circuitEl.parentNode
-		}
-		const circuit = circuitEl.circuit
-		
-
-		//  We need a reference to the actual Q.Circuit instance,
-		//  and to know its interaction mode.
-
-		let circuitMode = null
-		if( circuit ){
-
-			circuitMode = circuitEl.getAttribute( 'qjs-circuit-mode' )
-		}
-
-
-		operationEl.wasSelected = operationEl.classList.contains( 'qjs-selected' )
-		operationEl.classList.add( 'qjs-selected' )
-		const selectedElements = Array.from( circuitEl.querySelectorAll( '.qjs-selected' ))
-		
-
-		if( selectedElements.length ){
-
-
-			//  Create the clipboard container elements.
-
-			const clipboardElement = document.createElement( 'div' )
-			clipboardElement.circuit = circuit
-			clipboardElement.classList.add( 'qjs-circuit-clipboard' )
-
-			const operationsEl = document.createElement( 'div' )
-			operationsEl.classList.add( 'qjs-circuit-layer' )
-			operationsEl.classList.add( 'qjs-circuit-layer-grabbables' )
-			clipboardElement.appendChild( operationsEl )
-			
-			
-			//  Before we can attach the selected operation to the clipboard
-			//  we need to know what the lowest momentIndex is
-			//  and what the lowest registerIndex is.
+			event.preventDefault()
+			event.stopPropagation()
 
 			const 
-			momentIndexMin = selectedElements.reduce( function( min, el ){
-
-				return Math.min( min, +el.getAttribute( 'momentIndex' ))
-
-			}, Infinity ),
-			registerIndexMin = selectedElements.reduce( function( min, el ){
-
-				return Math.min( min, +el.getAttribute( 'registerIndex' ))
-
-			}, Infinity )
-
-
-			//  Where are we supposed to make this clipboard appear? 
-
-			const bounds = ( circuit ?
-
-				circuitEl.querySelector( 
-
-					'[momentIndex="'+ momentIndexMin +'"]'+
-					'[registerIndex="'+ registerIndexMin +'"]'
-				)
-				: operationEl
+			momentIndex   = +operationEl.getAttribute( 'momentindex' )
+			registerIndex = +operationEl.getAttribute( 'registerindex' )
 			
-			).getBoundingClientRect()
-			clipboardElement.offsetX = window.pageXOffset + bounds.left - event.pageX
-			clipboardElement.offsetY = window.pageYOffset + bounds.top  - event.pageY - 7
-			document.body.appendChild( clipboardElement )
 
+			//  Now we need to find the containing circuit DOM element
+			//  and likewise find the circuit object reference.
 
-			//  We’ll need these values for checking for “self-drops”
-			//  when we do onDrop later.
+			let circuitEl = operationEl
+			while( circuitEl.parentNode && 
+				!circuitEl.classList.contains( 'qjs-circuit' ) &&
+				!circuitEl.classList.contains( 'qjs-circuit-palette' )){
 
-			clipboardElement.setAttribute( 'momentIndex', momentIndex )
-			clipboardElement.setAttribute( 'registerIndex', registerIndex )
-			clipboardElement.setAttribute( 'momentIndexMin', momentIndexMin )
-			clipboardElement.setAttribute( 'registerIndexMin', registerIndexMin )
-			clipboardElement.circuit   = circuit
-			clipboardElement.circuitEl = circuitEl
-
-
-			//  Attach each selected operation to the clipboard element.
+				circuitEl = circuitEl.parentNode
+			}
+			const circuit = circuitEl.circuit
 			
-			selectedElements.forEach( function( selectedElement ){
+
+			//  We need a reference to the actual Q.Circuit instance,
+			//  and to know its interaction mode.
+
+			let circuitMode = null
+			if( circuit ){
+
+				circuitMode = circuitEl.getAttribute( 'qjs-circuit-mode' )
+			}
 
 
-				//  We cannot remove the selected element from its current DOM node
-				//  otherwise iOS freaks out because it was the event target
-				//  so instead we must clone.
+			operationEl.wasSelected = operationEl.classList.contains( 'qjs-selected' )
+			operationEl.classList.add( 'qjs-selected' )
+			const selectedElements = Array.from( circuitEl.querySelectorAll( '.qjs-selected' ))
+			
 
-				const cloneEl      = selectedElement.cloneNode( true )
-				cloneEl.operation  = selectedElement.operation
-				cloneEl.originalEl = selectedElement
-				cloneEl.style.gridColumn = 1 + ( +selectedElement.getAttribute( 'momentIndex' ) - momentIndexMin )
-				cloneEl.style.gridRow    = 1 + ( +selectedElement.getAttribute( 'registerIndex' ) - registerIndexMin )
-				operationsEl.appendChild( cloneEl )
+			if( selectedElements.length ){
+
+
+				//  Create the clipboard container elements.
+
+				const clipboardElement = document.createElement( 'div' )
+				clipboardElement.circuit = circuit
+				clipboardElement.classList.add( 'qjs-circuit-clipboard' )
+
+				const operationsEl = document.createElement( 'div' )
+				operationsEl.classList.add( 'qjs-circuit-layer' )
+				operationsEl.classList.add( 'qjs-circuit-layer-grabbables' )
+				clipboardElement.appendChild( operationsEl )
 				
+				
+				//  Before we can attach the selected operation to the clipboard
+				//  we need to know what the lowest momentIndex is
+				//  and what the lowest registerIndex is.
 
-				//  Should we hide the original element?
-				//  If it’s not an Identity operation, then yes.
+				const 
+				momentIndexMin = selectedElements.reduce( function( min, el ){
 
-				if( circuitMode !== null && 
-					operationEl.operation.gate.label !== 'I' ){
+					return Math.min( min, +el.getAttribute( 'momentindex' ))
 
-					selectedElement.style.display = 'none'
-				}
-			})
+				}, Infinity ),
+				registerIndexMin = selectedElements.reduce( function( min, el ){
+
+					return Math.min( min, +el.getAttribute( 'registerindex' ))
+
+				}, Infinity )
 
 
-			//  Ok. Let’s make the clipboard official and trigger a redraw!
+				//  Where are we supposed to make this clipboard appear? 
 
-			Q.Circuit.GUI.clipboardElement = clipboardElement
-			Q.Circuit.GUI.onMove( event )
+				const bounds = ( circuit ?
+
+					circuitEl.querySelector( 
+
+						'[momentindex="'+ momentIndexMin +'"]'+
+						'[registerindex="'+ registerIndexMin +'"]'
+					)
+					: operationEl
+				
+				).getBoundingClientRect()
+				clipboardElement.offsetX = window.pageXOffset + bounds.left - event.pageX
+				clipboardElement.offsetY = window.pageYOffset + bounds.top  - event.pageY - 7
+				document.body.appendChild( clipboardElement )
+
+
+				//  We’ll need these values for checking for “self-drops”
+				//  when we do onDrop later.
+
+				clipboardElement.setAttribute( 'momentindex', momentIndex )
+				clipboardElement.setAttribute( 'registerindex', registerIndex )
+				clipboardElement.setAttribute( 'momentindexmin', momentIndexMin )
+				clipboardElement.setAttribute( 'registerindexmin', registerIndexMin )
+				clipboardElement.circuit   = circuit
+				clipboardElement.circuitEl = circuitEl
+
+
+				//  Attach each selected operation to the clipboard element.
+				
+				selectedElements.forEach( function( selectedElement ){
+
+
+					//  We cannot remove the selected element from its current DOM node
+					//  otherwise iOS freaks out because it was the event target
+					//  so instead we must clone.
+
+					const cloneEl      = selectedElement.cloneNode( true )
+					cloneEl.operation  = selectedElement.operation
+					cloneEl.originalEl = selectedElement
+					cloneEl.style.gridColumn = 1 + ( +selectedElement.getAttribute( 'momentindex' ) - momentIndexMin )
+					cloneEl.style.gridRow    = 1 + ( +selectedElement.getAttribute( 'registerindex' ) - registerIndexMin )
+					operationsEl.appendChild( cloneEl )
+					
+
+					//  Should we hide the original element?
+					//  If it’s not an Identity operation, then yes.
+
+					if( circuitMode !== null && 
+						operationEl.operation.gate.label !== 'I' ){
+
+						selectedElement.style.display = 'none'
+					}
+				})
+
+
+				//  Ok. Let’s make the clipboard official and trigger a redraw!
+
+				Q.Circuit.GUI.clipboardElement = clipboardElement
+				Q.Circuit.GUI.onMove( event )
+			}
+
+
+
 		}
 	},
 
@@ -809,8 +905,8 @@ Q.Circuit.GUI = {
 				//  What cell have we dropped on to?
 				
 				const
-				receivingMomentIndex   = +receivingEl.getAttribute( 'momentIndex' ),
-				receivingRegisterIndex = +receivingEl.getAttribute( 'registerIndex' ),
+				receivingMomentIndex   = +receivingEl.getAttribute( 'momentindex' ),
+				receivingRegisterIndex = +receivingEl.getAttribute( 'registerindex' ),
 				receivingOperation     =  receivingEl.operation
 
 
@@ -832,8 +928,8 @@ Q.Circuit.GUI = {
 
 				const 
 				clipboardEl = Q.Circuit.GUI.clipboardElement,
-				clipboardMomentIndex   = +clipboardEl.getAttribute( 'momentIndex' ),
-				clipboardRegisterIndex = +clipboardEl.getAttribute( 'registerIndex' )
+				clipboardMomentIndex   = +clipboardEl.getAttribute( 'momentindex' ),
+				clipboardRegisterIndex = +clipboardEl.getAttribute( 'registerindex' )
 
 				const
 				grabbedCircuit   = clipboardEl.circuit,
@@ -857,8 +953,8 @@ Q.Circuit.GUI = {
 					//  So we must store the registerIndex in this way.
 					
 					const
-					grabbedMomentIndex   = +grabbedEl.getAttribute( 'momentIndex' ),
-					grabbedRegisterIndex = +grabbedEl.getAttribute( 'registerIndex' ),
+					grabbedMomentIndex   = +grabbedEl.getAttribute( 'momentindex' ),
+					grabbedRegisterIndex = +grabbedEl.getAttribute( 'registerindex' ),
 					grabbedOperation     =  grabbedEl.operation
 
 
@@ -997,7 +1093,7 @@ Q.Circuit.GUI = {
 		selectedRow    = parseFloat( style.gridRowStart ),
 		selectedColumn = parseFloat( style.gridColumnStart )
 
-		Array.from( circuitEl.querySelectorAll( '.qjs-circuit-layer-grabbables *, .qjs-circuit-layer-wires *' )).forEach( function( el ){
+		Array.from( circuitEl.querySelectorAll( '.qjs-circuit-cell' )).forEach( function( el ){
 
 			const 
 			style = getComputedStyle( el ),
@@ -1005,8 +1101,8 @@ Q.Circuit.GUI = {
 			thisColumn = parseFloat( style.gridColumnStart )
 
 			if(
+				( selectedRow > 1 || selectedColumn > 1 ) &&
 				( thisRow > 1 || thisColumn > 1 ) && (//  Don’t highlight the menu area.
-
 
 					( selectedRow === 1 && thisColumn === selectedColumn ) ||//  If on a moment label, only highlight its column.
 					( selectedColumn < 3 && thisRow === selectedRow      ) ||//  If on a register label, only highlight its row.
@@ -1034,10 +1130,27 @@ Q.Circuit.GUI = {
 
 			circuitEl = circuitEl.parentNode
 		}
-		Array.from( circuitEl.querySelectorAll( '.qjs-circuit-layer-grabbables *, .qjs-circuit-layer-wires *' )).forEach( function( el ){
+		Array.from( circuitEl.querySelectorAll( 
+
+			// '.qjs-circuit-layer-grabbables *, .qjs-circuit-layer-wires *' 
+			'.qjs-circuit-cell'
+
+		)).forEach( function( el ){
 
 			el.classList.remove( 'qjs-circuit-highlight' )
 		})
+	},
+	
+
+
+
+	select: function( event ){
+
+		console.log( 'selection event', event )
+	},
+	unselect: function( event ){
+
+		console.log( 'unselection event', event )
 	}
 }
 
