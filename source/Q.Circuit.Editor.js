@@ -822,7 +822,7 @@ Q.Circuit.GUI = {
 					//  If it’s not an Identity operation, then yes.
 
 					if( circuitMode !== null && 
-						operationEl.operation.gate.label !== 'I' ){
+						selectedElement.operation.gate !== Q.Gate.IDENTITY ){
 
 						selectedElement.style.display = 'none'
 					}
