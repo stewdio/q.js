@@ -260,10 +260,10 @@
 				Just copy and paste the following line
 				in to your 
 				<a href="#Open_your_JavaScript_console">JavaScript console</a>.
-				(Note that those are backticks, not single quotation marks.)
+				(Note that those are backticks on either side of the H, not single quotation marks.)
 			</p>
 <pre><code>
-<a href="Q.html">Q</a>`H`.<a href="Circuit.html#.prototype.try$">try$</a>()
+<a href="Q.html">Q</a>`H`.<a href="Circuit.html#.prototype.try$">try$</a>() ? 'heads' : 'tails'
 </code></pre>
 			<p>
 				Did you try it?
@@ -435,14 +435,18 @@ window.addEventListener( 'qjs evaluate progressed', function( event ){
 })
 window.addEventListener( 'qjs evaluate completed', function( event ){
 
+	const circuit = event.detail.circuit
 	console.log( 
 
-		'\nEvaluation completed for “'+ event.detail.circuit.name +'”'+
-		'\nwith these results:\n'+ event.detail.circuit.report$() +'\n\n\n'
+		'\nEvaluation completed for “'+ circuit.name +'”'+
+		'\nwith these results:\n'+ circuit.report$() +'\n\n\n'
 	)
 	// updateEverything( event.detail.circuit )
-	document.getElementById( event.detail.circuit.name +'-report' )
-		.innerText = event.detail.circuit.report$()
+	if( circuit.name !== undefined ){
+	
+		document.getElementById( circuit.name +'-report' )
+			.innerText = circuit.report$()
+	}
 })
 
 

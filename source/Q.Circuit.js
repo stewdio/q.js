@@ -1196,7 +1196,7 @@ Object.assign( Q.Circuit.prototype, {
 
 			}, false )){
 
-				return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with some out of range qubit indices:`, registerIndices )
+				return Q.warn( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with some out of range qubit indices:`, registerIndices )
 			}
 		}
 

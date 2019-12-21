@@ -85,7 +85,7 @@
 
 
 .qjs-circuit, 
-.qjs-circuit-palette,
+.qjs-palette,
 .qjs-circuit-clipboard {
 	
 	display: inline-block;
@@ -99,7 +99,7 @@
 	font-size:   1.0rem;
 	line-height: 2.7rem;
 }
-.qjs-circuit-palette {
+.qjs-palette {
 
 	min-height: 80px;
 	border-radius: 0.5rem;	
@@ -143,19 +143,19 @@
 	height: 100%;
 	text-align: center;
 }
-.qjs-circuit-palette .qjs-circuit-layer {
+.qjs-palette .qjs-circuit-layer {
 
 	display: block;
 	position: relative;
 	padding: 10px;
 }
-.qjs-circuit-palette .qjs-circuit-layer::after { 
+.qjs-palette .qjs-circuit-layer::after { 
   
 	content: '';
 	display: block; 
 	clear: both;
 }
-.qjs-circuit-palette .qjs-circuit-operation {
+.qjs-palette .qjs-circuit-operation {
 
 	float: left;
 }
@@ -271,7 +271,7 @@ svg.qjs-circuit-wire {
 	fill: #888;
 	/*fill: var( --color-green );*/
 }
-.qjs-circuit-palette,
+.qjs-palette,
 .qjs-circuit[qjs-circuit-mode="qjs-circuit-operation-move"] .qjs-circuit-operation {
 
 	cursor: grab;
@@ -382,7 +382,7 @@ svg.qjs-circuit-wire {
 
 	fill: #888;
 }
-.qjs-circuit-palette .qjs-circuit-operation-identity {
+.qjs-palette .qjs-circuit-operation-identity {
 
 	fill: #BBB;
 }

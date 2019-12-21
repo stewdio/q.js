@@ -140,14 +140,14 @@ Q.Circuit.createDomPalette = function( targetEl ){
 
 	let containerEl
 	if( targetEl instanceof HTMLElement && 
-		targetEl.classList.contains( 'qjs-circuit-palette' )){
+		targetEl.classList.contains( 'qjs-palette' )){
 
 		containerEl = targetEl
 	}
 	else {
 
 		containerEl = document.createElement( 'div' )
-		containerEl.classList.add( 'qjs-circuit-palette' )
+		containerEl.classList.add( 'qjs-palette' )
 	}
 
 
@@ -342,19 +342,20 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 
 	//  Labels for registers and input qubit values.
 
-	for( let i = 1; i <= circuit.bandwidth; i ++ ){
+	for( let r = 1; r <= circuit.bandwidth; r ++ ){
 
 		const registerEl = document.createElement( 'div' )
-		registerEl.setAttribute( 'title', 'Register '+ i +' of '+ circuit.bandwidth )
+		registerEl.setAttribute( 'title', 'Register '+ r +' of '+ circuit.bandwidth )
+		registerEl.setAttribute( 'registerindex', r )
 		registerEl.classList.add( 'qjs-circuit-cell', 'qjs-circuit-register' )
-		registerEl.style.gridRow = i + 1
-		registerEl.innerText     = i
+		registerEl.style.gridRow = r + 1
+		registerEl.innerText     = r
 		layerGrabbablesEl.appendChild( registerEl )
 
 		const inputEl = document.createElement( 'div' )
 		inputEl.classList.add( 'qjs-circuit-cell', 'qjs-circuit-input' )
-		inputEl.style.gridRow = i + 1
-		inputEl.innerText     = circuit.qubits[ i - 1 ].beta.toText()
+		inputEl.style.gridRow = r + 1
+		inputEl.innerText     = circuit.qubits[ r - 1 ].beta.toText()
 		layerGrabbablesEl.appendChild( inputEl )
 	}
 
@@ -370,11 +371,12 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 
 		const momentEl = document.createElement( 'div' )
 		momentEl.setAttribute( 'title', 'Moment '+ m +' of '+ circuit.timewidth )
+		momentEl.setAttribute( 'momentindex', m )
 		momentEl.classList.add( 'qjs-circuit-cell', 'qjs-circuit-moment' )
 		momentEl.style.gridColumn = m + 2
 		momentEl.innerText = m
 		layerGrabbablesEl.appendChild( momentEl )
-		momentEl.addEventListener( 'click', Q.Circuit.GUI.select )
+		// momentEl.addEventListener( 'click', Q.Circuit.GUI.select )
 	
 		for( let r = 1; r <= circuit.bandwidth; r ++ ){
 
@@ -391,10 +393,10 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 				'qjs-circuit-operation-identity'
 			)
 			identityEl.setAttribute( 'title', 'Identity' )
-			identityEl.style.gridColumn = m + 2
-			identityEl.style.gridRow    = r + 1
 			identityEl.setAttribute( 'momentindex',   m )
 			identityEl.setAttribute( 'registerindex', r )
+			identityEl.style.gridColumn = m + 2
+			identityEl.style.gridRow    = r + 1
 			identityEl.operation = { gate: Q.Gate.IDENTITY }
 
 			const identitySvgEl = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' )
@@ -682,161 +684,226 @@ Q.Circuit.GUI = {
 
 	clipboardElement: null,
 
+
+
 	
-
-
 	//  Attached to a .qjs-circuit element.
 	
 	onGrab: function( event ){
 
-		
-		//  Our first order of business is 
-		//  to find the operation we grabbed to trigger this.		
 
-		let operationEl = event.target
-		while( operationEl.parentNode && 
-			operationEl.operation === undefined ){
+		//  While the booleans here may seem redudant at first
+		//  wow does it lower the cognitive load as we progress
+		//  further down this function ;)
 
-			operationEl = operationEl.parentNode
+		const
+		momentEl      =   event.target.closest( '.qjs-circuit-moment' ),
+		isMoment      = !!momentEl,
+		registerEl    =   event.target.closest( '.qjs-circuit-register' ),
+		isRegister    = !!registerEl,
+		operationEl   =   event.target.closest( '.qjs-circuit-operation' ),
+		isOperation   = !!operationEl
+
+
+		//  If we don’t have useful work to do
+		//  then we might as well bail here.
+
+		if( !isMoment && !isRegister && !isOperation ) return null
+
+		const
+		circuitEl   =   event.target.closest( '.qjs-circuit' ),
+		isCircuit   = !!circuitEl,
+		circuitMode =   isCircuit   ? circuitEl.getAttribute( 'qjs-circuit-mode' ) : null
+
+
+		//  Similarly, if we’re prevented from doing work
+		//  we may as well bail.
+
+		if( circuitMode === 'qjs-circuit-mode-locked' ) return null
+
+
+		//  Ok, we’re going to do some work
+		//  so let’s stop eevent propagation
+		//  and gather our other data bits.
+
+		event.preventDefault()
+		event.stopPropagation()
+
+		const
+		targetEl      =   isMoment ? momentEl :
+			isRegister  ? registerEl  :
+			isOperation ? operationEl : event.target,
+		momentIndex   =  +targetEl.getAttribute( 'momentindex' ),
+		registerIndex =  +targetEl.getAttribute( 'registerindex' ),
+		operation     =   isOperation ? operationEl.operation : null,
+		circuit       =   isCircuit   ? circuitEl.circuit : null,
+		paletteEl     =   event.target.closest( '.qjs-palette' ),
+		isPalette     = !!paletteEl
+
+
+		//  If we’ve tapped on a moment label or register label
+		//  then we ought to toggle selection on either that
+		//  entire column (all operarions in that moment) or the
+		//  entire row (all operations for that register).
+
+		//  Notice here how we grab all the IDENTITIES for this
+		//  row or column, then use document.elementsFromPoint()
+		//  to find whatever operation’s on TOP at that point.
+		//  This is because we may have other operations sitting
+		//  on top of identity gates -- and in those cases the user
+		//  cannot select the identity gate! So only look at what
+		//  the user can actually toggle.
+
+		if( isMoment || isRegister ){
+
+			const 
+			queryString = isMoment ? 'momentindex="'+ momentIndex +'"' : 'registerindex="'+ registerIndex +'"',
+			identityEls = Array.from( circuitEl.querySelectorAll( '.qjs-circuit-operation-identity['+ queryString +']' )),
+			potentialSelects = identityEls.reduce( function( collection, el ){
+
+				const 
+				bounds = el.getBoundingClientRect(),
+				x = bounds.left + ( bounds.right - bounds.left ) / 2,
+				y = bounds.top  + ( bounds.bottom - bounds.top ) / 2,
+				founds = document.elementsFromPoint( x, y ),
+				found  = founds[ 0 ].closest( '.qjs-circuit-operation' )
+
+				collection.push( found )
+				return collection
+
+			}, [] ),
+			allAreSelected = potentialSelects.every( function( el, i ){
+				
+				return el.classList.contains( 'qjs-selected' )
+			})
+
+			if( allAreSelected ) potentialSelects.forEach( function( el ){
+
+				el.wasSelected = true
+				el.classList.remove( 'qjs-selected' )
+			})
+			else potentialSelects.forEach( function( el ){
+
+				// el.wasSelected = false
+				el.wasSelected = el.classList.contains( 'qjs-selected' )
+				el.classList.add( 'qjs-selected' )
+			})
 		}
 
 
-		//  Did we really find an operation to grab?
+		//  Now let’s collect all of the selected operations.
 
-		if( operationEl.operation ){
+		const selectedElements = isCircuit ? Array.from( circuitEl.querySelectorAll( '.qjs-selected' )) : []
 
-			event.preventDefault()
-			event.stopPropagation()
 
-			const 
-			momentIndex   = +operationEl.getAttribute( 'momentindex' )
-			registerIndex = +operationEl.getAttribute( 'registerindex' )
-			
+		//  But if we’ve tapped on a single operation?
+		//  We ought to select that too!
 
-			//  Now we need to find the containing circuit DOM element
-			//  and likewise find the circuit object reference.
-
-			let circuitEl = operationEl
-			while( circuitEl.parentNode && 
-				!circuitEl.classList.contains( 'qjs-circuit' ) &&
-				!circuitEl.classList.contains( 'qjs-circuit-palette' )){
-
-				circuitEl = circuitEl.parentNode
-			}
-			const circuit = circuitEl.circuit
-			
-
-			//  We need a reference to the actual Q.Circuit instance,
-			//  and to know its interaction mode.
-
-			let circuitMode = null
-			if( circuit ){
-
-				circuitMode = circuitEl.getAttribute( 'qjs-circuit-mode' )
-			}
-
+		if( isOperation ){
 
 			operationEl.wasSelected = operationEl.classList.contains( 'qjs-selected' )
 			operationEl.classList.add( 'qjs-selected' )
-			const selectedElements = Array.from( circuitEl.querySelectorAll( '.qjs-selected' ))
+
+			if( !operationEl.wasSelected ) selectedElements.push( operationEl )
+		}
+		
+
+		//  If we have operations selected
+		//  then we ought to do something with them!
+
+		if( selectedElements.length ){
+
+
+			//  Create the clipboard container elements.
+
+			const clipboardElement = document.createElement( 'div' )
+			clipboardElement.circuit = circuit
+			clipboardElement.classList.add( 'qjs-circuit-clipboard' )
+
+			const operationsEl = document.createElement( 'div' )
+			operationsEl.classList.add( 'qjs-circuit-layer' )
+			operationsEl.classList.add( 'qjs-circuit-layer-grabbables' )
+			clipboardElement.appendChild( operationsEl )
 			
+			
+			//  Before we can attach the selected operation to the clipboard
+			//  we need to know what the lowest momentIndex is
+			//  and what the lowest registerIndex is.
 
-			if( selectedElements.length ){
+			const 
+			momentIndexMin = selectedElements.reduce( function( min, el ){
+
+				return Math.min( min, +el.getAttribute( 'momentindex' ))
+
+			}, Infinity ),
+			registerIndexMin = selectedElements.reduce( function( min, el ){
+
+				return Math.min( min, +el.getAttribute( 'registerindex' ))
+
+			}, Infinity )
 
 
-				//  Create the clipboard container elements.
+			//  Where are we supposed to make this clipboard appear? 
 
-				const clipboardElement = document.createElement( 'div' )
-				clipboardElement.circuit = circuit
-				clipboardElement.classList.add( 'qjs-circuit-clipboard' )
+			const bounds = ( circuit ?
 
-				const operationsEl = document.createElement( 'div' )
-				operationsEl.classList.add( 'qjs-circuit-layer' )
-				operationsEl.classList.add( 'qjs-circuit-layer-grabbables' )
-				clipboardElement.appendChild( operationsEl )
+				circuitEl.querySelector( 
+
+					'[momentindex="'+ momentIndexMin +'"]'+
+					'[registerindex="'+ registerIndexMin +'"]'
+				)
+				: operationEl
+			
+			).getBoundingClientRect()
+			clipboardElement.offsetX = window.pageXOffset + bounds.left - event.pageX
+			clipboardElement.offsetY = window.pageYOffset + bounds.top  - event.pageY - 7
+			document.body.appendChild( clipboardElement )
+
+
+			//  We’ll need these values for checking for “self-drops”
+			//  when we do onDrop later.
+
+			clipboardElement.setAttribute( 'momentindex', momentIndex )
+			clipboardElement.setAttribute( 'registerindex', registerIndex )
+			clipboardElement.setAttribute( 'momentindexmin', momentIndexMin )
+			clipboardElement.setAttribute( 'registerindexmin', registerIndexMin )
+			clipboardElement.circuit   = circuit
+			clipboardElement.circuitEl = circuitEl
+
+
+			//  Attach each selected operation to the clipboard element.
+			
+			selectedElements.forEach( function( selectedElement ){
+
+
+				//  We cannot remove the selected element from its current DOM node
+				//  otherwise iOS freaks out because it was the event target
+				//  so instead we must clone.
+
+				const cloneEl      = selectedElement.cloneNode( true )
+				cloneEl.operation  = selectedElement.operation
+				cloneEl.originalEl = selectedElement
+				cloneEl.style.gridColumn = 1 + ( +selectedElement.getAttribute( 'momentindex' ) - momentIndexMin )
+				cloneEl.style.gridRow    = 1 + ( +selectedElement.getAttribute( 'registerindex' ) - registerIndexMin )
+				operationsEl.appendChild( cloneEl )
 				
-				
-				//  Before we can attach the selected operation to the clipboard
-				//  we need to know what the lowest momentIndex is
-				//  and what the lowest registerIndex is.
 
-				const 
-				momentIndexMin = selectedElements.reduce( function( min, el ){
+				//  Should we hide the original element?
+				//  If it’s not an Identity operation, then yes.
 
-					return Math.min( min, +el.getAttribute( 'momentindex' ))
+				if( isCircuit &&
+					circuitMode !== null && 
+					selectedElement.operation.gate !== Q.Gate.IDENTITY ){
 
-				}, Infinity ),
-				registerIndexMin = selectedElements.reduce( function( min, el ){
-
-					return Math.min( min, +el.getAttribute( 'registerindex' ))
-
-				}, Infinity )
+					selectedElement.style.display = 'none'
+				}
+			})
 
 
-				//  Where are we supposed to make this clipboard appear? 
+			//  Ok. Let’s make the clipboard official and trigger a redraw!
 
-				const bounds = ( circuit ?
-
-					circuitEl.querySelector( 
-
-						'[momentindex="'+ momentIndexMin +'"]'+
-						'[registerindex="'+ registerIndexMin +'"]'
-					)
-					: operationEl
-				
-				).getBoundingClientRect()
-				clipboardElement.offsetX = window.pageXOffset + bounds.left - event.pageX
-				clipboardElement.offsetY = window.pageYOffset + bounds.top  - event.pageY - 7
-				document.body.appendChild( clipboardElement )
-
-
-				//  We’ll need these values for checking for “self-drops”
-				//  when we do onDrop later.
-
-				clipboardElement.setAttribute( 'momentindex', momentIndex )
-				clipboardElement.setAttribute( 'registerindex', registerIndex )
-				clipboardElement.setAttribute( 'momentindexmin', momentIndexMin )
-				clipboardElement.setAttribute( 'registerindexmin', registerIndexMin )
-				clipboardElement.circuit   = circuit
-				clipboardElement.circuitEl = circuitEl
-
-
-				//  Attach each selected operation to the clipboard element.
-				
-				selectedElements.forEach( function( selectedElement ){
-
-
-					//  We cannot remove the selected element from its current DOM node
-					//  otherwise iOS freaks out because it was the event target
-					//  so instead we must clone.
-
-					const cloneEl      = selectedElement.cloneNode( true )
-					cloneEl.operation  = selectedElement.operation
-					cloneEl.originalEl = selectedElement
-					cloneEl.style.gridColumn = 1 + ( +selectedElement.getAttribute( 'momentindex' ) - momentIndexMin )
-					cloneEl.style.gridRow    = 1 + ( +selectedElement.getAttribute( 'registerindex' ) - registerIndexMin )
-					operationsEl.appendChild( cloneEl )
-					
-
-					//  Should we hide the original element?
-					//  If it’s not an Identity operation, then yes.
-
-					if( circuitMode !== null && 
-						selectedElement.operation.gate !== Q.Gate.IDENTITY ){
-
-						selectedElement.style.display = 'none'
-					}
-				})
-
-
-				//  Ok. Let’s make the clipboard official and trigger a redraw!
-
-				Q.Circuit.GUI.clipboardElement = clipboardElement
-				Q.Circuit.GUI.onMove( event )
-			}
-
-
-
+			Q.Circuit.GUI.clipboardElement = clipboardElement
+			Q.Circuit.GUI.onMove( event )
 		}
 	},
 
