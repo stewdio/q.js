@@ -723,7 +723,7 @@ Q.Circuit.GUI = {
 
 
 		//  Ok, we’re going to do some work
-		//  so let’s stop eevent propagation
+		//  so let’s stop event propagation
 		//  and gather our other data bits.
 
 		event.preventDefault()
@@ -765,10 +765,13 @@ Q.Circuit.GUI = {
 				bounds = el.getBoundingClientRect(),
 				x = bounds.left + ( bounds.right - bounds.left ) / 2,
 				y = bounds.top  + ( bounds.bottom - bounds.top ) / 2,
-				founds = document.elementsFromPoint( x, y ),
-				found  = founds[ 0 ].closest( '.qjs-circuit-operation' )
+				founds = document.elementsFromPoint( x, y )
 
-				collection.push( found )
+				if( founds.length ){
+
+					const found = founds[ 0 ].closest( '.qjs-circuit-operation' )
+					collection.push( found )
+				}
 				return collection
 
 			}, [] ),
@@ -784,7 +787,7 @@ Q.Circuit.GUI = {
 			})
 			else potentialSelects.forEach( function( el ){
 
-				// el.wasSelected = false
+				//el.wasSelected = false
 				el.wasSelected = el.classList.contains( 'qjs-selected' )
 				el.classList.add( 'qjs-selected' )
 			})
@@ -803,107 +806,109 @@ Q.Circuit.GUI = {
 
 			operationEl.wasSelected = operationEl.classList.contains( 'qjs-selected' )
 			operationEl.classList.add( 'qjs-selected' )
-
 			if( !operationEl.wasSelected ) selectedElements.push( operationEl )
-		}
-		
-
-		//  If we have operations selected
-		//  then we ought to do something with them!
-
-		if( selectedElements.length ){
-
-
-			//  Create the clipboard container elements.
-
-			const clipboardElement = document.createElement( 'div' )
-			clipboardElement.circuit = circuit
-			clipboardElement.classList.add( 'qjs-circuit-clipboard' )
-
-			const operationsEl = document.createElement( 'div' )
-			operationsEl.classList.add( 'qjs-circuit-layer' )
-			operationsEl.classList.add( 'qjs-circuit-layer-grabbables' )
-			clipboardElement.appendChild( operationsEl )
 			
-			
-			//  Before we can attach the selected operation to the clipboard
-			//  we need to know what the lowest momentIndex is
-			//  and what the lowest registerIndex is.
 
-			const 
-			momentIndexMin = selectedElements.reduce( function( min, el ){
+			//  If we have operations selected
+			//  then we ought to do something with them!
 
-				return Math.min( min, +el.getAttribute( 'momentindex' ))
-
-			}, Infinity ),
-			registerIndexMin = selectedElements.reduce( function( min, el ){
-
-				return Math.min( min, +el.getAttribute( 'registerindex' ))
-
-			}, Infinity )
+			if( selectedElements.length ){
 
 
-			//  Where are we supposed to make this clipboard appear? 
+				//  Create the clipboard container elements.
 
-			const bounds = ( circuit ?
+				const clipboardElement = document.createElement( 'div' )
+				clipboardElement.circuit = circuit
+				clipboardElement.classList.add( 'qjs-circuit-clipboard' )
 
-				circuitEl.querySelector( 
-
-					'[momentindex="'+ momentIndexMin +'"]'+
-					'[registerindex="'+ registerIndexMin +'"]'
-				)
-				: operationEl
-			
-			).getBoundingClientRect()
-			clipboardElement.offsetX = window.pageXOffset + bounds.left - event.pageX
-			clipboardElement.offsetY = window.pageYOffset + bounds.top  - event.pageY - 7
-			document.body.appendChild( clipboardElement )
-
-
-			//  We’ll need these values for checking for “self-drops”
-			//  when we do onDrop later.
-
-			clipboardElement.setAttribute( 'momentindex', momentIndex )
-			clipboardElement.setAttribute( 'registerindex', registerIndex )
-			clipboardElement.setAttribute( 'momentindexmin', momentIndexMin )
-			clipboardElement.setAttribute( 'registerindexmin', registerIndexMin )
-			clipboardElement.circuit   = circuit
-			clipboardElement.circuitEl = circuitEl
-
-
-			//  Attach each selected operation to the clipboard element.
-			
-			selectedElements.forEach( function( selectedElement ){
-
-
-				//  We cannot remove the selected element from its current DOM node
-				//  otherwise iOS freaks out because it was the event target
-				//  so instead we must clone.
-
-				const cloneEl      = selectedElement.cloneNode( true )
-				cloneEl.operation  = selectedElement.operation
-				cloneEl.originalEl = selectedElement
-				cloneEl.style.gridColumn = 1 + ( +selectedElement.getAttribute( 'momentindex' ) - momentIndexMin )
-				cloneEl.style.gridRow    = 1 + ( +selectedElement.getAttribute( 'registerindex' ) - registerIndexMin )
-				operationsEl.appendChild( cloneEl )
+				const operationsEl = document.createElement( 'div' )
+				operationsEl.classList.add( 'qjs-circuit-layer' )
+				operationsEl.classList.add( 'qjs-circuit-layer-grabbables' )
+				clipboardElement.appendChild( operationsEl )
 				
+				
+				//  Before we can attach the selected operation to the clipboard
+				//  we need to know what the lowest momentIndex is
+				//  and what the lowest registerIndex is.
 
-				//  Should we hide the original element?
-				//  If it’s not an Identity operation, then yes.
+				const 
+				momentIndexMin = selectedElements.reduce( function( min, el ){
 
-				if( isCircuit &&
-					circuitMode !== null && 
-					selectedElement.operation.gate !== Q.Gate.IDENTITY ){
+					return Math.min( min, +el.getAttribute( 'momentindex' ))
 
-					selectedElement.style.display = 'none'
-				}
-			})
+				}, Infinity ),
+				registerIndexMin = selectedElements.reduce( function( min, el ){
+
+					return Math.min( min, +el.getAttribute( 'registerindex' ))
+
+				}, Infinity )
 
 
-			//  Ok. Let’s make the clipboard official and trigger a redraw!
+				//  Where are we supposed to make this clipboard appear? 
 
-			Q.Circuit.GUI.clipboardElement = clipboardElement
-			Q.Circuit.GUI.onMove( event )
+				const bounds = ( circuit ?
+
+					circuitEl.querySelector( 
+
+						'[momentindex="'+ momentIndexMin +'"]'+
+						'[registerindex="'+ registerIndexMin +'"]'
+					)
+					: operationEl
+				
+				).getBoundingClientRect()
+				clipboardElement.offsetX = window.pageXOffset + bounds.left - event.pageX
+				clipboardElement.offsetY = window.pageYOffset + bounds.top  - event.pageY - 7
+				document.body.appendChild( clipboardElement )
+
+
+				//  We’ll need these values for checking for “self-drops”
+				//  when we do onDrop later.
+
+				clipboardElement.setAttribute( 'momentindex', momentIndex )
+				clipboardElement.setAttribute( 'registerindex', registerIndex )
+				clipboardElement.setAttribute( 'momentindexmin', momentIndexMin )
+				clipboardElement.setAttribute( 'registerindexmin', registerIndexMin )
+				clipboardElement.circuit   = circuit
+				clipboardElement.circuitEl = circuitEl
+
+
+				//  Attach each selected operation to the clipboard element.
+				
+				selectedElements.forEach( function( selectedElement ){
+
+
+					//  We cannot remove the selected element from its current DOM node
+					//  otherwise iOS freaks out because it was the event target
+					//  so instead we must clone.
+
+					const cloneEl      = selectedElement.cloneNode( true )
+					cloneEl.operation  = selectedElement.operation
+					cloneEl.originalEl = selectedElement
+					cloneEl.style.gridColumn = 1 + ( +selectedElement.getAttribute( 'momentindex' ) - momentIndexMin )
+					cloneEl.style.gridRow    = 1 + ( +selectedElement.getAttribute( 'registerindex' ) - registerIndexMin )
+					operationsEl.appendChild( cloneEl )
+					
+
+					//  Should we hide the original element?
+					//  If it’s not an Identity operation, then yes.
+					
+					if( isCircuit &&
+						circuitMode !== null ){
+
+						if( selectedElement.operation.gate === Q.Gate.IDENTITY ){
+
+							selectedElement.classList.remove( 'qjs-selected' )
+						}
+						else selectedElement.style.display = 'none'
+					}
+				})
+
+
+				//  Ok. Let’s make the clipboard official and trigger a redraw!
+
+				Q.Circuit.GUI.clipboardElement = clipboardElement
+				Q.Circuit.GUI.onMove( event )
+			}
 		}
 	},
 
