@@ -357,9 +357,11 @@ fox.<a href="#.prototype.set$">set$</a>( 1, <a href="Q.html">Q</a>.<a href="Gate
 <span class="comment">//  Then at moment #2
 //  we’ll use a Controlled-Not gate
 //  to invert the value of qubit #1
-//  if the value of qubit #0 is 1.</span>
+//  if the value of qubit #0 is 1.
+//  Note this is actually created from a 
+//  Pauli X gate with two inputs!</span>
 
-fox.<a href="#.prototype.set$">set$</a>( 2, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.CONTROLLED_NOT">CONTROLLED_NOT</a>, [ 0, 1 ])
+fox.<a href="#.prototype.set$">set$</a>( 2, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.PAULI_X">PAULI_X</a>, [ 0, 1 ])
 
 
 <span class="comment">//  Finally, at moment #3
