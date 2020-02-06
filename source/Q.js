@@ -1,5 +1,5 @@
 
-//  Copyright © 2019, Stewart Smith. See LICENSE for details.
+//  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 
 
@@ -227,7 +227,7 @@ Object.assign( Q, {
 
 Q.createConstants( 
 
-	'REVISION', 13,
+	'REVISION', 14,
 
 
 	//  Yeah... F’ing floating point numbers, Man!

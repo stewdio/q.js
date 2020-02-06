@@ -1,5 +1,5 @@
 
-//  Copyright © 2019, Stewart Smith. See LICENSE for details.
+//  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 
 
@@ -65,6 +65,7 @@ Q.Gate.createConstants(
 		name:  'Identity',
 		label: 'I',
 		css:   'identity',
+		AmazonBraketName: 'i',
 		matrix: Q.Matrix.IDENTITY_2X2
 	}),
 	
@@ -73,6 +74,7 @@ Q.Gate.createConstants(
 
 		name:  'Measure',
 		label: 'M', 
+		AmazonBraketName: 'm',
 		matrix: Q.Matrix.IDENTITY_2X2,//  This is silly. It’s just preventing an error. Come back and fix!!
 		operation: function( qubit ){
 
@@ -91,7 +93,9 @@ Q.Gate.createConstants(
 
 		name:  'Hadamard',
 		label: 'H',
+		
 		css:   'hadamard',
+		AmazonBraketName: 'h',
 		matrix: new Q.Matrix(
 			[ Math.SQRT1_2,  Math.SQRT1_2 ],
 			[ Math.SQRT1_2, -Math.SQRT1_2 ]),

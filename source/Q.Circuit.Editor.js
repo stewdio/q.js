@@ -1,5 +1,5 @@
 
-//  Copyright © 2019, Stewart Smith. See LICENSE for details.
+//  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 
 
@@ -41,10 +41,10 @@ Q.Circuit.Editor.SPRITEMAP = `<svg style="display: none" version="1.1" xmlns="ht
 	<g class="qjs-circuit-gate" id="qjs-circuit-operation-identity">
 		<circle cx="20" cy="20" r="5"/>
 	</g>
-	<g class="qjs-circuit-gate" id="qjs-circuit-operation-controller">
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-control">
 		<circle cx="20" cy="20" r="8"/>
 	</g>
-	<g class="qjs-circuit-gate" id="qjs-circuit-operation-controlled">
+	<g class="qjs-circuit-gate" id="qjs-circuit-operation-target">
 		<circle cx="20" cy="20" r="15"/>
 		<polygon class="qjs-circuit-operation-label" points="27,19 21,19 21,13 19,13 19,19 13,19 13,21 19,21 19,27 21,27 21,21 27,21 	"/>
 	</g>
@@ -449,9 +449,9 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 
 				if( i === operation.registerIndices.length - 1 ){
 
-					css = 'controlled'
+					css = 'target'
 				}
-				else css = 'controller'
+				else css = 'control'
 			}
 			useEl.setAttributeNS(
 
@@ -643,9 +643,9 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 
 					if( i === registerIndices.length - 1 ){
 
-						css = 'controlled'
+						css = 'target'
 					}
-					else css = 'controller'
+					else css = 'control'
 				}
 				useEl.setAttributeNS(
 
@@ -1112,11 +1112,22 @@ Q.Circuit.GUI = {
 						task.registerIndices
 					)
 				})
-				if( receivingCircuitTasks.length ) receivingCircuit.evaluate$()
+				if( receivingCircuitTasks.length ){
+
+					window.dispatchEvent( new CustomEvent( 
+
+						'qjs gui altered circuit', { detail: { circuit: receivingCircuit }}
+					))
+					receivingCircuit.evaluate$()
+				}
 				if( grabbedCircuit && 
 					grabbedCircuit !== receivingCircuit && 
 					grabbedCircuitTasks.length ){
 
+					window.dispatchEvent( new CustomEvent( 
+
+						'qjs gui altered circuit', { detail: { circuit: grabbedCircuit }}
+					))
 					grabbedCircuit.evaluate$()
 				}
 			}

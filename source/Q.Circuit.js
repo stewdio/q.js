@@ -1,5 +1,5 @@
 
-//  Copyright © 2019, Stewart Smith. See LICENSE for details.
+//  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 
 
@@ -64,171 +64,109 @@ Object.assign( Q.Circuit, {
 
 
 	fromText: function( text ){
-
+		
 
 		//  Is this a String Template -- as opposed to a regular String?
 		//  If so, let’s convert it to a regular String.
 		//  Yes, this maintains the line breaks.
 
-		if( text.raw !== undefined ) text = ''+text.raw
+		if( text.raw !== undefined ) text = ''+text.raw		
+		return Q.Circuit.fromTableTransposed( 
 
+			text
+			.trim()
+			.split( /\r?\n/ )
+			.filter( function( item ){ return item.length })
+			.map( function( item, r ){
 
-		//  Break this text up in to registers (by line returns)
-		//  and then each register in to moments (by non-word chars).
+				return item
+				.trim()
+				.split( /[-+\s+=+]/ )
+				.filter( function( item ){ return item.length })
+				.map( function( item, m ){
 
-		const 
-		lines = text.split( '\n' ).reduce( function( cleaned, line ){
-
-			const trimmed = line.trim()			
-			if( trimmed.length ) cleaned.push( trimmed.toUpperCase().split( /\W+/ ))
-			return cleaned
-
-		}, [] ),
-		bandwidth = lines.length
-
-
-		//  Validate the circuit’s moments.
-		//  They should be equal for each series of qubit operations.
-
-		const timewidth = lines[ 0 ].length
-		lines.forEach( function( line, l ){
-
-			if( line.length !== timewidth ) return Q.error( `Q.Circuit attempted to create a new circuit from text input but the amount of time implied in the submitted text is not consistent.` )
-		})
-
-
-		//  Create the new circuit
-		//  then attempt to populate it with actual gates.
-
-		const circuit = new Q.Circuit( bandwidth, timewidth )
-		lines.forEach( function( register, r ){
-
-			register.forEach( function( moment, m ){
-
-
-				//  We’re iterating via forEach which is zero-indexed,
-				//  but our moments and registers are one-indexed.
-
-				const
-				momentIndex   = m + 1,
-				registerIndex = r + 1
-
-
-				//  We’re expecting that
-				//  for each MOMENT of each REGISTER
-				//  there is an OPERATION
-				//  and it is identified by a letter,
-				//  and possibly disambiguated by a number.
-
-				let
-				letters = moment.match( /^[A-Za-z]+/ ),
-				numbers = moment.match( /\d+$/ )
-
-
-				//  Let’s see if we can find this operation
-				//  by its letter code.
-
-				if( letters !== null ) letters = letters[ 0 ]
-				const gate = new Q.Gate.findByLabel( letters )
-				if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to create a new circuit from text input but could not identify this submitted gate: ${ moment }.` )
-
-
-				if( gate !== Q.Gate.IDENTITY ){
-
-
-					//  If this operation only operates on a single register
-					//  then we are done and done here.
-
-					if( gate.bandwidth == 1 ){
-
-						circuit.set$( momentIndex, gate, [ registerIndex ])
+					//const matches = item.match( /(^\w+)(#(\w+))*(\.(\d+))*/ )
+					const matches = item.match( /(^\w+)(\.(\w+))*(#(\d+))*/ )
+					return {
+						
+						gateLabel:         matches[ 1 ],
+						operationMomentId: matches[ 3 ],
+						mappingIndex:     +matches[ 5 ]
 					}
+				})
+			})
+		)
+	},
+	fromTableTransposed: function( table ){
+
+		const
+		bandwidth = table.length,
+		timewidth = table.reduce( function( max, moments ){
+
+			return Math.max( max, moments.length )
+		
+		}, 0 ),
+		circuit = new Q.Circuit( bandwidth, timewidth )
+		
+		circuit.bandwidth = bandwidth
+		circuit.timewidth = timewidth
+		for( let r = 0; r < bandwidth; r ++ ){
+
+			const registerIndex = r + 1
+			for( let m = 0; m < timewidth; m ++ ){
+
+				const 
+				momentIndex = m + 1,
+				operation = table[ r ][ m ]
+
+				let siblingHasBeenFound = false
+				for( let s = 0; s < r; s ++ ){
+
+					const sibling = table[ s ][ m ]
+					if( operation.gateLabel === sibling.gateLabel &&
+						operation.operationMomentId === sibling.operationMomentId &&
+						Q.isUsefulInteger( operation.mappingIndex ) &&
+						Q.isUsefulInteger( sibling.mappingIndex ) &&
+						operation.mappingIndex !== sibling.mappingIndex ){
 
 
-					//  But if this gate accepts more than one input
-					//  we need to do some fancy footwork.
+						//  We’ve found a sibling !
 
-					else if( gate.bandwidth > 1 ){
+						const operationsIndex = circuit.operations.findIndex( function( operation ){
 
-						let operation, gateId, inputIndex
-						if( numbers !== null ) numbers = numbers[ 0 ]
-						
+							return (
 
-						//  If we receive a single digit number
-						//  then we know this digit is just an input index
-						//  and NOT a gateId.
-
-						if( numbers.length === 1 ){
-
-							inputIndex = numbers.substr( 0, 1 )
-
-
-							//  We may already have this gate on file.
-							//  If so, we’d better find it!
-
-							operation = circuit.operations.find( function( operation ){
-
-								return operation.momentIndex === momentIndex &&
-									operation.gate.label === gate.label
-							})
-						}
-
-						
-						//  If we received a double digit number
-						//  then the first number is a gate id
-						//  and the second one is an input index.
-						
-						else if( numbers.length === 2 ){
-
-							gateId = numbers.substr( 0, 1 )
-							inputIndex = numbers.substr( 1, 1 )
-
-
-							//  Similar to above, 
-							//  but there might be more than one gate of this type
-							//  so we need to check IDs.
-
-							operation = circuit.operations.find( function( operation ){
-
-								return (
-
-									operation.momentIndex === momentIndex &&
-									operation.gate.label === gate.label &&
-									operation.gateId === gateId
-								)
-							})
-						}
-					
-
-						//  If we’ve found this gate for this moment already
-						//  all we need to do is set this input index to this qubit index.
-
-						if( operation !== undefined ){
-
-							circuit.clearThisInput$( momentIndex, [ registerIndex ])
-							operation.registerIndices[ inputIndex ] = registerIndex			
-						}
-						else {
-						
-							
-							//  Looks like this gate isn’t attached to this moment yet
-							//  so we’ll attach it,
-							//  but we’ll only supply this particular qubit’s index
-							//  for the gate’s input indices.
-
-							const registerIndices = []
-							registerIndices[ inputIndex ] = registerIndex
-							// if( gateId !== undefined ){
-
-							// 	console.log( 'setting gate.id to gateId', gateId )
-							// 	gate.id = gateId
-							// }
-							circuit.set$( momentIndex, gate, registerIndices, gateId )
-						}
+								operation.momentIndex === momentIndex &&
+								operation.registerIndices.includes( s + 1 )
+							)
+						})
+						// console.log( 'operationsIndex?', operationsIndex )
+						circuit.operations[ operationsIndex ].registerIndices[ operation.mappingIndex ] = registerIndex
+						siblingHasBeenFound = true
 					}
 				}
-			})
-		})
+				if( siblingHasBeenFound === false && operation.gateLabel !== 'I' ){
+
+					const 
+					gate = Q.Gate.findByLabel( operation.gateLabel ),
+					registerIndices = []
+
+					if( Q.isUsefulInteger( operation.mappingIndex )){
+					
+						registerIndices[ operation.mappingIndex ] = registerIndex
+					}
+					else registerIndices[ 0 ] = registerIndex
+					circuit.operations.push({
+
+						momentIndex,
+						registerIndices,
+						gate,
+						operationMomentId: operation.operationMomentId
+					})
+				}
+			}
+		}
+		circuit.sort$()
 		return circuit
 	},
 
@@ -677,6 +615,19 @@ Object.assign( Q.Circuit.prototype, {
 		})
 		return this
 	},
+	
+
+
+
+
+
+	    ///////////////////
+	   //               //
+	  //   Exporters   //
+	 //               //
+	///////////////////
+
+
 	toTable: function(){
 
 		const 
@@ -774,11 +725,11 @@ Object.assign( Q.Circuit.prototype, {
 					isMultiRegisterOperation = true
 					if(	indexAmongSiblings === operation.registerIndices.length - 1 ){
 
-						nameCss = 'controlled'
+						nameCss = 'target'
 					}
 					else {
 
-						nameCss = 'controller'
+						nameCss = 'control'
 					}
 
 					//  May need to re-visit the code above in consideration of SWAPs.
@@ -816,9 +767,9 @@ Object.assign( Q.Circuit.prototype, {
 
 					if( moment.operationsThisMoment[ operation.label ] > 1 ){
 
-						operation.labelDisplay = operation.label +''+ ( operation.operationsOfThisTypeNow - 1 )
+						operation.labelDisplay = operation.label +'.'+ ( operation.operationsOfThisTypeNow - 1 )
 					}
-					operation.labelDisplay += ''+ operation.indexAmongSiblings
+					operation.labelDisplay += '#'+ operation.indexAmongSiblings
 				}
 			})
 		})
@@ -879,6 +830,7 @@ Object.assign( Q.Circuit.prototype, {
 			}
 		}
 		return '\n'+ output.join( '\n' )
+		// return output.join( '\n' )
 	},
 	toDiagram: function( makeAllMomentsEqualWidth ){
 
@@ -993,9 +945,97 @@ Object.assign( Q.Circuit.prototype, {
 	},
 
 
+	toAmazonBraket: function(){
+
+		const header = `from braket.circuits import Circuit
+from braket.aws import AwsQuantumSimulator
+
+device_arn = “arn:aws:aqx:::quantum-simulator:aqx:qs1”
+device = AwsQuantumSimulator(device_arn)
+s3_folder = (“my_bucket”, “my_prefix”)
+
+`
+		//`qjs_circuit = Circuit().h(0).cnot(0,1)`
+		const circuit = this.operations.reduce( function( string, operation ){
+
+			let awsGate = operation.gate.AmazonBraketName !== undefined ?
+				operation.gate.AmazonBraketName :
+				operation.gate.label.substr( 0, 1 ).toLowerCase()
+
+			if( operation.gate.label === 'X' && operation.registerIndices.length > 1 ){
+
+				awsGate = 'cnot'
+			}
+			
+			return string +'.'+ awsGate +'(' + 
+				operation.registerIndices.reduce( function( string, registerIndex, r ){
+
+					return string + (( r > 0 ) ? ',' : '' ) + ( registerIndex - 1 )
+
+				}, '' ) + ')'
+
+		}, 'qjs_circuit = Circuit()' )
 
 
+		const footer = `\n\nprint(device.run(qjs_circuit, s3_folder).result().measurement_counts())`
+		return header + circuit + footer
+	},
+	toLatex: function(){
 
+		/*
+
+		\Qcircuit @C=1em @R=.7em {
+			& \ctrl{2} & \targ     & \gate{U}  & \qw \\
+			& \qw      & \ctrl{-1} & \qw       & \qw \\
+			& \targ    & \ctrl{-1} & \ctrl{-2} & \qw \\
+			& \qw      & \ctrl{-1} & \qw       & \qw
+		}
+
+		No "&"" means it’s an input. So could also do this:
+		\Qcircuit @C=1.4em @R=1.2em {
+
+			a & i \\
+			1 & x
+		}
+		*/
+
+		return '\\Qcircuit @C=1.0em @R=0.7em {\n' +
+		this.toTable()
+		.reduce( function( array, moment, m ){
+
+			moment.forEach( function( operation, o, operations ){
+
+				let command = 'qw'
+				if( operation.label !== 'I' ){
+
+					if( operation.isMultiRegisterOperation ){
+
+						if( operation.indexAmongSiblings === 0 ){
+
+							if( operation.label === 'X' ) command = 'targ'
+							else command = operation.label.toLowerCase()
+						}
+						else if( operation.indexAmongSiblings > 0 ) command = 'ctrl{?}'
+					}
+					else command = operation.label.toLowerCase()
+				}
+				operations[ o ].latexCommand = command
+			})
+			const maximumCharacterWidth = moment.reduce( function( maximumCharacterWidth, operation ){
+
+				return Math.max( maximumCharacterWidth, operation.latexCommand.length )
+			
+			}, 0 )
+			moment.forEach( function( operation, o ){
+
+				array[ o ] += '& \\'+ operation.latexCommand.padEnd( maximumCharacterWidth ) +'  '
+			})
+			return array
+
+		}, new Array( this.bandwidth ).fill( '\n\t' ))
+		.join( '\\\\' ) + 
+		'\n}'
+	},
 
 
 

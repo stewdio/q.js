@@ -1,5 +1,5 @@
 
-//  Copyright © 2019, Stewart Smith. See LICENSE for details.
+//  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 
 window.dataLayer = window.dataLayer || []

@@ -1,6 +1,6 @@
 /*
 
-	Copyright © 2019, Stewart Smith. See LICENSE for details.
+	Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 */
 @charset "utf-8";
@@ -510,7 +510,7 @@ pre {
 pre, code, samp {
 
 	font-family: var( --font-family-mono );
-	line-height: 1.3em;
+	line-height: 1.3rem;
 }
 samp {
 

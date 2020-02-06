@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport"             content="width=device-width,initial-scale=1.0">
 		<meta name="description"          content="Quantum computing in your browser.">
-		<meta name="copyright"            content="Stewart Smith 2019">
+		<meta name="copyright"            content="Stewart Smith 2019–2020">
 		<meta name="keywords"             content="
 			Q, Q.js, Q-js, Qjs, quantum JavaScript,
 			quantum, quantum physics, quantum mechanics, superposition,
@@ -317,8 +317,8 @@
 <pre><code>
 var fox = <a href="Q.html">Q</a>`<strong>
 
-	H-C0-X
-	I-C1-X</strong>
+	H-X#0-X
+	I-X#1-X</strong>
 `
 </code></pre>
 			<p>
@@ -329,8 +329,8 @@ var fox = <a href="Q.html">Q</a>`<strong>
 				Therefore, the following (less sensible) input creates a circuit identical to the one above.
 			</p>
 <pre><code>
-var fox = <a href="Q.html">Q</a>`<strong>H C0--X
-I  C1   X</strong>`
+var fox = <a href="Q.html">Q</a>`<strong>H X#0--X
+I  X#1   X</strong>`
 </code></pre>
 			<p>
 				Internally, <code><a href="Circuit.html#.fromText">fromText</a></code>
@@ -383,9 +383,9 @@ fox.<a href="#.prototype.set$">set$</a>( 3, <a href="Q.html">Q</a>.<a href="Gate
 <pre><code>
 var fox = <a href="Q.html">Q</a>`<strong>
 
-	H  C0  X
+	H  X#0  X
 	
-	I  C1  X</strong>
+	I  X#1  X</strong>
 `
 </code></pre>
 			<p>
@@ -399,8 +399,8 @@ fox.<a href="#.prototype.toText">toText</a>()
 				This returns the following string.
 			</p>
 <pre><samp>
-H-C0-X
-I-C1-X
+H-X#0-X
+I-X#1-X
 </samp></pre>
 			<p>
 				Does that look familiar?
@@ -441,13 +441,13 @@ fox.<a href="#.prototype.toDiagram">toDiagram</a>()
 				and qubits labeled likewise.
 			</p>
 <pre><samp>
-    t0   t1    t2   t3  
-        ┌───┐┌────┐┌───┐
-q0  |0⟩─┤ H ├┤ C0 ├┤ X │
-        └───┘└┬───┘└───┘
-             ┌┴───┐┌───┐
-q1  |0⟩───○──┤ C1 ├┤ X │
-             └────┘└───┘
+         m1    m2    m3  
+        ┌───┐╭─────╮┌───┐
+r1  |0⟩─┤ H ├┤ X#0 ├┤ X │
+        └───┘╰──┬──╯└───┘
+             ╭──┴──╮┌───┐
+r2  |0⟩───○──┤ X#1 ├┤ X │
+             ╰─────╯└───┘
 </samp></pre>
 			<h4>Interactive circuit diagrams</h4>
 			<p>
@@ -460,7 +460,7 @@ q1  |0⟩───○──┤ C1 ├┤ X │
 			<p class="coming-soon">
 				Note that this feature is still in its early stages
 				and is not yet fully functional.
-				Check back in December 2019 for updates.
+				Check back in March 2020 for updates.
 				Better yet, <a href="https://github.com/stewdio/q.js" target="_blank">contribute to Q!</a>
 			</p>
 <pre><code>
@@ -522,11 +522,13 @@ fox.<a href="#.prototype.try$">try$</a>()
 			</p>
 <pre><code>
 var cat = <a href="Q.html">Q</a>`<strong>
-	H-C00
-	I-C10
-	I-C01
-	I-C11
-	X-I</strong>`
+
+	H  X.0#0
+	I  X.1#0
+	I  X.0#1
+	I  X.1#1
+	X  I</strong>
+`
 </code></pre>
 			<p>
 				We can see that they overlap. The first C-not [0] operates on qubit 0 and qubit 2, while the second C-not [1] operates on qubit 1 and qubit 3.
@@ -534,22 +536,22 @@ var cat = <a href="Q.html">Q</a>`<strong>
 				with the <code>cat.<a href="#.prototype.toDiagram">toDiagram</a>()</code> command:
 			</p>
 <pre><samp>
-    t0   t1    t2   
-        ┌───┐┌─────┐
-q0  |0⟩─┤ H ├┤ C00 │
-        └───┘└┬────┘
-             ┌─────┐
-q1  |0⟩───○──┤ C10 │
-             └─┬───┘
-             ┌┴────┐
-q2  |0⟩───○──┤ C01 │
-             └─────┘
-             ┌─┴───┐
-q3  |0⟩───○──┤ C11 │
-             └─────┘
-        ┌───┐       
-q4  |0⟩─┤ X ├───○──
-        └───┘       
+         m1     m2    
+        ┌───┐╭───────╮
+r1  |0⟩─┤ H ├┤ X.0#0 │
+        └───┘╰──┬────╯
+             ╭───────╮
+r2  |0⟩───○──┤ X.1#0 │
+             ╰────┬──╯
+             ╭──┴────╮
+r3  |0⟩───○──┤ X.0#1 │
+             ╰───────╯
+             ╭────┴──╮
+r4  |0⟩───○──┤ X.1#1 │
+             ╰───────╯
+        ┌───┐         
+r5  |0⟩─┤ X ├────○──  
+        └───┘        
 </samp></pre>
 
 
@@ -602,21 +604,21 @@ var hen = gup.<a href="#.prototype.cut$">cut$</a>()
 				(And <code>hen</code> will now contain those cut operations.)
 			</p>
 <pre><samp>
-    t0   t1   t2   t3  
+    m0   m1   m2   m3  
                      
-q0  |0⟩───○────○────○
-                     
-                     
-q1  |0⟩───○────○────○
+r0  |0⟩───○────○────○
                      
                      
-q2  |0⟩───○────○────○
+r1  |0⟩───○────○────○
                      
                      
-q3  |0⟩───○────○────○
+r2  |0⟩───○────○────○
                      
                      
-q4  |0⟩───○────○────○
+r3  |0⟩───○────○────○
+                     
+                     
+r4  |0⟩───○────○────○
                      
 </samp></pre>
 			<p>
@@ -640,30 +642,30 @@ gup.<a href="#.prototype.paste$">paste$</a>( cat, 1, 1 )
 				is now pasted in there.
 			</p>
 <pre><samp>
-    t0   t1   t2    t3    t4  
+    m0   m1   m2     m3     m4  
                               
-q0  |0⟩───○────○─────○─────○  
+r0  |0⟩───○────○──────○──────○  
                               
-             ┌───┐┌─────┐┌───┐
-q1  |0⟩───○──┤ H ├┤ C00 ├┤ M │
-             └───┘└┬────┘└───┘
-                  ┌─────┐┌───┐
-q2  |0⟩───○────○──┤ C10 ├┤ M │
-                  └─┬───┘└───┘
-                  ┌┴────┐┌───┐
-q3  |0⟩───○────○──┤ C01 ├┤ M │
-                  └─────┘└───┘
-                  ┌─┴───┐┌───┐
-q4  |0⟩───○────○──┤ C11 ├┤ M │
-                  └─────┘└───┘
-             ┌───┐       ┌───┐
-q5  |0⟩───○──┤ X ├───○───┤ M │
-             └───┘       └───┘
+             ┌───┐┌───────┐┌───┐
+r1  |0⟩───○──┤ H ├┤ X.0#0 ├┤ M │
+             └───┘└─┬─────┘└───┘
+                  ┌───────┐┌───┐
+r2  |0⟩───○────○──┤ X.1#0 ├┤ M │
+                  └───┬───┘└───┘
+                  ┌─┴─────┐┌───┐
+r3  |0⟩───○────○──┤ X.0#1 ├┤ M │
+                  └───────┘└───┘
+                  ┌───┴───┐┌───┐
+r4  |0⟩───○────○──┤ X.1#1 ├┤ M │
+                  └───────┘└───┘
+             ┌───┐         ┌───┐
+r5  |0⟩───○──┤ X ├────○────┤ M │
+             └───┘         └───┘
 </samp></pre>
 
 			<p class="coming-soon">
 				More to come! More examples! Revised examples! 
-				Check back in December 2019.
+				Check back in March 2020.
 			</p>
 			<hr>
 			<h3>Constructor</h3>
@@ -1069,8 +1071,8 @@ q5  |0⟩───○──┤ X ├───○───┤ M │
 
 var fox = Q`
 
-	H-C0-X
-	I-C1-X
+	H  X#0  X
+	I  X#1  X
 `
 Array.from( document.querySelectorAll( '.fox-dom' )).forEach( function( el ){
 
@@ -1086,11 +1088,13 @@ var dog = fox.clone()
 //  Overlapping multi-qubit gates.
 
 var cat = Q`
-	H-C00
-	I-C10
-	I-C01
-	I-C11
-	X-I`
+	
+	H  X.0#0
+	I  X.1#0
+	I  X.0#1
+	I  X.1#1
+	X  I
+`
 
 
 

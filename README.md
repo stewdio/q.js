@@ -1,6 +1,6 @@
 
 
-![Q.js](./Assets/q-mark.svg)  
+![Q.js](./other/q-mark.svg)  
 
 Q is quantum computing in your browser.
 (What?!)

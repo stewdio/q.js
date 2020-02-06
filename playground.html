@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport"             content="width=device-width,initial-scale=1.0">
 		<meta name="description"          content="Quantum computing in your browser.">
-		<meta name="copyright"            content="Stewart Smith 2019">
+		<meta name="copyright"            content="Stewart Smith 2019–2020">
 		<meta name="keywords"             content="
 			Q, Q.js, Q-js, Qjs, quantum JavaScript,
 			quantum, quantum physics, quantum mechanics, superposition,
@@ -60,15 +60,105 @@
 		<main>
 
 
-			<h3>Playground sketches</h3>
+			<h3>Playground</h3>
 			<p>
-				This is your behind-the-curtain look
-				at interface ideas I’m just sketching out.
-				While the code API already functions (browse the other pages!)
-				you should play here at your own risk ;)
+				This page is your behind-the-curtain look
+				at interface ideas in development.
+				While the code API already functions 
+				(browse the other pages for details)
+				some functionality here may be more limited than implied.
+				For example, the interactive circuit does 
+				not yet allow editing of multi-register operations.
+				(They will be removed if edited.)
+				Also coming soon: revised version of operation copying / pasting.
 			</p>
 
 
+
+
+			<h4>Plain text input</h4>
+			<p>
+				Type, paste, or edit your circuit here to 
+				generate an interactive circuit diagram below.
+				You can learn more about Q’s plain text format
+				in <a href="Circuit.html#Writing_quantum_circuits">“Writing quatum circuits.”</a>
+			</p>
+			<textarea class="qjs-circuit-text-input" id="playground-input">I-I-I---I-I
+I-H-X#0-I-I
+I-I-X#1-I-I
+I-I-I---I-I
+</textarea>
+<p>
+			<button type="button" class="qjs-button" onclick="updatePlaygroundFromText()">
+				Apply
+			</button>
+		</p>
+			<h4>Interactive circuit diagram</h4>
+			<p>
+				Drag and drop quantum gates from this gates palette 
+				on to the circuit diagram just below it. 
+				You can also drag gates around within the circuit diagram itself.
+				Editing the diagram will recalculate the results below
+				as well as re-export the circuit to various formats.
+			</p>
+			<div class="qjs-circuit-palette"></div>
+			<div id="playground-dom"></div>
+
+
+			<h4>Result probabilities</h4>
+			<p>
+			</p>
+			<pre><samp id="playground-report"></samp></pre>
+
+
+			<h4>Circuit as Amazon Braket code</h4>
+			<p>
+				This code can be copied and then pasted in to an
+				<a href="https://aws.amazon.com/braket/" target="_blank">Amazon Braket</a> Jupyter notebook
+				to be run on a cloud-based simulator
+				or actual quantum hardware.
+				(Requires an 
+				<a href="https://aws.amazon.com/" target="_blank">AWS account</a> and fees may apply.)
+			</p>
+			<pre><samp id="playground-braket"></samp></pre>
+
+
+			<h4>Circuit as LaTeX code</h4>
+			<p>
+				This code can be used within 
+				<a href="https://www.latex-project.org/" target="_blank">LaTeX</a> with the 
+				<a href="https://ctan.org/pkg/qcircuit?lang=en" target="_blank">QCircuit</a>
+				library to create circuit diagrams.
+				Note that <code>ctrl{}</code> commands do not yet contain valid index values.
+				(Check back soon.)
+			</p>
+			<pre><samp id="playground-latex"></samp></pre>
+
+
+			<h4>Circuit as ASCII diagram</h4>
+			<p>
+				This can be particularly helpful within the JavaScript console
+				when you need to double check the composition of a circuit
+				in a way that’s more illustrative than simple plain text.
+			</p>
+			<pre><samp id="playground-diagram"></samp></pre>
+
+
+			<h4>Circuit as plain text</h4>
+			<p>
+				If all’s gone well
+				then copying this and pasting this code 
+				in to the original text input box 
+				should have no effect on the maths.
+			</p>
+			<pre><samp id="playground-text"></samp></pre>
+			<hr>
+			<h3>Sample circuits</h3>
+			<p>
+				This page previously contained the following pre-loaded sample circuits for experimenting with.
+				Their plain text representations are included here for reference.
+				(You can copy and paste their text in to the input field at the top of the page to load them.)
+			</p>
 			<h4>Bell state</h4>
 			<p>
 				Here’s a <a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>
@@ -79,66 +169,11 @@
 				the only two possible results are 
 				<span class="complex-vector ket">00</span>
 				and
-				<span class="complex-vector ket">11</span>; all or nothing.
-				Look how simple it was for me to create this in code:
-				<!-- You can try this out <em>right now!</em>
-				Just <a href="index.html#Open_your_JavaScript_console" target="_blank">open your browser’s JavaScript console</a>
-				and paste this in:-->
+				<span class="complex-vector ket">11</span>; all or nothing!
 			</p>
 <pre><code>
-var bell = Q`
-
-	H C0 X
-	I C1 X
-`
-</code></pre>
-			<p>
-				Now you can alter the circuit yourself 
-				and thereby change the possible results.
-				Drag and drop an operation from the palette (below) 
-				on to the interactive circuit diagram (further below)
-				to <em>copy</em> it in to the circuit.
-				Drag operations within the circuit itself to <em>move</em> them.
-				Just tapping on an operation toggles its selection.
-				Multiple operations selected? You can drag them all at once!
-				As you alter the circuit you’ll notice the probabilities report,
-				ASCII diagram, and text representation of the circuit also update.
-				<!-- Update from the console and you’ll also see these update. -->
-			</p>
-			<p>
-				<strong>You cannot drag multi-register operations yet.</strong> 
-				It’s coming.
-				Check back soon!
-				Better yet, join the movement and help me build it: 
-				<a href="https://github.com/stewdio/q.js" target="_blank">https://github.com/stewdio/q.js</a>
-			</p>
-			<br>
-			<p><code>Q.Circuit.createDomPalette()</code></p>
-			<div class="qjs-circuit-palette"></div>
-			<br>
-			<p><code>bell.toDom()</code></p>
-			<div id="bell-dom"></div>
-			<br>
-			<p><code>bell.report$()</code></p>
-			<pre><samp id="bell-report"></samp></pre>
-			<div id="bell-report-live" for="bell-dom"></div>
-			<h5>Circuit as ASCII diagram</h5>
-			<p>
-				Yes—you can interact with these example circuits 
-				right in your JavaScript console!
-				These examples are right in the global scope so go poke around.
-				You can generate the report above, the diagram below, and make edits directly to the circuit in code.
-				<!-- Edit it via code in the JavaScript console,
-				see the live updates right here! -->
-			</p>
-			<br>
-			<p><code>bell.toDiagram()</code></p>
-			<pre><samp id="bell-diagram"></samp></pre>
-			<br>
-			<p><code>bell.toText()</code></p>
-			<pre><samp id="bell-text"></samp></pre>
-			
-
+H X#0 X
+I X#1 X</code></pre>
 			<h4>Whiplash</h4>
 			<p>
 				This monster demonstrates some
@@ -151,103 +186,34 @@ var bell = Q`
 				Of course this circuit would make little sense in the real world.
 				It’s here purely to test different aspects of rendering a circuit visually.
 			</p>
-			<p>
+			<!-- p>
 				Also—have you noticed that you can drag operations from one circuit to another?
 				You’ll have to get creative with scrolling,
 				but you can drag operations between here and the Bell state above ;)
-			</p>
-			<br>
-			<p><code>Q.Circuit.createDomPalette()</code></p>
-			<div class="qjs-circuit-palette"></div>
-			<br>
-			<p><code>whiplash.toDom()</code></p>
-			<div id="whiplash-dom"></div>
-			<br>
-			<p><code>whiplash.report$()</code></p>
-			<pre><samp id="whiplash-report"></samp></pre>
-			<div id="whiplash-report-live" for="whiplash-dom"></div>
-			<br>
-			<p><code>whiplash.toDiagram()</code></p>
-			<pre><samp id="whiplash-diagram"></samp></pre>
-			<br>
-			<p><code>whiplash.toText()</code></p>
-			<pre><samp id="whiplash-text"></samp></pre>
-			<!-- <h5>Report</h5> -->
-			<!-- <pre><code id="whiplash-report"></code></pre> -->
-
-
-
-
-
-
-
-
-
-<!--
-
-<h4>Circuit</h4>
-New<br>
-Save<br>
-Re-dimension (Add/remove qubit, add/remove moment)<br>
-
-<h4>Edit</h4>
-Cut<br>
-Copy<br>
-Paste<br>
-Insert<br>
-Undo<br>
-
-<h4>[View clipboard]</h4>
-
--->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+			</p -->
+<pre><code>
+H  X.0#0  Y    Z    X#1
+H  X.1#0  X#0  I    X#0
+H  X.0#1  Y    X#0  S
+H  X      X#1  X#1  I
+H  X.1#1  Y    Z    S</code></pre>
 		</main>
 		<script>
 
 
 
 
-//  Here are the two circuits we’ll play with:
+//  This is purely to make exploring from 
+//  the JavaScript console possible.
+//  It is not necessary at all for everything
+//  else on this page to function.
 
-var bell = Q`
-
-	H C0 X
-	I C1 X
-`
-bell.name = 'bell'
-bell.sort$()
-bell.toDom( document.getElementById( 'bell-dom' ))
-
-
-var whiplash = Q`
-
-	H  C00  Y   Z   C1
-	H  C10  C0  I   C0
-	H  C01  Y   C0  S
-	H  X    C1  C1  I
-	H  C11  Y   Z   S
-`
-whiplash.name = 'whiplash'
-whiplash.sort$()
-whiplash.toDom( document.getElementById( 'whiplash-dom' ))
+let playground
 
 
 
 
-//  Let’s also place circuit palettes
+//  Let’s place circuit palettes
 //  inside anything with the class '.qjs-circuit-palette'.
 
 Array.from( document.querySelectorAll( '.qjs-circuit-palette' )).forEach( function( el ){
@@ -256,23 +222,79 @@ Array.from( document.querySelectorAll( '.qjs-circuit-palette' )).forEach( functi
 })
 
 
+//  When our user edits the plain text input
+//  we want to update our interactive circuit
+//  and exported code accordingly.
 
+function updatePlaygroundFromText(){
 
-//  When our document loads
-//  we want to display our ASCII diagrams, 
-//  text representations, 
-//  and probability reports.
+	const 
+	text = document.getElementById( 'playground-input' ).value,
+	circuit = Q( text )
 
-function updateEverything( circuit ){
+	if( circuit instanceof Q.Circuit ){
 
-	document.getElementById( circuit.name +'-diagram' ).innerText = circuit.toDiagram( true )
-	document.getElementById( circuit.name +'-text' ).innerText = circuit.toText()
-	document.getElementById( circuit.name +'-report' ).innerText = circuit.report$()
+		circuit.name = 'playground'
+		playground = circuit
+		const domEl = document.getElementById( circuit.name +'-dom' )
+		if( domEl ){
+
+			while( domEl.lastChild) {
+				
+				domEl.removeChild( domEl.lastChild )
+			}
+			circuit.sort$()//  Is this still necessary??
+			circuit.toDom( domEl )
+		}
+		updateCircuitParts( circuit )
+	}
+	else {
+
+		updateCircuitParts( Q`I` )
+		console.log( 'There’s an error in your circuit!!' )
+	}
 }
+
+
+//  When our user edits the interactive circuit
+//  we want to update 
+
+function updatePlaygroundFromDom( circuit ){
+
+	const inputEl = document.getElementById( circuit.name +'-input' )
+	if( inputEl ) inputEl.value = circuit.toText().substr( 1 )
+	updateCircuitParts( circuit )
+}
+
+
+//  Update all the export code and probabilities report.
+
+function updateCircuitParts( circuit ){
+
+	const braketEl = document.getElementById( circuit.name +'-braket' )
+	if( braketEl ) braketEl.innerText = '\n'+ circuit.toAmazonBraket( true )
+
+	const latexEl = document.getElementById( circuit.name +'-latex' )
+	if( latexEl ) latexEl.innerText = '\n'+ circuit.toLatex( true )
+
+	const diagramEl = document.getElementById( circuit.name +'-diagram' )
+	if( diagramEl ) diagramEl.innerText = circuit.toDiagram( true )
+	
+	const textEl = document.getElementById( circuit.name +'-text' )
+	if( textEl ) textEl.innerText = circuit.toText()
+
+	const reportEl = document.getElementById( circuit.name +'-report' )
+	if( reportEl ) reportEl.innerText = circuit.report$()
+}
+
+
+
+
 window.addEventListener( 'DOMContentLoaded', function(){
 
-	updateEverything( bell )
-	updateEverything( whiplash )
+	// updateEverything( bell )
+	// updateEverything( whiplash )
+	updatePlaygroundFromText()
 })
 
 
@@ -328,19 +350,18 @@ window.addEventListener( 'qjs evaluate completed', function( event ){
 		'\nEvaluation completed for “'+ event.detail.circuit.name +'”'+
 		'\nwith these results:\n'+ event.detail.circuit.report$() +'\n\n\n'
 	)
-	updateEverything( event.detail.circuit )
+	
+	const 
+	circuit  = event.detail.circuit,
+	reportEl = document.getElementById( circuit.name +'-report' )
+
+	if( reportEl ) reportEl.innerText = circuit.report$()
 })
-
-
-
-
-//  Going to give this a rethink...
-//  Right now it does nothing.
-
 window.addEventListener( 'qjs gui altered circuit', function( event ){
 
-	event.detail.circuit.evaluate$()
+	updatePlaygroundFromDom( event.detail.circuit )
 })
+
 
 
 

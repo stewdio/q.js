@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport"             content="width=device-width,initial-scale=1.0">
 		<meta name="description"          content="Quantum computing in your browser.">
-		<meta name="copyright"            content="Stewart Smith 2019">
+		<meta name="copyright"            content="Stewart Smith 2019–2020">
 		<meta name="keywords"             content="
 			Q, Q.js, Q-js, Qjs, quantum JavaScript,
 			quantum, quantum physics, quantum mechanics, superposition,
@@ -67,7 +67,7 @@
 				<a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>.
 				Tap and drag the pieces around to get a feel for the Q editor.
 				It’s okay to make mistakes.
-				(Support for dragging multi-register gates coming in January 2020. Stay tuned.)
+				(Support for dragging multi-register gates coming in March 2020. Stay tuned.)
 			</p>
 			<div class="qjs-circuit-palette"></div>
 			<div id="example-dom"></div>
@@ -372,9 +372,9 @@ console.log( '\n\n\nNow try navigating to the other topic pages to learn more an
 
 var example = Q`
 
-	H C0 I I I
-	I C1 I I I
-	I I  I I I
+	H X#0 I I I
+	I X#1 I I I
+	I I   I I I
 `
 example.name = 'example'
 example.sort$()
