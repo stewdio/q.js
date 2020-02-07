@@ -111,7 +111,7 @@ I-I-I---I-I
 			<pre><samp id="playground-report"></samp></pre>
 
 
-			<h4>Circuit as Amazon Braket code</h4>
+			<!-- h4>Circuit as Amazon Braket code</h4>
 			<p>
 				This code can be copied and then pasted in to an
 				<a href="https://aws.amazon.com/braket/" target="_blank">Amazon Braket</a> Jupyter notebook
@@ -120,7 +120,7 @@ I-I-I---I-I
 				(Requires an 
 				<a href="https://aws.amazon.com/" target="_blank">AWS account</a> and fees may apply.)
 			</p>
-			<pre><samp id="playground-braket"></samp></pre>
+			<pre><samp id="playground-braket"></samp></pre -->
 
 
 			<h4>Circuit as LaTeX code</h4>
@@ -271,8 +271,8 @@ function updatePlaygroundFromDom( circuit ){
 
 function updateCircuitParts( circuit ){
 
-	const braketEl = document.getElementById( circuit.name +'-braket' )
-	if( braketEl ) braketEl.innerText = '\n'+ circuit.toAmazonBraket( true )
+	// const braketEl = document.getElementById( circuit.name +'-braket' )
+	// if( braketEl ) braketEl.innerText = '\n'+ circuit.toAmazonBraket( true )
 
 	const latexEl = document.getElementById( circuit.name +'-latex' )
 	if( latexEl ) latexEl.innerText = '\n'+ circuit.toLatex( true )
