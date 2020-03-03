@@ -2,7 +2,7 @@
 MIT License
 ------------------------------------------------------------------------------
 
-Copyright © 2019, Stewart Smith.  
+Copyright © 2019–2020, Stewart Smith.  
 (Author’s [Web site](http://stewartsmith.io), 
 [Twitter](https://twitter.com/stew_rtsmith), 
 and [GitHub](https://github.com/stewdio).)  

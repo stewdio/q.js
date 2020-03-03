@@ -6,6 +6,15 @@
 @charset "utf-8";
 
 
+/*@import url('https://fonts.googleapis.com/css?family=Playfair+Display:700&display=swap');*/
+@import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:700&display=swap');
+
+/*@import url('https://fonts.googleapis.com/css?family=Michroma&display=swap');*/
+
+
+
+
+
 
 
 :root {
@@ -13,6 +22,7 @@
 	--z-index-gate: 50;
 	--z-index-gate-identity: 40;
 }
+
 
 
 
@@ -90,20 +100,40 @@
 	
 	display: inline-block;
 	position: relative;
-	margin: 0.5rem 0;
+	margin: 1rem 0 0.5rem 0;
 	max-width: 100%;
 	padding: 0;
-	font-family: var( --font-family-sans );
+	font-family: var( --Q-font-family-sans );
 	font-style: italic;
-	color: var( --color-titanium );
+	color: var( --Q-color-titanium );
 	font-size:   1.0rem;
 	line-height: 2.7rem;
 }
 .qjs-palette {
 
 	min-height: 80px;
-	border-radius: 0.5rem;	
-	background-color: var( --color-chalk );
+	
+	border-radius: 1rem;
+	background: 
+
+		hsl(
+
+			var( --Q-color-hue ),
+			var( --Q-color-saturation ),
+			var( --Q-color-lightness )
+		)
+		linear-gradient(
+
+			0.375turn,
+			rgba( 0, 0, 0, 0.02 ),
+			rgba( 255, 255, 255, 0.2 )
+		);
+	
+	box-shadow: 
+		-0.1rem -0.1rem 0.1rem rgba( 255, 255, 255, 0.8 ),
+		 0.2rem  0.2rem 0.2rem rgba( 0, 0, 0, 0.1 );
+		
+
 }
 .qjs-circuit-clipboard {
 
@@ -237,7 +267,7 @@ div.qjs-circuit-cell {
 	padding-left:  0;
 	padding-right: 0;
 	grid-column:   2;
-	font-family: var( --font-family-mono );	
+	font-family: var( --Q-font-family-mono );	
 	font-weight: bold;
 	font-size: 1.8rem;
 }
@@ -268,8 +298,9 @@ svg.qjs-circuit-wire {
 	height:  60px;
 	padding: 10px;	
 	overflow: hidden;
-	fill: #888;
-	/*fill: var( --color-green );*/
+	/*fill: #888;*/
+	fill: var( --Q-color-green );
+	/*fill: var( --Q-hyperlink-internal-color );*/
 }
 .qjs-palette,
 .qjs-circuit[qjs-circuit-mode="qjs-circuit-operation-move"] .qjs-circuit-operation {
@@ -296,27 +327,33 @@ svg.qjs-circuit-wire {
 }
 #qjs-circuit-operation-hadamard {
 
-	fill: var( --color-charcoal );
-	/*fill: var( --color-red );*/
+	/*fill: var( --Q-color-charcoal );*/
+	fill: var( --Q-color-red );
+}
+#qjs-circuit-operation-pauli-x,
+#qjs-circuit-operation-pauli-y,
+#qjs-circuit-operation-pauli-z {
+
+	fill: var( --Q-color-yellow );
 }
 #qjs-circuit-operation-control,
 #qjs-circuit-operation-target {
 
-	fill: var( --color-charcoal );
-	/*fill: var( --color-blue );*/
+	/*fill: var( --Q-color-charcoal );*/
+	fill: var( --Q-color-orange );
 }
 #qjs-circuit-control-straight,
 #qjs-circuit-control-curved {
 
 	fill: none;
-	stroke: var( --color-charcoal );
-	/*stroke: var( --color-blue );*/
+	/*stroke: var( --Q-color-charcoal );*/
+	stroke: var( --Q-color-orange );
 	stroke-width: 2;
 	stroke-miterlimit: 10;
 }
 .qjs-circuit-operation-label {
 
-	fill: var( --color-white );
+	fill: var( --Q-color-white );
 }
 
 
@@ -340,6 +377,7 @@ svg.qjs-circuit-wire {
 .qjs-circuit-layer-background .qjs-circuit-highlight {
 
 	background-color: rgba( 0, 0, 0, 0.03 );
+	background-color: white;
 }
 .qjs-circuit-layer-background  {
 /*
@@ -375,7 +413,7 @@ svg.qjs-circuit-wire {
 .qjs-selected {
 
 	background-color: rgba( 0, 0, 0, 0.2 );
-	background-color: var( --color-yellow );
+	background-color: var( --Q-color-white );
 }
 .qjs-circuit-clipboard .qjs-circuit-operation-identity,
 .qjs-selected.qjs-circuit-operation-identity {
@@ -385,42 +423,6 @@ svg.qjs-circuit-wire {
 .qjs-palette .qjs-circuit-operation-identity {
 
 	fill: #BBB;
-}
-
-
-
-
-
-
-.qjs-circuit-text-input {
-
-	/*min-width:  18rem;*/
-	width: 100%;
-	min-height: 12rem;
-	/*margin:  1rem 0 2rem 0;*/
-	margin:  1rem 0 0 0;
-	border: 1px solid var( --color-blue );
-	border-radius: 0.5rem;	
-	background-color: var( --color-chalk );
-	padding: 1rem 0 0 2rem;
-	color: var( --color-blue );
-	font-family: var( --font-family-mono );
-	font-size:   1.0rem;
-	line-height: 1.3rem;
-	white-space: pre;
-	word-wrap: normal;/*  OMFG, iOS you make me sad.  */
-
-}
-.qjs-button {
-
-	border-radius: 0.5rem;
-	background-color: var( --color-blue );
-	color: var( --color-white );
-	padding: 0.8rem 1.8rem;
-	font-family: var( --font-family-sans );
-	font-size:   1.2rem;
-	line-height: 2.0rem;
-	cursor: pointer;
 }
 
 

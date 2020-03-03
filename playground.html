@@ -37,61 +37,56 @@
 		<meta property="og:url"           content="https://stewdio.github.io/q.js/playground.html">
 		
 		<link rel="canonical" href="https://stewdio.github.io/q.js/playground.html">
+		<link href="other/q-favicon-064.png" rel="icon" type="image/png">
+		<link href="other/q-favicon-144.png" rel="apple-touch-icon">
 		
-		<script src="https://www.googletagmanager.com/gtag/js" async></script>
-		<link  href="other/q-favicon-064.png" rel="icon" type="image/png">
-		<link  href="other/q-favicon-144.png" rel="apple-touch-icon">
-		<script src="other/ga.js"></script>
-		<link  href="other/style.css" rel="stylesheet" type="text/css">
-		
-		<script src="source/Q.js"></script>
-		<script src="source/Q.ComplexNumber.js"></script>
-		<script src="source/Q.Matrix.js"></script>
-		<script src="source/Q.Qubit.js"></script>
-		<script src="source/Q.Gate.js"></script>
-		<script src="source/Q.Circuit.js"></script>
-		<script src="source/Q.Circuit.Editor.js"></script>
-		<link  href="source/Q.Circuit.Editor.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="source/Q.css">
+		<link rel="stylesheet" type="text/css" href="source/Q-Circuit-Editor.css">
+		<link rel="stylesheet" type="text/css" href="other/documentation.css">
 
+		<script src="https://www.googletagmanager.com/gtag/js" async></script>
+		<script src="other/ga.js"></script>				
+		<script src="source/Q.js"></script>
+		<script src="source/Q-ComplexNumber.js"></script>
+		<script src="source/Q-Matrix.js"></script>
+		<script src="source/Q-Qubit.js"></script>
+		<script src="source/Q-Gate.js"></script>
+		<script src="source/Q-Circuit.js"></script>
+		<script src="source/Q-Circuit-Editor.js"></script>
 		<script src="other/navigation.js"></script>
 		
 	</head>
 	<body>
 		<main>
 
+			<!-- 
+			<div class="color-swatch cos" id="color-swatch-1">1</div>
+			<div class="color-swatch cos" id="color-swatch-2">2</div>
+			<div class="color-swatch cos" id="color-swatch-3">3</div>
+			<div class="color-swatch cos" id="color-swatch-4">4</div>
+			<div class="color-swatch cos" id="color-swatch-5">5</div>
+		-->
+
+
 
 			<h3>Playground</h3>
 			<p>
-				This page is your behind-the-curtain look
-				at interface ideas in development.
-				While the code API already functions 
-				(browse the other pages for details)
-				some functionality here may be more limited than implied.
-				For example, the interactive circuit does 
-				not yet allow editing of multi-register operations.
-				(They will be removed if edited.)
-				Also coming soon: revised version of operation copying / pasting.
-			</p>
-
-
-
-
-			<h4>Plain text input</h4>
-			<p>
-				Type, paste, or edit your circuit here to 
-				generate an interactive circuit diagram below.
+				Type, paste, or edit your circuit here.
+				Then tap “Apply” to
+				generate an interactive circuit diagram 
+				and other output formats below.
 				You can learn more about Q’s plain text format
-				in <a href="Circuit.html#Writing_quantum_circuits">“Writing quatum circuits.”</a>
+				in <a href="Circuit.html#Writing_quantum_circuits">“Writing quantum circuits.”</a>
 			</p>
-			<textarea class="qjs-circuit-text-input" id="playground-input">I-I-I---I-I
+			<textarea class="Q-circuit-text-input" id="playground-input">I-I-I---I-I
 I-H-X#0-I-I
 I-I-X#1-I-I
-I-I-I---I-I
-</textarea>
-<p>
-			<button type="button" class="qjs-button" onclick="updatePlaygroundFromText()">
+I-I-I---I-I</textarea>
+<p class="right">
+			<button class="Q-button" id="playground-apply-button" type="button" onclick="updatePlaygroundFromText()">
 				Apply
 			</button>
+			<br><br>
 		</p>
 			<h4>Interactive circuit diagram</h4>
 			<p>
@@ -109,6 +104,15 @@ I-I-I---I-I
 			<p>
 			</p>
 			<pre><samp id="playground-report"></samp></pre>
+
+
+			<h4>Circuit as ASCII diagram</h4>
+			<p>
+				This can be particularly helpful within the JavaScript console
+				when you need to double check the composition of a circuit
+				in a way that’s more illustrative than simple plain text.
+			</p>
+			<pre><samp id="playground-diagram"></samp></pre>
 
 
 			<!-- h4>Circuit as Amazon Braket code</h4>
@@ -130,18 +134,9 @@ I-I-I---I-I
 				<a href="https://ctan.org/pkg/qcircuit?lang=en" target="_blank">QCircuit</a>
 				library to create circuit diagrams.
 				Note that <code>ctrl{}</code> commands do not yet contain valid index values.
-				(Check back soon.)
+				<span class="coming-soon">Check back in May 2020.</span>
 			</p>
 			<pre><samp id="playground-latex"></samp></pre>
-
-
-			<h4>Circuit as ASCII diagram</h4>
-			<p>
-				This can be particularly helpful within the JavaScript console
-				when you need to double check the composition of a circuit
-				in a way that’s more illustrative than simple plain text.
-			</p>
-			<pre><samp id="playground-diagram"></samp></pre>
 
 
 			<h4>Circuit as plain text</h4>
@@ -222,36 +217,66 @@ Array.from( document.querySelectorAll( '.qjs-circuit-palette' )).forEach( functi
 })
 
 
+
+
+function applyButtonActivated(){
+
+	const button = document.getElementById( 'playground-apply-button' )
+	if( button && button.getAttribute( 'disabled' ) === null ) updatePlaygroundFromText()
+}
+
+let playgroundInputText = ''
+
+function hasTextInputUpdated(){
+
+	const 
+	input  = document.getElementById( 'playground-input' ).value
+	button = document.getElementById( 'playground-apply-button' )
+	
+	if( input === playgroundInputText ){
+
+		button.setAttribute( 'disabled', 'disabled' )
+	}
+	else button.removeAttribute( 'disabled' )
+}
+
+
+
+
 //  When our user edits the plain text input
 //  we want to update our interactive circuit
 //  and exported code accordingly.
 
 function updatePlaygroundFromText(){
 
-	const 
-	text = document.getElementById( 'playground-input' ).value,
-	circuit = Q( text )
+	const text = document.getElementById( 'playground-input' ).value
+	if( text !== playgroundInputText ){
 
-	if( circuit instanceof Q.Circuit ){
+		playgroundInputText = text
+		document.getElementById( 'playground-apply-button' ).setAttribute( 'disabled', 'disabled' )
+	
+		const circuit = Q( text )
+		if( circuit instanceof Q.Circuit ){
 
-		circuit.name = 'playground'
-		playground = circuit
-		const domEl = document.getElementById( circuit.name +'-dom' )
-		if( domEl ){
+			circuit.name = 'playground'
+			playground = circuit
+			const domEl = document.getElementById( circuit.name +'-dom' )
+			if( domEl ){
 
-			while( domEl.lastChild) {
-				
-				domEl.removeChild( domEl.lastChild )
+				while( domEl.lastChild) {
+					
+					domEl.removeChild( domEl.lastChild )
+				}
+				circuit.sort$()//  Is this still necessary??
+				circuit.toDom( domEl )
 			}
-			circuit.sort$()//  Is this still necessary??
-			circuit.toDom( domEl )
+			updateCircuitParts( circuit )
 		}
-		updateCircuitParts( circuit )
-	}
-	else {
+		else {
 
-		updateCircuitParts( Q`I` )
-		console.log( 'There’s an error in your circuit!!' )
+			updateCircuitParts( Q`I` )
+			console.log( 'There’s an error in your circuit!!' )
+		}
 	}
 }
 
@@ -262,8 +287,13 @@ function updatePlaygroundFromText(){
 function updatePlaygroundFromDom( circuit ){
 
 	const inputEl = document.getElementById( circuit.name +'-input' )
-	if( inputEl ) inputEl.value = circuit.toText().substr( 1 )
-	updateCircuitParts( circuit )
+	if( inputEl ){
+
+		const text = circuit.toText().substr( 1 )
+		inputEl.value = text
+		updateCircuitParts( circuit )
+		playgroundInputText = text
+	}
 }
 
 
@@ -290,11 +320,13 @@ function updateCircuitParts( circuit ){
 
 
 
+
 window.addEventListener( 'DOMContentLoaded', function(){
 
 	// updateEverything( bell )
 	// updateEverything( whiplash )
 	updatePlaygroundFromText()
+	setInterval( hasTextInputUpdated, 100 )
 })
 
 
@@ -361,8 +393,6 @@ window.addEventListener( 'qjs gui altered circuit', function( event ){
 
 	updatePlaygroundFromDom( event.detail.circuit )
 })
-
-
 
 
 

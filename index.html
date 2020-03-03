@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Q ⟩ JS</title>
+		<title>Q is Quantum JavaScript</title>
 		<meta charset="utf-8">
 		<meta name="viewport"             content="width=device-width,initial-scale=1.0">
 		<meta name="description"          content="Quantum computing in your browser.">
@@ -26,39 +26,39 @@
 		<meta name="twitter:card"         content="summary_large_image">
 		<meta name="twitter:site"         content="@stew_rtsmith">
 		<meta name="twitter:creator"      content="@stew_rtsmith">
-		<meta name="twitter:title"        content="Q ⟩ JS">
+		<meta name="twitter:title"        content="Q is Quantum JavaScript">
 		<meta name="twitter:description"  content="Quantum computing in your browser.">
 		<meta name="twitter:image"        content="https://stewdio.github.io/q.js/other/q-thumbnail.png">
 		
 		<meta property="og:type"          content="website">
-		<meta property="og:title"         content="Q ⟩ JS">
+		<meta property="og:title"         content="Q is Quantum JavaScript">
 		<meta property="og:description"   content="Quantum computing in your browser.">
 		<meta property="og:image"         content="https://stewdio.github.io/q.js/other/q-thumbnail.png">
 		<meta property="og:url"           content="https://stewdio.github.io/q.js/">
 		
 		<link rel="canonical" href="https://stewdio.github.io/q.js/">
+		<link href="other/q-favicon-064.png" rel="icon" type="image/png">
+		<link href="other/q-favicon-144.png" rel="apple-touch-icon">
 		
-		<script src="https://www.googletagmanager.com/gtag/js" async></script>
-		<link  href="other/q-favicon-064.png" rel="icon" type="image/png">
-		<link  href="other/q-favicon-144.png" rel="apple-touch-icon">
-		<script src="other/ga.js"></script>
-		<link  href="other/style.css" rel="stylesheet" type="text/css">
-		
-		<script src="source/Q.js"></script>
-		<script src="source/Q.ComplexNumber.js"></script>
-		<script src="source/Q.Matrix.js"></script>
-		<script src="source/Q.Qubit.js"></script>
-		<script src="source/Q.Gate.js"></script>
-		<script src="source/Q.Circuit.js"></script>
-		<script src="source/Q.Circuit.Editor.js"></script>
-		<link  href="source/Q.Circuit.Editor.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="source/Q.css">
+		<link rel="stylesheet" type="text/css" href="source/Q-Circuit-Editor.css">
+		<link rel="stylesheet" type="text/css" href="other/documentation.css">
 
-		<script src="other/navigation.js"></script>
-		
+		<script src="https://www.googletagmanager.com/gtag/js" async></script>
+		<script src="other/ga.js"></script>				
+		<script src="source/Q.js"></script>
+		<script src="source/Q-ComplexNumber.js"></script>
+		<script src="source/Q-Matrix.js"></script>
+		<script src="source/Q-Qubit.js"></script>
+		<script src="source/Q-Gate.js"></script>
+		<script src="source/Q-Circuit.js"></script>
+		<script src="source/Q-Circuit-Editor.js"></script>
+		<script src="other/navigation.js"></script>	
+	
 	</head>
 	<body>
 		<main>
-			<h3>Hello, this is Q</h3>
+			<h3>Welcome to Q.js</h3>
 			<p>
 				Q is a quantum circuit editor and simulator that runs right in your Web browser.
 				There is nothing to install and nothing to configure.
@@ -67,7 +67,11 @@
 				<a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>.
 				Tap and drag the pieces around to get a feel for the Q editor.
 				It’s okay to make mistakes.
-				(Support for dragging multi-register gates coming in March 2020. Stay tuned.)
+				<span class="coming-soon">
+					Support for dragging multi-register gates 
+					(and more) coming in May 2020. 
+					Stay tuned.
+				</span>
 			</p>
 			<div class="qjs-circuit-palette"></div>
 			<div id="example-dom"></div>
@@ -270,9 +274,9 @@
 				You just performed a quantum coin flip.
 				Each time you run the above code 
 				there’s a 50% chance of landing on 
-				<strong>heads</strong> (<code>0</code>)
+				<strong>heads</strong> (<code>1</code>)
 				and a 50% chance of landing on 
-				<strong>tails</strong> (<code>1</code>).
+				<strong>tails</strong> (<code>0</code>).
 				Go ahead and try it out.
 				When you’re ready for more,
 				give
@@ -293,10 +297,16 @@
 				Some ES6 syntax is preferred, but the bits that disfigure JavaScript to look more like Java are weeded out, bagged, and tossed in the river.
 			</p>
 			<p>
+				Q’s main goal is to make learning and experimenting with quantum computing easier—not harder.
 				While Q’s internal code uses <code>let</code> and <code>const</code> when declaring variables,
-				the examples here often use <code>var</code> instead.  
-				This is to make free-form experimenting in the console a bit friendlier.
-				Redeclare and overwrite variables to your heart’s content.
+				the examples here use <code>var</code> instead;
+				redeclare and overwrite example variables to your heart’s content.
+				Similarly, Q is composed of plain old JavaScript includes
+				rather than modules.
+				Because of this, all of Q can run directly from your desktop 
+				using the <code>file://</code> protocol with no server required.
+				Just drag and drop any of Q’s <code>HTML</code> files on to your browser window.
+				You can also inspect any piece of Q right from the console as its running.
 			</p>
 			<p>
 				Q pays particular attention to <em>destructive</em> versus <em>non-destructive</em> instance methods. 
@@ -323,6 +333,19 @@ cat.<a href="ComplexNumber.html#.toText">toText</a>()   <span class="comment">//
 cat.<a href="ComplexNumber.html#.add$"><strong>add$</strong></a>( dog )<span class="comment">//  Destructive. Note the ‘$’ suffix.</span>
 cat.<a href="ComplexNumber.html#.toText">toText</a>()   <span class="comment">//  Now returns '4 - 2i'</span>
 </pre></code>
+			<h3>Documentation interface style</h3>
+			<p>
+				This collection of <code>HTML</code> files serves as Q’s interactive
+				documentation. 
+				It’s design objectives are tidiness, shareability, and consistency. 
+				When possible the general UI features,
+				such as the main navigation 
+				or body modules,
+				are visually flat.
+				Buttons intended to be “pushed” 
+				or circuit operations intended to be “dragged and dropped”
+				are represented as dimensional.
+			</p>
 			<h3>Roadmap</h3>
 			<p>
 				As of December 2019

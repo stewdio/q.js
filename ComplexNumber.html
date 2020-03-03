@@ -37,22 +37,22 @@
 		<meta property="og:url"           content="https://stewdio.github.io/q.js/ComplexNumber.html">
 		
 		<link rel="canonical" href="https://stewdio.github.io/q.js/ComplexNumber.html">
+		<link href="other/q-favicon-064.png" rel="icon" type="image/png">
+		<link href="other/q-favicon-144.png" rel="apple-touch-icon">
 		
-		<script src="https://www.googletagmanager.com/gtag/js" async></script>
-		<link  href="other/q-favicon-064.png" rel="icon" type="image/png">
-		<link  href="other/q-favicon-144.png" rel="apple-touch-icon">
-		<script src="other/ga.js"></script>
-		<link  href="other/style.css" rel="stylesheet" type="text/css">
-		
-		<script src="source/Q.js"></script>
-		<script src="source/Q.ComplexNumber.js"></script>
-		<script src="source/Q.Matrix.js"></script>
-		<script src="source/Q.Qubit.js"></script>
-		<script src="source/Q.Gate.js"></script>
-		<script src="source/Q.Circuit.js"></script>
-		<script src="source/Q.Circuit.Editor.js"></script>
-		<link  href="source/Q.Circuit.Editor.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="source/Q.css">
+		<link rel="stylesheet" type="text/css" href="source/Q-Circuit-Editor.css">
+		<link rel="stylesheet" type="text/css" href="other/documentation.css">
 
+		<script src="https://www.googletagmanager.com/gtag/js" async></script>
+		<script src="other/ga.js"></script>				
+		<script src="source/Q.js"></script>
+		<script src="source/Q-ComplexNumber.js"></script>
+		<script src="source/Q-Matrix.js"></script>
+		<script src="source/Q-Qubit.js"></script>
+		<script src="source/Q-Gate.js"></script>
+		<script src="source/Q-Circuit.js"></script>
+		<script src="source/Q-Circuit-Editor.js"></script>
 		<script src="other/navigation.js"></script>
 		
 	</head>
@@ -147,7 +147,7 @@
 				
 					svg #complex-plane {
 
-						font-family: 'Roboto';
+						/*font-family: 'Roboto';*/
 						/*mix-blend-mode: difference;*/
 						/*mix-blend-mode: multiply;*/
 						/*background-blend-mode: screen;*/
@@ -186,13 +186,13 @@
 					#complex-plane-real rect,
 					#complex-plane-real polygon {
 
-						fill: var( --color-red );
+						fill: var( --Q-color-red );
 						stroke: none;
 					}
 					#complex-plane-real line {
 
 						fill: none;
-						stroke: var( --color-red );
+						stroke: var( --Q-color-red );
 					}
 
 
@@ -200,18 +200,18 @@
 					#complex-plane-imaginary rect,
 					#complex-plane-imaginary polygon {
 
-						fill: var( --color-blue );
+						fill: var( --Q-color-blue );
 						stroke: none;
 					}
 					#complex-plane-imaginary line {
 
 						fill: none;
-						stroke: var( --color-blue );
+						stroke: var( --Q-color-blue );
 					}
 					#examples line {
 
 						fill: none;
-						stroke: var( --color-charcoal );
+						stroke: var( --Q-color-charcoal );
 					}
 
 				</style>

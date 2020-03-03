@@ -1,0 +1,727 @@
+/*
+
+	Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
+
+*/
+@charset "utf-8";
+
+
+
+
+svg, :root {
+
+
+
+	    /**************/
+	   /*            */
+	  /*   Colors   */
+	 /*            */
+	/**************/
+
+
+	/*  Base color (blue)  */
+
+	--Q-color-base-hue:       210;
+	--Q-color-base-saturation: 90%;
+	--Q-color-base-lightness:  40%;
+
+
+	/*  Blue  */
+
+	--Q-color-blue-hue:        var( --Q-color-base-hue );
+	--Q-color-blue-saturation: var( --Q-color-base-saturation );
+	--Q-color-blue-lightness:  var( --Q-color-base-lightness );
+	--Q-color-blue: hsl(
+
+		var( --Q-color-blue-hue ),
+		var( --Q-color-blue-saturation ),
+		var( --Q-color-blue-lightness )
+	);
+
+
+	/*  Orange  */
+	
+	--Q-color-orange-hue: calc( var( --Q-color-base-hue ) + 180 - 15 );
+	--Q-color-orange-saturation: 95%;
+	--Q-color-orange-lightness:  50%;
+	--Q-color-orange: hsl(
+
+		var( --Q-color-orange-hue ),
+		var( --Q-color-orange-saturation ),
+		var( --Q-color-orange-lightness )
+	);
+
+
+	/*  Yellow  */
+
+	--Q-color-yellow-hue: calc( var( --Q-color-base-hue ) + 180 + 15 );
+	--Q-color-yellow-saturation: 100%;
+	--Q-color-yellow-lightness:   50%;
+	--Q-color-yellow: hsl(
+
+		var( --Q-color-yellow-hue ),
+		var( --Q-color-yellow-saturation ),
+		var( --Q-color-yellow-lightness )
+	);
+	
+
+	/*  Green  */
+
+	--Q-color-green-hue: calc( var( --Q-color-base-hue ) + 180 + 60 );
+	--Q-color-green-saturation: 80%;
+	--Q-color-green-lightness:  40%;
+	--Q-color-green: hsl(
+
+		var( --Q-color-green-hue ),
+		var( --Q-color-green-saturation ),
+		var( --Q-color-green-lightness )
+	);
+
+
+	/*  Red  */
+
+	--Q-color-red-hue: calc( var( --Q-color-base-hue ) + 180 - 30 );
+	--Q-color-red-saturation: 85%;
+	--Q-color-red-lightness:  45%;
+	--Q-color-red: hsl(
+
+		var( --Q-color-red-hue ),
+		var( --Q-color-red-saturation ),
+		var( --Q-color-red-lightness )
+	);
+
+
+
+
+	/*  Grayscale  */
+
+	--Q-color-white:     #FFFFFF;
+	--Q-color-chalk:     #F9F9F9;
+	--Q-color-newsprint: #F3F3F3;
+	--Q-color-titanium:  #CCCCCC;
+	--Q-color-slate:     #777777;
+	--Q-color-charcoal:  #333333;
+	--Q-color-black:     #000000;
+	--Q-color-background: hsl( 0, 0%, 96% );
+
+
+
+
+	/*  Misc  */
+
+	--Q-text-color: hsl( 0, 0%, 33% );
+	--Q-text-code-comment-color: rgba( 0, 0, 0, 0.25 );
+	--Q-text-code-output-color:  rgba( 0, 0, 0, 1 );
+
+	--Q-selection-color: var( --Q-color-black );
+	--Q-selection-background-color: var( --Q-color-yellow );
+
+	--Q-hyperlink-internal-color: var( --Q-color-blue );
+	--Q-hyperlink-external-color: var( --Q-text-color );
+	
+	--Q-background-callout-color: var( --Q-color-white );
+
+	--Q-svg-fill-color: var( --Q-text-color );
+
+
+
+
+	/*  Fonts  */
+
+	--Q-font-family-serif:   'Source Serif Pro', 'Roboto Slab', 'Georgia', serif;
+	--Q-font-family-sans:    'SF Pro Text', system-ui, -apple-system, 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+	--Q-font-family-mono:    'Roboto Mono', 'Source Code Pro', 'Menlo', 'Courier New', monospace;
+	--Q-font-family-symbols: 'Georgia', serif;
+}
+
+
+
+
+
+
+
+
+.color-swatch {
+
+	display: inline-block;
+	margin: 0 2px 2px 0;
+	width:  90px;
+	height: 90px;
+	border: 1px solid white;
+	padding: 20px;
+	color: #FFF;
+	font-weight: bold;
+}
+#color-swatch-1 {
+
+	background-color: var( --Q-color-red );
+}
+#color-swatch-2 {
+
+	background-color: var( --Q-color-orange );
+}
+#color-swatch-3 {
+
+	background-color: var( --Q-color-yellow );
+}
+#color-swatch-4 {
+
+	background-color: var( --Q-color-green );
+}
+#color-swatch-5 {
+
+	background-color: var( --Q-color-blue );
+}
+
+
+
+
+
+/*
+
+https://gist.github.com/stereokai/7666bfe93929b14c2dced148c79e0e97
+
+*/
+.cos {
+
+	--cos-term1: 1;
+	--cos-term2: calc(( var( --angle ) * var( --angle )) / 2 );
+	--cos-term3: calc(( var( --angle ) * var( --angle ) * var( --angle ) * var( --angle )) / 24 );
+	--cos-term4: calc(( var( --angle ) * var( --angle ) * var( --angle ) * var( --angle ) * var( --angle ) * var( --angle )) / 720 );
+	--cos-term5: calc(( var( --angle ) * var( --angle ) * var( --angle ) * var( --angle ) * var( --angle ) * var( --angle ) * var( --angle ) * var( --angle )) / 40320 );
+	--cos: calc( var( --cos-term1 ) - var( --cos-term2 ) + var( --cos-term3 ) - var( --cos-term4 ) + var( --cos-term5 ));
+}
+#color-swatch-X {
+
+	--hue: calc( var( --Q-color-base-hue ) - 90 );
+	--pi: 3.141592653589793;
+	/*--angle: calc( var( --hue ) * var( --pi ) / 180 );*/
+	--angle: calc( var( --hue ) / 60 * var( --pi ));
+	background-color: hsl(
+
+		var( --hue ),
+		/*100%,*/
+		calc( 75% + var( --cos ) * 25% ),
+		/*calc( 40% + var( --cos ) * 10% )*/
+		50%
+	);
+}
+
+
+
+
+
+    /*******************/
+   /*                 */
+  /*   Interactive   */
+ /*                 */
+/*******************/
+
+
+
+
+
+
+.Q-input, .Q-circuit-text-input {
+
+	margin: 1.5rem 0 0 0 !important;
+	outline: none !important;
+	border:  none !important;
+	border-radius: 1.2rem !important;
+	box-shadow: 
+		 0.2rem  0.2rem 0.2rem rgba( 0, 0, 0, 0.15 ) inset,
+		-0.2rem -0.2rem 0.2rem rgba( 255, 255, 255, 1 ) inset;
+
+	background: linear-gradient( 
+
+		0.375turn,
+		rgba( 255, 255, 255, 1.0 ),
+		rgba( 255, 255, 255, 0.2 )
+	) !important;
+
+	padding: 1.5rem !important;
+	color: #555 !important;
+
+	font-size: 0.9rem !important;
+	line-height: 1.2rem !important;
+}
+
+
+
+.Q-circuit-text-input {
+
+	/*min-width:  18rem;*/
+	width: 100%;
+	min-height: 8rem;
+	/*margin:  1rem 0 2rem 0;*/
+	margin:  1rem 0 0 0;
+	border: 1px solid var( --Q-color-blue );
+	border-radius: 0.5rem;	
+	background-color: var( --Q-color-chalk );
+	padding: 1rem 0 0 2rem;
+	color: var( --Q-color-blue );
+	font-family: var( --Q-font-family-mono );
+	font-size:   1.0rem;
+	line-height: 1.2rem;
+	white-space: pre;
+	word-wrap: normal;/*  OMFG, iOS you make me sad.  */
+}
+
+
+
+
+
+
+.Q-button {
+
+	position: relative;
+	text-align: right;
+	margin: 0.5rem 1rem 0 0;
+	border-radius: 3rem;
+	box-shadow: 
+		-0.1rem -0.1rem 0 rgba( 255, 255, 255, 1 ),
+		 0.1rem  0.1rem 0.2rem rgba( 0, 0, 0, 0.3 );
+	height: 3rem;
+	background: 
+		var( --Q-color-blue )
+		linear-gradient(
+
+			0.4turn,
+			rgba( 255, 255, 255, 0.2 ),
+			rgba( 0, 0, 0, 0.08 )
+		);
+	padding: 0.8rem 1.8rem;
+	color: var( --Q-color-white );
+	font-family: var( --Q-font-family-sans );
+	font-size:   1rem;
+	line-height: 1rem;	
+	font-weight: 500;
+	letter-spacing: 0;
+	text-shadow: -1px -1px 0 rgba( 0, 0, 0, 0.1 );
+	cursor: pointer;
+}
+.Q-button:hover {
+
+	background: 
+		hsl(
+
+			var( --Q-color-blue-hue ),
+			var( --Q-color-blue-saturation ),
+			calc( var( --Q-color-blue-lightness ) * 1.2 )
+		)
+		linear-gradient(
+
+			0.4turn,
+			rgba( 255, 255, 255, 0.2 ),
+			rgba( 0, 0, 0, 0.08 )
+		);
+}
+.Q-button:focus {
+
+	margin-top: 0.7rem;
+	margin-bottom: -0.2rem;
+	margin-right: 0.9rem;
+	outline: none;
+	box-shadow: 
+		-0.1rem -0.1rem 0 rgba( 255, 255, 255, 1 ) inset,
+		 0.1rem  0.1rem 0.2rem rgba( 0, 0, 0, 0.3 ) inset;
+	background: 
+		var( --Q-color-blue )
+		linear-gradient(
+
+			0.4turn,
+			rgba( 0, 0, 0, 0.08 ),
+			rgba( 255, 255, 255, 0.2 )
+		);
+}
+.Q-button[disabled] {
+
+	box-shadow: 
+		-0.1rem -0.1rem 0 rgba( 255, 255, 255, 1 ),
+		 0.1rem  0.1rem 0.2rem rgba( 0, 0, 0, 0.3 );
+	background: 
+		var( --Q-color-background )
+		linear-gradient(
+
+			0.45turn,
+			rgba( 255, 255, 255, 0.1 ),
+			rgba( 0, 0, 0, 0.05 )
+		);
+	color: rgba( 0, 0, 0, 0.3 );
+	text-shadow: 1px  1px 0 rgba( 255, 255, 255, 1 );
+	cursor: default;
+}
+
+
+
+
+
+
+
+
+
+
+p + p {
+
+	text-indent: 1.8em;
+}
+small {
+
+	font-size: 0.8em;
+	letter-spacing: 0.02em;
+}
+sup, sub {
+
+	vertical-align: baseline;
+	position: relative;
+	top: -0.4em;
+	left: 0.1em;
+}
+sub { 
+
+	top: 0.4em; 
+}
+
+
+
+
+    /************/
+   /*          */
+  /*   Code   */
+ /*          */
+/************/
+
+
+pre {
+
+	margin: 0.5rem 0;
+	/*border-radius: 0.5rem;*/
+	padding:  0  0 1rem 1rem;
+	tab-size: 4;
+	-moz-tab-size: 4;
+	max-width: 100%;
+	
+	white-space: pre;
+	word-wrap: normal;/*  OMFG, iOS you make me sad.  */
+	overflow: auto;
+	overflow-wrap: normal;
+}
+pre, code, samp {
+
+	font-family: var( --Q-font-family-mono );
+	/*font-size: 0.9em;*/
+	line-height: 1.2rem;
+}
+samp {
+
+	color: hsl(
+
+		/*var( --Q-color-hue ),*/
+		/*var( --qjs-color-saturation ),*/
+		var( --Q-color-hue-complement-2 ),
+		50%,
+		50%
+	);
+
+
+
+}
+pre code, pre samp {
+
+	margin:  0;
+	padding: 0;
+	white-space: pre;
+	word-wrap: normal;/*  OMFG, iOS you make me sad.  */
+	overflow: auto;
+	overflow-wrap: normal;
+}
+code {
+
+	color: var( --Q-text-code-color );
+}
+code .comment {
+
+	color: var( --Q-text-code-comment-color );
+}
+h5 + pre {
+
+	margin-top: 0.5rem;
+}
+
+
+
+img.figure {
+
+	border-radius: 0.4em;
+	overflow: hidden;
+	max-width: 100%;
+	height: auto;
+}
+.value-type {
+
+	color: var( --Q-color-red );
+	margin-right: 0.4em;
+}
+.expected-type {
+
+	opacity: 0.7;
+	/*font-style: italic;*/
+}
+.center {
+
+	text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*************/
+   /*           */
+  /*   Maths   */
+ /*           */
+/*************/
+
+
+.maths {
+
+	/*margin: 20px 60px 20px 40px;*/
+
+	max-width: 100%;
+	overflow-x: auto;
+	font-family: var( --Q-font-family-sans );
+}
+dd .maths {
+
+	margin-top:  0;
+	margin-left: 0;
+}
+
+
+
+
+.symbol {
+
+	font-size: 1.1em;
+	padding: 0 0.1em;
+	font-family: var( --Q-font-family-symbols );
+	font-style: italic;
+	font-weight: 900;
+	letter-spacing: 0.05em;
+}
+
+
+
+
+.division {
+
+	display: inline-block;
+	vertical-align: middle;
+	margin:  10px;
+}
+.division td {
+
+	padding: 5px;
+}
+.dividend {
+
+	border-bottom: 1px solid #CCC;
+	text-align: center;
+}
+.divisor {
+
+	text-align: center;
+}
+
+
+
+
+
+
+
+
+.matrix {
+	
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	align: middle;
+	margin:  1em;
+	padding: 1em;
+	font-family: var( --Q-font-family-mono );
+	font-weight: 300;
+	line-height: 1em;
+	text-align: right;
+}
+.matrix td {
+
+	padding: 5px 10px;
+}
+.matrix-bracket-left, .matrix-bracket-right {
+
+	position: absolute;
+	top:      0;
+	width:    5px;
+	height: 100%;
+	border:   1px solid #CCC;
+}
+.matrix-bracket-left {
+
+	left: 0;
+	border-right: none;
+}
+.matrix-bracket-right {
+
+	right: 0;
+	border-left: none;
+}
+.matrix.qubit tr:first-child td {
+
+	color: #BBB;
+}
+
+
+.complex-vector {
+
+	font-family: var( --Q-font-family-mono );
+}
+.complex-vector.bra::before {
+
+	content: '⟨';
+	color: #BBB;
+}
+.complex-vector.bra::after {
+
+	content: '|';
+	color: #BBB;
+}
+.complex-vector.ket::before {
+
+	content: '|';
+	color: #BBB;
+}
+.complex-vector.ket::after {
+
+	content: '⟩';
+	color: #BBB;
+}
+.complex-vector.bra + .complex-vector.ket::before {
+
+	content: '';
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#bloch-sphere-qubits, 
+#bloch-sphere-gates {
+
+	display: inline-block;
+	margin: 1rem 0;
+	border-radius: 0.5rem;
+	background-color: var( --Q-color-newsprint );
+	padding: 0;
+	font-family: var( --Q-font-family-sans );
+	overflow: hidden;
+	box-shadow: 0 0.1rem 0.3rem rgba( 0, 0, 0, 0.3 );	
+}
+.bloch-sphere-qubit-container, 
+.bloch-sphere-gate-container {
+
+	float: left;
+	width:  5rem; 
+	height: 8rem;
+	padding-top: 0.4rem;
+	text-align: center;
+	overflow: hidden;
+	cursor: pointer;
+	transition: background-color 0.5s;
+}
+.bloch-sphere-qubit-container:hover,
+.bloch-sphere-gate-container:hover  {
+	
+	background-color: #DDD;
+	transition: background-color 0s;
+}
+.bloch-sphere-qubit-container.selected,
+.bloch-sphere-gate-container.selected {
+	
+	background-color: var( --Q-color-charcoal );
+	color: var( --Q-color-white );
+}
+.bloch-sphere-qubit-container p,
+.bloch-sphere-gate-container p {
+
+	font-size:   0.8rem;
+	line-height: 18px;
+}
+.bloch-sphere-qubit {
+
+	display: inline-block;
+	margin:  0.3rem 0;
+	width:  3rem;
+	height: 3rem;
+	border-radius: 100%;
+	background-color: var( --Q-color-white );
+	text-align: center;
+	font-weight: 900;
+	font-size:   1.5rem;
+	line-height: 3.0rem;
+	color: var( --Q-color-black );
+}
+
+
+.bloch-sphere-gate-container {
+
+	width:  4.3rem;
+	height: 5rem;
+}
+.bloch-sphere-gate {
+
+	display: inline-block;
+	margin:  0.3rem 0;
+	width:  2.2rem;
+	height: 2.2rem;
+	background-color: var( --Q-color-white );
+	text-align: center;
+	font-weight: 900;
+	font-size:   1.5rem;
+	line-height: 2.2rem;
+	color: var( --Q-color-black );
+}
+.interactive-container {
+
+	font-family: var( --Q-font-family-sans );
+}
+
+
+
+
+
+
+
+
+
+
+
+
