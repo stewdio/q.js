@@ -47,21 +47,6 @@
 
 
 
-    /*****************/
-   /*               */
-  /*   Variables   */
- /*               */
-/*****************/
-
-
-svg, :root {
-
-
-}
-
-
-
-
 
 
 
@@ -72,10 +57,6 @@ svg, :root {
  /*           */
 /*************/
 
-
-
-
-/*  Code text  */
 
 @font-face {
 
@@ -125,7 +106,6 @@ svg, :root {
 	padding: 0;
 	-webkit-font-smoothing: antialiased;
   	-moz-osx-font-smoothing: grayscale;
-
 	overflow-wrap: break-word;
 }
 ::-moz-selection {
@@ -138,6 +118,10 @@ svg, :root {
 	background: var( --Q-selection-background-color );
 	color: var( --Q-selection-color );
 }
+
+
+
+
 html, body {
 
 	width:  100%;
@@ -146,19 +130,13 @@ html, body {
 html {
 
 	font-size: 15px;
-	/*letter-spacing: -0.01em;*/
 }
-
-
-
-
-
 body {
 
 	margin: 0;
 	background-color: var( --Q-color-background );
 	padding: 0;
-	color: hsl( 0, 0%, 33% );
+	color: var( --Q-text-color );
 	font-family: var( --Q-font-family-sans );
 	font-weight: 400;
 	hanging-punctuation: first;
@@ -294,37 +272,15 @@ dt .section-anchor a {
 	background-color: inherit;
 	color: var( --Q-hyperlink-internal-color );
 }
-/*
-
-.Q-button[disabled] {
-
-	box-shadow: 
-		-0.1rem -0.1rem 0 rgba( 255, 255, 255, 1 ),
-		 0.1rem  0.1rem 0.2rem rgba( 0, 0, 0, 0.3 );
-	background: 
-		
-		var( --Q-color-background )
-		linear-gradient(
-
-			0.45turn,
-			rgba( 255, 255, 255, 0.1 ),
-			rgba( 0, 0, 0, 0.05 )
-		);
-	color: rgba( 0, 0, 0, 0.3 );
-	text-shadow: 1px  1px 0 rgba( 255, 255, 255, 1 );
-	cursor: default;
-}
-
-*/
 
 
 
 
-    /****************/
-   /*              */
-  /*   Headings   */
- /*              */
-/****************/
+    /*********************/
+   /*                   */
+  /*   Text HEADINGS   */
+ /*                   */
+/*********************/
 
 
 h1, h2, h3, h4, h5 {
@@ -349,7 +305,6 @@ h3 {
 	font-size: 2rem;
 	line-height: 2.4rem;
 	letter-spacing: -0.02rem;
-	/*letter-spacing: -0.5rem;*/
 }
 h4 {
 
@@ -364,27 +319,28 @@ h5  {
 	padding-bottom: 0em;
 	font-size: 1em;
 }
+
+
+
+
+    /*****************/
+   /*               */
+  /*   Text BODY   */
+ /*               */
+/*****************/
+
+
 hr {
 
 	margin: 4rem 0 0rem 0;
-
-
 	height: 0.5rem;
 	background-color: #333;
 	padding: 0;
 }
-/*footer {
-
-	overflow-wrap: break-word;
-}*/
 hr + p, hr + footer {
 
 	padding-top: 1rem;
 }
-
-
-
-
 p + p {
 
 	text-indent: 1.8em;
@@ -409,55 +365,45 @@ sub {
 
 
 
-    /************/
-   /*          */
-  /*   Code   */
- /*          */
-/************/
+    /*****************/
+   /*               */
+  /*   Text CODE   */
+ /*               */
+/*****************/
 
 
 pre {
 
 	margin: 0.5rem 0;
-	/*border-radius: 0.5rem;*/
-	/*background-color: var( --color-chalk );*/
 	padding:  0  0 1rem 1rem;
 	tab-size: 4;
 	-moz-tab-size: 4;
 	max-width: 100%;
-	
 	white-space: pre;
-	word-wrap: normal;/*  OMFG, iOS you make me sad.  */
+	word-wrap: normal;/*  iOS, you make me sad.  */
 	overflow: auto;
 	overflow-wrap: normal;
 }
 pre, code, samp {
 
 	font-family: var( --Q-font-family-mono );
-	/*font-size: 0.9em;*/
 	line-height: 1.2rem;
 }
 samp {
 
-	/*color: var( --color-green );*/
 	color: hsl(
 
-		/*var( --Q-color-hue ),*/
-		/*var( --qjs-color-saturation ),*/
-		var( --Q-color-hue-complement-2 ),
+		var( --Q-color-hue ),
 		50%,
 		50%
 	);
-
-
-
 }
 pre code, pre samp {
 
 	margin:  0;
 	padding: 0;
 	white-space: pre;
-	word-wrap: normal;/*  OMFG, iOS you make me sad.  */
+	word-wrap: normal;/*  iOS, you make me sad.  */
 	overflow: auto;
 	overflow-wrap: normal;
 }
@@ -476,6 +422,16 @@ h5 + pre {
 
 
 
+
+
+
+
+
+
+
+
+
+
 img.figure {
 
 	border-radius: 0.4em;
@@ -491,7 +447,6 @@ img.figure {
 .expected-type {
 
 	opacity: 0.7;
-	/*font-style: italic;*/
 }
 .center {
 
@@ -613,19 +568,16 @@ main {
 	line-height: 1.6rem;
 	/*box-shadow: 0 0 1rem rgba( 0, 0, 0, 0.2 );*/
 }
-/*main > h3, main > h4, main > h5, */
 main > p, main > ul, main > ol, main > footer {
 
 	margin-left:  1rem;
 	margin-right: 1rem;
 }
-
 main > h3, main > h4, main > h5 {
 
 	padding-left:  1rem;
 	padding-right: 1rem;
 }
-
 main a {
 
 	margin:  0  -2px;
@@ -635,12 +587,7 @@ main p.right {
 
 	text-align: right;
 }
-/*main p {
-
-	position: relative;
-	width: 100%;
-}*/
-img {
+main img {
 
 	margin-top: 0.5rem;
 	margin-left: 0.5rem;
@@ -1032,20 +979,25 @@ table#console-open-commands {
 table#console-open-commands td {
 
 	/*border: 1px solid var( --Q-color-newsprint );*/
-	border: 1px solid var( --Q-color-white );
+	/*border: 1px solid var( --Q-color-white );*/
 	padding: 0.8em 1em;
 	transition: background-color 0.5s;
 }
 table#console-open-commands td.highlighted{
 
-	background-color: #DDD;
+	background-color: hsl( 
+		
+		var( --Q-color-blue-hue ), 
+		100%, 
+		100%
+	);
 	transition: background-color 0s;
 }
 table#console-open-commands {
 	
 	width: 100%;
 	border-radius: 1em;
-	background-color: var( --Q-color-chalk );
+	/*background-color: var( --Q-color-chalk );*/
 }
 table#console-open-commands td {
 
@@ -1063,19 +1015,29 @@ table#console-open-commands svg {
 }
 table#console-open-commands .na {
 
-	color: #BBB;
+	color: rgba( 0, 0, 0, 0.2 );
 }
 .key {
 
 	margin:  0.2em;
-	width:  2.7em;
-	height: 2.7em;
+	width:   2.7em;
+	height:  2.7em;
 	display: inline-block;
 	border-radius: 0.4em;
-	background-color: #FFF;
 	text-align: center;
 	line-height: 2.7em;
-	box-shadow: 0 1px 2px #666;
+	box-shadow: 
+		-0.1rem -0.1rem 0 rgba( 255, 255, 255, 1 ),
+		 0.1rem  0.1rem 0.1rem rgba( 0, 0, 0, 0.5 );
+	background: 
+		var( --Q-color-background )
+		linear-gradient(
+
+			0.45turn,
+			rgba( 255, 255, 255, 0.1 ),
+			rgba( 0, 0, 0, 0.05 )
+		);
+	text-shadow: 1px  1px 0 rgba( 255, 255, 255, 1 );
 }
 
 
@@ -1126,6 +1088,11 @@ table#console-open-commands .na {
 
 
 
+    /*******************/
+   /*                 */
+  /*   Unit Circle   */
+ /*                 */
+/*******************/
 
 
 .unit-circle {
@@ -1137,7 +1104,6 @@ table#console-open-commands .na {
 	width: calc( 100% - 4rem );
 	padding-bottom: calc( 100% - 4rem );
 	font-family: var( --Q-font-family-sans );
-	/*background-color: orange;*/
 }
 
 
@@ -1151,8 +1117,6 @@ table#console-open-commands .na {
 	width:  100%;
 	height: 100%;
 }
-
-
 
 
 .unit-circle-spoke {
@@ -1181,8 +1145,6 @@ table#console-open-commands .na {
 }
 
 
-
-
 .unit-circle-spoke-label {
 
 	position: absolute;
@@ -1205,8 +1167,6 @@ table#console-open-commands .na {
 
 	transform: translate( 0, -50% ) rotate( -315deg );
 }
-
-
 
 
 @keyframes unit-circle-label-keyframes {
@@ -1323,8 +1283,6 @@ table#console-open-commands .na {
 }
 
 
-
-
 .unit-circle-label-point-0 {
 
 	top:  calc( var( --radius-label-point ) * var( --sine-0deg ) * -1 );
@@ -1392,8 +1350,11 @@ table#console-open-commands .na {
 
 
 
-
-
+    /********************/
+   /*                  */
+  /*   Bloch Sphere   */
+ /*                  */
+/********************/
 
 
 #bloch-sphere-qubits, 
@@ -1532,6 +1493,8 @@ a.call-out:hover {
 
 	animation-delay: 2s;
 }
+
+
 
 
 
@@ -1728,10 +1691,6 @@ header h1 svg {
 		display: none;
 	}
 }
-
-
-
-
 
 
 

@@ -102,14 +102,24 @@ svg, :root {
 	--Q-color-slate:     #777777;
 	--Q-color-charcoal:  #333333;
 	--Q-color-black:     #000000;
-	--Q-color-background: hsl( 0, 0%, 96% );
+	--Q-color-background: hsl(
+
+		var( --Q-color-base-hue ),
+		 1%,
+		96%
+	);
 
 
 
 
 	/*  Misc  */
 
-	--Q-text-color: hsl( 0, 0%, 33% );
+	--Q-text-color: hsl(
+
+		var( --Q-color-base-hue ),
+		 5%,
+		40%
+	);
 	--Q-text-code-comment-color: rgba( 0, 0, 0, 0.25 );
 	--Q-text-code-output-color:  rgba( 0, 0, 0, 1 );
 
