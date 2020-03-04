@@ -221,22 +221,28 @@ a[ target=_blank ]:hover svg {
 	display: block;
 	position: absolute;
 	
-	top:   -1rem;
-	right: -1rem;
+	top:   -0.8rem;
+	right: -0.8rem;
 	
-	width:  2rem;
-	height: 2rem;
+	width:  1.6rem;
+	height: 1.6rem;
 
-	border-radius: 100%;	
-	border: 1px solid rgba( 0, 0, 0, 0.05 );
-	background: 
+	border-radius: 100%;
+	border: 1px solid hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		80%
+	);
+	background-color: var( --Q-color-background );
+	/*background: 
 		var( --Q-color-background )
 		linear-gradient(
 
 			0.45turn,
 			rgba( 255, 255, 255, 0.1 ),
 			rgba( 0, 0, 0, 0.05 )
-		);
+		);*/
 
 	font-size: 1rem;
 	line-height: 1.97rem;
@@ -255,6 +261,12 @@ li .section-anchor {
 	right: -0.4rem;
 	width:  0.8rem;
 	height: 0.8rem;
+	border-top: 1px solid hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		87%
+	);
 }
 li .section-anchor a {
 
@@ -262,7 +274,7 @@ li .section-anchor a {
 }
 .section-anchor a {
 	
-	top: -0.3rem;
+	top: -0.46rem;
 	display: block;
 	position: relative;
 	min-width:  100%;
@@ -307,7 +319,7 @@ h3, h4, h5 {
 	border-top: 1px solid hsl(
 
 		var( --Q-color-base-hue ),
-		 5%,
+		10%,
 		80%
 	);
 	font-weight: 700;
@@ -516,8 +528,8 @@ header h1 svg {
 	fill: hsl(
 
 		var( --Q-color-blue-hue ),
-		10%,
-		50%
+		20%,
+		70%
 	);
 }
 nav ul {
@@ -558,8 +570,13 @@ nav section {
 nav p {
 
 	padding: 1.5rem 0 0 2rem;
-	color: rgba( 0, 0, 0, 0.3 );
-	text-shadow: 1px 1px 0 rgba( 255, 255, 255, 1 );
+	color: hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		60%
+	);
+	text-shadow: 1px 1px 0 rgba( 255, 255, 255, 0.5 );
 }
 
 
@@ -580,13 +597,17 @@ main {
 	top: 0;
 	left: 260px;
 	min-height: 100vh;
-	padding: calc( 6.6rem - 1px ) 1rem 12rem 1rem;
+	padding: calc( 6.6rem - 1px ) 2rem 12rem 1rem;	
 	overflow: auto;
 	min-width: 320px;
 	max-width: 620px;
 	font-size:   1.0rem;
 	line-height: 1.6rem;
 	/*box-shadow: 0 0 1rem rgba( 0, 0, 0, 0.2 );*/
+}
+main.api {
+
+	padding: calc( 5.0rem - 1px ) 2rem 12rem 1rem;
 }
 main > p, main > ol, main > footer {
 
@@ -635,18 +656,16 @@ td:hover {
 	color: rgba( 0, 0, 0, 1 );
 	transition: background-color 0s, color 0s;
 }
+td.no-highlight:hover {
+
+	background-color: inherit;
+}
 
 
 
 
 .coming-soon {
 
-	background-color: hsl( 
-
-		var( --Q-color-orange-hue ),
-		calc( var( --Q-color-orange-saturation ) * 0.5 ),
-		95%
-	);	
 	color: hsl( 
 
 		var( --Q-color-orange-hue ),
@@ -664,6 +683,12 @@ div.coming-soon, p.coming-soon {
 
 	margin: 1.5em 0;
 	border-left: 0.5em solid var( --Q-color-orange );
+	background-color: hsl( 
+
+		var( --Q-color-orange-hue ),
+		20%,
+		90%
+	);
 	padding: 1.5em;
 }
 
@@ -709,8 +734,8 @@ ol.properties li {
 	border-top: 1px solid hsl(
 
 		var( --Q-color-base-hue ),
-		 5%,
-		90%
+		10%,
+		87%
 	);
 	/*border-bottom: 1px solid var( --Q-color-newsprint );*/
 	/*padding: 0.8em 0;*/
@@ -1017,11 +1042,23 @@ table#console-open-commands {
 }
 table#console-open-commands td {
 
-	/*border: 1px solid var( --Q-color-newsprint );*/
-	/*border: 1px solid var( --Q-color-white );*/
+	border-left: 1px solid var( --Q-color-white );
 	padding: 0.8em 1em;
 	transition: background-color 0.5s;
 }
+table#console-open-commands tr {
+
+	border-top: 1px solid var( --Q-color-white );
+}
+table#console-open-commands tr:first-child {
+
+	border-top: none;
+}
+table#console-open-commands td:first-child {
+
+	border-left: none;
+}
+
 table#console-open-commands td.highlighted{
 
 	background-color: hsl( 
@@ -1066,16 +1103,23 @@ table#console-open-commands .na {
 	text-align: center;
 	line-height: 2.7em;
 	box-shadow: 
-		-0.1rem -0.1rem 0 rgba( 255, 255, 255, 1 ),
-		 0.1rem  0.1rem 0.1rem rgba( 0, 0, 0, 0.5 );
+		-0.1rem -0.1rem 0 rgba( 255, 255, 255, 0.5 ),
+		 0.1rem  0.1rem 0.1rem rgba( 0, 0, 0, 0.3 );
 	background: 
 		var( --Q-color-background )
 		linear-gradient(
 
 			0.45turn,
-			rgba( 255, 255, 255, 0.1 ),
-			rgba( 0, 0, 0, 0.05 )
+			
+			rgba( 0, 0, 0, 0.04 ),
+			rgba( 255, 255, 255, 0.1 )
 		);
+	color: hsl( 
+		
+		var( --Q-color-base-hue ), 
+		10%, 
+		30%
+	);
 	text-shadow: 1px  1px 0 rgba( 255, 255, 255, 1 );
 }
 
@@ -1151,7 +1195,13 @@ table#console-open-commands .na {
 	position: absolute;
 	top:  0;
 	left: 0;
-	border: 1px solid #EEE;
+	border: 1px solid hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		85%
+	);
+	border: 1px solid white;
 	border-radius: 100%;
 	width:  100%;
 	height: 100%;
@@ -1165,7 +1215,13 @@ table#console-open-commands .na {
 	left:    0;
 	width: 100%;
 	height:  1px;
-	background-color: #F3F3F3;
+	background-color: hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		85%
+	);
+	background-color: white;
 }
 .unit-circle-spoke-45 {
 
@@ -1192,7 +1248,12 @@ table#console-open-commands .na {
 	padding-right: 11%;
 	text-align: right;
 	transform: translate( 0, -50% );
-	color: #CCC;
+	color: hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		50%
+	);
 }
 .unit-circle-spoke-label-45 {
 
@@ -1569,18 +1630,16 @@ header h1 svg {
 	
 	html {
 
-		font-size: 16px;
+		/*font-size: 16px;*/
 	}	
-
-
-
 	body nav {
 
 		position: fixed;
 		left: 0;
 		width: 100%;
 		height: fit-content;
-		height: -moz-fit-content;		
+		height: -moz-fit-content;
+		min-height: 5rem;
 		margin: 0;
 		background-color: var( --Q-color-white );
 		padding: 0;
@@ -1589,7 +1648,7 @@ header h1 svg {
 	nav li a {
 
 		height: 0;
-		padding-left: 4.5rem;
+		padding-left: 5rem;
 		opacity: 0;
 		transition-duration: 0.2s;
 		transition-property: height, opacity;
@@ -1604,6 +1663,11 @@ header h1 svg {
 	header {
 
 		position: relative;
+		margin-left: 1rem;
+	}
+	header h1 {
+
+		position: absolute;
 	}
 	header h1 svg {
 
@@ -1712,7 +1776,7 @@ header h1 svg {
 		left:  0;
 		width: 100%;
 		/*height: 100%;*/
-		padding-top: 10rem;
+		padding-top: 8rem !important;
 		/*overflow: scroll;*/
 		box-shadow: none;
 	}

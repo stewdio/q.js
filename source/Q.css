@@ -22,8 +22,60 @@ svg, :root {
 	/*  Base color (blue)  */
 
 	--Q-color-base-hue:       210;
-	--Q-color-base-saturation: 90%;
+	--Q-color-base-saturation: 85%;
 	--Q-color-base-lightness:  40%;
+
+
+	/*  Red  */
+
+	--Q-color-red-hue: calc( var( --Q-color-base-hue ) + 180 - 30 );
+	--Q-color-red-saturation: 80%;
+	--Q-color-red-lightness:  45%;
+	--Q-color-red: hsl(
+
+		var( --Q-color-red-hue ),
+		var( --Q-color-red-saturation ),
+		var( --Q-color-red-lightness )
+	);
+
+
+	/*  Orange  */
+	
+	--Q-color-orange-hue: calc( var( --Q-color-base-hue ) + 180 - 15 );
+	--Q-color-orange-saturation: 85%;
+	--Q-color-orange-lightness:  50%;
+	--Q-color-orange: hsl(
+
+		var( --Q-color-orange-hue ),
+		var( --Q-color-orange-saturation ),
+		var( --Q-color-orange-lightness )
+	);
+
+
+	/*  Yellow  */
+
+	--Q-color-yellow-hue: calc( var( --Q-color-base-hue ) + 180 + 15 );
+	--Q-color-yellow-saturation: 90%;
+	--Q-color-yellow-lightness:  50%;
+	--Q-color-yellow: hsl(
+
+		var( --Q-color-yellow-hue ),
+		var( --Q-color-yellow-saturation ),
+		var( --Q-color-yellow-lightness )
+	);
+	
+
+	/*  Green  */
+
+	--Q-color-green-hue: calc( var( --Q-color-base-hue ) + 180 + 60 );
+	--Q-color-green-saturation: 80%;
+	--Q-color-green-lightness:  35%;
+	--Q-color-green: hsl(
+
+		var( --Q-color-green-hue ),
+		var( --Q-color-green-saturation ),
+		var( --Q-color-green-lightness )
+	);
 
 
 	/*  Blue  */
@@ -39,58 +91,6 @@ svg, :root {
 	);
 
 
-	/*  Orange  */
-	
-	--Q-color-orange-hue: calc( var( --Q-color-base-hue ) + 180 - 15 );
-	--Q-color-orange-saturation: 95%;
-	--Q-color-orange-lightness:  50%;
-	--Q-color-orange: hsl(
-
-		var( --Q-color-orange-hue ),
-		var( --Q-color-orange-saturation ),
-		var( --Q-color-orange-lightness )
-	);
-
-
-	/*  Yellow  */
-
-	--Q-color-yellow-hue: calc( var( --Q-color-base-hue ) + 180 + 15 );
-	--Q-color-yellow-saturation: 100%;
-	--Q-color-yellow-lightness:   50%;
-	--Q-color-yellow: hsl(
-
-		var( --Q-color-yellow-hue ),
-		var( --Q-color-yellow-saturation ),
-		var( --Q-color-yellow-lightness )
-	);
-	
-
-	/*  Green  */
-
-	--Q-color-green-hue: calc( var( --Q-color-base-hue ) + 180 + 60 );
-	--Q-color-green-saturation: 80%;
-	--Q-color-green-lightness:  40%;
-	--Q-color-green: hsl(
-
-		var( --Q-color-green-hue ),
-		var( --Q-color-green-saturation ),
-		var( --Q-color-green-lightness )
-	);
-
-
-	/*  Red  */
-
-	--Q-color-red-hue: calc( var( --Q-color-base-hue ) + 180 - 30 );
-	--Q-color-red-saturation: 85%;
-	--Q-color-red-lightness:  45%;
-	--Q-color-red: hsl(
-
-		var( --Q-color-red-hue ),
-		var( --Q-color-red-saturation ),
-		var( --Q-color-red-lightness )
-	);
-
-
 
 
 	/*  Grayscale  */
@@ -102,11 +102,13 @@ svg, :root {
 	--Q-color-slate:     #777777;
 	--Q-color-charcoal:  #333333;
 	--Q-color-black:     #000000;
+	
+
 	--Q-color-background: hsl(
 
 		var( --Q-color-base-hue ),
-		 1%,
-		96%
+		 5%,
+		93%
 	);
 
 
@@ -154,11 +156,11 @@ svg, :root {
 .color-swatch {
 
 	display: inline-block;
-	margin: 0 2px 2px 0;
-	width:  90px;
-	height: 90px;
-	border: 1px solid white;
-	padding: 20px;
+	margin: 0 0.5rem 0.5rem 0;
+	width:  6rem;
+	height: 6rem;
+	/*border: 1px solid white;*/
+	padding: 1rem 0 0 1.5rem;
 	color: #FFF;
 	font-weight: bold;
 }

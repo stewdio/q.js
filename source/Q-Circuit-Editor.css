@@ -273,7 +273,12 @@ div.qjs-circuit-cell {
 }
 #qjs-circuit-wire {
 
-	fill: #EEE;
+	fill: hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		80%
+	);
 }
 svg.qjs-circuit-wire {
 
@@ -322,7 +327,12 @@ svg.qjs-circuit-wire {
 }
 .qjs-circuit-operation-identity {
 
-	fill: #EEE;
+	fill: hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		80%
+	);
 	cursor: inherit;
 }
 #qjs-circuit-operation-hadamard {

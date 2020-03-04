@@ -255,7 +255,6 @@ document.addEventListener( 'DOMContentLoaded', function(){
 		container.classList.add( 'section-anchor' )
 		container.appendChild( link )
 		link.setAttribute( 'href', '#'+ el.getAttribute( 'id' ))
-		// link.innerText = '§'
 		link.innerText = '#'
 		el.insertAdjacentElement( 'afterbegin', container )
 	})
@@ -270,9 +269,7 @@ document.addEventListener( 'DOMContentLoaded', function(){
 		container.classList.add( 'section-anchor' )
 		container.appendChild( link )
 		link.setAttribute( 'href', '#'+ el.getAttribute( 'id' ))
-		// link.innerText = '§'
-		// link.innerText = '#'
-		//el.insertAdjacentElement( 'afterbegin', container )
+		link.innerText = '&nbsp;'
 		el.parentNode.appendChild( container )
 	})
 
