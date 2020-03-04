@@ -8,6 +8,27 @@
 
 
 
+/*
+
+	This file is in the process of being separated
+	in to “essential global Q.js styles” which will
+	remain here in Q.css, and “documentation-specific”
+	styles which will be removed from here and placed
+	within the /other/documentation.css file instead.
+
+	The goal is for a developer to be able to place 
+	this Q.css file into their own web app with little
+	to no interference with their app. All variables
+	and styles here will ultimately be prefaced with
+	a capital Q, eg. --Q-color-base, or .Q-text-input
+	and so on.
+
+
+*/
+
+
+
+
 svg, :root {
 
 
@@ -91,8 +112,6 @@ svg, :root {
 	);
 
 
-
-
 	/*  Grayscale  */
 
 	--Q-color-white:     #FFFFFF;
@@ -107,11 +126,9 @@ svg, :root {
 	--Q-color-background: hsl(
 
 		var( --Q-color-base-hue ),
-		 5%,
+		 3%,
 		93%
 	);
-
-
 
 
 	/*  Misc  */
@@ -363,127 +380,6 @@ https://gist.github.com/stereokai/7666bfe93929b14c2dced148c79e0e97
 	text-shadow: 1px  1px 0 rgba( 255, 255, 255, 1 );
 	cursor: default;
 }
-
-
-
-
-
-
-
-
-
-
-p + p {
-
-	text-indent: 1.8em;
-}
-small {
-
-	font-size: 0.8em;
-	letter-spacing: 0.02em;
-}
-sup, sub {
-
-	vertical-align: baseline;
-	position: relative;
-	top: -0.4em;
-	left: 0.1em;
-}
-sub { 
-
-	top: 0.4em; 
-}
-
-
-
-
-    /************/
-   /*          */
-  /*   Code   */
- /*          */
-/************/
-
-
-pre {
-
-	margin: 0.5rem 0;
-	/*border-radius: 0.5rem;*/
-	padding:  0  0 1rem 1rem;
-	tab-size: 4;
-	-moz-tab-size: 4;
-	max-width: 100%;
-	
-	white-space: pre;
-	word-wrap: normal;/*  OMFG, iOS you make me sad.  */
-	overflow: auto;
-	overflow-wrap: normal;
-}
-pre, code, samp {
-
-	font-family: var( --Q-font-family-mono );
-	/*font-size: 0.9em;*/
-	line-height: 1.2rem;
-}
-samp {
-
-	color: hsl(
-
-		/*var( --Q-color-hue ),*/
-		/*var( --qjs-color-saturation ),*/
-		var( --Q-color-hue-complement-2 ),
-		50%,
-		50%
-	);
-
-
-
-}
-pre code, pre samp {
-
-	margin:  0;
-	padding: 0;
-	white-space: pre;
-	word-wrap: normal;/*  OMFG, iOS you make me sad.  */
-	overflow: auto;
-	overflow-wrap: normal;
-}
-code {
-
-	color: var( --Q-text-code-color );
-}
-code .comment {
-
-	color: var( --Q-text-code-comment-color );
-}
-h5 + pre {
-
-	margin-top: 0.5rem;
-}
-
-
-
-img.figure {
-
-	border-radius: 0.4em;
-	overflow: hidden;
-	max-width: 100%;
-	height: auto;
-}
-.value-type {
-
-	color: var( --Q-color-red );
-	margin-right: 0.4em;
-}
-.expected-type {
-
-	opacity: 0.7;
-	/*font-style: italic;*/
-}
-.center {
-
-	text-align: center;
-}
-
 
 
 

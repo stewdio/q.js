@@ -425,8 +425,8 @@ samp {
 
 	color: hsl(
 
-		var( --Q-color-hue ),
-		50%,
+		var( --Q-color-green-hue ),
+		20%,
 		50%
 	);
 }
@@ -528,8 +528,8 @@ header h1 svg {
 	fill: hsl(
 
 		var( --Q-color-blue-hue ),
-		20%,
-		70%
+		10%,
+		60%
 	);
 }
 nav ul {
@@ -719,7 +719,14 @@ div.coming-soon, p.coming-soon {
 
 
 
+main > ul {
 
+	padding-left: 1rem;
+}
+ul.properties {
+
+	padding-left: 0;
+}
 ul.properties,
 ol.properties {
 
