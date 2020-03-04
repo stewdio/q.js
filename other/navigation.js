@@ -261,19 +261,20 @@ document.addEventListener( 'DOMContentLoaded', function(){
 	})
 
 
-	// Array.from( document.querySelectorAll( 'dt[id]' )).forEach( function( el ){
+	Array.from( document.querySelectorAll( 'dt[id]' )).forEach( function( el ){
 		
-	// 	const 
-	// 	container = document.createElement( 'span' ),
-	// 	link = document.createElement( 'a' )
+		const 
+		container = document.createElement( 'div' ),
+		link = document.createElement( 'a' )
 		
-	// 	container.classList.add( 'section-anchor' )
-	// 	container.appendChild( link )
-	// 	link.setAttribute( 'href', '#'+ el.getAttribute( 'id' ))
-	// 	// link.innerText = '§'
-	// 	link.innerText = '#'
-	// 	el.insertAdjacentElement( 'afterbegin', container )
-	// })
+		container.classList.add( 'section-anchor' )
+		container.appendChild( link )
+		link.setAttribute( 'href', '#'+ el.getAttribute( 'id' ))
+		// link.innerText = '§'
+		// link.innerText = '#'
+		//el.insertAdjacentElement( 'afterbegin', container )
+		el.parentNode.appendChild( container )
+	})
 
 
 	onHashChange()

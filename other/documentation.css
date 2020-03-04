@@ -215,13 +215,14 @@ a[ target=_blank ]:hover svg {
 
 
 
+
 .section-anchor {
 	
-	display: inline-block;
+	display: block;
 	position: absolute;
 	
-	top:  -1rem;
-	right: 0;
+	top:   -1rem;
+	right: -1rem;
 	
 	width:  2rem;
 	height: 2rem;
@@ -247,31 +248,35 @@ a[ target=_blank ]:hover svg {
 		 0.1rem  0.1rem 0.1rem rgba( 0, 0, 0, 0.15 );*/
 
 	overflow: hidden;
-	text-align: center;
+}
+li .section-anchor {
+
+	top:   -0.4rem;
+	right: -0.4rem;
+	width:  0.8rem;
+	height: 0.8rem;
+}
+li .section-anchor a {
+
+	top: 0;
 }
 .section-anchor a {
 	
+	top: -0.3rem;
 	display: block;
 	position: relative;
+	min-width:  100%;
+	min-height: 100%;
 	color: var( --Q-hyperlink-internal-color );
-}
-h3 .section-anchor a {
-
-	top: -0.3rem;
-}
-h4 .section-anchor a {
-
-	top: -0.3rem;
-}
-dt .section-anchor a {
-	
-	top: -0.3rem;
 }
 .section-anchor a:hover {
 
 	background-color: inherit;
 	color: var( --Q-hyperlink-internal-color );
 }
+
+
+
 
 
 
@@ -288,13 +293,23 @@ h1, h2, h3, h4, h5 {
 	position: relative;
 	margin:  0;
 	padding: 0;
-	color: hsl( 0, 0%, 20% );
+	color: hsl(
+
+		var( --Q-color-base-hue ),
+		 5%,
+		20%
+	);
 	font-family: var( --Q-font-family-sans );
 	font-weight: normal;
 }
 h3, h4, h5 {
 
-	border-top: 1px solid hsl( 0, 0%, 90% );
+	border-top: 1px solid hsl(
+
+		var( --Q-color-base-hue ),
+		 5%,
+		80%
+	);
 	font-weight: 700;
 }
 h3 {
@@ -334,7 +349,12 @@ hr {
 
 	margin: 4rem 0 0rem 0;
 	height: 0.5rem;
-	background-color: #333;
+	background-color: hsl(
+
+		var( --Q-color-base-hue ),
+		 5%,
+		25%
+	);
 	padding: 0;
 }
 hr + p, hr + footer {
@@ -441,7 +461,7 @@ img.figure {
 }
 .value-type {
 
-	color: var( --Q-color-red );
+	color: var( --Q-color-green );
 	margin-right: 0.4em;
 }
 .expected-type {
@@ -568,7 +588,7 @@ main {
 	line-height: 1.6rem;
 	/*box-shadow: 0 0 1rem rgba( 0, 0, 0, 0.2 );*/
 }
-main > p, main > ul, main > ol, main > footer {
+main > p, main > ol, main > footer {
 
 	margin-left:  1rem;
 	margin-right: 1rem;
@@ -679,13 +699,22 @@ ul.properties,
 ol.properties {
 
 	margin-top: 0.8em;
-	border-top: 1px solid var( --Q-color-newsprint );
+	/*border-top: 1px solid var( --Q-color-newsprint );
+	border-top: 4px solid orange;*/
 }
 ul.properties li,
 ol.properties li {
 
-	border-bottom: 1px solid var( --Q-color-newsprint );
-	padding: 0.8em 0;
+	position: relative;
+	border-top: 1px solid hsl(
+
+		var( --Q-color-base-hue ),
+		 5%,
+		90%
+	);
+	/*border-bottom: 1px solid var( --Q-color-newsprint );*/
+	/*padding: 0.8em 0;*/
+	padding: 0.5rem 1rem;
 }
 ul.properties li {
 
@@ -694,7 +723,7 @@ ul.properties li {
 ul.properties li:hover,
 ol.properties li:hover {
 
-	background-color: var( --Q-background-callout-color );
+	/*background-color: var( --Q-background-callout-color );*/
 }
 
 
@@ -716,6 +745,10 @@ dd {
 	display: inline;
 }
 
+
+
+
+
 footer {
 
 	font-family: var( --Q-font-family-sans );
@@ -723,6 +756,12 @@ footer {
 .keywords {
 
 	color: var( --Q-text-code-comment-color );
+	color: hsl(
+
+		var( --Q-color-base-hue ),
+		5%,
+		70%
+	);
 }
 
 
@@ -1531,13 +1570,7 @@ header h1 svg {
 	html {
 
 		font-size: 16px;
-	}
-	body {
-
-		background-color: var( --Q-color-white );
-		background-image: none;
-	}
-	
+	}	
 
 
 
@@ -1547,9 +1580,10 @@ header h1 svg {
 		left: 0;
 		width: 100%;
 		height: fit-content;
-		height: -moz-fit-content;
-		padding: 0;
+		height: -moz-fit-content;		
 		margin: 0;
+		background-color: var( --Q-color-white );
+		padding: 0;
 		box-shadow: 0 0 0.5rem rgba( 0, 0, 0, 0.5 );
 	}
 	nav li a {
