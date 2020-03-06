@@ -84,16 +84,24 @@ I-I-I---I-I</textarea>
 				</button>
 				<br><br>
 			</p>
-			<h4>Interactive circuit diagram</h4>
-			<div class="qjs-circuit-palette"></div>
 			
 <style>
-	
+
+/*
+
+
+https://css-tricks.com/idea-simple-responsive-spreadsheet/
+
+
+
+*/
 
 .Q-circuit {
 
 	position: relative;
-	width: 100%;
+	width:  100%;
+	height: 16rem;
+	/*min-height: 16rem;*/
 	overflow: auto;
 	background-color: white;
 	border-radius: 1rem;
@@ -114,8 +122,9 @@ I-I-I---I-I</textarea>
 .Q-circuit-board {
 
 	position: relative;
-	width: 200%;
-	min-height: 16rem;
+	width:  200%;
+	height: 200%;
+	
 }
 .Q-circuit-board-foreground,
 .Q-circuit-board-background {
@@ -152,6 +161,8 @@ I-I-I---I-I</textarea>
 .Q-circuit-moment-index,
 .Q-circuit-register-index {
 	
+	position: sticky;
+	z-index: 2;
 	color: hsl(
 
 		var( --Q-color-base-hue ),
@@ -162,12 +173,14 @@ I-I-I---I-I</textarea>
 }
 .Q-circuit-moment-index {
 
+	top: 0px;
 	border-top-right-radius: 100%;
 	border-top-left-radius:  100%;
 	grid-row: 1;
 }
 .Q-circuit-register-index {
 
+	left: 0px;
 	border-top-left-radius:    100%;
 	border-bottom-left-radius: 100%;
 	grid-column: 1;
@@ -198,7 +211,7 @@ I-I-I---I-I</textarea>
 	);
 
 	box-shadow:
-		 0.2rem  0.2rem 0.2rem rgba( 0, 0, 0, 0.1 );
+		 0.1rem  0.1rem 0.1rem rgba( 0, 0, 0, 0.2 );
 
 	border-radius: 0.2rem;
 	/*
