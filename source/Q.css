@@ -251,7 +251,9 @@ https://gist.github.com/stereokai/7666bfe93929b14c2dced148c79e0e97
 
 
 
-.Q-input, .Q-circuit-text-input {
+.Q-input, 
+.Q-circuit, 
+.Q-circuit-text-input {
 
 	margin: 1.5rem 0 0 0 !important;
 	outline: none !important;
@@ -267,10 +269,12 @@ https://gist.github.com/stereokai/7666bfe93929b14c2dced148c79e0e97
 		rgba( 255, 255, 255, 1.0 ),
 		rgba( 255, 255, 255, 0.2 )
 	) !important;
-
+}
+.Q-input, 
+.Q-circuit-text-input {
+	
 	padding: 1.5rem !important;
 	color: #555 !important;
-
 	font-size: 0.9rem !important;
 	line-height: 1.2rem !important;
 }
