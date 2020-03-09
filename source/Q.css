@@ -50,7 +50,7 @@ svg, :root {
 	/*  Red  */
 
 	--Q-color-red-hue: calc( var( --Q-color-base-hue ) + 180 - 30 );
-	--Q-color-red-saturation: 80%;
+	--Q-color-red-saturation: 85%;
 	--Q-color-red-lightness:  45%;
 	--Q-color-red: hsl(
 
@@ -252,7 +252,7 @@ https://gist.github.com/stereokai/7666bfe93929b14c2dced148c79e0e97
 
 
 .Q-input, 
-.Q-circuit, 
+/*.Q-circuit,,*/
 .Q-circuit-text-input {
 
 	margin: 1.5rem 0 0 0 !important;

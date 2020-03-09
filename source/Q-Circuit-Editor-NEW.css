@@ -1,0 +1,487 @@
+/*
+
+	Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
+
+*/
+@charset "utf-8";
+
+
+
+
+
+
+:root {
+
+	--z-index-gate: 50;
+	--z-index-gate-identity: 40;
+}
+
+
+
+
+
+/*
+
+
+	Circuit	
+
+	   Menu     Moments
+	  ╭───────┬───┬───┬───┬───╮
+	  │ ≡     │ 1 │ 2 │ 3 │ + │ Add moment
+	  ├───┬───┼───┼───┼───┼───╯
+	R │ 0 │|0⟩│ H │ C0│ X │ -
+	e ├───┼───┼───┼───┼───┤
+	g │ 1 │|0⟩│ I │ C1│ X │ -
+	s ├───┼───┴───┴───┴───┘
+      │ + │ -   -   -   -
+	  ╰───╯
+	    Add
+	    register
+
+
+	Circuit Palette
+
+	╭───────────────────┬───╮
+	│ H X Y Z S T π M … │ @ │
+	╰───────────────────┴───╯
+
+
+	Circuit clipboard
+
+	 ┌───────────────┐
+	▟│ ┌───┬───────┐ │
+	█│ │ H │ X#0.0 │ │
+	█│ ├───┼───────┤ │
+	█│ │ I │ X#0.1 │ │
+	█│ └───┴───────┘ │
+	█└───────────────┘
+	███████████████▛
+
+
+
+    ◢◣
+  ◢■■■■◣
+◢■■■■■■■■◣
+◥■■■■■■■■◤
+  ◥■■■■◤
+    ◥◤
+
+
+    ◢■■■■■■◤
+  ◢◤    ◢◤
+◢■■■■■■◤
+
+
+ ───────────
+  ╲ ╱  ╱  ╱
+   ╳  ╱  ╱
+  ╱ ╲╱  ╱
+ ───────
+
+
+  ─────⦢
+ ╱    ╱
+⦣─────
+
+
+*/
+
+
+
+
+
+
+.Q-circuit {
+
+	position: relative;
+	width:  100%;
+	/*height: 30rem;*/
+	/*display: flex;*/
+	/*flex-direction: column;*/
+}
+
+
+
+
+
+.Q-circuit-toolbar {
+
+	display: block;
+}
+.Q-circuit-button {
+
+	position: relative;
+	display: inline-block;
+	margin: 0 0.5rem 0.5rem 0;
+	width:  3rem;
+	height: 3rem;
+	box-shadow: 
+		-0.1rem -0.1rem 0 rgba( 255, 255, 255, 0.8 ),
+		 0.1rem  0.1rem 0.1rem rgba( 0, 0, 0, 0.35 );
+	background: 
+		var( --Q-color-background )
+		linear-gradient(
+
+			0.45turn,
+			
+			rgba( 0, 0, 0, 0.04 ),
+			rgba( 255, 255, 255, 0.1 )
+		);
+	color: hsl( 
+		
+		var( --Q-color-base-hue ), 
+		10%, 
+		30%
+	);
+	text-shadow: 1px  1px 0 rgba( 255, 255, 255, 1 );
+	/*border-radius: 0.5rem;*/
+	border-radius: 100%;
+	line-height: 2.9rem;
+	text-align: center;
+	cursor: pointer;
+	overflow: hidden;
+}
+
+
+
+
+
+.Q-circuit-board-container {
+
+	position: relative;
+	margin: 0 0 2rem 0;
+	width:  100%;
+	/*flex: 1;*/
+	/*height: auto;*/
+	/*min-height: 16rem;*/
+	/*overflow: auto;*/
+	overflow: scroll;
+
+	/*background-color: white;*/
+	/*border-radius: 1rem;*/
+	/*box-shadow: 
+		 0.2rem  0.2rem 0.2rem rgba( 0, 0, 0, 0.15 ) inset,
+		-0.2rem -0.2rem 0.2rem rgba( 255, 255, 255, 1 ) inset;
+	background: linear-gradient( 
+
+		0.375turn,
+		rgba( 255, 255, 255, 1.0 ),
+		rgba( 255, 255, 255, 0.2 )
+	) !important;*/
+}
+
+/*
+.Q-circuit-board-container::-webkit-scrollbar {
+
+	-webkit-appearance: none;
+	width:  2rem;
+	height: 2rem;
+}
+.Q-circuit-board-container::-webkit-scrollbar-track {
+
+	background-color: hsl(
+
+		var( --Q-color-base-hue ), 
+		10%,
+		80%
+	);
+
+	background-color: hsla(
+
+		var( --Q-color-base-hue ),
+		10%,
+		80%,
+		0.5
+	);
+
+	background-color: transparent;
+}
+.Q-circuit-board-container::-webkit-scrollbar-thumb {
+
+	border-radius: 1rem;	
+	background: 
+		linear-gradient( 
+
+			0.5turn,
+			hsl(
+
+				var( --Q-color-base-hue ), 
+				 3%,
+				85%
+			) 0%,
+			hsl(
+
+				var( --Q-color-base-hue ), 
+				 3%,
+				80%
+			) 10%,
+			hsl(
+
+				var( --Q-color-base-hue ), 
+				 3%,
+				80%
+			) 90%,
+			hsl(
+
+				var( --Q-color-base-hue ), 
+				 3%,
+				70%
+			) 100%
+		);
+
+	cursor: move;
+}
+.Q-circuit-board-container::-webkit-scrollbar-thumb:hover {
+
+	background-color: hsl(
+
+		var( --Q-color-base-hue ), 
+		50%,
+		50%
+	);
+}
+*/
+
+
+
+
+
+.Q-circuit-board {
+
+	position: relative;
+/*	width:  200%;
+	height: 200%;*/
+}
+.Q-circuit-palette,
+.Q-circuit-board-foreground,
+.Q-circuit-board-background {
+
+	box-sizing: border-box;
+	position: relative;
+	display: grid;
+	grid-auto-rows:    4rem;
+	grid-auto-columns: 4rem;
+	grid-auto-flow: column;
+	top:  0;
+	left: 0;
+	width:  100%;
+	height: 100%;
+}
+.Q-circuit-board-background {
+
+	position: absolute;
+	color: rgba( 0, 0, 0, 0.2 );
+}
+
+
+
+
+.Q-circuit-cell {
+
+	margin:  0.5rem;
+	padding: 0.5rem;
+	text-align: center;
+	overflow: hidden;
+	line-height: 1.95rem;
+	font-style: italic;
+}
+.Q-circuit-cell:hover {
+
+	/*background-color: white;*/
+}
+
+
+
+
+
+
+    /***************/
+   /*             */
+  /*   Headers   */
+ /*             */
+/***************/
+
+
+.Q-circuit-header {
+
+	position: sticky;
+	z-index: 2;
+	margin: 0;
+	border: 1px solid hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		97%
+	);
+	border-right: 1px solid hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		88%
+	);
+	border-bottom: 1px solid hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		88%
+	);
+	background-color: var( --Q-color-background );
+	color: hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		70%
+	);
+	font-family: var( --Q-font-family-mono );
+	line-height: 2.9rem;
+	text-shadow: 0.05rem 0.05rem 0 white;
+}
+.Q-circuit-selectall {
+
+	z-index: 3;
+	margin: 0;
+	top:  0;
+	left: 0;
+/*	width:  50%;
+	height: 50%;*/
+	/*border-top-left-radius: 1rem;*/
+	/*border-radius: 1rem;*/
+}
+.Q-circuit-input-header {
+
+	grid-row: 1;
+	grid-column: 2;
+	top: 0;
+	/*height: 50%;*/
+}
+.Q-circuit-moment-index,
+.Q-circuit-moment-index-add {
+
+	grid-row: 1;
+	top: 0px;	
+	/*height: 50%;*/
+	/*line-height: 0.8rem;*/
+}
+.Q-circuit-register-index,
+.Q-circuit-register-index-add {
+
+	grid-column: 1;
+	left: 0px;
+	/*width: 50%;*/
+}
+.Q-circuit-selectall,
+.Q-circuit-moment-index-add,
+.Q-circuit-register-index-add {
+
+	cursor: pointer;
+}
+.Q-circuit-moment-index-add,
+.Q-circuit-register-index-add {
+
+	display: none;
+}
+
+
+
+
+
+
+.Q-circuit-input {
+
+	grid-column: 2;
+	font-size: 1.5rem;
+	font-weight: 900;
+	font-family: var( --Q-font-family-mono );
+
+}
+
+
+
+
+
+
+    /******************/
+   /*                */
+  /*   Operations   */
+ /*                */
+/******************/
+
+
+.Q-circuit-operation {
+	
+	--Q-operation-color-hue: var( --Q-color-green-hue );
+	--Q-operation-color-main: var( --Q-color-green );
+	--Q-operation-color-light: hsl(
+
+		var( --Q-operation-color-hue ),
+		90%,
+		70%
+	);
+	--Q-operation-color-dark: hsl(
+
+		var( --Q-operation-color-hue ),
+		50%,
+		60%
+	);
+
+	box-shadow:
+		 0.1rem  0.1rem 0.2rem rgba( 0, 0, 0, 0.1 );
+
+	border-radius: 0.2rem;
+	/*
+	border-top:    0.1rem solid var( --Q-operation-color-light );
+	border-left:   0.1rem solid var( --Q-operation-color-light );
+	border-right:  0.1rem solid var( --Q-operation-color-dark );
+	border-bottom: 0.1rem solid var( --Q-operation-color-dark );
+	*/
+	background: 
+		var( --Q-operation-color-main )
+		/*linear-gradient(
+
+			0.45turn,
+			rgba( 255, 255, 255, 0.1 ),
+			rgba( 0, 0, 0, 0.05 )
+		)*/;
+	color: white;
+	text-shadow: -0.05rem -0.05rem 0 rgba( 0, 0, 0, 0.1 );
+	font-size: 1.5rem;
+	font-weight: 900;
+	cursor: move;
+}
+.Q-circuit.Q-circuit-locked .Q-circuit-board-operation {
+
+	cursor: not-allowed;
+}
+.Q-circuit-operation-hadamard {
+
+	--Q-operation-color-hue:  var( --Q-color-red-hue );
+	--Q-operation-color-main: var( --Q-color-red );
+}
+.Q-circuit-operation-control,
+.Q-circuit-operation-target {
+
+	--Q-operation-color-hue:  var( --Q-color-orange-hue );
+	--Q-operation-color-main: var( --Q-color-orange );
+	border-radius: 100%;
+}
+.Q-circuit-operation-control {
+
+	margin: 1.3rem;
+	width:  1.4rem;
+	height: 1.4rem;
+	overflow: hidden;
+}
+
+.Q-circuit-operation-pauli-x,
+.Q-circuit-operation-pauli-y,
+.Q-circuit-operation-pauli-z {
+
+	--Q-operation-color-hue:  var( --Q-color-yellow-hue );
+	--Q-operation-color-main: var( --Q-color-yellow );
+}
+
+
+
+
+
+
