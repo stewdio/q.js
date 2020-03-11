@@ -248,9 +248,18 @@
 
 .Q-circuit-board {
 
-	position: relative;
+	position: relative
 /*	width:  200%;
 	height: 200%;*/
+}
+.Q-circuit-clipboard {
+
+	position: absolute;
+	z-index: 100;
+	min-width:  4rem;
+	min-height: 4rem;
+	background-color: white;
+	box-shadow: 0 0 1rem black;
 }
 .Q-circuit-palette,
 .Q-circuit-board-foreground,
@@ -288,6 +297,10 @@
 .Q-circuit-cell:hover {
 
 	/*background-color: white;*/
+}
+.Q-circuit-cell.Q-circuit-cell-selected {
+
+	background-color: white;
 }
 
 
@@ -346,6 +359,7 @@
 	height: 50%;*/
 	/*border-top-left-radius: 1rem;*/
 	/*border-radius: 1rem;*/
+	cursor: se-resize;
 }
 .Q-circuit-input-header {
 
@@ -354,29 +368,30 @@
 	top: 0;
 	/*height: 50%;*/
 }
-.Q-circuit-moment-index,
-.Q-circuit-moment-index-add {
+.Q-circuit-moment-label,
+.Q-circuit-moment-add {
 
 	grid-row: 1;
 	top: 0px;	
 	/*height: 50%;*/
 	/*line-height: 0.8rem;*/
+	cursor: s-resize;
 }
-.Q-circuit-register-index,
-.Q-circuit-register-index-add {
+.Q-circuit-register-label,
+.Q-circuit-register-add {
 
 	grid-column: 1;
 	left: 0px;
 	/*width: 50%;*/
+	cursor: e-resize;
 }
-.Q-circuit-selectall,
-.Q-circuit-moment-index-add,
-.Q-circuit-register-index-add {
+.Q-circuit-moment-add,
+.Q-circuit-register-add {
 
 	cursor: pointer;
 }
-.Q-circuit-moment-index-add,
-.Q-circuit-register-index-add {
+.Q-circuit-moment-add,
+.Q-circuit-register-add {
 
 	display: none;
 }
@@ -448,7 +463,7 @@
 	font-weight: 900;
 	cursor: move;
 }
-.Q-circuit.Q-circuit-locked .Q-circuit-board-operation {
+.Q-circuit-locked .Q-circuit-operation {
 
 	cursor: not-allowed;
 }
@@ -483,5 +498,8 @@
 
 
 
+.Q-circuit-locked .Q-circuit-button-lock {
 
+	background-color: var( --Q-color-red );
+}
 

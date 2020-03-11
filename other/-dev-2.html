@@ -52,7 +52,7 @@
 		<script src="../source/Q-Qubit.js"></script>
 		<script src="../source/Q-Gate.js"></script>
 		<script src="../source/Q-Circuit.js"></script>
-		<script src="../source/Q-Circuit-Editor.js"></script>
+		<!-- <script src="../source/Q-Circuit-Editor-NEW.js"></script> -->
 		<script src="../other/navigation.js"></script>
 		
 	</head>
@@ -114,21 +114,19 @@ I-I-I---I-I</textarea>
 				
 				<div class="Q-circuit-cell Q-circuit-header Q-circuit-selectall">&searr;</div>
 				<div class="Q-circuit-cell Q-circuit-header Q-circuit-input-header"></div>
-				<div class="Q-circuit-cell Q-circuit-header Q-circuit-moment-index" style="grid-column: 3" title="Moment 1">1</div>
-				<div class="Q-circuit-cell Q-circuit-header Q-circuit-moment-index" style="grid-column: 4" title="Moment 2">2</div>
-				<div class="Q-circuit-cell Q-circuit-header Q-circuit-moment-index" style="grid-column: 5" title="Moment 3">3</div>
-				<div class="Q-circuit-cell Q-circuit-header Q-circuit-moment-index" style="grid-column: 6" title="Moment 4">4</div>
-				<div class="Q-circuit-cell Q-circuit-header Q-circuit-moment-index-add" style="grid-column: 7">+</div>
+				<div class="Q-circuit-cell Q-circuit-header Q-circuit-moment-label" style="grid-column: 3" title="Moment 1">1</div>
+				<div class="Q-circuit-cell Q-circuit-header Q-circuit-moment-label" style="grid-column: 4" title="Moment 2">2</div>
+				<div class="Q-circuit-cell Q-circuit-header Q-circuit-moment-label" style="grid-column: 5" title="Moment 3">3</div>
+				<div class="Q-circuit-cell Q-circuit-header Q-circuit-moment-label" style="grid-column: 6" title="Moment 4">4</div>
+				<div class="Q-circuit-cell Q-circuit-header Q-circuit-moment-add" style="grid-column: 7">+</div>
 				
-				<div class="Q-circuit-cell Q-circuit-header Q-circuit-register-index" style="grid-row: 2" title="Register 1">1</div>
+				<div class="Q-circuit-cell Q-circuit-header Q-circuit-register-label" style="grid-row: 2" title="Register 1">1</div>
 				<div class="Q-circuit-cell Q-circuit-input" style="grid-row: 2">0</div>
-				<div class="Q-circuit-cell Q-circuit-header Q-circuit-register-index" style="grid-row: 3" title="Register 2">2</div>
+				<div class="Q-circuit-cell Q-circuit-header Q-circuit-register-label" style="grid-row: 3" title="Register 2">2</div>
 				<div class="Q-circuit-cell Q-circuit-input" style="grid-row: 3">0</div>
-
-<div class="Q-circuit-cell Q-circuit-header Q-circuit-register-index" style="grid-row: 4" title="Register 3">3</div>
+				<div class="Q-circuit-cell Q-circuit-header Q-circuit-register-label" style="grid-row: 4" title="Register 3">3</div>
 				<div class="Q-circuit-cell Q-circuit-input" style="grid-row: 4">0</div>
-				<div class="Q-circuit-cell Q-circuit-header Q-circuit-register-index-add" style="grid-row: 5">+</div>
-
+				<div class="Q-circuit-cell Q-circuit-header Q-circuit-register-add" style="grid-row: 5">+</div>
 
 				<div class="Q-circuit-cell Q-circuit-operation Q-circuit-operation-hadamard" style="grid-column: 3; grid-row: 2">H</div>
 				<div class="Q-circuit-cell Q-circuit-operation Q-circuit-operation-control" style="grid-column: 4; grid-row: 2">.</div>
@@ -136,67 +134,35 @@ I-I-I---I-I</textarea>
 				<div class="Q-circuit-cell Q-circuit-operation Q-circuit-operation-pauli-x" style="grid-column: 5; grid-row: 2">X</div>
 				<div class="Q-circuit-cell Q-circuit-operation Q-circuit-operation-pauli-x" style="grid-column: 5; grid-row: 3">X</div>
 				<div class="Q-circuit-cell Q-circuit-operation Q-circuit-operation-phase" style="grid-column: 6; grid-row: 4">S</div>
+			
 			</div>
 		</div>
 	</div>
 	<div class="Q-circuit-toolbar">
-		<div class="Q-circuit-button" title="Lock / unlock">
+		<div class="Q-circuit-button Q-circuit-button-lock" title="Lock / unlock">
 			🔒
 		</div
-		><div class="Q-circuit-button" title="Undo">
+		><div class="Q-circuit-button Q-circuit-button-undo" title="Undo">
 			&larr;
 		</div
-		><div class="Q-circuit-button" title="Redo">
+		><div class="Q-circuit-button Q-circuit-button-redo" title="Redo">
 			&rarr;
 		</div
-		><div class="Q-circuit-button" title="Add moment">
+		><div class="Q-circuit-button Q-circuit-button-add-moment" title="Add moment">
 			+m
 		</div
-		><div class="Q-circuit-button" title="Add register">
+		><div class="Q-circuit-button Q-circuit-button-add-register" title="Add register">
 			+r
 		</div>
 	</div>
 </div>
-<script>
+<script src="../source/Q-Circuit-Editor-NEW.js"></script>
 
 
 
-document
-// .getElementById( 'my-sample-circuit' )
-.querySelector( '#my-sample-circuit .Q-circuit-board-foreground' )
-.addEventListener( 'mousedown', function( event ){
-
-
-	const circuit = event.target.closest( '.Q-circuit' )
-	console.log( 'circuit', circuit )
-	console.log( 'circuit scrollLeft', circuit.scrollLeft )
-	console.log( 'circuit scrollTop', circuit.scrollTop )
-
-	const operation = event.target.closest( '.Q-circuit-operation' )
-	if( operation ){
-	
-		console.log( 'operation', operation )
-		// const computed = window.getComputedStyle( operation )		
-		// console.log( 'computed', computed )		
-		console.log( 'operation register index', +operation.style.gridRowStart - 1 )
-		console.log( 'operation moment index', +operation.style.gridColumnStart - 2 )
-	}
-
-
-	// console.log( event ) 
-
-	// console.log( 'target', event.target.scrollLeft  )
-	// console.log( 'parent', event.target.parentNode.scrollLeft  )
-	// console.log( 'grandparent', event.target.parentNode.parentNode.scrollLeft  )
-
-	// console.log( 'taget', event.target )
-	// console.log( 'parent', event.target.parentNode  )
-	// console.log( 'grandparent', event.target.parentNode.parentNode  )
-})
 
 
 
-</script>
 
 
 

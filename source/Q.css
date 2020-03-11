@@ -166,80 +166,6 @@ svg, :root {
 
 
 
-
-
-
-
-.color-swatch {
-
-	display: inline-block;
-	margin: 0 0.5rem 0.5rem 0;
-	width:  6rem;
-	height: 6rem;
-	/*border: 1px solid white;*/
-	padding: 1rem 0 0 1.5rem;
-	color: #FFF;
-	font-weight: bold;
-}
-#color-swatch-1 {
-
-	background-color: var( --Q-color-red );
-}
-#color-swatch-2 {
-
-	background-color: var( --Q-color-orange );
-}
-#color-swatch-3 {
-
-	background-color: var( --Q-color-yellow );
-}
-#color-swatch-4 {
-
-	background-color: var( --Q-color-green );
-}
-#color-swatch-5 {
-
-	background-color: var( --Q-color-blue );
-}
-
-
-
-
-
-/*
-
-https://gist.github.com/stereokai/7666bfe93929b14c2dced148c79e0e97
-
-*/
-.cos {
-
-	--cos-term1: 1;
-	--cos-term2: calc(( var( --angle ) * var( --angle )) / 2 );
-	--cos-term3: calc(( var( --angle ) * var( --angle ) * var( --angle ) * var( --angle )) / 24 );
-	--cos-term4: calc(( var( --angle ) * var( --angle ) * var( --angle ) * var( --angle ) * var( --angle ) * var( --angle )) / 720 );
-	--cos-term5: calc(( var( --angle ) * var( --angle ) * var( --angle ) * var( --angle ) * var( --angle ) * var( --angle ) * var( --angle ) * var( --angle )) / 40320 );
-	--cos: calc( var( --cos-term1 ) - var( --cos-term2 ) + var( --cos-term3 ) - var( --cos-term4 ) + var( --cos-term5 ));
-}
-#color-swatch-X {
-
-	--hue: calc( var( --Q-color-base-hue ) - 90 );
-	--pi: 3.141592653589793;
-	/*--angle: calc( var( --hue ) * var( --pi ) / 180 );*/
-	--angle: calc( var( --hue ) / 60 * var( --pi ));
-	background-color: hsl(
-
-		var( --hue ),
-		/*100%,*/
-		calc( 75% + var( --cos ) * 25% ),
-		/*calc( 40% + var( --cos ) * 10% )*/
-		50%
-	);
-}
-
-
-
-
-
     /*******************/
    /*                 */
   /*   Interactive   */
@@ -247,12 +173,7 @@ https://gist.github.com/stereokai/7666bfe93929b14c2dced148c79e0e97
 /*******************/
 
 
-
-
-
-
 .Q-input, 
-/*.Q-circuit,,*/
 .Q-circuit-text-input {
 
 	margin: 1.5rem 0 0 0 !important;
