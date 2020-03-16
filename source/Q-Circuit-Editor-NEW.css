@@ -91,13 +91,16 @@
 
 
 
-.Q-circuit {
+.Q-circuit,
+.Q-circuit-palette {
 
 	position: relative;
 	width:  100%;
 	/*height: 30rem;*/
 	/*display: flex;*/
 	/*flex-direction: column;*/
+	user-select: none;
+	line-height: 3.85rem;
 }
 
 
@@ -250,7 +253,33 @@
 
 	position: relative
 /*	width:  200%;
-	height: 200%;*/
+	height: 200%;*/		
+}
+.Q-circuit-palette,
+.Q-circuit-board-foreground,
+.Q-circuit-board-background,
+.Q-circuit-clipboard {
+
+	box-sizing: border-box;
+	display: grid;
+	grid-auto-rows:    4rem;
+	grid-auto-columns: 4rem;
+	grid-auto-flow: column;
+}
+.Q-circuit-palette,
+.Q-circuit-board-foreground,
+.Q-circuit-board-background {
+
+	position: relative;
+	top:  0;
+	left: 0;
+	width:  100%;
+	height: 100%;
+}
+.Q-circuit-palette,
+.Q-circuit-board {
+
+	
 }
 .Q-circuit-clipboard {
 
@@ -258,23 +287,8 @@
 	z-index: 100;
 	min-width:  4rem;
 	min-height: 4rem;
-	background-color: white;
-	box-shadow: 0 0 1rem black;
-}
-.Q-circuit-palette,
-.Q-circuit-board-foreground,
-.Q-circuit-board-background {
-
-	box-sizing: border-box;
-	position: relative;
-	display: grid;
-	grid-auto-rows:    4rem;
-	grid-auto-columns: 4rem;
-	grid-auto-flow: column;
-	top:  0;
-	left: 0;
-	width:  100%;
-	height: 100%;
+	/*background-color: white;*/
+	/*box-shadow: 0.1rem 0.1rem 1rem rgba( 0, 0, 0, 0.3 );*/
 }
 .Q-circuit-board-background {
 
@@ -285,23 +299,54 @@
 
 
 
-.Q-circuit-cell {
+.Q-circuit-palette > div,
+.Q-circuit-clipboard > div,
+.Q-circuit-board-foreground > div {
 
-	margin:  0.5rem;
-	padding: 0.5rem;
-	text-align: center;
 	overflow: hidden;
-	line-height: 1.95rem;
 	font-style: italic;
+	text-align: center;
 }
-.Q-circuit-cell:hover {
 
-	/*background-color: white;*/
+.Q-circuit-cell-highlight,
+.Q-circuit-palette > div:hover,
+.Q-circuit-selectall:hover,
+.Q-circuit-moment-label:hover,
+.Q-circuit-register-label:hover,
+.Q-circuit-operation:hover {
+
+	/*background-color: rgba( 255, 255, 255, 0.5 );*/
+	z-index: 90;
+	/*box-shadow: 0.1rem 0.1rem 0.5rem rgba( 0, 0, 0, 0.3 );*/
+	outline: 0.2rem solid white;
+	outline-offset: -0.2rem;
 }
-.Q-circuit-cell.Q-circuit-cell-selected {
+
+
+.Q-circuit-cell-selected {
+
+	/*background-color: rgba( 255, 255, 255, 0.8 );*/
+	background-color: rgba( 0, 0, 0, 0.1 );
+}
+.Q-circuit-clipboard > div {
 
 	background-color: white;
+	/*box-shadow: 2px 2px 2rem black;*/
 }
+/*.Q-circuit-clipboard > div:after {
+	
+	position: absolute;
+	position: relative;
+	z-index: 10;
+	display: block;
+	background-color: blue;
+	width:  100%;
+	height: 100%;
+	min-width:  200px;
+	min-height: 200px;
+	box-shadow: 2px 2px 2rem black;
+	content: "x";
+}*/
 
 
 
@@ -346,7 +391,7 @@
 		70%
 	);
 	font-family: var( --Q-font-family-mono );
-	line-height: 2.9rem;
+	/*line-height: 2.9rem;*/
 	text-shadow: 0.05rem 0.05rem 0 white;
 }
 .Q-circuit-selectall {
@@ -424,6 +469,7 @@
 
 .Q-circuit-operation {
 	
+	position: relative;
 	--Q-operation-color-hue: var( --Q-color-green-hue );
 	--Q-operation-color-main: var( --Q-color-green );
 	--Q-operation-color-light: hsl(
@@ -438,10 +484,29 @@
 		50%,
 		60%
 	);
+	color: white;
+	text-shadow: -0.05rem -0.05rem 0 rgba( 0, 0, 0, 0.1 );
+	font-size: 1.5rem;
+	line-height: 2.9rem;
+	font-weight: 900;
+	cursor: grab;
+}
+.Q-circuit-locked .Q-circuit-operation {
 
-	box-shadow:
-		 0.1rem  0.1rem 0.2rem rgba( 0, 0, 0, 0.1 );
+	cursor: not-allowed;
+}
+.Q-circuit-operation-tile {
 
+	position: absolute;
+	top: 0.5rem;
+	left: 0.5rem;
+	right: 0.5rem;
+	bottom: 0.5rem;
+
+	/*margin:  0.5rem;*/
+	/*padding: 0.5rem;*/
+
+	box-shadow: 0.1rem  0.1rem 0.2rem rgba( 0, 0, 0, 0.1 );
 	border-radius: 0.2rem;
 	/*
 	border-top:    0.1rem solid var( --Q-operation-color-light );
@@ -457,31 +522,28 @@
 			rgba( 255, 255, 255, 0.1 ),
 			rgba( 0, 0, 0, 0.05 )
 		)*/;
-	color: white;
-	text-shadow: -0.05rem -0.05rem 0 rgba( 0, 0, 0, 0.1 );
-	font-size: 1.5rem;
-	font-weight: 900;
-	cursor: move;
 }
-.Q-circuit-locked .Q-circuit-operation {
 
-	cursor: not-allowed;
-}
+
+
+
+
 .Q-circuit-operation-hadamard {
 
 	--Q-operation-color-hue:  var( --Q-color-red-hue );
 	--Q-operation-color-main: var( --Q-color-red );
 }
-.Q-circuit-operation-control,
-.Q-circuit-operation-target {
+.Q-circuit-operation-control .Q-circuit-operation-tile,
+.Q-circuit-operation-target .Q-circuit-operation-tile {
 
 	--Q-operation-color-hue:  var( --Q-color-orange-hue );
 	--Q-operation-color-main: var( --Q-color-orange );
 	border-radius: 100%;
 }
-.Q-circuit-operation-control {
+.Q-circuit-operation-control .Q-circuit-operation-tile {
 
-	margin: 1.3rem;
+	top:  calc( 50% - 0.7rem );
+	left: calc( 50% - 0.7rem );
 	width:  1.4rem;
 	height: 1.4rem;
 	overflow: hidden;
@@ -498,8 +560,21 @@
 
 
 
+
+
+    /***************/
+   /*             */
+  /*   Buttons   */
+ /*             */
+/***************/
+
+
 .Q-circuit-locked .Q-circuit-button-lock {
 
 	background-color: var( --Q-color-red );
 }
+
+
+
+
 

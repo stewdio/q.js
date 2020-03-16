@@ -6,13 +6,45 @@
 
 Q.Circuit.Editor = {
 
-	dragObject: null,
+	dragEl: null,
 	gridColumnToMomentIndex: function( gridColumn  ){ return +gridColumn - 2 },
 	momentIndexToGridColumn: function( momentIndex ){ return momentIndex + 2 },
 	gridRowToRegisterIndex:  function( gridRow ){ return +gridRow - 1 },
-	registerIndexToGridRow:  function( registerIndex ){ return registerIndex + 1 }
+	registerIndexToGridRow:  function( registerIndex ){ return registerIndex + 1 },
+	gridSize: 4,//  CSS: grid-auto-columns = grid-auto-rows = 4rem.
+	pointToGrid: function( p ){
+
+		
+		//  Take a 1-dimensional point value
+		// (so either an X or a Y but not both)
+		//  and return what CSS grid cell contains it
+		//  based on our 4rem × 4rem grid setup.
+		
+		const rem = parseFloat( getComputedStyle( document.documentElement ).fontSize )
+		return 1 + Math.floor( p / ( rem * Q.Circuit.Editor.gridSize ))
+	},
+	gridToPoint: function( g ){
+
+
+		//  Take a 1-dimensional grid cell value
+		// (so either a row or a column but not both)
+		//  and return the minimum point value it contains.
+
+		const  rem = parseFloat( getComputedStyle( document.documentElement ).fontSize )
+		return rem * Q.Circuit.Editor.gridSize * ( g - 1 )
+	},
 }
 
+
+
+
+
+
+    /////////////////////
+   //                 //
+  //   Press BEGAN   //
+ //                 //
+/////////////////////
 
 
 Q.Circuit.Editor.onPressBegan = function( event ){
@@ -23,17 +55,12 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 	// (ex. Did the user click and then their mouse ran
 	//  outside the window but browser didn’t catch it?)
 
-	if( Q.Circuit.Editor.dragObject !== null ){
+	if( Q.Circuit.Editor.dragEl !== null ){
 
 		Q.Circuit.Editor.onPressEnded( event )
 		return
 	}
 
-
-	//  Now we can begin getting down to business.
-
-	event.preventDefault()
-	event.stopPropagation()
 
 	const 
 	targetEl  = event.target,
@@ -98,7 +125,7 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 	//  So if we can’t find a circuit CELL
 	//  then there’s nothing more to do here.
 
-	const cellEl = targetEl.closest( '.Q-circuit-cell' )
+	const cellEl = targetEl.closest( '.Q-circuit-board-foreground > div' )
 	if( !cellEl ) return
 
 
@@ -217,28 +244,126 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 	
 	const 
 	selectedOperations = Array.from( circuitEl.querySelectorAll( '.Q-circuit-cell-selected' )),
-	dragObject = document.createElement( 'div' )
+	dragEl = document.createElement( 'div' )
 
-	dragObject.circuitEl     = circuitEl
-	dragObject.momentIndex   = momentIndex
-	dragObject.registerIndex = registerIndex
-	dragObject.classList.add( 'Q-circuit-clipboard' )
+	dragEl.classList.add( 'Q-circuit-clipboard' )
+	dragEl.origin = {
+
+		circuitEl: circuitEl,
+		foregroundEl: circuitEl.querySelector( '.Q-circuit-board-foreground' )
+	}
+	dragEl.momentIndex   = momentIndex
+	dragEl.registerIndex = registerIndex
+
+
+	//  Now collect all of the selected operations,
+	//  rip them from the circuit board’s foreground layer
+	//  and place them on the clipboard.
+	
+	let 
+	minColumn = Infinity,
+	minRow    = Infinity
+	
 	selectedOperations.forEach( function( el ){
 
+
+		//  Note here that we must ask for the style’s
+		//  grid-column-START and grid-row-START
+		//  which is NOT the exact command we added to
+		//  each DIV’s style attribute. Strange, eh?
+		//  Finding some real CSS grid quirks here.
+
+		let
+		column = +el.style.gridColumnStart,
+		row    = +el.style.gridRowStart
+
+		minColumn = Math.min( minColumn, column )
+		minRow    = Math.min( minRow, row )
 		el.classList.remove( 'Q-circuit-cell-selected' )
-		dragObject.appendChild( el )
+		el.origin = {
+
+			gridColumn: column,
+			gridRow:    row
+		}
+		dragEl.appendChild( el )
 	})
-	document.body.appendChild( dragObject )
-	console.log( dragObject )
-	Q.Circuit.Editor.dragObject = dragObject
+	selectedOperations.forEach( function( el ){
+
+			
+		//  THIS IS INTENSE so pay attention.
+		//  We CANNOT use the following syntax:
+		//    el.style.gridColumn = el.origin.gridColumn
+		//    el.style.gridRow    = el.origin.gridRow
+		//  Why? Because the browser will CONVERT IT
+		//  to the short “grid-area” syntax
+		//  and we will then be unable to search by
+		//  either grid-column or grid-row!
+		//  So instead we must pretend we are just
+		//  adding styles to a DIV by hand:
+
+		const 
+		gridColumnForClipboard = 1 + el.origin.gridColumn - minColumn,
+		gridRowForClipboard    = 1 + el.origin.gridRow - minRow
+
+		el.setAttribute( 
+
+			'style', 
+			`grid-column: ${gridColumnForClipboard}; grid-row: ${gridRowForClipboard}` 
+		)
+	})
+
+
+	//  We need an XY offset that describes the difference
+	//  between the mouse / finger press position
+	//  and the clipboard’s intended upper-left position.
+	//  To do that we need to know the press position (obviously!),
+	//  the upper-left bounds of the circuit board’s foreground,
+	//  and the intended upper-left bound of clipboard.
+
+	const
+	foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' ),
+	bounds = foregroundEl.getBoundingClientRect(),
+	minX   = Q.Circuit.Editor.gridToPoint( minColumn ),
+	minY   = Q.Circuit.Editor.gridToPoint( minRow )
+
+	dragEl.offsetX = bounds.left + minX - event.clientX
+	dragEl.offsetY = bounds.top  + minY - event.clientY
+
+
+	//  Append the clipboard to the document,
+	//  establish a global reference to it,
+	//  and trigger a draw of it in the correct spot.
+	
+	document.body.appendChild( dragEl )
+	Q.Circuit.Editor.dragEl = dragEl
+	Q.Circuit.Editor.onMoved( event )
 }
 
 
 
 
+
+
+    ///////////////
+   //           //
+  //   Moved   //
+ //           //
+///////////////
+
+
 Q.Circuit.Editor.onMoved = function( event ){
 
-	if( Q.Circuit.Editor.dragObject !== null ){
+	if( Q.Circuit.Editor.dragEl !== null ){
+
+
+		//  We couldn’t shut down event bubbling
+		//  inside onPressBegan
+		//  because that would prevent scrolling
+		//  on a touch device!
+
+		event.preventDefault()
+		event.stopPropagation()
+		
 
 
 		// https://javascript.info/coordinates
@@ -246,25 +371,38 @@ Q.Circuit.Editor.onMoved = function( event ){
 
 		// console.log( event.pageX )
 
-		Q.Circuit.Editor.dragObject.style.left = event.pageX +'px'
-		Q.Circuit.Editor.dragObject.style.top  = event.pageY +'px'
+		Q.Circuit.Editor.dragEl.style.left = ( event.pageX + Q.Circuit.Editor.dragEl.offsetX ) +'px'
+		Q.Circuit.Editor.dragEl.style.top  = ( event.pageY + Q.Circuit.Editor.dragEl.offsetY ) +'px'
 	}
 }
 
 
 
 
+
+
+    /////////////////////
+   //                 //
+  //   Press ENDED   //
+ //                 //
+/////////////////////
+
+
 Q.Circuit.Editor.onPressEnded = function( event ){
 
 
-	//  If there’s no dragObject then bail immediately.
-	//  Otherwise let’s get to business.
+	//  If there’s no dragEl then bail immediately.
 
-	if( Q.Circuit.Editor.dragObject === null ) return
+	if( Q.Circuit.Editor.dragEl === null ) return
+	
+
+	//  Looks like we’re moving forward with this plan,
+	//  so we’ll take control of the input now.
+
 	event.preventDefault()
 	event.stopPropagation()
 
-	
+
 	//  We can’t get the drop target from the event.
 	//  Think about it: What was under the mouse / finger
 	//  when this drop event was fired? THE CLIPBOARD !
@@ -273,26 +411,41 @@ Q.Circuit.Editor.onPressEnded = function( event ){
 	//  because that will be the clipboard.
 
 	const 
-	targetEl = document.elementsFromPoint( 
+	circuitEl = document.elementsFromPoint( 
 
 		event.pageX - window.pageXOffset, 
 		event.pageY - window.pageYOffset
 
-	)[ 1 ],
-	circuitEl = targetEl.closest( '.Q-circuit' ),
+	).find( function( el ){
+
+		return el.classList.contains( 'Q-circuit' )
+	}),
 	returnToOrigin = function(){
 
+		Array.from( Q.Circuit.Editor.dragEl.children ).forEach( function( el ){
+
+			Q.Circuit.Editor.dragEl.origin.foregroundEl.appendChild( el )
 		
+			
+			//  THIS IS INTENSE so pay attention.
+			//  We CANNOT use the following syntax:
+			//    el.style.gridColumn = el.origin.gridColumn
+			//    el.style.gridRow    = el.origin.gridRow
+			//  Why? Because the browser will CONVERT IT
+			//  to the short “grid-area” syntax
+			//  and we will then be unable to search by
+			//  either grid-column or grid-row!
+			//  So instead we must pretend we are just
+			//  adding styles to a DIV by hand:
 
+			el.setAttribute( 
 
-		//  +++
-		//  Need to return these dropped elements to their origin !
-		
-
-
-
-		document.body.removeChild( Q.Circuit.Editor.dragObject )
-		Q.Circuit.Editor.dragObject = null
+				'style', 
+				`grid-column: ${el.origin.gridColumn}; grid-row: ${el.origin.gridRow}` 
+			)
+		})
+		document.body.removeChild( Q.Circuit.Editor.dragEl )
+		Q.Circuit.Editor.dragEl = null
 	}
 
 
@@ -307,19 +460,35 @@ Q.Circuit.Editor.onPressEnded = function( event ){
 		return
 	}
 
+
+	//  Time to get serious.
+	//  Where exactly are we dropping on to this circuit??
+
 	const 
 	bounds = circuitEl.getBoundingClientRect(),
 	x = circuitEl.scrollLeft + event.pageX - window.pageXOffset - bounds.left,
 	y = circuitEl.scrollTop  + event.pageY - window.pageYOffset - bounds.top,
-	rem = parseFloat( getComputedStyle( document.documentElement ).fontSize ),
-	gridSize = 4,//  CSS: grid-auto-columns = grid-auto-rows = 4rem.
-	pointToGrid = function( p ){
+	momentIndex = Q.Circuit.Editor.gridColumnToMomentIndex( 
 
-		return 1 + Math.floor( p / ( rem * gridSize ))
-	},
-	momentIndex   = Q.Circuit.Editor.gridColumnToMomentIndex( pointToGrid( x )),
-	registerIndex = Q.Circuit.Editor.gridRowToRegisterIndex( pointToGrid( y )),
-	foregroundEl  = circuitEl.querySelector( '.Q-circuit-board-foreground' )
+		Q.Circuit.Editor.pointToGrid( x )
+	),
+	registerIndex = Q.Circuit.Editor.gridRowToRegisterIndex(
+
+		Q.Circuit.Editor.pointToGrid( y )
+	),
+	foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' )
+
+
+	//  If this is a self-drop
+	//  we can also just return to origin and bail.
+
+	if( Q.Circuit.Editor.dragEl.circuitEl === circuitEl &&
+		Q.Circuit.Editor.dragEl.momentIndex === momentIndex &&
+		Q.Circuit.Editor.dragEl.registerIndex === registerIndex ){
+
+		returnToOrigin()
+		return
+	}
 
 
 	//  Is this a valid drop target within this circuit?
@@ -330,44 +499,96 @@ Q.Circuit.Editor.onPressEnded = function( event ){
 		returnToOrigin()
 		return
 	}
-
-
-	//  If this is a self-drop
-	//  we can also just return to origin and bail.
-
-	if( Q.Circuit.Editor.dragObject.circuitEl === circuitEl &&
-		Q.Circuit.Editor.dragObject.momentIndex === momentIndex &&
-		Q.Circuit.Editor.dragObject.registerIndex === registerIndex ){
-
-		returnToOrigin()
-		return
-	}
 	
 
 	//  Finally! Work is about to be done!
+	//  Let’s place these dragged operations
+	//  where they need to go on the circuit board.
 
-	console.log( 'we need to trigger a new circuit eval and update outputs' )
-
-	Array.from( Q.Circuit.Editor.dragObject.children )
+	Array
+	.from( Q.Circuit.Editor.dragEl.children )
 	.forEach( function( child ){
 
+		child.classList.remove( 'Q-circuit-cell-selected' )
 
+
+/*
+
+
+need to find the dif between 
+where the mouse dropped and this operation’s moment index / register index
+
+
+
+*/
+		const
+		droppedAtColumn   = Q.Circuit.Editor.momentIndexToGridColumn( momentIndex ),
+		gridColumnTarget  = droppedAtColumn,
+		droppedAtRegister = Q.Circuit.Editor.registerIndexToGridRow( registerIndex ),
+		gridRowTarget     = droppedAtRegister
+
+
+
+console.log( '\n\n' )
+
+// console.log( 'ORIGIN grid column', child.origin.gridColumn )
+// console.log( 'TARGET grid column', gridColumnTarget )
+// console.log( '\n' )
+console.log( 'ORIGIN moment index', Q.Circuit.Editor.gridColumnToMomentIndex( child.origin.gridColumn ))
+console.log( 'TARGET moment index', Q.Circuit.Editor.gridColumnToMomentIndex( gridColumnTarget ))
+console.log( '\n' )
+// console.log( '\n' )
+// console.log( 'ORIGIN grid row', child.origin.gridRow )
+// console.log( 'TARGET grid row', gridRowTarget )
+// console.log( '\n' )
+console.log( 'ORIGIN register index', Q.Circuit.Editor.gridRowToRegisterIndex( child.origin.gridRow ))
+console.log( 'TARGET register index', Q.Circuit.Editor.gridRowToRegisterIndex( gridRowTarget ))
+
+console.log( '\n\n' )
+
+
+
+
+
+		child.setAttribute(
+
+			'style', 
+			`grid-column: ${gridColumnTarget}; grid-row: ${gridRowTarget}` 
+		)
+		foregroundEl.appendChild( child )
+
+console.log( 'foregroundEl', foregroundEl )
+
+		// child.style.gridColumnStart = 
+			// child.origin.gridColumnStart - momentIndex
 
 		// +++
 		//  we need to offset the momentIndex and registerIndex!
-
-
-
-		child.classList.add( 'Q-circuit-cell-selected' )
-		foregroundEl.appendChild( child )
 	})
+
+
+	//  +++
+	//  TRIGGER CIRCUIT EVAL HERE!!!
+	console.log( 'OK! - trigger an eval on this circuit.' )
+
+
+	//  If the origina circuit and destination circuit
+	//  are not the same thing
+	//  then we need to also eval the original circuit.
+
+	if( Q.Circuit.Editor.dragEl.circuitEl !== circuitEl ){
+
+		//  +++
+		//  TRIGGER CIRCUIT EVAL HERE!!!
+		console.log( 'ALSO - trigger an eval on the original circuit.' )
+	}
 
 
 	//  We’re finally done here.
 	//  Clean up and go home.
 
-	document.body.removeChild( Q.Circuit.Editor.dragObject )
-	Q.Circuit.Editor.dragObject = null
+	document.body.removeChild( Q.Circuit.Editor.dragEl )
+	Q.Circuit.Editor.dragEl = null
 }
 
 
