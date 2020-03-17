@@ -414,14 +414,29 @@ Q.Circuit.Editor.onMoved = function( event ){
 
 		event.preventDefault()
 		event.stopPropagation()
+
+		let
+		x = 0, 
+		y = 0
+		
+		if( event.changedTouches && event.changedTouches.length ){
+
+			x = event.changedTouches[ 0 ].pageX
+			y = event.changedTouches[ 0 ].pageY
+		}
+		else {
+
+			x = event.pageX
+			y = event.pageY
+		}
 		
 
 		//  This was a very useful resource
 		//  for a reality check on DOM coordinates:
 		//  https://javascript.info/coordinates
 
-		Q.Circuit.Editor.dragEl.style.left = ( event.pageX + Q.Circuit.Editor.dragEl.offsetX ) +'px'
-		Q.Circuit.Editor.dragEl.style.top  = ( event.pageY + Q.Circuit.Editor.dragEl.offsetY ) +'px'
+		Q.Circuit.Editor.dragEl.style.left = ( x + Q.Circuit.Editor.dragEl.offsetX ) +'px'
+		Q.Circuit.Editor.dragEl.style.top  = ( y + Q.Circuit.Editor.dragEl.offsetY ) +'px'
 	}
 }
 
