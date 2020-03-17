@@ -87,11 +87,22 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 
 	let circuitIsLocked = circuitEl.classList.contains( 'Q-circuit-locked' )
 	const lockEl = targetEl.closest( '.Q-circuit-button-lock' )
-	if( lockEl ){
+	if( lockEl ){//  If this event was fired on the lock toggle button...
 
 		console.log( '→ Lock toggle' )
 		if( circuitIsLocked ) circuitEl.classList.remove( 'Q-circuit-locked' )
 		else circuitEl.classList.add( 'Q-circuit-locked' )
+
+
+		//  We’ve toggled the circuit lock button
+		//  so we should prevent further propagation
+		//  before proceeding further.
+		//  That includes running all this code again
+		//  if it was originally fired by a mouse event
+		//  and about to be fired by a touch event!
+
+		event.preventDefault()
+		event.stopPropagation()
 		return
 	}
 
@@ -104,6 +115,20 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 		console.log( 'circuit is LOCKED!' )
 		return
 	}
+
+
+	//  By this point we know that the circuit is unlocked
+	//  and that we’ll activate a button / drag event / etc.
+	//  So we need to hault futher event propagation
+	//  including running this exact code again if this was
+	//  fired by a touch event and about to again by mouse.
+	//  This may SEEM redundant because we did this above
+	//  within the lock-toggle button code
+	//  but we needed to NOT stop propagation if the circuit
+	//  was already locked -- for scrolling and such.
+
+	event.preventDefault()
+	event.stopPropagation()
 
 
 	//  +++
@@ -129,6 +154,17 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 	if( !cellEl ) return
 
 
+	//  Once we know what cell we’ve pressed on
+	//  we can determine its CSS grid column and row,
+	//  as well as the corresponding moment and register.
+
+	const
+	columnIndex   = +cellEl.style.gridColumnStart,
+	rowIndex      = +cellEl.style.gridRowStart,
+	momentIndex   = Q.Circuit.Editor.gridColumnToMomentIndex( columnIndex ),
+	registerIndex = Q.Circuit.Editor.gridRowToRegisterIndex( rowIndex )
+
+
 	//  Looks like our circuit is NOT locked
 	//  and we have a valid circuit CELL
 	//  so let’s find everything else we could need.
@@ -138,9 +174,7 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 	registerLabelEl = targetEl.closest( '.Q-circuit-register-label' ),
 	momentLabelEl   = targetEl.closest( '.Q-circuit-moment-label' ),
 	inputEl         = targetEl.closest( '.Q-circuit-input' ),
-	operationEl     = targetEl.closest( '.Q-circuit-operation' ),
-	momentIndex     = Q.Circuit.Editor.gridColumnToMomentIndex( cellEl.style.gridColumnStart ),
-	registerIndex   = Q.Circuit.Editor.gridRowToRegisterIndex(  cellEl.style.gridRowStart )
+	operationEl     = targetEl.closest( '.Q-circuit-operation' )
 	
 
 	//  Hmmmm....
@@ -252,8 +286,18 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 		circuitEl: circuitEl,
 		foregroundEl: circuitEl.querySelector( '.Q-circuit-board-foreground' )
 	}
-	dragEl.momentIndex   = momentIndex
-	dragEl.registerIndex = registerIndex
+
+	
+	//  These are the default values; 
+	//  will be used if we’re only dragging one operation around.
+	//  But if dragging more than one operation
+	//  and we’re dragging the clipboard by an operation
+	//  that is NOT in the upper-left corner of the clipboard
+	//  then we need to know what the offset is.
+	// (Will be calculated below.)
+	
+	dragEl.columnOffset = 1
+	dragEl.rowOffset = 1
 
 
 	//  Now collect all of the selected operations,
@@ -289,7 +333,7 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 	})
 	selectedOperations.forEach( function( el ){
 
-			
+
 		//  THIS IS INTENSE so pay attention.
 		//  We CANNOT use the following syntax:
 		//    el.style.gridColumn = el.origin.gridColumn
@@ -310,6 +354,19 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 			'style', 
 			`grid-column: ${gridColumnForClipboard}; grid-row: ${gridRowForClipboard}` 
 		)
+
+
+		//  If this operation element is the one we grabbed
+		// (mostly relevant if we’re moving multiple operations at once)
+		//  we need to know what the “offset” so everything can be
+		//  placed correctly relative to this drag-and-dropped item.
+
+		if( el.origin.gridColumn === columnIndex &&
+			el.origin.gridRow === rowIndex ){
+
+			dragEl.columnOffset = gridColumnForClipboard
+			dragEl.rowOffset = gridRowForClipboard
+		}
 	})
 
 
@@ -355,21 +412,13 @@ Q.Circuit.Editor.onMoved = function( event ){
 
 	if( Q.Circuit.Editor.dragEl !== null ){
 
-
-		//  We couldn’t shut down event bubbling
-		//  inside onPressBegan
-		//  because that would prevent scrolling
-		//  on a touch device!
-
 		event.preventDefault()
 		event.stopPropagation()
 		
 
-
-		// https://javascript.info/coordinates
-
-
-		// console.log( event.pageX )
+		//  This was a very useful resource
+		//  for a reality check on DOM coordinates:
+		//  https://javascript.info/coordinates
 
 		Q.Circuit.Editor.dragEl.style.left = ( event.pageX + Q.Circuit.Editor.dragEl.offsetX ) +'px'
 		Q.Circuit.Editor.dragEl.style.top  = ( event.pageY + Q.Circuit.Editor.dragEl.offsetY ) +'px'
@@ -511,44 +560,18 @@ Q.Circuit.Editor.onPressEnded = function( event ){
 
 		child.classList.remove( 'Q-circuit-cell-selected' )
 
-
-/*
-
-
-need to find the dif between 
-where the mouse dropped and this operation’s moment index / register index
-
-
-
-*/
 		const
 		droppedAtColumn   = Q.Circuit.Editor.momentIndexToGridColumn( momentIndex ),
-		gridColumnTarget  = droppedAtColumn,
+		gridColumnTarget  = droppedAtColumn + +child.style.gridColumnStart - Q.Circuit.Editor.dragEl.columnOffset,
 		droppedAtRegister = Q.Circuit.Editor.registerIndexToGridRow( registerIndex ),
-		gridRowTarget     = droppedAtRegister
+		gridRowTarget     = droppedAtRegister + +child.style.gridRowStart - Q.Circuit.Editor.dragEl.rowOffset
 
 
-
-console.log( '\n\n' )
-
-// console.log( 'ORIGIN grid column', child.origin.gridColumn )
-// console.log( 'TARGET grid column', gridColumnTarget )
-// console.log( '\n' )
-console.log( 'ORIGIN moment index', Q.Circuit.Editor.gridColumnToMomentIndex( child.origin.gridColumn ))
-console.log( 'TARGET moment index', Q.Circuit.Editor.gridColumnToMomentIndex( gridColumnTarget ))
-console.log( '\n' )
-// console.log( '\n' )
-// console.log( 'ORIGIN grid row', child.origin.gridRow )
-// console.log( 'TARGET grid row', gridRowTarget )
-// console.log( '\n' )
-console.log( 'ORIGIN register index', Q.Circuit.Editor.gridRowToRegisterIndex( child.origin.gridRow ))
-console.log( 'TARGET register index', Q.Circuit.Editor.gridRowToRegisterIndex( gridRowTarget ))
-
-console.log( '\n\n' )
-
-
-
-
+		//  ++++
+		//  ADD VALIDATION CODE HERE !!!!!!
+		//  if( registerIndex > circuit.bandwidth ) etc.
+		//  just do removeChild( child ) and throw it away.
+		
 
 		child.setAttribute(
 
@@ -556,14 +579,6 @@ console.log( '\n\n' )
 			`grid-column: ${gridColumnTarget}; grid-row: ${gridRowTarget}` 
 		)
 		foregroundEl.appendChild( child )
-
-console.log( 'foregroundEl', foregroundEl )
-
-		// child.style.gridColumnStart = 
-			// child.origin.gridColumnStart - momentIndex
-
-		// +++
-		//  we need to offset the momentIndex and registerIndex!
 	})
 
 
@@ -594,15 +609,39 @@ console.log( 'foregroundEl', foregroundEl )
 
 
 
-const mySampleCircuit = document.getElementById( 'my-sample-circuit' )
-mySampleCircuit.addEventListener( 'mousedown',  Q.Circuit.Editor.onPressBegan )
-mySampleCircuit.addEventListener( 'touchstart', Q.Circuit.Editor.onPressBegan )
 
-document.body.addEventListener( 'mousemove',  Q.Circuit.Editor.onMoved )
-document.body.addEventListener( 'touchmove', Q.Circuit.Editor.onMoved )
 
-document.body.addEventListener( 'mouseup',  Q.Circuit.Editor.onPressEnded )
-document.body.addEventListener( 'touchend', Q.Circuit.Editor.onPressEnded )
+    ////////////////
+   //            //
+  //   Events   //
+ //            //
+////////////////
+
+
+window.addEventListener( 'DOMContentLoaded', function( event ){
+
+
+	//  Add an “on press began” event listener
+	//  to each intractive circuit diagram.
+
+	Array.from( document.querySelectorAll( '.Q-circuit' ))
+	.forEach( function( el ){
+
+		el.addEventListener( 'mousedown',  Q.Circuit.Editor.onPressBegan )
+		el.addEventListener( 'touchstart', Q.Circuit.Editor.onPressBegan )
+	})
+
+
+	//  Meanwhile, “on move” and “on press ended” event listeners
+	//  must be added to the whole document body.
+	
+	document.body.addEventListener( 'mousemove',  Q.Circuit.Editor.onMoved )
+	document.body.addEventListener( 'touchmove', Q.Circuit.Editor.onMoved )
+	document.body.addEventListener( 'mouseup',  Q.Circuit.Editor.onPressEnded )
+	document.body.addEventListener( 'touchend', Q.Circuit.Editor.onPressEnded )
+})
+
+
 
 
 
