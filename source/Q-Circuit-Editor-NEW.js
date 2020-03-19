@@ -33,6 +33,21 @@ Q.Circuit.Editor = {
 		const  rem = parseFloat( getComputedStyle( document.documentElement ).fontSize )
 		return rem * Q.Circuit.Editor.gridSize * ( g - 1 )
 	},
+	getInteractionCoordinates: function( event, pageOrClient ){
+
+		if( typeof pageOrClient !== 'string' ) pageOrClient = 'page'
+		if( event.changedTouches && 
+			event.changedTouches.length ) return {
+
+			x: event.changedTouches[ 0 ][ pageOrClient +'X' ],
+			y: event.changedTouches[ 0 ][ pageOrClient +'Y' ]
+		}
+		return {
+
+			x: event[ pageOrClient +'X' ],
+			y: event[ pageOrClient +'Y' ]
+		}
+	}
 }
 
 
@@ -64,57 +79,74 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 
 	const 
 	targetEl  = event.target,
-	circuitEl = targetEl.closest( '.Q-circuit' )
+	circuitEl = targetEl.closest( '.Q-circuit' ),
+	paletteEl = targetEl.closest( '.Q-circuit-palette' )
 
 
 	//  If we can’t find a circuit that’s a really bad sign
 	//  considering this event should be fired when a circuit
 	//  is clicked on. So... bail!
 
-	if( !circuitEl ) return
-
-
-	//  If our user is drawing a selection box
-	//  we should calculate this first click point.
-	// (Will come back to this idea later...?)
-
-	const 
-	x = event.offsetX + circuitEl.scrollLeft,
-	y = event.offsetY + circuitEl.scrollTop
+	if( !circuitEl && !paletteEl ) return
 
 
 	//  Shall we toggle the circuit lock?
 
-	let circuitIsLocked = circuitEl.classList.contains( 'Q-circuit-locked' )
-	const lockEl = targetEl.closest( '.Q-circuit-button-lock' )
-	if( lockEl ){//  If this event was fired on the lock toggle button...
-
-		console.log( '→ Lock toggle' )
-		if( circuitIsLocked ) circuitEl.classList.remove( 'Q-circuit-locked' )
-		else circuitEl.classList.add( 'Q-circuit-locked' )
-
-
-		//  We’ve toggled the circuit lock button
-		//  so we should prevent further propagation
-		//  before proceeding further.
-		//  That includes running all this code again
-		//  if it was originally fired by a mouse event
-		//  and about to be fired by a touch event!
-
-		event.preventDefault()
-		event.stopPropagation()
-		return
-	}
-
-
-	//  If our circuit is already “locked”
-	//  then there’s nothing more to do here.
+	if( circuitEl ){
 	
-	if( circuitIsLocked ) {
+		let circuitIsLocked = circuitEl.classList.contains( 'Q-circuit-locked' )
+		const lockEl = targetEl.closest( '.Q-circuit-button-lock' )
+		if( lockEl ){//  If this event was fired on the lock toggle button...
 
-		console.log( 'circuit is LOCKED!' )
-		return
+			console.log( '→ Lock toggle' )
+			if( circuitIsLocked ) circuitEl.classList.remove( 'Q-circuit-locked' )
+			else circuitEl.classList.add( 'Q-circuit-locked' )
+
+
+			//  We’ve toggled the circuit lock button
+			//  so we should prevent further propagation
+			//  before proceeding further.
+			//  That includes running all this code again
+			//  if it was originally fired by a mouse event
+			//  and about to be fired by a touch event!
+
+			event.preventDefault()
+			event.stopPropagation()
+			return
+		}
+
+
+		//  If our circuit is already “locked”
+		//  then there’s nothing more to do here.
+		
+		if( circuitIsLocked ) {
+
+			console.log( 'circuit is LOCKED!' )
+			return
+		}
 	}
+
+
+
+
+
+	//  +++
+	//  Come back and add fuctionality here ;)
+
+	const
+	cellEl = targetEl.closest( '.Q-circuit-board-foreground > div' ),
+	undoEl = targetEl.closest( '.Q-circuit-button-undo' ),
+	redoEl = targetEl.closest( '.Q-circuit-button-redo' ),
+	addMomentEl   = targetEl.closest( '.Q-circuit-moment-add' ),
+	addRegisterEl = targetEl.closest( '.Q-circuit-register-add' )
+	
+
+
+	if( !cellEl &&
+		!undoEl &&
+		!redoEl &&
+		!addMomentEl &&
+		!addRegisterEl ) return
 
 
 	//  By this point we know that the circuit is unlocked
@@ -131,14 +163,8 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 	event.stopPropagation()
 
 
-	//  +++
-	//  Come back and add fuctionality here ;)
 
-	const
-	undoEl = targetEl.closest( '.Q-circuit-button-undo' ),
-	redoEl = targetEl.closest( '.Q-circuit-button-redo' ),
-	addMomentEl   = targetEl.closest( '.Q-circuit-button-add-moment' ),
-	addRegisterEl = targetEl.closest( '.Q-circuit-button-add-register' )
+
 
 	if( undoEl ) console.log( '→ Undo' )
 	if( redoEl ) console.log( '→ Redo' )
@@ -150,7 +176,6 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 	//  So if we can’t find a circuit CELL
 	//  then there’s nothing more to do here.
 
-	const cellEl = targetEl.closest( '.Q-circuit-board-foreground > div' )
 	if( !cellEl ) return
 
 
@@ -261,6 +286,9 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 	//  Similarly, 
 	//  if you’re just here deselecting an operation
 	//  then deselect it and GO HOME.
+	//  +++ 
+	//  We need to DELAY this toggle-off until after 
+	//  a possible drag has occurred!
 
 	if( operationEl.classList.contains( 'Q-circuit-cell-selected' )){
 
@@ -274,7 +302,7 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 	//  and possibly drag it
 	//  as well as any other selected operations.
 
-	operationEl.classList.add( 'Q-circuit-cell-selected' )	
+	operationEl.classList.add( 'Q-circuit-cell-selected' )
 	
 	const 
 	selectedOperations = Array.from( circuitEl.querySelectorAll( '.Q-circuit-cell-selected' )),
@@ -352,7 +380,7 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 		el.setAttribute( 
 
 			'style', 
-			`grid-column: ${gridColumnForClipboard}; grid-row: ${gridRowForClipboard}` 
+			`grid-column: ${gridColumnForClipboard}; grid-row: ${gridRowForClipboard};` 
 		)
 
 
@@ -379,12 +407,16 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 
 	const
 	foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' ),
-	bounds = foregroundEl.getBoundingClientRect(),
-	minX   = Q.Circuit.Editor.gridToPoint( minColumn ),
-	minY   = Q.Circuit.Editor.gridToPoint( minRow )
-
-	dragEl.offsetX = bounds.left + minX - event.clientX
-	dragEl.offsetY = bounds.top  + minY - event.clientY
+	bounds   = foregroundEl.getBoundingClientRect(),
+	minX     = Q.Circuit.Editor.gridToPoint( minColumn ),
+	minY     = Q.Circuit.Editor.gridToPoint( minRow ),
+	{ x, y } = Q.Circuit.Editor.getInteractionCoordinates( event, 'client' )
+	
+	dragEl.offsetX = bounds.left + minX - x
+	dragEl.offsetY = bounds.top  + minY - y
+	dragEl.momentIndex = momentIndex
+	dragEl.registerIndex = registerIndex
+	dragEl.timestamp = Date.now()
 
 
 	//  Append the clipboard to the document,
@@ -393,7 +425,7 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 	
 	document.body.appendChild( dragEl )
 	Q.Circuit.Editor.dragEl = dragEl
-	Q.Circuit.Editor.onMoved( event )
+	Q.Circuit.Editor.onDragged( event )
 }
 
 
@@ -401,40 +433,114 @@ Q.Circuit.Editor.onPressBegan = function( event ){
 
 
 
-    ///////////////
-   //           //
-  //   Moved   //
- //           //
-///////////////
+    /////////////////
+   //             //
+  //   Hovered   //
+ //             //
+/////////////////
 
 
-Q.Circuit.Editor.onMoved = function( event ){
+Q.Circuit.Editor.onHovered = function( event ){
+
+
+	//  First, un-highlight everything.
+
+	const 
+	circuitEl = event.target.closest( '.Q-circuit' )
+	foregroundEl = event.target.closest( '.Q-circuit-board-foreground' )
+	
+	Array.from( circuitEl.querySelectorAll( '.Q-circuit-board-foreground > div' ))
+	.forEach( function( el ){
+
+		el.classList.remove( 'Q-circuit-cell-highlighted' )
+	})
+
+
+	//  Now assess where the mouse hover is.
+	
+	let { x, y } = Q.Circuit.Editor.getInteractionCoordinates( event, 'client' )
+	const bounds = foregroundEl.getBoundingClientRect()
+	x -= bounds.left
+	y -= bounds.top
+
+
+	//  From that information we can gleen
+	//  other relevant coordinate data.
+
+	const
+	columnIndex   = Q.Circuit.Editor.pointToGrid( x ),
+	rowIndex      = Q.Circuit.Editor.pointToGrid( y ),
+	momentIndex   = Q.Circuit.Editor.gridColumnToMomentIndex( columnIndex ),
+	registerIndex = Q.Circuit.Editor.gridRowToRegisterIndex( rowIndex ),
+	cellEl        = event.target.closest( '.Q-circuit-board-foreground > div' ),
+	highlightByQuery = function( query ){
+
+		Array.from( circuitEl.querySelectorAll( query ))
+		.forEach( function( el ){
+
+			el.classList.add( 'Q-circuit-cell-highlighted' )
+		})
+	}
+
+
+
+	if( cellEl && !cellEl.classList.contains( 'Q-circuit-operation' )){
+
+		if( cellEl.classList.contains( 'Q-circuit-selectall' )){
+
+			highlightByQuery( '.Q-circuit-operation' )
+		}
+		else if( cellEl.classList.contains( 'Q-circuit-moment-label' )){
+
+			highlightByQuery( '.Q-circuit-board-foreground > div[style*="grid-column: '+ columnIndex +';"]' )
+		}
+		else if( cellEl.classList.contains( 'Q-circuit-register-label' ) ||
+			cellEl.classList.contains( 'Q-circuit-input' )){
+
+			highlightByQuery( '.Q-circuit-board-foreground > div[style*="grid-row: '+ rowIndex +';"]' )
+		}
+	}
+	else highlightByQuery( 
+
+		'.Q-circuit-header[style*="grid-column: '+ columnIndex +';"], '+
+		'.Q-circuit-header[style*="grid-row: '+ rowIndex +';"]'
+	)
+}
+Q.Circuit.Editor.onMouseExit = function( event ){
+
+	const circuitEl = event.target.closest( '.Q-circuit' )
+	Array.from( circuitEl.querySelectorAll( '.Q-circuit-board-foreground > div' ))
+	.forEach( function( el ){
+
+		el.classList.remove( 'Q-circuit-cell-highlighted' )
+	})
+}
+
+
+
+
+
+
+    /////////////////
+   //             //
+  //   Dragged   //
+ //             //
+/////////////////
+
+
+Q.Circuit.Editor.onDragged = function( event ){
 
 	if( Q.Circuit.Editor.dragEl !== null ){
 
 		event.preventDefault()
-		event.stopPropagation()
+		// event.stopPropagation()
 
-		let
-		x = 0, 
-		y = 0
-		
-		if( event.changedTouches && event.changedTouches.length ){
-
-			x = event.changedTouches[ 0 ].pageX
-			y = event.changedTouches[ 0 ].pageY
-		}
-		else {
-
-			x = event.pageX
-			y = event.pageY
-		}
-		
 
 		//  This was a very useful resource
 		//  for a reality check on DOM coordinates:
 		//  https://javascript.info/coordinates
 
+		const { x, y } = Q.Circuit.Editor.getInteractionCoordinates( event )
 		Q.Circuit.Editor.dragEl.style.left = ( x + Q.Circuit.Editor.dragEl.offsetX ) +'px'
 		Q.Circuit.Editor.dragEl.style.top  = ( y + Q.Circuit.Editor.dragEl.offsetY ) +'px'
 	}
@@ -474,11 +580,12 @@ Q.Circuit.Editor.onPressEnded = function( event ){
 	//  under the mouse / finger, skipping element [0]
 	//  because that will be the clipboard.
 
-	const 
+	const
+	{ x, y } = Q.Circuit.Editor.getInteractionCoordinates( event ),
 	circuitEl = document.elementsFromPoint( 
 
-		event.pageX - window.pageXOffset, 
-		event.pageY - window.pageYOffset
+		x - window.pageXOffset, 
+		y - window.pageYOffset
 
 	).find( function( el ){
 
@@ -505,8 +612,9 @@ Q.Circuit.Editor.onPressEnded = function( event ){
 			el.setAttribute( 
 
 				'style', 
-				`grid-column: ${el.origin.gridColumn}; grid-row: ${el.origin.gridRow}` 
+				`grid-column: ${el.origin.gridColumn}; grid-row: ${el.origin.gridRow};` 
 			)
+			el.classList.add( 'Q-circuit-cell-selected' )
 		})
 		document.body.removeChild( Q.Circuit.Editor.dragEl )
 		Q.Circuit.Editor.dragEl = null
@@ -514,11 +622,12 @@ Q.Circuit.Editor.onPressEnded = function( event ){
 
 
 	//  If we couldn’t determine a circuitEl
-	//  from the drop target
+	//  from the drop target,
+	//  or if there is a target circuit but it’s locked,
 	//  then we need to return these dragged items
 	//  to their original circuit.
 
-	if( !circuitEl ){
+	if( !circuitEl || circuitEl.classList.contains( 'Q-circuit-locked' )){
 
 		returnToOrigin()
 		return
@@ -529,16 +638,17 @@ Q.Circuit.Editor.onPressEnded = function( event ){
 	//  Where exactly are we dropping on to this circuit??
 
 	const 
-	bounds = circuitEl.getBoundingClientRect(),
-	x = circuitEl.scrollLeft + event.pageX - window.pageXOffset - bounds.left,
-	y = circuitEl.scrollTop  + event.pageY - window.pageYOffset - bounds.top,
+	boardEl = circuitEl.querySelector( '.Q-circuit-board-container' ),
+	bounds = boardEl.getBoundingClientRect(),
+	xAdjusted = boardEl.scrollLeft + x - window.pageXOffset - bounds.left,
+	yAdjusted = boardEl.scrollTop  + y - window.pageYOffset - bounds.top,
 	momentIndex = Q.Circuit.Editor.gridColumnToMomentIndex( 
 
-		Q.Circuit.Editor.pointToGrid( x )
+		Q.Circuit.Editor.pointToGrid( xAdjusted )
 	),
 	registerIndex = Q.Circuit.Editor.gridRowToRegisterIndex(
 
-		Q.Circuit.Editor.pointToGrid( y )
+		Q.Circuit.Editor.pointToGrid( yAdjusted )
 	),
 	foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' )
 
@@ -546,7 +656,7 @@ Q.Circuit.Editor.onPressEnded = function( event ){
 	//  If this is a self-drop
 	//  we can also just return to origin and bail.
 
-	if( Q.Circuit.Editor.dragEl.circuitEl === circuitEl &&
+	if( Q.Circuit.Editor.dragEl.origin.circuitEl === circuitEl &&
 		Q.Circuit.Editor.dragEl.momentIndex === momentIndex &&
 		Q.Circuit.Editor.dragEl.registerIndex === registerIndex ){
 
@@ -573,8 +683,6 @@ Q.Circuit.Editor.onPressEnded = function( event ){
 	.from( Q.Circuit.Editor.dragEl.children )
 	.forEach( function( child ){
 
-		child.classList.remove( 'Q-circuit-cell-selected' )
-
 		const
 		droppedAtColumn   = Q.Circuit.Editor.momentIndexToGridColumn( momentIndex ),
 		gridColumnTarget  = droppedAtColumn + +child.style.gridColumnStart - Q.Circuit.Editor.dragEl.columnOffset,
@@ -591,7 +699,7 @@ Q.Circuit.Editor.onPressEnded = function( event ){
 		child.setAttribute(
 
 			'style', 
-			`grid-column: ${gridColumnTarget}; grid-row: ${gridRowTarget}` 
+			`grid-column: ${gridColumnTarget}; grid-row: ${gridRowTarget};` 
 		)
 		foregroundEl.appendChild( child )
 	})
@@ -606,7 +714,7 @@ Q.Circuit.Editor.onPressEnded = function( event ){
 	//  are not the same thing
 	//  then we need to also eval the original circuit.
 
-	if( Q.Circuit.Editor.dragEl.circuitEl !== circuitEl ){
+	if( Q.Circuit.Editor.dragEl.origin.circuitEl !== circuitEl ){
 
 		//  +++
 		//  TRIGGER CIRCUIT EVAL HERE!!!
@@ -626,32 +734,39 @@ Q.Circuit.Editor.onPressEnded = function( event ){
 
 
 
-    ////////////////
-   //            //
-  //   Events   //
- //            //
-////////////////
+    ///////////////////
+   //               //
+  //   Listeners   //
+ //               //
+///////////////////
 
 
 window.addEventListener( 'DOMContentLoaded', function( event ){
 
 
-	//  Add an “on press began” event listener
+	//  Add “on press began” and “on hovered” event listeners
 	//  to each intractive circuit diagram.
 
-	Array.from( document.querySelectorAll( '.Q-circuit' ))
+	Array.from( document.querySelectorAll( '.Q-circuit, .Q-circuit-palette' ))
 	.forEach( function( el ){
 
 		el.addEventListener( 'mousedown',  Q.Circuit.Editor.onPressBegan )
 		el.addEventListener( 'touchstart', Q.Circuit.Editor.onPressBegan )
 	})
+	Array.from( document.querySelectorAll( '.Q-circuit-board-foreground' ))
+	.forEach( function( el ){
+
+		el.addEventListener( 'mousemove',  Q.Circuit.Editor.onHovered )
+		el.addEventListener( 'mouseleave',  Q.Circuit.Editor.onMouseExit )
+		el.addEventListener( 'touchmove',  Q.Circuit.Editor.onHovered )
+	})
 
 
-	//  Meanwhile, “on move” and “on press ended” event listeners
+	//  Meanwhile, “on dragged” and “on press ended” event listeners
 	//  must be added to the whole document body.
 	
-	document.body.addEventListener( 'mousemove',  Q.Circuit.Editor.onMoved )
-	document.body.addEventListener( 'touchmove', Q.Circuit.Editor.onMoved )
+	document.body.addEventListener( 'mousemove',  Q.Circuit.Editor.onDragged )
+	document.body.addEventListener( 'touchmove', Q.Circuit.Editor.onDragged )
 	document.body.addEventListener( 'mouseup',  Q.Circuit.Editor.onPressEnded )
 	document.body.addEventListener( 'touchend', Q.Circuit.Editor.onPressEnded )
 })
