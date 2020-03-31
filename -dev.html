@@ -36,13 +36,14 @@
 		<meta property="og:image"         content="https://stewdio.github.io/q.js/other/q-thumbnail.png">
 		<meta property="og:url"           content="https://stewdio.github.io/q.js/playground.html">
 		
-		<link rel="canonical" href="https://stewdio.github.io/q.js/playground.html">
+		<!-- <link rel="canonical" href="https://stewdio.github.io/q.js/playground.html"> -->
 		<link href="other/q-favicon-064.png" rel="icon" type="image/png">
 		<link href="other/q-favicon-144.png" rel="apple-touch-icon">
 		
-		<link rel="stylesheet" type="text/css" href="source/Q.css">
-		<link rel="stylesheet" type="text/css" href="source/Q-Circuit-Editor.css">
-		<link rel="stylesheet" type="text/css" href="other/documentation.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik:300,400,500&display=swap">
+		<link rel="stylesheet" href="source/Q.css">
+		<link rel="stylesheet" href="source/Q-Circuit-Editor-NEW.css">
+		<link rel="stylesheet" href="other/documentation.css">
 
 		<script src="https://www.googletagmanager.com/gtag/js" async></script>
 		<script src="other/ga.js"></script>				
@@ -52,9 +53,9 @@
 		<script src="source/Q-Qubit.js"></script>
 		<script src="source/Q-Gate.js"></script>
 		<script src="source/Q-Circuit.js"></script>
-		<script src="source/Q-Circuit-Editor.js"></script>
+		<script src="source/Q-Circuit-Editor-NEW.js"></script>
 		<script src="other/navigation.js"></script>
-		
+
 	</head>
 	<body>
 		<main>
@@ -85,329 +86,91 @@ I-I-I---I-I</textarea>
 				<br><br>
 			</p>
 			
-<style>
-
-/*
 
 
-https://css-tricks.com/idea-simple-responsive-spreadsheet/
+<div id="tester"></div>
 
 
+<!--
 
-*/
-
-.Q-circuit {
-
-	position: relative;
-	width:  100%;
-	height: 16rem;
-	/*min-height: 16rem;*/
-	/*overflow: auto;*/
-	overflow: scroll;
-	background-color: white;
-	border-radius: 1rem;
-	box-shadow: 
-		 0.2rem  0.2rem 0.2rem rgba( 0, 0, 0, 0.15 ) inset,
-		-0.2rem -0.2rem 0.2rem rgba( 255, 255, 255, 1 ) inset;
-	background: linear-gradient( 
-
-		0.375turn,
-		rgba( 255, 255, 255, 1.0 ),
-		rgba( 255, 255, 255, 0.2 )
-	) !important;
-}
-.Q-circuit.Q-circuit-locked .Q-circuit-board-operation {
-
-	cursor: not-allowed;
-}
-.Q-circuit-board {
-
-	position: relative;
-	width:  200%;
-	height: 200%;
-	
-}
-.Q-circuit-board-foreground,
-.Q-circuit-board-background {
-
-	box-sizing: border-box;
-	position: absolute;
-	display: grid;	
-	grid-auto-rows:    4rem;
-	grid-auto-columns: 4rem;
-	top:  0;
-	left: 0;
-	width:  100%;
-	height: 100%;
-}
-.Q-circuit-board-background {
-
-	color: rgba( 0, 0, 0, 0.2 );
-}
-
-
-.Q-circuit-cell {
-
-	margin: 0.5rem;
-	padding: 0.5rem;
-	text-align: center;
-	overflow: hidden;
-	line-height: 1.95rem;
-	font-style: italic;
-}
-.Q-circuit-cell:hover {
-
-	/*background-color: white;*/
-}
-.Q-circuit-moment-index,
-.Q-circuit-register-index {
-	
-	position: sticky;
-	z-index: 2;
-	color: hsl(
-
-		var( --Q-color-base-hue ),
-		10%,
-		80%
-	);
-	font-family: var( --Q-font-family-mono );
-}
-.Q-circuit-moment-index {
-
-	top: 0px;
-	border-top-right-radius: 100%;
-	border-top-left-radius:  100%;
-	grid-row: 1;
-}
-.Q-circuit-register-index {
-
-	left: 0px;
-	border-top-left-radius:    100%;
-	border-bottom-left-radius: 100%;
-	grid-column: 1;
-}
-.Q-circuit-input {
-
-	grid-column: 2;
-	font-size: 1.5rem;
-	font-weight: 900;
-	font-family: var( --Q-font-family-mono );
-
-}
-.Q-circuit-operation {
-	
-	--Q-operation-color-hue: var( --Q-color-yellow-hue );
-	--Q-operation-color-main: var( --Q-color-yellow );
-	--Q-operation-color-light: hsl(
-
-		var( --Q-operation-color-hue ),
-		90%,
-		70%
-	);
-	--Q-operation-color-dark: hsl(
-
-		var( --Q-operation-color-hue ),
-		50%,
-		60%
-	);
-
-	box-shadow:
-		 0.1rem  0.1rem 0.1rem rgba( 0, 0, 0, 0.2 );
-
-	border-radius: 0.2rem;
-	/*
-	border-top:    0.1rem solid var( --Q-operation-color-light );
-	border-left:   0.1rem solid var( --Q-operation-color-light );
-	border-right:  0.1rem solid var( --Q-operation-color-dark );
-	border-bottom: 0.1rem solid var( --Q-operation-color-dark );
-	*/
-	background: 
-		var( --Q-operation-color-main )
-		/*linear-gradient(
-
-			0.45turn,
-			rgba( 255, 255, 255, 0.1 ),
-			rgba( 0, 0, 0, 0.05 )
-		)*/;
-	color: white;
-	text-shadow: -0.05rem -0.05rem 0 rgba( 0, 0, 0, 0.1 );
-	font-size: 1.5rem;
-	font-weight: 900;
-	cursor: move;
-}
-.Q-circuit-operation-hadamard {
-
-	--Q-operation-color-hue:  var( --Q-color-red-hue );
-	--Q-operation-color-main: var( --Q-color-red );
-}
-.Q-circuit-operation-control,
-.Q-circuit-operation-target {
-
-	--Q-operation-color-hue:  var( --Q-color-orange-hue );
-	--Q-operation-color-main: var( --Q-color-orange );
-	border-radius: 100%;
-}
-.Q-circuit-operation-control {
-
-	margin: 1.5rem;
-	width:  1rem;
-	height: 1rem;
-}
-
-
-.Q-circuit::-webkit-scrollbar {
-
-	-webkit-appearance: none;
-	width:  2rem;
-	height: 2rem;
-}
-.Q-circuit::-webkit-scrollbar-track {
-
-	/*border-radius: 1rem;*/
-	background-color: hsl(
-
-		var( --Q-color-base-hue ), 
-		10%,
-		80%
-	);
-
-	background-color: hsla(
-
-		var( --Q-color-base-hue ),
-		10%,
-		80%,
-		0.5
-	);
-
-	background-color: transparent;
-
-/*	background: linear-gradient( 
-
-		0.375turn,
-		rgba( 255, 255, 255, 1.0 ),
-		rgba( 255, 255, 255, 0.2 )
-	) !important;*/
-
-}
-.Q-circuit::-webkit-scrollbar-thumb {
-
-	border-radius: 1rem;	
-	background: 
-		linear-gradient( 
-
-			0.5turn,
-			hsl(
-
-				var( --Q-color-base-hue ), 
-				 3%,
-				85%
-			) 0%,
-			hsl(
-
-				var( --Q-color-base-hue ), 
-				 3%,
-				80%
-			) 10%,
-			hsl(
-
-				var( --Q-color-base-hue ), 
-				 3%,
-				80%
-			) 90%,
-			hsl(
-
-				var( --Q-color-base-hue ), 
-				 3%,
-				70%
-			) 100%
-		);
-
-	cursor: move;
-}
-.Q-circuit::-webkit-scrollbar-thumb:hover {
-
-	background-color: hsl(
-
-		var( --Q-color-base-hue ), 
-		50%,
-		50%
-	);
-}
-
-
-
-
-
-</style>
-<div class="Q-circuit-palette">Palette</div>
 <br>
-🔒 / 🔓 &larr; &rarr;
 <div class="Q-circuit" id="my-sample-circuit">
-	<div class="Q-circuit-board">
+	Accessible via 
+	<a href="index.html#Open_your_JavaScript_console" target="_blank">JavaScript console</a>
+	as “<code>my-sample-circuit</code>”
+	<br>
+	<div class="Q-circuit-toolbar">
+		<div class="Q-circuit-button Q-circuit-button-lock" title="Lock / unlock">
+			🔒
+		</div
+		><div class="Q-circuit-button Q-circuit-button-select-toggle" title="Selection mode">
+			S
+		</div
+		><div class="Q-circuit-button Q-circuit-button-undo" title="Undo">
+			&larr;
+		</div
+		><div class="Q-circuit-button Q-circuit-button-redo" title="Redo">
+			&rarr;
+		</div>
+	</div>
+	<div class="Q-circuit-board-container">
+		<div class="Q-circuit-board">
+			<div class="Q-circuit-board-background">
 
-		<div class="Q-circuit-board-background">
-			<!-- 
-			wires<br>
-			vertical grid lines (intersect on ops)<br>
-			background colors? -->
+			</div>
+			<div class="Q-circuit-board-foreground">
+
+				<div class="Q-circuit-input" style="grid-row: 2;">0</div>
+				<div class="Q-circuit-input" style="grid-row: 3;">0</div>
+				<div class="Q-circuit-input" style="grid-row: 4;">0</div>
+				<div class="Q-circuit-input" style="grid-row: 5;">0</div>
+				<div class="Q-circuit-input" style="grid-row: 6;">0</div>
+
+				<div class="Q-circuit-header Q-circuit-selectall" title="Select all">&searr;</div>
+				<div class="Q-circuit-header Q-circuit-register-label" style="grid-row: 2;" title="Register 1">1</div>
+				<div class="Q-circuit-header Q-circuit-register-label" style="grid-row: 3;" title="Register 2">2</div>
+				<div class="Q-circuit-header Q-circuit-register-label" style="grid-row: 4;" title="Register 3">3</div>
+				<div class="Q-circuit-header Q-circuit-register-label" style="grid-row: 5;" title="Register 4">4</div>
+				<div class="Q-circuit-header Q-circuit-register-label" style="grid-row: 6;" title="Register 5">5</div>
+				<div class="Q-circuit-header Q-circuit-register-add"   style="grid-row: 7;" title="Add register">+</div>
+
+				<div class="Q-circuit-header Q-circuit-moment-label" style="grid-column: 3;" title="Moment 1">1</div>
+				<div class="Q-circuit-header Q-circuit-moment-label" style="grid-column: 4;" title="Moment 2">2</div>
+				<div class="Q-circuit-header Q-circuit-moment-label" style="grid-column: 5;" title="Moment 3">3</div>
+				<div class="Q-circuit-header Q-circuit-moment-label" style="grid-column: 6;" title="Moment 4">4</div>
+				<div class="Q-circuit-header Q-circuit-moment-label" style="grid-column: 7;" title="Moment 5">5</div>
+				<div class="Q-circuit-header Q-circuit-moment-label" style="grid-column: 8;" title="Moment 6">6</div>
+				<div class="Q-circuit-header Q-circuit-moment-label" style="grid-column: 9;" title="Moment 7">7</div>
+				<div class="Q-circuit-header Q-circuit-moment-label" style="grid-column: 10;" title="Moment 8">8</div>
+				<div class="Q-circuit-header Q-circuit-moment-add"   style="grid-column: 11;" title="Add moment">+</div>
+				
+				<div class="Q-circuit-operation Q-circuit-operation-hadamard" style="grid-column: 3; grid-row: 2;"><div class="Q-circuit-operation-tile">H</div></div>
+				<div class="Q-circuit-operation Q-circuit-operation-control" style="grid-column: 4; grid-row: 2;"><div class="Q-circuit-operation-tile">.</div></div>
+				<div class="Q-circuit-operation Q-circuit-operation-target" style="grid-column: 4; grid-row: 3;"><div class="Q-circuit-operation-tile">X</div></div>
+				<div class="Q-circuit-operation Q-circuit-operation-pauli-x" style="grid-column: 5; grid-row: 2;"><div class="Q-circuit-operation-tile">X</div></div>
+				<div class="Q-circuit-operation Q-circuit-operation-pauli-x" style="grid-column: 5; grid-row: 3;"><div class="Q-circuit-operation-tile">X</div></div>
+				<div class="Q-circuit-operation Q-circuit-operation-phase" style="grid-column: 6; grid-row: 4;"><div class="Q-circuit-operation-tile">S</div></div>
+			
+			</div>
 		</div>
-		<div class="Q-circuit-board-foreground">
-			<div class="Q-circuit-cell Q-circuit-moment-index" style="grid-column: 3">m1</div>
-			<div class="Q-circuit-cell Q-circuit-moment-index" style="grid-column: 4">m2</div>
-			<div class="Q-circuit-cell Q-circuit-moment-index" style="grid-column: 5">m3</div>
-			<div class="Q-circuit-cell Q-circuit-register-index" style="grid-row: 2">r1</div>
-			<div class="Q-circuit-cell Q-circuit-input" style="grid-row: 2">0</div>
-			<div class="Q-circuit-cell Q-circuit-register-index" style="grid-row: 3">r2</div>
-			<div class="Q-circuit-cell Q-circuit-input" style="grid-row: 3">0</div>
-			<div class="Q-circuit-cell Q-circuit-operation Q-circuit-operation-hadamard" style="grid-column: 3; grid-row: 2">H</div>
-			<div class="Q-circuit-cell Q-circuit-operation Q-circuit-operation-control" style="grid-column: 4; grid-row: 2">.</div>
-			<div class="Q-circuit-cell Q-circuit-operation Q-circuit-operation-target" style="grid-column: 4; grid-row: 3">X</div>
-			<div class="Q-circuit-cell Q-circuit-operation Q-circuit-operation-pauli-x" style="grid-column: 5; grid-row: 2">X</div>
-			<div class="Q-circuit-cell Q-circuit-operation Q-circuit-operation-pauli-x" style="grid-column: 5; grid-row: 3">X</div>
-		</div>
-	
 	</div>
 </div>
-<script>
+-->
+
+<div class="Q-circuit-palette">
+	<div class="Q-circuit-operation Q-circuit-operation-hadamard"><div class="Q-circuit-operation-tile">H</div></div>
+	<div class="Q-circuit-operation Q-circuit-operation-pauli-x"><div class="Q-circuit-operation-tile">X</div></div>
+	<div class="Q-circuit-operation Q-circuit-operation-pauli-y"><div class="Q-circuit-operation-tile">Y</div></div>
+	<div class="Q-circuit-operation Q-circuit-operation-pauli-z"><div class="Q-circuit-operation-tile">Z</div></div>
+	<div class="Q-circuit-operation Q-circuit-operation-phase"><div class="Q-circuit-operation-tile">S</div></div>
+</div>
 
 
 
-document
-// .getElementById( 'my-sample-circuit' )
-.querySelector( '#my-sample-circuit .Q-circuit-board-foreground' )
-.addEventListener( 'mousedown', function( event ){
-
-
-	const circuit = event.target.closest( '.Q-circuit' )
-	console.log( 'circuit', circuit )
-	console.log( 'circuit scrollLeft', circuit.scrollLeft )
-	console.log( 'circuit scrollTop', circuit.scrollTop )
-
-	const operation = event.target.closest( '.Q-circuit-operation' )
-	if( operation ){
-	
-		console.log( 'operation', operation )
-		// const computed = window.getComputedStyle( operation )		
-		// console.log( 'computed', computed )		
-		console.log( 'operation register index', +operation.style.gridRowStart - 1 )
-		console.log( 'operation moment index', +operation.style.gridColumnStart - 2 )
-	}
-
-
-	// console.log( event ) 
-
-	// console.log( 'target', event.target.scrollLeft  )
-	// console.log( 'parent', event.target.parentNode.scrollLeft  )
-	// console.log( 'grandparent', event.target.parentNode.parentNode.scrollLeft  )
-
-	// console.log( 'taget', event.target )
-	// console.log( 'parent', event.target.parentNode  )
-	// console.log( 'grandparent', event.target.parentNode.parentNode  )
-})
 
 
 
-</script>
+
 
 
 
@@ -511,6 +274,26 @@ H  X.1#1  Y    Z    S</code></pre>
 		</main>
 		<script>
 
+
+
+
+
+
+const
+tester = Q`
+	H X#0 I I I I I
+	I X#1 S I I I M
+	Y Z   I S I I I
+	I I   X Y Z S H`,
+testerDom = tester.toDom( document.getElementById( 'tester' ))
+
+// console.log( testerDom )
+//document.getElementById( 'tester' ).appendChild( testerDom )
+
+
+
+
+/*
 
 
 
@@ -710,7 +493,7 @@ window.addEventListener( 'qjs gui altered circuit', function( event ){
 	updatePlaygroundFromDom( event.detail.circuit )
 })
 
-
+*/
 
 
 

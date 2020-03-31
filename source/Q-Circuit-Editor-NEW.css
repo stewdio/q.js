@@ -99,7 +99,7 @@
 	/*height: 30rem;*/
 	/*display: flex;*/
 	/*flex-direction: column;*/
-	user-select: none;
+	/*user-select: none;*/
 }
 .Q-circuit-board-foreground {
 	
@@ -113,6 +113,10 @@
 .Q-circuit-toolbar {
 
 	display: block;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 .Q-circuit-button {
 
@@ -157,12 +161,8 @@
 	position: relative;
 	margin: 0 0 2rem 0;
 	width:  100%;
-	/*flex: 1;*/
-	/*height: auto;*/
-	/*min-height: 16rem;*/
-	/*overflow: auto;*/
+	max-height: 60vh;
 	overflow: scroll;
-
 	/*background-color: white;*/
 	/*border-radius: 1rem;*/
 	/*box-shadow: 
@@ -255,8 +255,10 @@
 .Q-circuit-board {
 
 	position: relative
-/*	width:  200%;
-	height: 200%;*/		
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 .Q-circuit-palette,
 .Q-circuit-board-foreground,
@@ -268,6 +270,11 @@
 	grid-auto-rows:    4rem;
 	grid-auto-columns: 4rem;
 	grid-auto-flow: column;
+
+	/*grid-template-columns: repeat( auto-fill, minmax( 4rem, 1fr ));*/
+	/*grid-template-columns: 4rem auto;*/
+	/*grid-template-columns: auto-fill;*/
+	/* https://github.com/w3c/csswg-drafts/issues/388 */
 }
 .Q-circuit-palette,
 .Q-circuit-board-foreground,
@@ -531,7 +538,6 @@
 
 
 
-.Q-circuit-cell-highlighted,
 .Q-circuit-palette > div:hover,
 /*.Q-circuit-selectall:hover,
 .Q-circuit-moment-label:hover,
@@ -548,8 +554,16 @@
 	background-color: white;
 }
 
+.Q-circuit-board-foreground .Q-circuit-cell-highlighted,
+.Q-circuit-board-background .Q-circuit-cell-highlighted {
 
+	background-color: hsl(
 
+		var( --Q-color-base-hue ),
+		 3%,
+		96%
+	);
+} 
 
 
 

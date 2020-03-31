@@ -129,7 +129,7 @@ html, body {
 }
 html {
 
-	font-size: 15px;
+	font-size: 16px;
 }
 body {
 
@@ -322,23 +322,26 @@ h3, h4, h5 {
 		10%,
 		80%
 	);
-	font-weight: 700;
+	/*font-weight: 700;*/
+	font-weight: 500;
 }
 h3 {
 
 	margin-top:     2.0rem;
 	padding-top:    1.5rem;
-	padding-bottom: 0.5rem;
-	font-size: 2rem;
-	line-height: 2.4rem;
-	letter-spacing: -0.02rem;
+	padding-bottom: 1.0rem;
+	font-size:      2.0rem;
+	line-height:    2.5rem;
+	letter-spacing: -0.05rem;
 }
 h4 {
 
 	margin-top:     2.0rem;
 	padding-top:    1.5rem;
-	padding-bottom: 0.25rem;
-	font-size: 1.5rem;
+	padding-bottom: 0.5rem;
+	font-size:      1.5rem;
+	letter-spacing: -0.02rem;
+	/*font-weight: 700;*/
 }
 h5  {
 
@@ -375,7 +378,7 @@ hr + p, hr + footer {
 }
 p + p {
 
-	text-indent: 1.8em;
+	text-indent: 1.6em;
 }
 small {
 
@@ -420,6 +423,12 @@ pre, code, samp {
 
 	font-family: var( --Q-font-family-mono );
 	line-height: 1.2rem;
+	color: hsl(
+
+		var( --Q-color-green-hue ),
+		80%,
+		20%
+	);
 }
 samp {
 
@@ -602,8 +611,8 @@ main {
 	overflow: auto;
 	min-width: 320px;
 	max-width: 620px;
-	font-size:   1.0rem;
-	line-height: 1.6rem;
+	font-size:   0.9rem;
+	line-height: 1.5rem;
 	/*box-shadow: 0 0 1rem rgba( 0, 0, 0, 0.2 );*/
 }
 main.api {
