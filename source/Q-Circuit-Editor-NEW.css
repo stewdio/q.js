@@ -12,8 +12,7 @@
 
 :root {
 
-	--z-index-gate: 50;
-	--z-index-gate-identity: 40;
+	--Q-color-background: white;
 }
 
 
@@ -21,6 +20,16 @@
 
 
 /*
+
+	Z-indices:
+
+	Clipboard:  100
+	Operation:    0
+	Shadow:     -10
+	Background: -20
+
+
+
 
 
 	Circuit	
@@ -101,9 +110,14 @@
 	/*flex-direction: column;*/
 	/*user-select: none;*/
 }
+.Q-circuit {
+
+	margin: 1rem 0;
+}
 .Q-circuit-board-foreground {
 	
 	line-height: 3.85rem;
+	width: auto;
 }
 
 
@@ -160,6 +174,7 @@
 
 	position: relative;
 	margin: 0 0 2rem 0;
+	margin: 0;
 	width:  100%;
 	max-height: 60vh;
 	overflow: scroll;
@@ -286,27 +301,45 @@
 	width:  100%;
 	height: 100%;
 }
-.Q-circuit-palette,
-.Q-circuit-board {
-
-	
-}
 .Q-circuit-clipboard {
 
 	position: absolute;
 	z-index: 100;
 	min-width:  4rem;
 	min-height: 4rem;
-	transform: scale( 1.1 );
+	transform: scale( 1.05 );
 	/*background-color: white;*/
 	/*box-shadow: 0.1rem 0.1rem 1rem rgba( 0, 0, 0, 0.3 );*/
 }
 .Q-circuit-board-background {
 
+	/*
+
+	Clipboard:  100
+	Operation:    0
+	Shadow:     -10
+	Background: -20
+
+	*/
 	position: absolute;
+	z-index: -20;
 	color: rgba( 0, 0, 0, 0.2 );
 }
+.Q-circuit-board-background .Q-circuit-cell-highlighted {
 
+	background-color: hsl( 0, 0%, 95% );
+}
+
+
+
+.Q-circuit-register-wire {
+
+	position: absolute;
+	top: calc( 50% - 0.5px );
+	width: 100%;
+	height: 1px;
+	background-color: hsl( 0, 0%, 66% );
+}
 
 
 
@@ -315,7 +348,7 @@
 .Q-circuit-board-foreground > div {
 
 	/*overflow: hidden;*/
-	font-style: italic;
+	/*font-style: italic;*/
 	text-align: center;
 }
 
@@ -336,6 +369,7 @@
 	position: sticky;
 	z-index: 2;
 	margin: 0;
+	/*
 	border: 1px solid hsl(
 
 		var( --Q-color-base-hue ),
@@ -354,16 +388,18 @@
 		10%,
 		88%
 	);
+	*/
 	background-color: var( --Q-color-background );
-	color: hsl(
-
-		var( --Q-color-base-hue ),
-		10%,
-		60%
-	);
+	color: hsl( 0, 0%, 80% );
 	font-family: var( --Q-font-family-mono );
 	/*line-height: 2.9rem;*/
-	text-shadow: 0.05rem 0.05rem 0 white;
+	/*text-shadow: 0.05rem 0.05rem 0 white;*/
+}
+.Q-circuit-input.Q-circuit-cell-highlighted,
+.Q-circuit-header.Q-circuit-cell-highlighted {
+
+	background-color: hsl( 0, 0%, 95% );
+	color: hsl( 0, 0%, 0% );
 }
 .Q-circuit-selectall {
 
@@ -371,35 +407,25 @@
 	margin: 0;
 	top:  0;
 	left: 4rem;
-/*	width:  50%;
-	height: 50%;*/
-	/*border-top-left-radius: 1rem;*/
-	/*border-radius: 1rem;*/
-	cursor: se-resize;
-}
-.Q-circuit-input-header {
-
+	grid-column: 2;
 	grid-row: 1;
-	grid-column: 1;
-	top: 0;
-	/*height: 50%;*/
+	cursor: se-resize;
 }
 .Q-circuit-moment-label,
 .Q-circuit-moment-add {
 
 	grid-row: 1;
-	top: 0;	
-	/*height: 50%;*/
-	/*line-height: 0.8rem;*/
+	top: 0;
 	cursor: s-resize;
+	border-bottom: 1px solid hsl( 0, 0%, 95% );
 }
 .Q-circuit-register-label,
 .Q-circuit-register-add {
 
 	grid-column: 2;
 	left: 4rem;
-	/*width: 50%;*/
 	cursor: e-resize;
+	border-right: 1px solid hsl( 0, 0%, 95% );
 }
 .Q-circuit-moment-add,
 .Q-circuit-register-add {
@@ -444,8 +470,13 @@
 .Q-circuit-operation {
 	
 	position: relative;
-	--Q-operation-color-hue: var( --Q-color-green-hue );
-	--Q-operation-color-main: var( --Q-color-green );
+/*	--Q-operation-color-hue: var( --Q-color-green-hue );
+	--Q-operation-color-main: var( --Q-color-green );*/
+	
+	--Q-operation-color-hue:  0;
+	--Q-operation-color-main: hsl( 0, 0%, 50% );
+
+
 	--Q-operation-color-light: hsl(
 
 		var( --Q-operation-color-hue ),
@@ -460,7 +491,7 @@
 	);
 	color: white;
 	text-shadow: -0.05rem -0.05rem 0 rgba( 0, 0, 0, 0.1 );
-	font-size: 1.5rem;
+	font-size:   1.5rem;
 	line-height: 2.9rem;
 	font-weight: 900;
 	cursor: grab;
@@ -472,15 +503,15 @@
 .Q-circuit-operation-tile {
 
 	position: absolute;
-	top: 0.5rem;
-	left: 0.5rem;
-	right: 0.5rem;
+	top:    0.5rem;
+	left:   0.5rem;
+	right:  0.5rem;
 	bottom: 0.5rem;
 
 	/*margin:  0.5rem;*/
 	/*padding: 0.5rem;*/
 
-	box-shadow: 0.1rem  0.1rem 0.2rem rgba( 0, 0, 0, 0.2 );
+	/*box-shadow: 0.1rem  0.1rem 0.2rem rgba( 0, 0, 0, 0.2 );*/
 	border-radius: 0.2rem;
 	/*
 	border-top:    0.1rem solid var( --Q-operation-color-light );
@@ -506,12 +537,15 @@
 
 	--Q-operation-color-hue:  var( --Q-color-red-hue );
 	--Q-operation-color-main: var( --Q-color-red );
+
+	--Q-operation-color-hue:  0;
+	--Q-operation-color-main: hsl( 0, 0%, 10% );
 }
 .Q-circuit-operation-control .Q-circuit-operation-tile,
 .Q-circuit-operation-target .Q-circuit-operation-tile {
 
-	--Q-operation-color-hue:  var( --Q-color-orange-hue );
-	--Q-operation-color-main: var( --Q-color-orange );
+	/*--Q-operation-color-hue:  var( --Q-color-orange-hue );
+	--Q-operation-color-main: var( --Q-color-orange );*/
 	border-radius: 100%;
 }
 .Q-circuit-operation-control .Q-circuit-operation-tile {
@@ -521,6 +555,8 @@
 	width:  1.4rem;
 	height: 1.4rem;
 	overflow: hidden;
+	--Q-operation-color-hue:  0;
+	--Q-operation-color-main: hsl( 0, 0%, 10% );
 }
 
 .Q-circuit-operation-pauli-x,
@@ -529,41 +565,39 @@
 
 	--Q-operation-color-hue:  var( --Q-color-yellow-hue );
 	--Q-operation-color-main: var( --Q-color-yellow );
+
+	--Q-operation-color-hue:  0;
+	--Q-operation-color-main: hsl( 0, 0%, 30% );
 }
 
 
 
 
 
+
+    /********************/
+   /*                  */
+  /*   Other states   */
+ /*                  */
+/********************/
 
 
 
 .Q-circuit-palette > div:hover,
-/*.Q-circuit-selectall:hover,
-.Q-circuit-moment-label:hover,
-.Q-circuit-register-label:hover,
-.Q-circuit-operation:hover {
-*/
 .Q-circuit-board-foreground > div:hover {
 	
-	/*background-color: rgba( 255, 255, 255, 0.5 );*/
-	/*z-index: 90;*/
-	/*box-shadow: 0.1rem 0.1rem 0.5rem rgba( 0, 0, 0, 0.3 );*/
-	/*outline: 0.2rem solid white;*/
-	/*outline-offset: -0.2rem;*/
 	background-color: white;
+	color: black;
+
+	outline: 1px solid black;
+	outline-offset: -1px;
+}
+.Q-circuit-operation:hover .Q-circuit-operation-tile {
+
+	color: white;
 }
 
-.Q-circuit-board-foreground .Q-circuit-cell-highlighted,
-.Q-circuit-board-background .Q-circuit-cell-highlighted {
 
-	background-color: hsl(
-
-		var( --Q-color-base-hue ),
-		 3%,
-		96%
-	);
-} 
 
 
 
@@ -571,6 +605,12 @@
 .Q-circuit-cell-selected {
 
 	background-color: white;
+/*	background-color: hsl(
+
+		var( --Q-color-base-hue ),
+		70%,
+		80%
+	);*/
 }
 .Q-circuit-cell-selected:before {
 	
@@ -579,16 +619,33 @@
 	This was very helpful!
 	https://blog.dudak.me/2014/css-shadows-under-adjacent-elements/
 
+	Clipboard: 100
+	Operation:  50
+	Shadow:     40
+	Background: 30
+
 	*/
 	content: "";
 	position: absolute;
+	/*
+
+	Clipboard:  100
+	Operation:    0
+	Shadow:     -10
+	Background: -20
+
+	*/
+	z-index: -10;
 	top:    0;
 	right:  0;
 	bottom: 0;
 	left:   0;
-	z-index: -10;
 	display: block;
-	box-shadow: 0.4rem 0.4rem 0.3rem rgba( 0, 0, 0, 0.2 );
+	box-shadow:
+		0 0 1rem rgba( 0, 0, 0, 0.2 ),
+		0.4rem 0.4rem 0.2rem rgba( 0, 0, 0, 0.2 );
+	outline: 2px solid blue;
+	outline-offset: -1px;
 }
 
 
@@ -628,12 +685,23 @@
 /***************/
 
 
-.Q-circuit-locked .Q-circuit-button-lock {
+.Q-circuit-locked .Q-circuit-toggle-lock {
 
 	background-color: var( --Q-color-red );
+}
+.Q-circuit-toggle-lock {
+
+	z-index: 3;
+	left: 0;
+	top: 0;
+	grid-column: 1;
+	grid-row: 1;
+
 }
 
 
 
+.Q-circuit p {
 
-
+	padding: 1rem;
+}
