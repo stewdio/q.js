@@ -102,11 +102,9 @@ Q.Circuit.Editor.createInterface = function( circuit, targetEl ){
 	const referenceEl = document.createElement( 'p' )
 	circuitEl.appendChild( referenceEl )
 	referenceEl.innerHTML = `
-		This circuit is accessible via 
+		This circuit is accessible via your 
 		<a href="index.html#Open_your_JavaScript_console" target="_blank">JavaScript console</a>
 		as <code>$('#${ domId }').circuit</code>`
-
-
 
 
 	//  Toolbar.
@@ -134,10 +132,6 @@ Q.Circuit.Editor.createInterface = function( circuit, targetEl ){
 	redoButton.innerHTML = '&rarr;'
 
 
-
-
-
-
 	//  Create a circuit board container
 	//  so we can house a scrollable circuit board.
 
@@ -152,27 +146,18 @@ Q.Circuit.Editor.createInterface = function( circuit, targetEl ){
 	const backgroundEl = document.createElement( 'div' )
 	boardEl.appendChild( backgroundEl )
 	backgroundEl.classList.add( 'Q-circuit-board-background' )
-	// backgroundEl.innerHTML = `
-	// 	<!-- 
-	// 	wires<br>
-	// 	vertical grid lines (intersect on ops)<br>
-	// 	background colors?
-	// 	-->`
 
 
-	/*
-
-	++++++
-	Is this really what we want to use for highlighting????
+	//++++++ NEED TO ADD IN ARC CONTROL WIRES !!!!!!!!!! HOW ????
 
 
-*/
+	//  Create background highlight bars 
+	//  for each row.
 
 	for( let i = 0; i < circuit.bandwidth; i ++ ){
 
 		const rowEl = document.createElement( 'div' )
 		backgroundEl.appendChild( rowEl )
-		// rowEl.style.backgroundColor = 'hsl(210,50%,'+ (20 + i * 10) +'%)'
 		rowEl.style.position = 'relative'
 		rowEl.style.gridRowStart = i + 2
 		rowEl.style.gridColumnStart = 1
@@ -183,20 +168,20 @@ Q.Circuit.Editor.createInterface = function( circuit, targetEl ){
 		rowEl.appendChild( wireEl )
 		wireEl.classList.add( 'Q-circuit-register-wire' )
 	}
+
+
+	//  Create background highlight bars 
+	//  for each column.
+
 	for( let i = 0; i < circuit.timewidth; i ++ ){
 
 		const columnEl = document.createElement( 'div' )
 		backgroundEl.appendChild( columnEl )
-		// columnEl.style.backgroundColor = 'hsl(210,50%,'+ (20 + i * 10) +'%)'
 		columnEl.style.gridRowStart = 2
 		columnEl.style.gridRowEnd = Q.Circuit.Editor.registerIndexToGridRow( circuit.bandwidth ) + 1
 		columnEl.style.gridColumnStart = i + 3
 		columnEl.setAttribute( 'moment-index', i + 1 )
 	}
-
-
-
-
 
 
 	//  Create the circuit board foreground
@@ -496,10 +481,25 @@ Q.Circuit.Editor.onPress = function( event ){
 	if( !circuitEl && !paletteEl ) return
 
 
-	//  Shall we toggle the circuit lock?
+	//  This is a bit of a gamble.
+	//  There’s a possibility we’re not going to drag anything,
+	//  but we’ll prep these variables here anyway
+	//  because both branches of if( circuitEl ) and if( paletteEl )
+	//  below will have access to this scope.
+	
+	dragEl = document.createElement( 'div' )
+	dragEl.classList.add( 'Q-circuit-clipboard' )
+	const { x, y } = Q.Circuit.Editor.getInteractionCoordinates( event, 'client' )
+
+
+	//  Are we dealing with a circuit interface?
+	//  ie. NOT a palette interface.
 
 	if( circuitEl ){
 	
+
+		//  Shall we toggle the circuit lock?
+
 		let circuitIsLocked = circuitEl.classList.contains( 'Q-circuit-locked' )
 		const lockEl = targetEl.closest( '.Q-circuit-toggle-lock' )
 		if( lockEl ){//  If this event was fired on the lock toggle button...
@@ -530,223 +530,57 @@ Q.Circuit.Editor.onPress = function( event ){
 			console.log( 'circuit is LOCKED!' )
 			return
 		}
-	}
 
 
+		const
+		undoEl = targetEl.closest( '.Q-circuit-button-undo' ),
+		redoEl = targetEl.closest( '.Q-circuit-button-redo' ),
+		addMomentEl   = targetEl.closest( '.Q-circuit-moment-add' ),
+		addRegisterEl = targetEl.closest( '.Q-circuit-register-add' ),
+		cellEl = targetEl.closest(`
+
+			.Q-circuit-board-foreground > div,
+			.Q-circuit-palette > div
+		`)
+
+		if( !cellEl &&
+			!undoEl &&
+			!redoEl &&
+			!addMomentEl &&
+			!addRegisterEl ) return
 
 
+		//  By this point we know that the circuit is unlocked
+		//  and that we’ll activate a button / drag event / etc.
+		//  So we need to hault futher event propagation
+		//  including running this exact code again if this was
+		//  fired by a touch event and about to again by mouse.
+		//  This may SEEM redundant because we did this above
+		//  within the lock-toggle button code
+		//  but we needed to NOT stop propagation if the circuit
+		//  was already locked -- for scrolling and such.
 
-	//  +++
-	//  Come back and add fuctionality here ;)
-
-	const
-	cellEl = targetEl.closest( '.Q-circuit-board-foreground > div' ),
-	undoEl = targetEl.closest( '.Q-circuit-button-undo' ),
-	redoEl = targetEl.closest( '.Q-circuit-button-redo' ),
-	addMomentEl   = targetEl.closest( '.Q-circuit-moment-add' ),
-	addRegisterEl = targetEl.closest( '.Q-circuit-register-add' )
-	
-
-
-	if( !cellEl &&
-		!undoEl &&
-		!redoEl &&
-		!addMomentEl &&
-		!addRegisterEl ) return
+		event.preventDefault()
+		event.stopPropagation()
 
 
-	//  By this point we know that the circuit is unlocked
-	//  and that we’ll activate a button / drag event / etc.
-	//  So we need to hault futher event propagation
-	//  including running this exact code again if this was
-	//  fired by a touch event and about to again by mouse.
-	//  This may SEEM redundant because we did this above
-	//  within the lock-toggle button code
-	//  but we needed to NOT stop propagation if the circuit
-	//  was already locked -- for scrolling and such.
+		//  +++++++++++++
+		//  Come back and add fuctionality here 
+		//  for undo, redo, add !
 
-	event.preventDefault()
-	event.stopPropagation()
+		if( undoEl ) console.log( '→ Undo' )
+		if( redoEl ) console.log( '→ Redo' )
+		if( addMomentEl   ) console.log( '→ Add moment' )
+		if( addRegisterEl ) console.log( '→ Add register' )
 
 
+		//  We’re done dealing with external buttons.
+		//  So if we can’t find a circuit CELL
+		//  then there’s nothing more to do here.
+
+		if( !cellEl ) return
 
 
-
-	if( undoEl ) console.log( '→ Undo' )
-	if( redoEl ) console.log( '→ Redo' )
-	if( addMomentEl   ) console.log( '→ Add moment' )
-	if( addRegisterEl ) console.log( '→ Add register' )
-
-
-	//  We’re done dealing with external buttons.
-	//  So if we can’t find a circuit CELL
-	//  then there’s nothing more to do here.
-
-	if( !cellEl ) return
-
-
-	//  Once we know what cell we’ve pressed on
-	//  we can get the momentIndex and registerIndex
-	//  from its pre-defined attributes.
-	//  NOTE that we are getting CSS grid column and row
-	//  from our own conversion function and NOT from
-	//  asking its styles. Why? Because browsers convert
-	//  grid commands to a shorthand less easily parsable
-	//  and therefore makes our code and reasoning 
-	//  more prone to quirks / errors. Trust me!
-
-	const
-	momentIndex   = +cellEl.getAttribute( 'moment-index' ),
-	registerIndex = +cellEl.getAttribute( 'register-index' ),
-	columnIndex   = Q.Circuit.Editor.momentIndexToGridColumn( momentIndex ),
-	rowIndex      = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
-
-
-	//  Looks like our circuit is NOT locked
-	//  and we have a valid circuit CELL
-	//  so let’s find everything else we could need.
-
-	const
-	selectallEl     = targetEl.closest( '.Q-circuit-selectall' ),
-	registerLabelEl = targetEl.closest( '.Q-circuit-register-label' ),
-	momentLabelEl   = targetEl.closest( '.Q-circuit-moment-label' ),
-	inputEl         = targetEl.closest( '.Q-circuit-input' ),
-	operationEl     = targetEl.closest( '.Q-circuit-operation' )
-	
-
-	//  Hmmmm....
-	//  We’ll have to add some input editing capability later...
-	//  Of course you can already do this in code!
-	//  For now though most quantum code assumes all qubits
-	//  begin with a value of zero so this is mostly ok ;)
-
-	if( inputEl ){
-
-		console.log( '→ Edit input Qubit value at', registerIndex )
-		return
-	}
-
-
-	//  Let’s inspect a group of items via a CSS query.
-	//  If any of them are NOT “selected” (highlighted)
-	//  then select them all.
-	//  But if ALL of them are already selected
-	//  then UNSELECT them all.
-
-	function toggleSelection( query ){
-
-		const 
-		operations = Array.from( circuitEl.querySelectorAll( query )),
-		operationsSelectedLength = operations.reduce( function( sum, element ){
-
-			sum += +element.classList.contains( 'Q-circuit-cell-selected' )
-			return sum
-		
-		}, 0 )
-
-		if( operationsSelectedLength === operations.length ){
-
-			operations.forEach( function( el ){
-
-				el.classList.remove( 'Q-circuit-cell-selected' )
-			})
-		}
-		else {
-
-			operations.forEach( function( el ){
-
-				el.classList.add( 'Q-circuit-cell-selected' )
-			})
-		}
-	}
-
-
-	//  Clicking on the “selectAll” button
-	//  or any of the Moment labels / Register labels
-	//  causes a selection toggle.
-	//  In the future we may want to add
-	//  dragging of entire Moment columns / Register rows
-	//  to splice them out / insert them elsewhere
-	//  when a user clicks and drags them.
-
-	if( selectallEl ){
-
-		toggleSelection( '.Q-circuit-operation' )
-		return
-	}
-	if( momentLabelEl ){
-
-		toggleSelection( `.Q-circuit-operation[moment-index="${ momentIndex }"]` )
-		return
-	}
-	if( registerLabelEl ){
-
-		toggleSelection( `.Q-circuit-operation[register-index="${ registerIndex }"]` )
-		return
-	}
-
-
-	//  Right here we can made a big decision:
-	//  If you’re not pressing on an operation
-	//  then GO HOME.
-
-	if( !operationEl ) return
-
-
-	//  Similarly, 
-	//  if you’re just here deselecting an operation
-	//  then deselect it and GO HOME.
-	//  +++++++++++
-	//  We need to DELAY this toggle-off until after 
-	//  a possible drag has occurred!
-
-	if( operationEl.classList.contains( 'Q-circuit-cell-selected' )){
-
-		operationEl.classList.remove( 'Q-circuit-cell-selected' )
-		return
-	}
-
-
-	//  And now we can proceed knowing that 
-	//  we need to select this operation
-	//  and possibly drag it
-	//  as well as any other selected operations.
-
-	operationEl.classList.add( 'Q-circuit-cell-selected' )
-	
-	const 
-	selectedOperations = Array.from( circuitEl.querySelectorAll( '.Q-circuit-cell-selected' )),
-	dragEl = document.createElement( 'div' )
-
-	dragEl.classList.add( 'Q-circuit-clipboard' )
-	dragEl.circuitEl = circuitEl
-	dragEl.foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' )
-
-	
-	//  These are the default values; 
-	//  will be used if we’re only dragging one operation around.
-	//  But if dragging more than one operation
-	//  and we’re dragging the clipboard by an operation
-	//  that is NOT in the upper-left corner of the clipboard
-	//  then we need to know what the offset is.
-	// (Will be calculated below.)
-	
-	dragEl.columnIndexOffset = 1
-	dragEl.rowIndexOffset = 1
-
-
-	//  Now collect all of the selected operations,
-	//  rip them from the circuit board’s foreground layer
-	//  and place them on the clipboard.
-	
-	let
-	columnIndexMin = Infinity,
-	rowIndexMin = Infinity
-
-	selectedOperations.forEach( function( el ){
-
-
-		//  WORTH REPEATING:
 		//  Once we know what cell we’ve pressed on
 		//  we can get the momentIndex and registerIndex
 		//  from its pre-defined attributes.
@@ -758,59 +592,228 @@ Q.Circuit.Editor.onPress = function( event ){
 		//  more prone to quirks / errors. Trust me!
 
 		const
-		momentIndex   = +el.getAttribute( 'moment-index' ),
-		registerIndex = +el.getAttribute( 'register-index' ),
+		momentIndex   = +cellEl.getAttribute( 'moment-index' ),
+		registerIndex = +cellEl.getAttribute( 'register-index' ),
 		columnIndex   = Q.Circuit.Editor.momentIndexToGridColumn( momentIndex ),
 		rowIndex      = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
 
-		columnIndexMin = Math.min( columnIndexMin, columnIndex )
-		rowIndexMin = Math.min( rowIndexMin, rowIndex )
-		el.classList.remove( 'Q-circuit-cell-selected' )
-		el.origin = { momentIndex, registerIndex, columnIndex, rowIndex }
-		dragEl.appendChild( el )
-	})
-	selectedOperations.forEach( function( el ){
+
+		//  Looks like our circuit is NOT locked
+		//  and we have a valid circuit CELL
+		//  so let’s find everything else we could need.
+
+		const
+		selectallEl     = targetEl.closest( '.Q-circuit-selectall' ),
+		registerLabelEl = targetEl.closest( '.Q-circuit-register-label' ),
+		momentLabelEl   = targetEl.closest( '.Q-circuit-moment-label' ),
+		inputEl         = targetEl.closest( '.Q-circuit-input' ),
+		operationEl     = targetEl.closest( '.Q-circuit-operation' )
+		
+
+		//  +++++++++++++++
+		//  We’ll have to add some input editing capability later...
+		//  Of course you can already do this in code!
+		//  For now though most quantum code assumes all qubits
+		//  begin with a value of zero so this is mostly ok ;)
+
+		if( inputEl ){
+
+			console.log( '→ Edit input Qubit value at', registerIndex )
+			return
+		}
+
+
+		//  Let’s inspect a group of items via a CSS query.
+		//  If any of them are NOT “selected” (highlighted)
+		//  then select them all.
+		//  But if ALL of them are already selected
+		//  then UNSELECT them all.
+
+		function toggleSelection( query ){
+
+			const 
+			operations = Array.from( circuitEl.querySelectorAll( query )),
+			operationsSelectedLength = operations.reduce( function( sum, element ){
+
+				sum += +element.classList.contains( 'Q-circuit-cell-selected' )
+				return sum
+			
+			}, 0 )
+
+			if( operationsSelectedLength === operations.length ){
+
+				operations.forEach( function( el ){
+
+					el.classList.remove( 'Q-circuit-cell-selected' )
+				})
+			}
+			else {
+
+				operations.forEach( function( el ){
+
+					el.classList.add( 'Q-circuit-cell-selected' )
+				})
+			}
+		}
+
+
+		//  Clicking on the “selectAll” button
+		//  or any of the Moment labels / Register labels
+		//  causes a selection toggle.
+		//  In the future we may want to add
+		//  dragging of entire Moment columns / Register rows
+		//  to splice them out / insert them elsewhere
+		//  when a user clicks and drags them.
+
+		if( selectallEl ){
+
+			toggleSelection( '.Q-circuit-operation' )
+			return
+		}
+		if( momentLabelEl ){
+
+			toggleSelection( `.Q-circuit-operation[moment-index="${ momentIndex }"]` )
+			return
+		}
+		if( registerLabelEl ){
+
+			toggleSelection( `.Q-circuit-operation[register-index="${ registerIndex }"]` )
+			return
+		}
+
+
+		//  Right here we can made a big decision:
+		//  If you’re not pressing on an operation
+		//  then GO HOME.
+
+		if( !operationEl ) return
+
+
+		//  Similarly, 
+		//  if you’re just here deselecting an operation
+		//  then deselect it and GO HOME.
+		//  +++++++++++
+		//  We need to DELAY this toggle-off until after 
+		//  a possible drag has occurred!
+
+		if( operationEl.classList.contains( 'Q-circuit-cell-selected' )){
+
+			operationEl.classList.remove( 'Q-circuit-cell-selected' )
+			return
+		}
+
+
+		//  And now we can proceed knowing that 
+		//  we need to select this operation
+		//  and possibly drag it
+		//  as well as any other selected operations.
+
+		operationEl.classList.add( 'Q-circuit-cell-selected' )
+		const selectedOperations = Array.from( circuitEl.querySelectorAll( '.Q-circuit-cell-selected' ))		
+		dragEl.circuitEl = circuitEl
+		dragEl.originEl  = circuitEl.querySelector( '.Q-circuit-board-foreground' )
+
+	
+		//  These are the default values; 
+		//  will be used if we’re only dragging one operation around.
+		//  But if dragging more than one operation
+		//  and we’re dragging the clipboard by an operation
+		//  that is NOT in the upper-left corner of the clipboard
+		//  then we need to know what the offset is.
+		// (Will be calculated below.)
+		
+		dragEl.columnIndexOffset = 1
+		dragEl.rowIndexOffset = 1
+
+
+		//  Now collect all of the selected operations,
+		//  rip them from the circuit board’s foreground layer
+		//  and place them on the clipboard.
+		
+		let
+		columnIndexMin = Infinity,
+		rowIndexMin = Infinity
+
+		selectedOperations.forEach( function( el ){
+
+
+			//  WORTH REPEATING:
+			//  Once we know what cell we’ve pressed on
+			//  we can get the momentIndex and registerIndex
+			//  from its pre-defined attributes.
+			//  NOTE that we are getting CSS grid column and row
+			//  from our own conversion function and NOT from
+			//  asking its styles. Why? Because browsers convert
+			//  grid commands to a shorthand less easily parsable
+			//  and therefore makes our code and reasoning 
+			//  more prone to quirks / errors. Trust me!
+
+			const
+			momentIndex   = +el.getAttribute( 'moment-index' ),
+			registerIndex = +el.getAttribute( 'register-index' ),
+			columnIndex   = Q.Circuit.Editor.momentIndexToGridColumn( momentIndex ),
+			rowIndex      = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
+
+			columnIndexMin = Math.min( columnIndexMin, columnIndex )
+			rowIndexMin = Math.min( rowIndexMin, rowIndex )
+			el.classList.remove( 'Q-circuit-cell-selected' )
+			el.origin = { momentIndex, registerIndex, columnIndex, rowIndex }
+			dragEl.appendChild( el )
+		})
+		selectedOperations.forEach( function( el ){
+
+			const 
+			columnIndexForClipboard = 1 + el.origin.columnIndex - columnIndexMin,
+			rowIndexForClipboard    = 1 + el.origin.rowIndex - rowIndexMin
+			
+			el.style.gridColumn = columnIndexForClipboard
+			el.style.gridRow = rowIndexForClipboard
+
+
+			//  If this operation element is the one we grabbed
+			// (mostly relevant if we’re moving multiple operations at once)
+			//  we need to know what the “offset” so everything can be
+			//  placed correctly relative to this drag-and-dropped item.
+
+			if( el.origin.columnIndex === columnIndex &&
+				el.origin.rowIndex === rowIndex ){
+
+				dragEl.columnIndexOffset = columnIndexForClipboard
+				dragEl.rowIndexOffset = rowIndexForClipboard
+			}
+		})
+	
+
+		//  We need an XY offset that describes the difference
+		//  between the mouse / finger press position
+		//  and the clipboard’s intended upper-left position.
+		//  To do that we need to know the press position (obviously!),
+		//  the upper-left bounds of the circuit board’s foreground,
+		//  and the intended upper-left bound of clipboard.
+
+		const
+		boardEl = circuitEl.querySelector( '.Q-circuit-board-foreground' ),
+		bounds   = boardEl.getBoundingClientRect(),
+		minX     = Q.Circuit.Editor.gridToPoint( columnIndexMin ),
+		minY     = Q.Circuit.Editor.gridToPoint( rowIndexMin )		
+		
+		dragEl.offsetX = bounds.left + minX - x
+		dragEl.offsetY = bounds.top  + minY - y
+		dragEl.momentIndex = momentIndex
+		dragEl.registerIndex = registerIndex
+	}
+	else if( paletteEl ){
 
 		const 
-		columnIndexForClipboard = 1 + el.origin.columnIndex - columnIndexMin,
-		rowIndexForClipboard    = 1 + el.origin.rowIndex - rowIndexMin
-		
-		el.style.gridColumn = columnIndexForClipboard
-		el.style.gridRow = rowIndexForClipboard
+		operationEl = targetEl.closest( '.Q-circuit-operation' ),
+		bounds      = operationEl.getBoundingClientRect(),
+		{ x, y }    = Q.Circuit.Editor.getInteractionCoordinates( event, 'client' )
 
-
-		//  If this operation element is the one we grabbed
-		// (mostly relevant if we’re moving multiple operations at once)
-		//  we need to know what the “offset” so everything can be
-		//  placed correctly relative to this drag-and-dropped item.
-
-		if( el.origin.columnIndex === columnIndex &&
-			el.origin.rowIndex === rowIndex ){
-
-			dragEl.columnIndexOffset = columnIndexForClipboard
-			dragEl.rowIndexOffset = rowIndexForClipboard
-		}
-	})
-
-
-	//  We need an XY offset that describes the difference
-	//  between the mouse / finger press position
-	//  and the clipboard’s intended upper-left position.
-	//  To do that we need to know the press position (obviously!),
-	//  the upper-left bounds of the circuit board’s foreground,
-	//  and the intended upper-left bound of clipboard.
-
-	const
-	foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' ),
-	bounds   = foregroundEl.getBoundingClientRect(),
-	minX     = Q.Circuit.Editor.gridToPoint( columnIndexMin ),
-	minY     = Q.Circuit.Editor.gridToPoint( rowIndexMin ),
-	{ x, y } = Q.Circuit.Editor.getInteractionCoordinates( event, 'client' )
-	
-	dragEl.offsetX = bounds.left + minX - x
-	dragEl.offsetY = bounds.top  + minY - y
-	dragEl.momentIndex = momentIndex
-	dragEl.registerIndex = registerIndex
+		dragEl.appendChild( operationEl.cloneNode( true ))
+		dragEl.originEl = paletteEl
+		dragEl.offsetX  = bounds.left - x
+		dragEl.offsetY  = bounds.top  - y
+	}
 	dragEl.timestamp = Date.now()
 
 
@@ -899,13 +902,22 @@ Q.Circuit.Editor.onRelease = function( event ){
 	}),
 	returnToOrigin = function(){
 
-		Array.from( Q.Circuit.Editor.dragEl.children ).forEach( function( el ){
 
-			Q.Circuit.Editor.dragEl.foregroundEl.appendChild( el )
-			el.style.gridColumn = el.origin.columnIndex
-			el.style.gridRow    = el.origin.rowIndex
-			el.classList.add( 'Q-circuit-cell-selected' )
-		})
+		//  We can only do a “true” return to origin
+		//  if we were dragging from a circuit.
+		//  If we were dragging from a palette
+		//  we can just stop dragging.
+
+		if( Q.Circuit.Editor.dragEl.circuitEl ){
+		
+			Array.from( Q.Circuit.Editor.dragEl.children ).forEach( function( el ){
+
+				Q.Circuit.Editor.dragEl.originEl.appendChild( el )
+				el.style.gridColumn = el.origin.columnIndex
+				el.style.gridRow    = el.origin.rowIndex
+				el.classList.add( 'Q-circuit-cell-selected' )
+			})
+		}
 		document.body.removeChild( Q.Circuit.Editor.dragEl )
 		Q.Circuit.Editor.dragEl = null
 	}
@@ -973,9 +985,17 @@ Q.Circuit.Editor.onRelease = function( event ){
 	.from( Q.Circuit.Editor.dragEl.children )
 	.forEach( function( child ){
 
+		let
+		momentIndexTarget   = momentIndex, 
+		registerIndexTarget = registerIndex
+		
+		if( Q.Circuit.Editor.dragEl.circuitEl ){
+
+			momentIndexTarget += child.origin.momentIndex - Q.Circuit.Editor.dragEl.momentIndex
+			registerIndexTarget += child.origin.registerIndex - Q.Circuit.Editor.dragEl.registerIndex
+		}
+
 		const
-		momentIndexTarget   = momentIndex + child.origin.momentIndex - Q.Circuit.Editor.dragEl.momentIndex
-		registerIndexTarget = registerIndex + child.origin.registerIndex - Q.Circuit.Editor.dragEl.registerIndex
 		columnIndexTarget   = Q.Circuit.Editor.momentIndexToGridColumn( momentIndexTarget )
 		rowIndexTarget      = Q.Circuit.Editor.registerIndexToGridRow( registerIndexTarget )
 
