@@ -131,7 +131,6 @@
 .Q-circuit-toolbar {
 
 	display: block;
-	display: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	-ms-user-select: none;
@@ -401,7 +400,6 @@
 	grid-row: 1;
 	top: 0;
 	cursor: s-resize;
-	border-bottom: 1px solid hsl( 0, 0%, 90% );
 }
 .Q-circuit-register-label,
 .Q-circuit-register-add {
@@ -409,7 +407,6 @@
 	grid-column: 2;
 	left: 4rem;
 	cursor: e-resize;
-	border-right: 1px solid hsl( 0, 0%, 90% );
 }
 .Q-circuit-moment-add,
 .Q-circuit-register-add {
@@ -420,6 +417,21 @@
 .Q-circuit-register-add {
 
 	/*display: none;*/
+}
+
+
+.Q-circuit-toggle-lock,
+.Q-circuit-selectall,
+.Q-circuit-moment-label,
+.Q-circuit-moment-add {
+
+	border-bottom: 1px solid hsl( 0, 0%, 90% );
+}
+.Q-circuit-selectall,
+.Q-circuit-register-label,
+.Q-circuit-register-add {
+
+	border-right: 1px solid hsl( 0, 0%, 90% );
 }
 
 
@@ -669,7 +681,8 @@
 /***************/
 
 
-.Q-circuit-locked .Q-circuit-toggle-lock {
+.Q-circuit-locked .Q-circuit-toggle-lock,
+.Q-circuit-locked .Q-circuit-toggle-lock:hover {
 
 	background-color: var( --Q-color-red );
 }
