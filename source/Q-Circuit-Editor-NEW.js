@@ -453,6 +453,7 @@ Q.Circuit.Editor.onMove = function( event ){
 	//  to highlight moments or registers (or all).
 
 	if( cellEl ){
+
 		const 
 		momentIndex   = cellEl.getAttribute( 'moment-index' ),
 		registerIndex = cellEl.getAttribute( 'register-index' )
