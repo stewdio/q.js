@@ -315,6 +315,10 @@
 	/*background-color: white;*/
 	/*box-shadow: 0.1rem 0.1rem 1rem rgba( 0, 0, 0, 0.3 );*/
 }
+.Q-circuit-clipboard-destroy .Q-circuit-operation {
+
+	background-color: var( --Q-color-red );
+}
 .Q-circuit-board-background {
 
 	/*
@@ -693,7 +697,7 @@
 	top: 0;
 	grid-column: 1;
 	grid-row: 1;
-
+	cursor: pointer;
 }
 
 

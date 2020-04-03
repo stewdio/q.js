@@ -207,6 +207,8 @@ Q.Circuit.Editor.createInterface = function( circuit, targetEl ){
 	foregroundEl.appendChild( selectallEl )
 	selectallEl.classList.add( 'Q-circuit-header', 'Q-circuit-selectall' )	
 	selectallEl.setAttribute( 'title', 'Select all' )
+	selectallEl.setAttribute( 'moment-index', '0' )
+	selectallEl.setAttribute( 'register-index', '0' )
 	selectallEl.innerHTML = '&searr;'
 
 
@@ -290,6 +292,7 @@ Q.Circuit.Editor.createInterface = function( circuit, targetEl ){
 			const operationEl = document.createElement( 'div' )
 			foregroundEl.appendChild( operationEl )
 			operationEl.classList.add( 'Q-circuit-operation', 'Q-circuit-operation-'+ operation.gate.css )
+			operationEl.setAttribute( 'gate-label', operation.gate.label )
 			operationEl.setAttribute( 'moment-index', operation.momentIndex )
 			operationEl.setAttribute( 'register-index', registerIndex )
 			operationEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( operation.momentIndex )
@@ -358,19 +361,30 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 
 Q.Circuit.Editor.onMove = function( event ){
 
-	const
+
+	//  We need our cursor coordinates straight away.
+	//  We’ll use that both for dragging (immediately below)
+	//  and for hover highlighting (further below).
+	//  Let’s also hold on to a list of all DOM elements
+	//  that contain this X, Y point
+	//  and also see if one of those is a circuit board container.
+
+	const 
 	{ x, y } = Q.Circuit.Editor.getInteractionCoordinates( event ),
-	boardContainerEl = document.elementsFromPoint( x, y )
-	.find( function( el ){
+	foundEls = document.elementsFromPoint( x, y ),
+	boardContainerEl = foundEls.find( function( el ){
 
 		return el.classList.contains( 'Q-circuit-board-container' )
 	})
-
+	
 
 	//  Are we in the middle of a circuit clipboard drag?
 	//  If so we need to move that thing!
 
 	if( Q.Circuit.Editor.dragEl !== null ){
+
+
+		//  ex. Don’t scroll on touch devices!
 
 		event.preventDefault()
 		
@@ -381,11 +395,15 @@ Q.Circuit.Editor.onMove = function( event ){
 
 		Q.Circuit.Editor.dragEl.style.left = ( x + window.pageXOffset + Q.Circuit.Editor.dragEl.offsetX ) +'px'
 		Q.Circuit.Editor.dragEl.style.top  = ( y + window.pageYOffset + Q.Circuit.Editor.dragEl.offsetY ) +'px'
+
+		if( !boardContainerEl ) Q.Circuit.Editor.dragEl.classList.add( 'Q-circuit-clipboard-destroy' )
+		else Q.Circuit.Editor.dragEl.classList.remove( 'Q-circuit-clipboard-destroy' )
 	}
 
 
-	//  If we haven’t found a circuit board cell
-	//  then it’s time to go.
+	//  If we’re not over a circuit board container
+	//  then there’s no highlighting work to do
+	//  so let’s bail now.
 
 	if( !boardContainerEl ) return
 
@@ -404,27 +422,76 @@ Q.Circuit.Editor.onMove = function( event ){
 	})
 
 
-	//  Now assess where the mouse hover is.
-	
+	//  Let’s prioritize any element that is “sticky”
+	//  which means it can appear OVER another grid cell.
+
 	const
-	circuitEl        = boardContainerEl.closest( '.Q-circuit' ),
-	boardEl          = boardContainerEl.querySelector( '.Q-circuit-board' ),
-	boardElBounds    = boardEl.getBoundingClientRect(),
-	xLocal           = x - boardElBounds.left + boardEl.scrollLeft + 1,
-	yLocal           = y - boardElBounds.top  + boardEl.scrollTop + 1,
-	columnIndex      = Q.Circuit.Editor.pointToGrid( xLocal ),
-	rowIndex         = Q.Circuit.Editor.pointToGrid( yLocal ),
-	momentIndex      = Q.Circuit.Editor.gridColumnToMomentIndex( columnIndex ),
-	registerIndex    = Q.Circuit.Editor.gridRowToRegisterIndex( rowIndex ),
-	cellEl           = boardEl.querySelector( `div[moment-index="${ momentIndex }"][register-index="${ registerIndex }"]` ),
+	cellEl = foundEls.find( function( el ){
+
+		const style = window.getComputedStyle( el )
+		return (
+
+			style.position === 'sticky' && ( 
+
+				el.getAttribute( 'moment-index' ) !== null ||
+				el.getAttribute( 'register-index' ) !== null
+			)
+		)
+	}),
 	highlightByQuery = function( query ){
 
-		Array.from( boardEl.querySelectorAll( query ))
+		Array.from( boardContainerEl.querySelectorAll( query ))
 		.forEach( function( el ){
 
 			el.classList.add( 'Q-circuit-cell-highlighted' )
 		})
 	}
+
+
+	//  If we’ve found one of these “sticky” cells
+	//  let’s use its moment and/or register data
+	//  to highlight moments or registers (or all).
+
+	if( cellEl ){
+		const 
+		momentIndex   = cellEl.getAttribute( 'moment-index' ),
+		registerIndex = cellEl.getAttribute( 'register-index' )
+		
+		if( momentIndex === null ){
+			
+			highlightByQuery( `div[register-index="${ registerIndex }"]` )
+			return
+		}
+		if( registerIndex === null ){
+
+			highlightByQuery( `div[moment-index="${ momentIndex }"]` )
+			return
+		}
+		highlightByQuery(`
+
+			.Q-circuit-board-background > div[moment-index],
+			.Q-circuit-board-foreground > .Q-circuit-operation
+
+		`)
+		return
+	}
+
+
+	//  Ok, we know we’re hovering over the circuit board
+	//  but we’re not on a “sticky” cell.
+	//  We might be over an operation, but we might not.
+	//  No matter -- we’ll infer the moment and register indices
+	//  from the cursor position.
+
+	const
+	circuitEl     = boardContainerEl.closest( '.Q-circuit' ),
+	boardElBounds = boardContainerEl.getBoundingClientRect(),
+	xLocal        = x - boardElBounds.left + boardContainerEl.scrollLeft + 1,
+	yLocal        = y - boardElBounds.top  + boardContainerEl.scrollTop + 1,
+	columnIndex   = Q.Circuit.Editor.pointToGrid( xLocal ),
+	rowIndex      = Q.Circuit.Editor.pointToGrid( yLocal ),
+	momentIndex   = Q.Circuit.Editor.gridColumnToMomentIndex( columnIndex ),
+	registerIndex = Q.Circuit.Editor.gridRowToRegisterIndex( rowIndex )
 
 
 	//  If this hover is “out of bounds”
@@ -435,29 +502,24 @@ Q.Circuit.Editor.onMove = function( event ){
 		registerIndex > circuitEl.circuit.bandwidth ) return
 	
 
-	//  Ok, we have some highlighting to do!
+	//  If we’re at 0, 0 or below that either means
+	//  we’re over the “Select all” button (already taken care of above)
+	//  or over the lock toggle button.
+	//  Either way, it’s time to bail.
 
-	if( cellEl && !cellEl.classList.contains( 'Q-circuit-operation' )){
+	if( momentIndex < 1 || registerIndex < 1 ) return
 
-		if( cellEl.classList.contains( 'Q-circuit-selectall' )){
 
-			highlightByQuery( '.Q-circuit-operation' )
-		}
-		else if( cellEl.classList.contains( 'Q-circuit-moment-label' )){
+	//  If we’ve made it this far that means 
+	//  we have valid moment and register indices.
+	//  Highlight them!
 
-			highlightByQuery( '.Q-circuit-board div[moment-index="'+ momentIndex +'"]' )
-		}
-		else if( cellEl.classList.contains( 'Q-circuit-register-label' ) ||
-			cellEl.classList.contains( 'Q-circuit-input' )){
+	highlightByQuery(`
 
-			highlightByQuery( '.Q-circuit-board div[register-index="'+ registerIndex +'"]' )
-		}
-	}
-	else highlightByQuery( 
-
-		'.Q-circuit-board div[register-index="'+ registerIndex +'"],'+
-		'.Q-circuit-board div[moment-index="'+ momentIndex +'"]'
-	)
+		div[moment-index="${ momentIndex }"],
+		div[register-index="${ registerIndex }"]
+	`)
+	return
 }
 
 
@@ -928,8 +990,8 @@ Q.Circuit.Editor.onRelease = function( event ){
 				Q.Circuit.Editor.dragEl.originEl.appendChild( el )
 				el.style.gridColumn = el.origin.columnIndex
 				el.style.gridRow    = el.origin.rowIndex
-				// el.classList.add( 'Q-circuit-cell-selected' )
-				if( el.wasSelected === true ) el.classList.add( 'Q-circuit-cell-selected' )
+				if( el.wasSelected === true ) el.classList.remove( 'Q-circuit-cell-selected' )
+				else el.classList.add( 'Q-circuit-cell-selected' )
 			})
 		}
 		document.body.removeChild( Q.Circuit.Editor.dragEl )
@@ -971,6 +1033,7 @@ Q.Circuit.Editor.onRelease = function( event ){
 	//  Where exactly are we dropping on to this circuit??
 
 	const 
+	circuit     = circuitEl.circuit
 	bounds      = boardContainerEl.getBoundingClientRect(),
 	xAdjusted   = x - bounds.left + boardContainerEl.scrollLeft,
 	yAdjusted   = y - bounds.top  + boardContainerEl.scrollTop,
@@ -998,9 +1061,13 @@ Q.Circuit.Editor.onRelease = function( event ){
 
 
 	//  Is this a valid drop target within this circuit?
-	//  +++ need to also calculate max momentIndex and max registerIndex.
 
-	if( momentIndex < 1 || registerIndex < 1 ){
+	if( 
+		momentIndex < 1 || 
+		momentIndex > circuit.timewidth ||
+		registerIndex < 1 ||
+		registerIndex > circuit.bandwidth
+	){
 
 		returnToOrigin()
 		return
@@ -1021,33 +1088,86 @@ Q.Circuit.Editor.onRelease = function( event ){
 		
 		if( Q.Circuit.Editor.dragEl.circuitEl ){
 
-			momentIndexTarget += child.origin.momentIndex - Q.Circuit.Editor.dragEl.momentIndex
+			momentIndexTarget   += child.origin.momentIndex   - Q.Circuit.Editor.dragEl.momentIndex
 			registerIndexTarget += child.origin.registerIndex - Q.Circuit.Editor.dragEl.registerIndex
 		}
 
-		const
-		columnIndexTarget   = Q.Circuit.Editor.momentIndexToGridColumn( momentIndexTarget )
-		rowIndexTarget      = Q.Circuit.Editor.registerIndexToGridRow( registerIndexTarget )
 
-		//  ++++
-		//  ADD VALIDATION CODE HERE !!!!!!
-		//  if( registerIndex > circuit.bandwidth ) etc.
-		//  just do removeChild( child ) and throw it away.
-		
-		child.setAttribute( 'moment-index', momentIndexTarget )
-		child.setAttribute( 'register-index', registerIndexTarget )
-		child.style.gridColumn = columnIndexTarget
-		child.style.gridRow = rowIndexTarget
-		foregroundEl.appendChild( child )
+		//  We can only add operations to valid drop targets.
+
+		if( 
+			momentIndexTarget > 0 &&
+			momentIndexTarget < circuit.timewidth + 1 &&
+			registerIndexTarget > 0 &&
+			registerIndexTarget < circuit.bandwidth + 1
+		){
+
+
+			//  If there’s already an operation at this drop target
+			//  we need to remove it.
+			//  Why an Array? Paranoia!
+
+			Array
+			.from( foregroundEl.querySelectorAll( `div[moment-index="${ momentIndexTarget }"][register-index="${ registerIndexTarget }"]` ))
+			.forEach( function( child ){
+
+				child.parentNode.removeChild( child )
+			})
+
+
+			//  Ok. We are good to place this operation here.
+
+			const
+			columnIndexTarget = Q.Circuit.Editor.momentIndexToGridColumn( momentIndexTarget )
+			rowIndexTarget    = Q.Circuit.Editor.registerIndexToGridRow( registerIndexTarget )
+			
+			child.setAttribute( 'moment-index', momentIndexTarget )
+			child.setAttribute( 'register-index', registerIndexTarget )
+			child.style.gridColumn = columnIndexTarget
+			child.style.gridRow = rowIndexTarget
+			foregroundEl.appendChild( child )
+		}
 	})
+
+
+
+
 
 
 	//  +++
 	//  TRIGGER CIRCUIT EVAL HERE!!!
+	//  Make this in to a function like
+	//  Q.Circuit.Editor.compile( circuitEl )
+	//  so can also use it below
+	//  or call it from the javascript console.
+	//  ++++++++++
+
 	console.log( 'OK! - trigger an eval on this circuit.' )
 
+	Array
+	.from( foregroundEl.querySelectorAll( '.Q-circuit-operation' ))
+	.forEach( function( child, i ){
 
-	//  If the origina circuit and destination circuit
+		console.log(
+
+			i + 1,
+			child.getAttribute( 'gate-label' ),
+			+child.getAttribute( 'moment-index' ),
+			+child.getAttribute( 'register-index' )
+		)
+	})
+
+	//  have to compare this to the actual circuit.operations Array!!!!!
+
+
+
+
+
+
+
+
+
+	//  If the original circuit and destination circuit
 	//  are not the same thing
 	//  then we need to also eval the original circuit.
 
@@ -1056,11 +1176,14 @@ Q.Circuit.Editor.onRelease = function( event ){
 		//  +++
 		//  TRIGGER CIRCUIT EVAL HERE!!!
 		console.log( 'ALSO - trigger an eval on the original circuit.' )
+		//  Q.Circuit.Editor.compile( Q.Circuit.Editor.dragEl.circuitEl )
 	}
 
 
 	//  We’re finally done here.
 	//  Clean up and go home.
+	//  It’s been a long journey.
+	//  I love you all.
 
 	document.body.removeChild( Q.Circuit.Editor.dragEl )
 	Q.Circuit.Editor.dragEl = null
