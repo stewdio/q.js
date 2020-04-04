@@ -55,6 +55,61 @@ Q.Circuit.Editor = {
 
 
 
+    /////////////////
+   //             //
+  //   Palette   //
+ //             //
+/////////////////
+
+
+Q.Circuit.Editor.createPalette = function( targetEl ){
+
+	const 
+	paletteEl = document.createElement( 'div' ),
+	randomRangeAndSign = function(  min, max ){
+
+		const r = min + Math.random() * ( max - min )
+		return Math.floor( Math.random() * 2 ) ? r : -r
+	}
+
+	paletteEl.classList.add( 'Q-circuit-palette' )
+
+	'HXYZS'
+	.split( '' )
+	.forEach( function( label ){
+
+		const gate = Q.Gate.findByLabel( label )
+
+		const operationEl = document.createElement( 'div' )
+		paletteEl.appendChild( operationEl )
+		operationEl.classList.add( 'Q-circuit-operation' )
+		operationEl.classList.add( 'Q-circuit-operation-'+ gate.css )
+		operationEl.setAttribute( 'gate-label', label )
+
+		const tileEl = document.createElement( 'div' )
+		operationEl.appendChild( tileEl )
+		tileEl.classList.add( 'Q-circuit-operation-tile' )
+		tileEl.innerText = label
+
+		tileEl.style.setProperty( '--Q-before-rotation', randomRangeAndSign( 2, 12 ) +'deg' )
+		tileEl.style.setProperty( '--Q-before-x', randomRangeAndSign( 1, 3 ) +'px' )
+		tileEl.style.setProperty( '--Q-before-y', randomRangeAndSign( 1, 3 ) +'px' )
+		
+		tileEl.style.setProperty( '--Q-after-rotation', randomRangeAndSign( 2, 12 ) +'deg' )
+		tileEl.style.setProperty( '--Q-after-x', randomRangeAndSign( 1, 3 ) +'px' )
+		tileEl.style.setProperty( '--Q-after-y', randomRangeAndSign( 1, 3 ) +'px' )
+	})
+
+	if( typeof targetEl === 'string' ) targetEl = document.getElementById( targetEl )	
+	if( targetEl instanceof HTMLElement ) targetEl.appendChild( paletteEl )
+	return paletteEl
+}
+
+
+
+
+
+
     //////////////////////////
    //                      //
   //   Create interface   //
@@ -334,6 +389,7 @@ Q.Circuit.Editor.createInterface = function( circuit, targetEl ){
 	//  we should add a circuit reference to it
 	//  and append our circuit element to it.
 
+	if( typeof targetEl === 'string' ) targetEl = document.getElementById( targetEl )	
 	if( targetEl instanceof HTMLElement ){
 
 		targetEl.circuit = circuit
@@ -1034,7 +1090,7 @@ Q.Circuit.Editor.onRelease = function( event ){
 	//  Where exactly are we dropping on to this circuit??
 
 	const 
-	circuit     = circuitEl.circuit
+	circuit     = circuitEl.circuit,
 	bounds      = boardContainerEl.getBoundingClientRect(),
 	xAdjusted   = x - bounds.left + boardContainerEl.scrollLeft,
 	yAdjusted   = y - bounds.top  + boardContainerEl.scrollTop,
@@ -1063,9 +1119,9 @@ Q.Circuit.Editor.onRelease = function( event ){
 
 	//  Is this a valid drop target within this circuit?
 
-	if( 
-		momentIndex < 1 || 
-		momentIndex > circuit.timewidth ||
+	if(
+		momentIndex   < 1 || 
+		momentIndex   > circuit.timewidth ||
 		registerIndex < 1 ||
 		registerIndex > circuit.bandwidth
 	){
@@ -1097,8 +1153,8 @@ Q.Circuit.Editor.onRelease = function( event ){
 		//  We can only add operations to valid drop targets.
 
 		if( 
-			momentIndexTarget > 0 &&
-			momentIndexTarget < circuit.timewidth + 1 &&
+			momentIndexTarget   > 0 &&
+			momentIndexTarget   < circuit.timewidth + 1 &&
 			registerIndexTarget > 0 &&
 			registerIndexTarget < circuit.bandwidth + 1
 		){
@@ -1145,18 +1201,63 @@ Q.Circuit.Editor.onRelease = function( event ){
 
 	console.log( 'OK! - trigger an eval on this circuit.' )
 
-	Array
+	const operations = Array
 	.from( foregroundEl.querySelectorAll( '.Q-circuit-operation' ))
-	.forEach( function( child, i ){
+	// .forEach( function( child, i ){
 
-		console.log(
+	// 	console.log(
 
-			i + 1,
-			child.getAttribute( 'gate-label' ),
-			+child.getAttribute( 'moment-index' ),
-			+child.getAttribute( 'register-index' )
-		)
-	})
+	// 		i + 1,
+	// 		child.getAttribute( 'gate-label' ),
+	// 		+child.getAttribute( 'moment-index' ),
+	// 		+child.getAttribute( 'register-index' )
+	// 	)
+	// })	
+	.reduce( function( ops, child ){
+
+		ops.push({
+
+			gate: Q.Gate.findByLabel( child.getAttribute( 'gate-label' )),
+			momentIndex: +child.getAttribute( 'moment-index' ),
+			registerIndices: [ +child.getAttribute( 'register-index' )],
+			operationMomentId: undefined
+		})
+		return ops
+
+	}, [])
+
+/*
+
+already here i have a problem:
+cannot just replac the operations array
+beecause of multi-register ops!
+need to solve that shit here and now.
+
+
+
+*/
+
+// console.log( 'circuit BEFORE', circuit )
+// console.log( 'operations NOW', operations )
+
+// circuit.operations = operations
+
+// console.log( 'circuit AFTER', circuit.toDiagram() )
+
+
+
+/*
+
+
+how are we storing multi-qubit operations????
+
+
+create a new Circuit
+and then do Q.Circuit.resolve$( originalCircuit, updatedCircuit )???
+
+
+*/
+
 
 	//  have to compare this to the actual circuit.operations Array!!!!!
 
@@ -1227,13 +1328,12 @@ window.addEventListener( 'DOMContentLoaded', function( event ){
 
 
 	//  Meanwhile these remaining listeners must be applied
-	//  to the entire document body.
-	
-	document.body.addEventListener( 'mousemove',  Q.Circuit.Editor.onMove )
-	document.body.addEventListener( 'touchmove', Q.Circuit.Editor.onMove )
-	
-	document.body.addEventListener( 'mouseup',  Q.Circuit.Editor.onRelease )
-	document.body.addEventListener( 'touchend', Q.Circuit.Editor.onRelease )
+	//  to the entire WINDOW (and not just document.body!)
+
+	window.addEventListener( 'mousemove',  Q.Circuit.Editor.onMove )
+	window.addEventListener( 'touchmove',  Q.Circuit.Editor.onMove )
+	window.addEventListener( 'mouseup',    Q.Circuit.Editor.onRelease )
+	window.addEventListener( 'touchend',   Q.Circuit.Editor.onRelease )
 })
 
 

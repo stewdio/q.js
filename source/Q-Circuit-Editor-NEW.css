@@ -500,6 +500,11 @@
 
 	cursor: not-allowed;
 }
+
+
+
+
+
 .Q-circuit-operation-tile {
 
 	position: absolute;
@@ -528,7 +533,47 @@
 			rgba( 0, 0, 0, 0.05 )
 		)*/;
 }
+.Q-circuit-palette .Q-circuit-operation-tile {
 
+	--Q-before-rotation: 12deg;
+	--Q-before-x: 1px;
+	--Q-before-y: -2px;
+	
+	--Q-after-rotation: -7deg;
+	--Q-after-x: -2px;
+	--Q-after-y: 3px;
+	
+	box-shadow: 0.2rem 0.2rem 0.4rem rgba( 0, 0, 0, 0.5 );
+}
+.Q-circuit-palette .Q-circuit-operation-tile:before,
+.Q-circuit-palette .Q-circuit-operation-tile:after {
+
+	content: "";
+	position: absolute;
+	top:    0;
+	right:  0;
+	bottom: 0;
+	left:   0;
+	border-radius: 0.2rem;
+	background-color: hsl( 0, 0%, 50% );
+	transform: 
+		translate( var( --Q-before-x ), var( --Q-before-y ))
+		rotate( var( --Q-before-rotation ));		
+	z-index: -10;
+	/*z-index: 10;*/
+	display: block;
+	box-shadow: 0.2rem 0.2rem 0.4rem rgba( 0, 0, 0, 0.5 );
+}
+.Q-circuit-palette .Q-circuit-operation-tile:after {
+
+	transform: 		
+		translate( var( --Q-before-x ), var( --Q-before-y ))
+		rotate( var( --Q-before-rotation ));
+}
+.Q-circuit-operation:hover .Q-circuit-operation-tile {
+
+	color: white;
+}
 
 
 
@@ -582,20 +627,27 @@
 /********************/
 
 
-
 .Q-circuit-palette > div:hover,
 .Q-circuit-board-foreground > div:hover {
-	
-	background-color: white;
-	color: black;
 
 	outline: 1px solid black;
 	outline-offset: -1px;
 }
-.Q-circuit-operation:hover .Q-circuit-operation-tile {
+.Q-circuit-palette > div:hover {
 
-	color: white;
+	background-color: rgba( 255, 255, 255, 0.5 );
 }
+.Q-circuit-palette > div:hover .Q-circuit-operation-tile {
+
+	box-shadow: none;
+}
+/*.Q-circuit-palette > div:hover,*/
+.Q-circuit-board-foreground > div:hover {
+	
+	background-color: white;
+	color: black;
+}
+
 
 
 
@@ -706,3 +758,6 @@
 
 	padding: 1rem;
 }
+
+
+
