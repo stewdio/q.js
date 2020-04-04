@@ -203,9 +203,6 @@ Q.Circuit.Editor.createInterface = function( circuit, targetEl ){
 	backgroundEl.classList.add( 'Q-circuit-board-background' )
 
 
-	//++++++ NEED TO ADD IN ARC CONTROL WIRES !!!!!!!!!! HOW ????
-
-
 	//  Create background highlight bars 
 	//  for each row.
 
@@ -359,7 +356,58 @@ Q.Circuit.Editor.createInterface = function( circuit, targetEl ){
 			tileEl.setAttribute( 'title', operation.gate.name )
 			tileEl.innerText = operation.gate.label
 
+
+
+/*
+++++++++++++++++++++++++++++++
+
+
+
+add control wires!!!!!
+
+line 467 in old version
+
+
+
+*/
+
+
+
 			if( operation.registerIndices.length > 1 ){
+
+				operation.registerIndices.forEach( function( registerIndex, i ){
+
+					if( i < operation.registerIndices.length - 1 ){			
+
+						const 
+						siblingRegisterIndex = operation.registerIndices[ i + 1 ],
+						registerDelta = Math.abs( siblingRegisterIndex - registerIndex ),
+						connectorType = registerDelta === 1 ? 'straight' : 'curved',
+						start = Math.min( registerIndex, siblingRegisterIndex ),
+						end   = Math.max( registerIndex, siblingRegisterIndex ),
+						containerEl = document.createElement( 'div' ),
+						linkEl = document.createElement( 'div' )
+
+						backgroundEl.appendChild( containerEl )							
+						containerEl.setAttribute( 'moment-index', operation.momentIndex )
+						containerEl.setAttribute( 'register-index', operation.registerIndex )
+						containerEl.classList.add( 'Q-circuit-operation-link-container' )
+						//connectionEl.setAttribute( 'register-indices', operation.registerIndices )
+						containerEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( start )
+						containerEl.style.gridRowEnd   = Q.Circuit.Editor.registerIndexToGridRow( end )
+						containerEl.style.gridColumn   = Q.Circuit.Editor.momentIndexToGridColumn( operation.momentIndex )
+
+						containerEl.appendChild( linkEl )
+						linkEl.classList.add( 'Q-circuit-operation-link' )
+					}
+				})
+
+
+
+
+
+
+
 
 				if( i === 0 ){
 
@@ -368,6 +416,7 @@ Q.Circuit.Editor.createInterface = function( circuit, targetEl ){
 					tileEl.innerText = ''
 				}
 				else operationEl.classList.add( 'Q-circuit-operation-target' )
+
 			}
 		})
 	})
