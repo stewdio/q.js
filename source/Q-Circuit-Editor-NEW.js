@@ -4,8 +4,293 @@
 
 
 
-Q.Circuit.Editor = {
+Q.Circuit.Editor = function( circuit, targetEl ){
 
+
+	//  First order of business,
+	//  we require a valid circuit.
+
+	if( circuit instanceof Q.Circuit !== true ) return
+	this.circuit = circuit
+	this.index = Q.Circuit.Editor.index ++
+
+
+	//  Q.Circuit.Editor is all about the DOM
+	//  so we’re going to get som use out of this
+	//  stupid (but convenient) shorthand here.
+
+	const createDiv = function(){
+
+		return document.createElement( 'div' )
+	}
+
+
+	//  ++++++++++++++++++
+	//  The nature of the domId needs to be better thought out!
+	//  Check for name collisions beforehand???
+	//  What’s the contingency??
+
+	const
+	name  = typeof circuit.name === 'string' ? circuit.name : 'Q-editor-'+ this.index,
+	domId = name.replace( /^[^a-z]+|[^\w:.-]+/gi, '' )
+	
+	this.name  = name
+	this.domId = domId
+
+
+
+	//  If we’ve been passed a target DOM element
+	//  we should use that as our circuit element.
+
+	if( typeof targetEl === 'string' ) targetEl = document.getElementById( targetEl )	
+	const circuitEl = targetEl instanceof HTMLElement ? targetEl : createDiv()
+	this.domElement = circuitEl
+	circuitEl.classList.add( 'Q-circuit' )
+	circuitEl.setAttribute( 'id', this.domId )
+	circuitEl.circuit = circuit
+
+
+	//  Toolbar.
+
+	const toolbarEl = createDiv()
+	circuitEl.appendChild( toolbarEl )
+	toolbarEl.classList.add( 'Q-circuit-toolbar' )
+
+	const modeButton = createDiv()
+	toolbarEl.appendChild( modeButton )
+	modeButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-select-toggle' )
+	modeButton.setAttribute( 'title', 'Selection mode' )
+	modeButton.innerText = 'S'
+
+	const undoButton = createDiv()
+	toolbarEl.appendChild( undoButton )
+	undoButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-undo' )
+	undoButton.setAttribute( 'title', 'Undo' )
+	undoButton.innerHTML = '&larr;'
+
+	const redoButton = createDiv()
+	toolbarEl.appendChild( redoButton )
+	redoButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-redo' )
+	redoButton.setAttribute( 'title', 'Redo' )
+	redoButton.innerHTML = '&rarr;'
+
+
+	//  Create a circuit board container
+	//  so we can house a scrollable circuit board.
+
+	const boardContainerEl = createDiv()
+	circuitEl.appendChild( boardContainerEl )
+	boardContainerEl.classList.add( 'Q-circuit-board-container' )
+	boardContainerEl.addEventListener( 'touchstart', Q.Circuit.Editor.onPointerPress )	
+
+	const boardEl = createDiv()
+	boardContainerEl.appendChild( boardEl )
+	boardEl.classList.add( 'Q-circuit-board' )
+
+	const backgroundEl = createDiv()
+	boardEl.appendChild( backgroundEl )
+	backgroundEl.classList.add( 'Q-circuit-board-background' )
+
+
+	//  Create background highlight bars 
+	//  for each row.
+
+	for( let i = 0; i < circuit.bandwidth; i ++ ){
+
+		const rowEl = createDiv()
+		backgroundEl.appendChild( rowEl )
+		rowEl.style.position = 'relative'
+		rowEl.style.gridRowStart = i + 2
+		rowEl.style.gridColumnStart = 1
+		rowEl.style.gridColumnEnd = Q.Circuit.Editor.momentIndexToGridColumn( circuit.timewidth ) + 1
+		rowEl.setAttribute( 'register-index', i + 1 )
+
+		const wireEl = createDiv()
+		rowEl.appendChild( wireEl )
+		wireEl.classList.add( 'Q-circuit-register-wire' )
+	}
+
+
+	//  Create background highlight bars 
+	//  for each column.
+
+	for( let i = 0; i < circuit.timewidth; i ++ ){
+
+		const columnEl = createDiv()
+		backgroundEl.appendChild( columnEl )
+		columnEl.style.gridRowStart = 2
+		columnEl.style.gridRowEnd = Q.Circuit.Editor.registerIndexToGridRow( circuit.bandwidth ) + 1
+		columnEl.style.gridColumnStart = i + 3
+		columnEl.setAttribute( 'moment-index', i + 1 )
+	}
+
+
+	//  Create the circuit board foreground
+	//  for all interactive elements.
+
+	const foregroundEl = createDiv()
+	boardEl.appendChild( foregroundEl )
+	foregroundEl.classList.add( 'Q-circuit-board-foreground' )
+
+
+	//  Add a toggle switch for locking the circuit.
+
+	const lockToggle = createDiv()
+	foregroundEl.appendChild( lockToggle )
+	lockToggle.classList.add( 'Q-circuit-header', 'Q-circuit-toggle', 'Q-circuit-toggle-lock' )
+	lockToggle.setAttribute( 'title', 'Lock / unlock' )
+	lockToggle.innerText = '🔓'
+
+
+	//  Add “Select All” toggle button to upper-left corner.
+
+	const selectallEl = createDiv()
+	foregroundEl.appendChild( selectallEl )
+	selectallEl.classList.add( 'Q-circuit-header', 'Q-circuit-selectall' )	
+	selectallEl.setAttribute( 'title', 'Select all' )
+	selectallEl.setAttribute( 'moment-index', '0' )
+	selectallEl.setAttribute( 'register-index', '0' )
+	selectallEl.innerHTML = '&searr;'
+
+
+	//  Add register index labels to left-hand column.
+	
+	for( let i = 0; i < circuit.bandwidth; i ++ ){
+
+		const 
+		registerIndex = i + 1,
+		registerLabelEl = createDiv()
+		
+		foregroundEl.appendChild( registerLabelEl )
+		registerLabelEl.classList.add( 'Q-circuit-header', 'Q-circuit-register-label' )
+		registerLabelEl.setAttribute( 'title', 'Register '+ registerIndex )
+		registerLabelEl.setAttribute( 'register-index', registerIndex )
+		registerLabelEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
+		registerLabelEl.innerText = registerIndex
+	}
+
+
+	//  Add “Add register” button.
+	
+	const addRegisterEl = createDiv()
+	foregroundEl.appendChild( addRegisterEl )
+	addRegisterEl.classList.add( 'Q-circuit-header', 'Q-circuit-register-add' )
+	addRegisterEl.setAttribute( 'title', 'Add register' )
+	addRegisterEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( circuit.bandwidth + 1 )
+	addRegisterEl.innerText = '+'
+
+
+	//  Add moment index labels to top row.
+
+	for( let i = 0; i < circuit.timewidth; i ++ ){
+
+		const 
+		momentIndex = i + 1,
+		momentLabelEl = createDiv()
+
+		foregroundEl.appendChild( momentLabelEl )
+		momentLabelEl.classList.add( 'Q-circuit-header', 'Q-circuit-moment-label' )
+		momentLabelEl.setAttribute( 'title', 'Moment '+ momentIndex )
+		momentLabelEl.setAttribute( 'moment-index', momentIndex )
+		momentLabelEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( momentIndex )
+		momentLabelEl.innerText = momentIndex
+	}
+
+
+	//  Add “Add moment” button.
+	
+	const addMomentEl = createDiv()
+	foregroundEl.appendChild( addMomentEl )
+	addMomentEl.classList.add( 'Q-circuit-header', 'Q-circuit-moment-add' )
+	addMomentEl.setAttribute( 'title', 'Add moment' )
+	addMomentEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( circuit.timewidth + 1 )
+	addMomentEl.innerText = '+'
+
+
+	//  Add input values.
+
+	circuit.qubits.forEach( function( qubit, i ){
+
+		const 
+		rowIndex = i + 1,
+		inputEl = createDiv()
+		
+		inputEl.classList.add( 'Q-circuit-header', 'Q-circuit-input' )
+		inputEl.setAttribute( 'title', `Qubit #${ rowIndex } starting value` )
+		inputEl.setAttribute( 'register-index', rowIndex )
+		inputEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( rowIndex )
+		inputEl.innerText = qubit.beta.toText()
+		foregroundEl.appendChild( inputEl )
+	})
+
+
+	//  Add operations.
+
+	circuit.operations.forEach( function( operation ){
+
+		Q.Circuit.Editor.set( circuitEl, operation )
+	})
+
+
+	//  Add event listeners.
+
+	circuitEl.addEventListener( 'mousedown',  Q.Circuit.Editor.onPointerPress )
+	circuitEl.addEventListener( 'touchstart', Q.Circuit.Editor.onPointerPress )
+	window.addEventListener( 
+	
+		'qjs set$ completed', 
+		 Q.Circuit.Editor.prototype.onExternalSet.bind( this )
+	)
+	window.addEventListener(
+
+		'qjs clearThisInput$',
+		Q.Circuit.Editor.prototype.onExternalClear.bind( this )
+	)
+
+
+	//  How can we interact with this circuit
+	//  through code? (How cool is this?!)
+
+	const referenceEl = document.createElement( 'p' )
+	circuitEl.appendChild( referenceEl )
+	referenceEl.innerHTML = `
+		This circuit is accessible via your 
+		<a href="index.html#Open_your_JavaScript_console" target="_blank">JavaScript console</a>
+		as <code>$('#${ domId }').circuit</code>`
+
+
+	//  Put a note in the JavaScript console
+	//  that includes how to reference the circuit via code
+	//  and an ASCII diagram for reference.
+
+	Q.log( 0.5,
+		
+		`\n\nCreated a DOM interface for $('#${ domId }').circuit\n\n`,
+		 circuit.toDiagram(),
+		'\n\n\n'
+	)
+}
+
+
+//  Augment Q.Circuit to have this functionality.
+
+Q.Circuit.toDom = Q.Circuit.Editor
+Q.Circuit.prototype.toDom = function( targetEl ){
+
+	return new Q.Circuit.Editor( this, targetEl )
+}
+
+
+
+
+
+
+
+
+Object.assign( Q.Circuit.Editor, {
+
+	index: 0,
+	help: function(){ return Q.help( this )},
 	dragEl: null,
 	gridColumnToMomentIndex: function( gridColumn  ){ return +gridColumn - 2 },
 	momentIndexToGridColumn: function( momentIndex ){ return momentIndex + 2 },
@@ -47,409 +332,181 @@ Q.Circuit.Editor = {
 			x: event[ pageOrClient +'X' ],
 			y: event[ pageOrClient +'Y' ]
 		}
-	}
-}
+	},
+	createPalette: function( targetEl ){
 
-
-
-
-
-
-    /////////////////
-   //             //
-  //   Palette   //
- //             //
-/////////////////
-
-
-Q.Circuit.Editor.createPalette = function( targetEl ){
-
-	const 
-	paletteEl = document.createElement( 'div' ),
-	randomRangeAndSign = function(  min, max ){
-
-		const r = min + Math.random() * ( max - min )
-		return Math.floor( Math.random() * 2 ) ? r : -r
-	}
-
-	paletteEl.classList.add( 'Q-circuit-palette' )
-
-	'HXYZS'
-	.split( '' )
-	.forEach( function( label ){
-
-		const gate = Q.Gate.findByLabel( label )
-
-		const operationEl = document.createElement( 'div' )
-		paletteEl.appendChild( operationEl )
-		operationEl.classList.add( 'Q-circuit-operation' )
-		operationEl.classList.add( 'Q-circuit-operation-'+ gate.css )
-		operationEl.setAttribute( 'gate-label', label )
-
-		const tileEl = document.createElement( 'div' )
-		operationEl.appendChild( tileEl )
-		tileEl.classList.add( 'Q-circuit-operation-tile' )
-		tileEl.innerText = label
-
-		tileEl.style.setProperty( '--Q-before-rotation', randomRangeAndSign( 2, 12 ) +'deg' )
-		tileEl.style.setProperty( '--Q-before-x', randomRangeAndSign( 1, 3 ) +'px' )
-		tileEl.style.setProperty( '--Q-before-y', randomRangeAndSign( 1, 3 ) +'px' )
-		
-		tileEl.style.setProperty( '--Q-after-rotation', randomRangeAndSign( 2, 12 ) +'deg' )
-		tileEl.style.setProperty( '--Q-after-x', randomRangeAndSign( 1, 3 ) +'px' )
-		tileEl.style.setProperty( '--Q-after-y', randomRangeAndSign( 1, 3 ) +'px' )
-	})
-
-	if( typeof targetEl === 'string' ) targetEl = document.getElementById( targetEl )	
-	if( targetEl instanceof HTMLElement ) targetEl.appendChild( paletteEl )
-	return paletteEl
-}
-
-
-
-
-
-
-    //////////////////////////
-   //                      //
-  //   Create interface   //
- //                      //
-//////////////////////////
-
-
-Q.Circuit.Editor.createInterface = function( circuit, targetEl ){
-
-	/*
-
-	+++++
-	This needs more carefully thought out.
-	Should check to see if the DOM ID already exists, 
-	and not overwrite it if it does.
-
-	Same for the JS reference.
-	And is it bad to give two options to access the circuit?
-	is it better to tie it to the DOM object??
-	(even though multiple DOM objects can exist for one circuit?)
-
-	*/
-
-	const
-	name = typeof circuit.name === 'string' ? circuit.name : 'circuit-'+ circuit.index,
-	domId = name.replace( /^[^a-z]+|[^\w:.-]+/gi, '' ),
-	jsReference = 'qjs_'+ name.replace( /^[^a-z]+|[^\w$]+/gi, '' )//  ++++ Seems like a bad idea.
-
-
-	//  +++++ Seems like a bad idea:
-	// console.log( 'jsReference', jsReference )
-	// window[ jsReference ] = circuit
-
-
-	const circuitEl = document.createElement( 'div' )
-	circuitEl.classList.add( 'Q-circuit' )
-	circuitEl.setAttribute( 'id', domId )
-	circuitEl.setAttribute( 'js', jsReference )
-	circuitEl.circuit = circuit
-
-
-	//  How can we interact with this circuit
-	//  through code? (How cool is this?!)
-
-	const referenceEl = document.createElement( 'p' )
-	circuitEl.appendChild( referenceEl )
-	referenceEl.innerHTML = `
-		This circuit is accessible via your 
-		<a href="index.html#Open_your_JavaScript_console" target="_blank">JavaScript console</a>
-		as <code>$('#${ domId }').circuit</code>`
-
-
-	//  Toolbar.
-
-	const toolbarEl = document.createElement( 'div' )
-	circuitEl.appendChild( toolbarEl )
-	toolbarEl.classList.add( 'Q-circuit-toolbar' )
-
-	const modeButton = document.createElement( 'div' )
-	toolbarEl.appendChild( modeButton )
-	modeButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-select-toggle' )
-	modeButton.setAttribute( 'title', 'Selection mode' )
-	modeButton.innerText = 'S'
-
-	const undoButton = document.createElement( 'div' )
-	toolbarEl.appendChild( undoButton )
-	undoButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-undo' )
-	undoButton.setAttribute( 'title', 'Undo' )
-	undoButton.innerHTML = '&larr;'
-
-	const redoButton = document.createElement( 'div' )
-	toolbarEl.appendChild( redoButton )
-	redoButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-redo' )
-	redoButton.setAttribute( 'title', 'Redo' )
-	redoButton.innerHTML = '&rarr;'
-
-
-	//  Create a circuit board container
-	//  so we can house a scrollable circuit board.
-
-	const boardContainerEl = document.createElement( 'div' )
-	circuitEl.appendChild( boardContainerEl )
-	boardContainerEl.classList.add( 'Q-circuit-board-container' )
-
-	const boardEl = document.createElement( 'div' )
-	boardContainerEl.appendChild( boardEl )
-	boardEl.classList.add( 'Q-circuit-board' )
-
-	const backgroundEl = document.createElement( 'div' )
-	boardEl.appendChild( backgroundEl )
-	backgroundEl.classList.add( 'Q-circuit-board-background' )
-
-
-	//  Create background highlight bars 
-	//  for each row.
-
-	for( let i = 0; i < circuit.bandwidth; i ++ ){
-
-		const rowEl = document.createElement( 'div' )
-		backgroundEl.appendChild( rowEl )
-		rowEl.style.position = 'relative'
-		rowEl.style.gridRowStart = i + 2
-		rowEl.style.gridColumnStart = 1
-		rowEl.style.gridColumnEnd = Q.Circuit.Editor.momentIndexToGridColumn( circuit.timewidth ) + 1
-		rowEl.setAttribute( 'register-index', i + 1 )
-
-		const wireEl = document.createElement( 'div' )
-		rowEl.appendChild( wireEl )
-		wireEl.classList.add( 'Q-circuit-register-wire' )
-	}
-
-
-	//  Create background highlight bars 
-	//  for each column.
-
-	for( let i = 0; i < circuit.timewidth; i ++ ){
-
-		const columnEl = document.createElement( 'div' )
-		backgroundEl.appendChild( columnEl )
-		columnEl.style.gridRowStart = 2
-		columnEl.style.gridRowEnd = Q.Circuit.Editor.registerIndexToGridRow( circuit.bandwidth ) + 1
-		columnEl.style.gridColumnStart = i + 3
-		columnEl.setAttribute( 'moment-index', i + 1 )
-	}
-
-
-	//  Create the circuit board foreground
-	//  for all interactive elements.
-
-	const foregroundEl = document.createElement( 'div' )
-	boardEl.appendChild( foregroundEl )
-	foregroundEl.classList.add( 'Q-circuit-board-foreground' )
-
-
-	//  Add a toggle switch for locking the circuit.
-
-	const lockToggle = document.createElement( 'div' )
-	foregroundEl.appendChild( lockToggle )
-	lockToggle.classList.add( 'Q-circuit-header', 'Q-circuit-toggle', 'Q-circuit-toggle-lock' )
-	lockToggle.setAttribute( 'title', 'Lock / unlock' )
-	lockToggle.innerText = '🔒'
-
-
-	//  Add “Select All” toggle button to upper-left corner.
-
-	const selectallEl = document.createElement( 'div' )
-	foregroundEl.appendChild( selectallEl )
-	selectallEl.classList.add( 'Q-circuit-header', 'Q-circuit-selectall' )	
-	selectallEl.setAttribute( 'title', 'Select all' )
-	selectallEl.setAttribute( 'moment-index', '0' )
-	selectallEl.setAttribute( 'register-index', '0' )
-	selectallEl.innerHTML = '&searr;'
-
-
-	//  Add register index labels to left-hand column.
-	
-	for( let i = 0; i < circuit.bandwidth; i ++ ){
+		if( typeof targetEl === 'string' ) targetEl = document.getElementById( targetEl )	
 
 		const 
-		registerIndex = i + 1,
-		registerLabelEl = document.createElement( 'div' )
-		
-		foregroundEl.appendChild( registerLabelEl )
-		registerLabelEl.classList.add( 'Q-circuit-header', 'Q-circuit-register-label' )
-		registerLabelEl.setAttribute( 'title', 'Register '+ registerIndex )
-		registerLabelEl.setAttribute( 'register-index', registerIndex )
-		registerLabelEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
-		registerLabelEl.innerText = registerIndex
-	}
+		paletteEl = targetEl instanceof HTMLElement ? targetEl : document.createElement( 'div' ),
+		randomRangeAndSign = function(  min, max ){
 
+			const r = min + Math.random() * ( max - min )
+			return Math.floor( Math.random() * 2 ) ? r : -r
+		}
 
-	//  Add “Add register” button.
-	
-	const addRegisterEl = document.createElement( 'div' )
-	foregroundEl.appendChild( addRegisterEl )
-	addRegisterEl.classList.add( 'Q-circuit-header', 'Q-circuit-register-add' )
-	addRegisterEl.setAttribute( 'title', 'Add register' )
-	addRegisterEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( circuit.bandwidth + 1 )
-	addRegisterEl.innerText = '+'
+		paletteEl.classList.add( 'Q-circuit-palette' )
 
+		'HXYZS'
+		.split( '' )
+		.forEach( function( label ){
 
-	//  Add moment index labels to top row.
-
-	for( let i = 0; i < circuit.timewidth; i ++ ){
-
-		const 
-		momentIndex = i + 1,
-		momentLabelEl = document.createElement( 'div' )
-
-		foregroundEl.appendChild( momentLabelEl )
-		momentLabelEl.classList.add( 'Q-circuit-header', 'Q-circuit-moment-label' )
-		momentLabelEl.setAttribute( 'title', 'Moment '+ momentIndex )
-		momentLabelEl.setAttribute( 'moment-index', momentIndex )
-		momentLabelEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( momentIndex )
-		momentLabelEl.innerText = momentIndex
-	}
-
-
-	//  Add “Add moment” button.
-	
-	const addMomentEl = document.createElement( 'div' )
-	foregroundEl.appendChild( addMomentEl )
-	addMomentEl.classList.add( 'Q-circuit-header', 'Q-circuit-moment-add' )
-	addMomentEl.setAttribute( 'title', 'Add moment' )
-	addMomentEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( circuit.timewidth + 1 )
-	addMomentEl.innerText = '+'
-
-
-	//  Add input values.
-
-	circuit.qubits.forEach( function( qubit, i ){
-
-		const 
-		rowIndex = i + 1,
-		inputEl = document.createElement( 'div' )
-		
-		inputEl.classList.add( 'Q-circuit-header', 'Q-circuit-input' )
-		inputEl.setAttribute( 'title', `Qubit #${ rowIndex } starting value` )
-		inputEl.setAttribute( 'register-index', rowIndex )
-		inputEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( rowIndex )
-		inputEl.innerText = qubit.beta.toText()
-		foregroundEl.appendChild( inputEl )
-	})
-
-
-	//  Add operations.
-
-	circuit.operations.forEach( function( operation ){
-
-		operation.registerIndices.forEach( function( registerIndex, i ){
+			const gate = Q.Gate.findByLabel( label )
 
 			const operationEl = document.createElement( 'div' )
-			foregroundEl.appendChild( operationEl )
-			operationEl.classList.add( 'Q-circuit-operation', 'Q-circuit-operation-'+ operation.gate.css )
-			operationEl.setAttribute( 'gate-label', operation.gate.label )
-			operationEl.setAttribute( 'moment-index', operation.momentIndex )
-			operationEl.setAttribute( 'register-index', registerIndex )
-			operationEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( operation.momentIndex )
-			operationEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
+			paletteEl.appendChild( operationEl )
+			operationEl.classList.add( 'Q-circuit-operation' )
+			operationEl.classList.add( 'Q-circuit-operation-'+ gate.css )
+			operationEl.setAttribute( 'gate-label', label )
 
 			const tileEl = document.createElement( 'div' )
 			operationEl.appendChild( tileEl )
 			tileEl.classList.add( 'Q-circuit-operation-tile' )
-			tileEl.setAttribute( 'title', operation.gate.name )
-			tileEl.innerText = operation.gate.label
+			tileEl.innerText = label
 
+			;[ 'before', 'after' ].forEach( function( layer ){
 
+				tileEl.style.setProperty( '--Q-'+ layer +'-rotation', randomRangeAndSign( 2, 8 ) +'deg' )
+				tileEl.style.setProperty( '--Q-'+ layer +'-x', randomRangeAndSign( 1, 3 ) +'px' )
+				tileEl.style.setProperty( '--Q-'+ layer +'-y', randomRangeAndSign( 1, 3 ) +'px' )
+			})
+		})
 
-/*
-++++++++++++++++++++++++++++++
-
-
-
-add control wires!!!!!
-
-line 467 in old version
-
-
-
-*/
-
-
-
-			if( operation.registerIndices.length > 1 ){
-
-				operation.registerIndices.forEach( function( registerIndex, i ){
-
-					if( i < operation.registerIndices.length - 1 ){			
-
-						const 
-						siblingRegisterIndex = operation.registerIndices[ i + 1 ],
-						registerDelta = Math.abs( siblingRegisterIndex - registerIndex ),
-						connectorType = registerDelta === 1 ? 'straight' : 'curved',
-						start = Math.min( registerIndex, siblingRegisterIndex ),
-						end   = Math.max( registerIndex, siblingRegisterIndex ),
-						containerEl = document.createElement( 'div' ),
-						linkEl = document.createElement( 'div' )
-
-						backgroundEl.appendChild( containerEl )							
-						containerEl.setAttribute( 'moment-index', operation.momentIndex )
-						containerEl.setAttribute( 'register-index', operation.registerIndex )
-						containerEl.classList.add( 'Q-circuit-operation-link-container' )
-						//connectionEl.setAttribute( 'register-indices', operation.registerIndices )
-						containerEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( start )
-						containerEl.style.gridRowEnd   = Q.Circuit.Editor.registerIndexToGridRow( end )
-						containerEl.style.gridColumn   = Q.Circuit.Editor.momentIndexToGridColumn( operation.momentIndex )
-
-						containerEl.appendChild( linkEl )
-						linkEl.classList.add( 'Q-circuit-operation-link' )
-					}
-				})
+		paletteEl.addEventListener( 'mousedown',  Q.Circuit.Editor.onPointerPress )
+		paletteEl.addEventListener( 'touchstart', Q.Circuit.Editor.onPointerPress )
+		return paletteEl
+	}
+})
 
 
 
 
 
 
+    /////////////////////////
+   //                     //
+  //   Operation CLEAR   //
+ //                     //
+/////////////////////////
 
 
-				if( i === 0 ){
+Q.Circuit.Editor.prototype.onExternalClear = function( event ){
 
-					operationEl.classList.add( 'Q-circuit-operation-control' )
-					tileEl.setAttribute( 'title', 'Control' )
-					tileEl.innerText = ''
-				}
-				else operationEl.classList.add( 'Q-circuit-operation-target' )
+	if( event.detail.circuit === this.circuit ){
 
-			}
+		Q.Circuit.Editor.clear( this.domElement, {
+
+			momentIndex: event.detail.momentIndex,
+			registerIndices: event.detail.registerIndices
+		})
+	}
+}
+Q.Circuit.Editor.clear = function( circuitEl, operation ){
+
+	const momentIndex = operation.momentIndex
+	operation.registerIndices.forEach( function( registerIndex ){
+
+		Array
+		.from( circuitEl.querySelectorAll(
+
+			`[moment-index="${ momentIndex }"]`+
+			`[register-index="${ registerIndex }"]`
+		
+		))
+		.forEach( function( op ){
+
+			op.parentNode.removeChild( op )
 		})
 	})
+}
 
 
-	//  Put a note in the JavaScript console
-	//  that includes how to reference the circuit via code
-	//  and an ASCII diagram for reference.
-
-	console.log( 
-
-		`\n\nCreated a DOM interface for $('#${ domId }').circuit\n\n`,
-		 circuit.toDiagram(),
-		'\n\n\n'
-	)
 
 
-	//  If we’ve been passed a target DOM element
-	//  we should add a circuit reference to it
-	//  and append our circuit element to it.
 
-	if( typeof targetEl === 'string' ) targetEl = document.getElementById( targetEl )	
-	if( targetEl instanceof HTMLElement ){
 
-		targetEl.circuit = circuit
-		targetEl.appendChild( circuitEl )
+    ///////////////////////
+   //                   //
+  //   Operation SET   //
+ //                   //
+///////////////////////
+
+
+Q.Circuit.Editor.prototype.onExternalSet = function( event ){
+
+	if( event.detail.circuit === this.circuit ){
+
+		Q.Circuit.Editor.set( this.domElement, {
+
+			gate: event.detail.gate,
+			momentIndex: event.detail.momentIndex,
+			registerIndices: event.detail.registerIndices
+		})
 	}
-	return circuitEl
 }
-Q.Circuit.toDom = Q.Circuit.Editor.createInterface
-Q.Circuit.prototype.toDom = function( targetEl ){
+Q.Circuit.Editor.set = function( circuitEl, operation ){
 
-	return Q.Circuit.Editor.createInterface( this, targetEl )
+	const 
+	backgroundEl = circuitEl.querySelector( '.Q-circuit-board-background' ),
+	foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' )
+
+	operation.registerIndices.forEach( function( registerIndex, i ){
+
+		const operationEl = document.createElement( 'div' )
+		foregroundEl.appendChild( operationEl )
+		operationEl.classList.add( 'Q-circuit-operation', 'Q-circuit-operation-'+ operation.gate.css )
+		operationEl.setAttribute( 'gate-label', operation.gate.label )
+		operationEl.setAttribute( 'moment-index', operation.momentIndex )
+		operationEl.setAttribute( 'register-index', registerIndex )
+		operationEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( operation.momentIndex )
+		operationEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
+
+		const tileEl = document.createElement( 'div' )
+		operationEl.appendChild( tileEl )
+		tileEl.classList.add( 'Q-circuit-operation-tile' )
+		tileEl.setAttribute( 'title', operation.gate.name )
+		tileEl.innerText = operation.gate.label
+
+
+		//  Add operation link wires
+		//  for multi-qubit operations.
+
+		if( operation.registerIndices.length > 1 ){
+
+			operation.registerIndices.forEach( function( registerIndex, i ){
+
+				if( i < operation.registerIndices.length - 1 ){			
+
+					const 
+					siblingRegisterIndex = operation.registerIndices[ i + 1 ],
+					registerDelta = Math.abs( siblingRegisterIndex - registerIndex ),
+					start = Math.min( registerIndex, siblingRegisterIndex ),
+					end   = Math.max( registerIndex, siblingRegisterIndex ),
+					containerEl = document.createElement( 'div' ),
+					linkEl = document.createElement( 'div' )
+
+					backgroundEl.appendChild( containerEl )							
+					containerEl.setAttribute( 'moment-index', operation.momentIndex )
+					containerEl.setAttribute( 'register-index', registerIndex )
+					containerEl.classList.add( 'Q-circuit-operation-link-container' )
+					containerEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( start )
+					containerEl.style.gridRowEnd   = Q.Circuit.Editor.registerIndexToGridRow( end + 1 )
+					containerEl.style.gridColumn   = Q.Circuit.Editor.momentIndexToGridColumn( operation.momentIndex )
+
+					containerEl.appendChild( linkEl )
+					linkEl.classList.add( 'Q-circuit-operation-link' )
+					if( registerDelta > 1 ) linkEl.classList.add( 'Q-circuit-operation-link-curved' )
+				}
+			})
+			if( i === 0 ){
+
+				operationEl.classList.add( 'Q-circuit-operation-control' )
+				tileEl.setAttribute( 'title', 'Control' )
+				tileEl.innerText = ''
+			}
+			else operationEl.classList.add( 'Q-circuit-operation-target' )
+		}
+	})
 }
 
 
@@ -457,14 +514,14 @@ Q.Circuit.prototype.toDom = function( targetEl ){
 
 
 
-    //////////////
-   //          //
-  //   Move   //
- //          //
-//////////////
+    //////////////////////
+   //                  //
+  //   Pointer MOVE   //
+ //                  //
+//////////////////////
 
 
-Q.Circuit.Editor.onMove = function( event ){
+Q.Circuit.Editor.onPointerMove = function( event ){
 
 
 	//  We need our cursor coordinates straight away.
@@ -511,6 +568,14 @@ Q.Circuit.Editor.onMove = function( event ){
 	//  so let’s bail now.
 
 	if( !boardContainerEl ) return
+
+
+	//  Now we know we have a circuit board
+	//  so we must have a circuit
+	//  and if that’s locked then highlighting changes allowed!
+
+	const circuitEl = boardContainerEl.closest( '.Q-circuit' )
+	if( circuitEl.classList.contains( 'Q-circuit-locked' )) return
 
 
 	//  Ok, we’ve found a circuit board.
@@ -590,7 +655,6 @@ Q.Circuit.Editor.onMove = function( event ){
 	//  from the cursor position.
 
 	const
-	circuitEl     = boardContainerEl.closest( '.Q-circuit' ),
 	boardElBounds = boardContainerEl.getBoundingClientRect(),
 	xLocal        = x - boardElBounds.left + boardContainerEl.scrollLeft + 1,
 	yLocal        = y - boardElBounds.top  + boardContainerEl.scrollTop + 1,
@@ -633,14 +697,14 @@ Q.Circuit.Editor.onMove = function( event ){
 
 
 
-    //////////////
-   //          //
-  //   Exit   //
- //          //
-//////////////
+    //////////////////////
+   //                  //
+  //   Pointer EXIT   //
+ //                  //
+//////////////////////
 
 
-Q.Circuit.Editor.onExit = function( event ){
+Q.Circuit.Editor.onPointerExit = function( event ){
 
 	const circuitEl = event.target.closest( '.Q-circuit' )
 	Array.from( circuitEl.querySelectorAll( '.Q-circuit-board-background > div, .Q-circuit-board-foreground > div' ))
@@ -655,14 +719,14 @@ Q.Circuit.Editor.onExit = function( event ){
 
 
 
-    ///////////////
-   //           //
-  //   Press   //
- //           //
-///////////////
+    ///////////////////////
+   //                   //
+  //   Pointer PRESS   //
+ //                   //
+///////////////////////
 
 
-Q.Circuit.Editor.onPress = function( event ){
+Q.Circuit.Editor.onPointerPress = function( event ){
 
 
 	//  This is just a safety net
@@ -709,13 +773,22 @@ Q.Circuit.Editor.onPress = function( event ){
 
 		//  Shall we toggle the circuit lock?
 
-		let circuitIsLocked = circuitEl.classList.contains( 'Q-circuit-locked' )
-		const lockEl = targetEl.closest( '.Q-circuit-toggle-lock' )
-		if( lockEl ){//  If this event was fired on the lock toggle button...
+		const
+		circuitIsLocked = circuitEl.classList.contains( 'Q-circuit-locked' ),
+		lockEl = targetEl.closest( '.Q-circuit-toggle-lock' )
+		
+		if( lockEl ){
 
-			console.log( '→ Lock toggle' )
-			if( circuitIsLocked ) circuitEl.classList.remove( 'Q-circuit-locked' )
-			else circuitEl.classList.add( 'Q-circuit-locked' )
+			if( circuitIsLocked ){
+
+				circuitEl.classList.remove( 'Q-circuit-locked' )
+				lockEl.innerText = '🔓'
+			}
+			else {
+
+				circuitEl.classList.add( 'Q-circuit-locked' )
+				lockEl.innerText = '🔒'
+			}
 
 
 			//  We’ve toggled the circuit lock button
@@ -736,7 +809,7 @@ Q.Circuit.Editor.onPress = function( event ){
 		
 		if( circuitIsLocked ) {
 
-			console.log( 'circuit is LOCKED!' )
+			Q.log( 0.5, `User attempted to interact with a circuit editor but it was locked.` )
 			return
 		}
 
@@ -898,23 +971,15 @@ Q.Circuit.Editor.onPress = function( event ){
 		if( !operationEl ) return
 
 
-		//  Similarly, 
-		//  if you’re just here deselecting an operation
-		//  then deselect it and GO HOME.
-		//  +++++++++++
-		//  We need to DELAY this toggle-off until after 
-		//  a possible drag has occurred!
+		//  Ok now we know we are dealing with an operation.
+		//  This preserved selection state information
+		//  will be useful for when onPointerRelease is fired.
 
 		if( operationEl.classList.contains( 'Q-circuit-cell-selected' )){
 
 			operationEl.wasSelected = true
-			//operationEl.classList.remove( 'Q-circuit-cell-selected' )
-			//return
 		}
-		else {
-
-			operationEl.wasSelected = false
-		}
+		else operationEl.wasSelected = false
 
 
 		//  And now we can proceed knowing that 
@@ -1037,7 +1102,7 @@ Q.Circuit.Editor.onPress = function( event ){
 	
 	document.body.appendChild( dragEl )
 	Q.Circuit.Editor.dragEl = dragEl
-	Q.Circuit.Editor.onMove( event )
+	Q.Circuit.Editor.onPointerMove( event )
 }
 
 
@@ -1045,14 +1110,14 @@ Q.Circuit.Editor.onPress = function( event ){
 
 
 
-    /////////////////
-   //             //
-  //   Release   //
- //             //
-/////////////////
+    /////////////////////////
+   //                     //
+  //   Pointer RELEASE   //
+ //                     //
+/////////////////////////
 
 
-Q.Circuit.Editor.onRelease = function( event ){
+Q.Circuit.Editor.onPointerRelease = function( event ){
 
 
 	//  If there’s no dragEl then bail immediately.
@@ -1110,6 +1175,30 @@ Q.Circuit.Editor.onRelease = function( event ){
 
 	if( !boardContainerEl ){
 	
+		if( Q.Circuit.Editor.dragEl.circuitEl ){
+
+			const originCircuit = Q.Circuit.Editor.dragEl.circuitEl.circuit
+			
+			Array
+			.from( Q.Circuit.Editor.dragEl.children )
+			.forEach( function( child ){
+
+				originCircuit.clearThisInput$(
+
+					child.origin.momentIndex,			
+					child.origin.registerIndex
+				)
+			})
+			window.dispatchEvent( new CustomEvent( 
+
+				'qjs gui altered circuit', 
+				{ detail: { circuit: originCircuit }}
+			))
+			// originCircuit.evaluate$()
+			//  ++++++++++++
+			//  need to trigger a new eval?
+			// console.log( originCircuit.report$() )
+		}
 
 		//+++++++++
 		//  We should do a puff of smoke animation here
@@ -1181,12 +1270,37 @@ Q.Circuit.Editor.onRelease = function( event ){
 	
 
 	//  Finally! Work is about to be done!
-	//  Let’s place these dragged operations
-	//  where they need to go on the circuit board.
+	//  All we need to do is tell the circuit itself
+	//  where we need to place these dragged items.
+	//  It will do all the validation for us
+	//  and then fire events that will place new elements
+	//  where they need to go!
 
-	Array
-	.from( Q.Circuit.Editor.dragEl.children )
-	.forEach( function( child ){
+	const draggedOperations = Array.from( Q.Circuit.Editor.dragEl.children )
+
+
+	//  Whether we’ve ripped operations from THIS circuit
+	//  or from another circuit
+	//  we had better send “clear” commands for those positions
+	//  BEFORE we try “setting” anything new down!
+
+	if( Q.Circuit.Editor.dragEl.circuitEl ){
+
+		const originCircuit = Q.Circuit.Editor.dragEl.circuitEl.circuit
+		draggedOperations.forEach( function( child ){
+
+			originCircuit.clearThisInput$(
+
+				child.origin.momentIndex,			
+				child.origin.registerIndex
+			)
+		})
+	}
+
+
+	//  Now we can safely send new operations to circuit.set().
+
+	draggedOperations.forEach( function( child ){
 
 		let
 		momentIndexTarget   = momentIndex, 
@@ -1197,121 +1311,26 @@ Q.Circuit.Editor.onRelease = function( event ){
 			momentIndexTarget   += child.origin.momentIndex   - Q.Circuit.Editor.dragEl.momentIndex
 			registerIndexTarget += child.origin.registerIndex - Q.Circuit.Editor.dragEl.registerIndex
 		}
+		circuit.set$( 
 
-
-		//  We can only add operations to valid drop targets.
-
-		if( 
-			momentIndexTarget   > 0 &&
-			momentIndexTarget   < circuit.timewidth + 1 &&
-			registerIndexTarget > 0 &&
-			registerIndexTarget < circuit.bandwidth + 1
-		){
-
-
-			//  If there’s already an operation at this drop target
-			//  we need to remove it.
-			//  Why an Array? Paranoia!
-
-			Array
-			.from( foregroundEl.querySelectorAll( `div[moment-index="${ momentIndexTarget }"][register-index="${ registerIndexTarget }"]` ))
-			.forEach( function( child ){
-
-				child.parentNode.removeChild( child )
-			})
-
-
-			//  Ok. We are good to place this operation here.
-
-			const
-			columnIndexTarget = Q.Circuit.Editor.momentIndexToGridColumn( momentIndexTarget )
-			rowIndexTarget    = Q.Circuit.Editor.registerIndexToGridRow( registerIndexTarget )
-			
-			child.setAttribute( 'moment-index', momentIndexTarget )
-			child.setAttribute( 'register-index', registerIndexTarget )
-			child.style.gridColumn = columnIndexTarget
-			child.style.gridRow = rowIndexTarget
-			foregroundEl.appendChild( child )
-		}
+			momentIndexTarget,
+			child.getAttribute( 'gate-label' ), 
+			[ registerIndexTarget ]
+		)
 	})
+	
 
 
+	//  +++++++++++++++++++++++++++++++++++++
+	// console.log( circuit.toDiagram() )
+	// console.log( circuit.report$() )
+	//  +++++++++++++++++++++++++++++++++++++
+	// circuit.evaluate$()
+	window.dispatchEvent( new CustomEvent( 
 
-
-
-
-	//  +++
-	//  TRIGGER CIRCUIT EVAL HERE!!!
-	//  Make this in to a function like
-	//  Q.Circuit.Editor.compile( circuitEl )
-	//  so can also use it below
-	//  or call it from the javascript console.
-	//  ++++++++++
-
-	console.log( 'OK! - trigger an eval on this circuit.' )
-
-	const operations = Array
-	.from( foregroundEl.querySelectorAll( '.Q-circuit-operation' ))
-	// .forEach( function( child, i ){
-
-	// 	console.log(
-
-	// 		i + 1,
-	// 		child.getAttribute( 'gate-label' ),
-	// 		+child.getAttribute( 'moment-index' ),
-	// 		+child.getAttribute( 'register-index' )
-	// 	)
-	// })	
-	.reduce( function( ops, child ){
-
-		ops.push({
-
-			gate: Q.Gate.findByLabel( child.getAttribute( 'gate-label' )),
-			momentIndex: +child.getAttribute( 'moment-index' ),
-			registerIndices: [ +child.getAttribute( 'register-index' )],
-			operationMomentId: undefined
-		})
-		return ops
-
-	}, [])
-
-/*
-
-already here i have a problem:
-cannot just replac the operations array
-beecause of multi-register ops!
-need to solve that shit here and now.
-
-
-
-*/
-
-// console.log( 'circuit BEFORE', circuit )
-// console.log( 'operations NOW', operations )
-
-// circuit.operations = operations
-
-// console.log( 'circuit AFTER', circuit.toDiagram() )
-
-
-
-/*
-
-
-how are we storing multi-qubit operations????
-
-
-create a new Circuit
-and then do Q.Circuit.resolve$( originalCircuit, updatedCircuit )???
-
-
-*/
-
-
-	//  have to compare this to the actual circuit.operations Array!!!!!
-
-
-
+		'qjs gui altered circuit', 
+		{ detail: { circuit }}
+	))
 
 
 
@@ -1322,12 +1341,23 @@ and then do Q.Circuit.resolve$( originalCircuit, updatedCircuit )???
 	//  are not the same thing
 	//  then we need to also eval the original circuit.
 
-	if( Q.Circuit.Editor.dragEl.circuitEl !== circuitEl ){
+	if( Q.Circuit.Editor.dragEl.circuitEl &&
+		Q.Circuit.Editor.dragEl.circuitEl !== circuitEl ){
 
-		//  +++
-		//  TRIGGER CIRCUIT EVAL HERE!!!
-		console.log( 'ALSO - trigger an eval on the original circuit.' )
-		//  Q.Circuit.Editor.compile( Q.Circuit.Editor.dragEl.circuitEl )
+		const originCircuit = Q.Circuit.Editor.dragEl.circuitEl.circuit
+
+		//  ++++++++++++++++++++++++++++++++++++++++++
+		// console.log( 'ALSO - trigger an eval on the original circuit.' )
+		// console.log( originCircuit.toDiagram() )
+		// console.log( originCircuit.report$() )
+		//  ++++++++++++++++++++++++++++++++++++++++++
+		// originCircuit.evaluate$()
+
+		window.dispatchEvent( new CustomEvent( 
+
+			'qjs gui altered circuit', 
+			{ detail: { circuit: originCircuit }}
+		))
 	}
 
 
@@ -1355,35 +1385,16 @@ and then do Q.Circuit.resolve$( originalCircuit, updatedCircuit )???
 window.addEventListener( 'DOMContentLoaded', function( event ){
 
 
-	//  Add “on press” listeners to circuits
-	//  and to circuit palettes.
-
-	Array.from( document.querySelectorAll( '.Q-circuit, .Q-circuit-palette' ))
-	.forEach( function( el ){
-
-		el.addEventListener( 'mousedown',  Q.Circuit.Editor.onPress )
-		el.addEventListener( 'touchstart', Q.Circuit.Editor.onPress )
-	})
-
-	
-	//  Add an “on pointer exit” listener to circuit boards
-	//  to un-highlight everything.
-	
-	Array.from( document.querySelectorAll( '.Q-circuit-board-container' ))
-	.forEach( function( el ){
-
-		el.addEventListener( 'mouseleave',  Q.Circuit.Editor.onExit )
-	})
-
-
-	//  Meanwhile these remaining listeners must be applied
+	//  These listeners must be applied
 	//  to the entire WINDOW (and not just document.body!)
 
-	window.addEventListener( 'mousemove',  Q.Circuit.Editor.onMove )
-	window.addEventListener( 'touchmove',  Q.Circuit.Editor.onMove )
-	window.addEventListener( 'mouseup',    Q.Circuit.Editor.onRelease )
-	window.addEventListener( 'touchend',   Q.Circuit.Editor.onRelease )
+	window.addEventListener( 'mousemove',  Q.Circuit.Editor.onPointerMove )
+	window.addEventListener( 'touchmove',  Q.Circuit.Editor.onPointerMove )
+	window.addEventListener( 'mouseup',    Q.Circuit.Editor.onPointerRelease )
+	window.addEventListener( 'touchend',   Q.Circuit.Editor.onPointerRelease )
 })
+
+
 
 
 

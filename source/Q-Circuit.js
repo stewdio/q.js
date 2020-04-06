@@ -752,10 +752,10 @@ Object.assign( Q.Circuit.prototype, {
 					siblingExistsBelow: Math.max( ...operation.registerIndices ) > registerIndex
 				}
 			})
-			if( operationIndex === operations.length - 1 ){
+			//if( operationIndex === operations.length - 1 ){
 				
 				table[ momentIndex - 1 ].operationsThisMoment = operationsThisMoment
-			}
+			//}
 		})
 
 
@@ -1220,6 +1220,7 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 		//  Is this a valid gate?
 
+		if( typeof gate === 'string' ) gate = Q.Gate.findByLabel( gate )
 		if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} that is not a gate:`, gate )
 
 

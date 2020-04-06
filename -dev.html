@@ -89,9 +89,9 @@ I-I-I---I-I</textarea>
 
 
 
-<div id="palette-1"></div>
+<!-- <div id="palette-1"></div>
 <div id="tester"></div>
-<div id="tester2"></div>
+<div id="tester2"></div> -->
 
 
 
@@ -101,8 +101,8 @@ I-I-I---I-I</textarea>
 
 
 
-
-			<!-- <div id="playground-dom"></div> -->
+			<div class='Q-circuit-palette'></div>
+			<div id="playground"></div>
 
 
 			<h4>Result probabilities</h4>
@@ -203,69 +203,20 @@ H  X.1#1  Y    Z    S</code></pre>
 
 
 
-
-
-const tester = Q`
-	H X#0 I I I I I
-	I X#1 S I I I M
-	Y Z   I S I I I
-	I I   X Y Z S H`
-tester.name = 'tester'
-
-const testerDom = tester.toDom( 'tester' )
-
-// console.log( testerDom )
-//document.getElementById( 'tester' ).appendChild( testerDom )
-
-
-
-
-
-
-Q`
-
-	H X.0#0 Y Z S
-	H X.1#0 Y Z S
-	H X.0#1 Y Z S
-	H X.1#1 Y Z S
-
-`//.set( 'name', 'tester2' )// +++++++++ add this shit in!
- //.setName( 'tester2' )
-.toDom( 'tester2' )
-
-//.download( 'csv' )
-//.downloadCsv()
-//.downloadTsv()
-
-
-Q.Circuit.Editor.createPalette( 'palette-1' )
-
-
-
-/*
-
-
-
-//  This is purely to make exploring from 
-//  the JavaScript console possible.
-//  It is not necessary at all for everything
-//  else on this page to function.
-
-let playground
-
-
-
-
 //  Let’s place circuit palettes
-//  inside anything with the class '.qjs-circuit-palette'.
+//  inside anything with the class 'Q-circuit-palette'.
 
-Array.from( document.querySelectorAll( '.qjs-circuit-palette' )).forEach( function( el ){
+Array
+.from( document.querySelectorAll( '.Q-circuit-palette' ))
+.forEach( function( el ){
 
-	Q.Circuit.createDomPalette( el )
+	Q.Circuit.Editor.createPalette( el )
 })
 
 
 
+
+//  Hook up our input text field and “Apply” button.
 
 function applyButtonActivated(){
 
@@ -304,21 +255,20 @@ function updatePlaygroundFromText(){
 		document.getElementById( 'playground-apply-button' ).setAttribute( 'disabled', 'disabled' )
 	
 		const circuit = Q( text )
-		if( circuit instanceof Q.Circuit ){
+		if( circuit instanceof Q.Circuit ){//+++++  This validation appears broken!
 
 			circuit.name = 'playground'
-			playground = circuit
-			const domEl = document.getElementById( circuit.name +'-dom' )
+			const domEl = document.getElementById( 'playground' )
 			if( domEl ){
 
-				while( domEl.lastChild) {
+				while( domEl.lastChild ){
 					
 					domEl.removeChild( domEl.lastChild )
 				}
 				circuit.sort$()//  Is this still necessary??
-				circuit.toDom( domEl )
+				circuit.toDom( domEl )				
 			}
-			updateCircuitParts( circuit )
+			circuit.evaluate$()
 		}
 		else {
 
@@ -339,7 +289,8 @@ function updatePlaygroundFromDom( circuit ){
 
 		const text = circuit.toText().substr( 1 )
 		inputEl.value = text
-		updateCircuitParts( circuit )
+		circuit.evaluate$()
+		// updateCircuitParts( circuit )
 		playgroundInputText = text
 	}
 }
@@ -371,8 +322,6 @@ function updateCircuitParts( circuit ){
 
 window.addEventListener( 'DOMContentLoaded', function(){
 
-	// updateEverything( bell )
-	// updateEverything( whiplash )
 	updatePlaygroundFromText()
 	setInterval( hasTextInputUpdated, 100 )
 })
@@ -435,14 +384,15 @@ window.addEventListener( 'qjs evaluate completed', function( event ){
 	circuit  = event.detail.circuit,
 	reportEl = document.getElementById( circuit.name +'-report' )
 
-	if( reportEl ) reportEl.innerText = circuit.report$()
+	//if( reportEl ) reportEl.innerText = circuit.report$()
+	updateCircuitParts( circuit )
 })
 window.addEventListener( 'qjs gui altered circuit', function( event ){
 
 	updatePlaygroundFromDom( event.detail.circuit )
 })
 
-*/
+
 
 
 
