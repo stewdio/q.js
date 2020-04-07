@@ -56,11 +56,11 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	circuitEl.appendChild( toolbarEl )
 	toolbarEl.classList.add( 'Q-circuit-toolbar' )
 
-	const modeButton = createDiv()
-	toolbarEl.appendChild( modeButton )
-	modeButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-select-toggle' )
-	modeButton.setAttribute( 'title', 'Selection mode' )
-	modeButton.innerText = 'S'
+	// const modeButton = createDiv()
+	// toolbarEl.appendChild( modeButton )
+	// modeButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-select-toggle' )
+	// modeButton.setAttribute( 'title', 'Selection mode' )
+	// modeButton.innerText = 'S'
 
 	const undoButton = createDiv()
 	toolbarEl.appendChild( undoButton )
@@ -81,7 +81,11 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	const boardContainerEl = createDiv()
 	circuitEl.appendChild( boardContainerEl )
 	boardContainerEl.classList.add( 'Q-circuit-board-container' )
-	boardContainerEl.addEventListener( 'touchstart', Q.Circuit.Editor.onPointerPress )	
+	//boardContainerEl.addEventListener( 'touchstart', Q.Circuit.Editor.onPointerPress )
+	boardContainerEl.addEventListener( 'mouseleave', function(){
+
+		Q.Circuit.Editor.unhighlightAll( circuitEl )
+	})
 
 	const boardEl = createDiv()
 	boardContainerEl.appendChild( boardEl )
@@ -238,12 +242,12 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	circuitEl.addEventListener( 'touchstart', Q.Circuit.Editor.onPointerPress )
 	window.addEventListener( 
 	
-		'qjs set$ completed', 
+		'Q.Circuit.set$', 
 		 Q.Circuit.Editor.prototype.onExternalSet.bind( this )
 	)
 	window.addEventListener(
 
-		'qjs clearThisInput$',
+		'Q.Circuit.clear$',
 		Q.Circuit.Editor.prototype.onExternalClear.bind( this )
 	)
 
@@ -512,6 +516,22 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 
 
 
+Q.Circuit.Editor.unhighlightAll = function( circuitEl ){
+
+	Array.from( circuitEl.querySelectorAll( 
+
+		'.Q-circuit-board-background > div,'+
+		'.Q-circuit-board-foreground > div'
+	))
+	.forEach( function( el ){
+
+		el.classList.remove( 'Q-circuit-cell-highlighted' )
+	})
+}
+
+
+
+
 
 
     //////////////////////
@@ -697,28 +717,6 @@ Q.Circuit.Editor.onPointerMove = function( event ){
 
 
 
-    //////////////////////
-   //                  //
-  //   Pointer EXIT   //
- //                  //
-//////////////////////
-
-
-Q.Circuit.Editor.onPointerExit = function( event ){
-
-	const circuitEl = event.target.closest( '.Q-circuit' )
-	Array.from( circuitEl.querySelectorAll( '.Q-circuit-board-background > div, .Q-circuit-board-foreground > div' ))
-	.forEach( function( el ){
-
-		el.classList.remove( 'Q-circuit-cell-highlighted' )
-	})
-}
-
-
-
-
-
-
     ///////////////////////
    //                   //
   //   Pointer PRESS   //
@@ -774,6 +772,7 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		//  Shall we toggle the circuit lock?
 
 		const
+		circuit = circuitEl.circuit,
 		circuitIsLocked = circuitEl.classList.contains( 'Q-circuit-locked' ),
 		lockEl = targetEl.closest( '.Q-circuit-toggle-lock' )
 		
@@ -788,6 +787,7 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 
 				circuitEl.classList.add( 'Q-circuit-locked' )
 				lockEl.innerText = '🔒'
+				Q.Circuit.Editor.unhighlightAll( circuitEl )
 			}
 
 
@@ -850,8 +850,16 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		//  Come back and add fuctionality here 
 		//  for undo, redo, add !
 
-		if( undoEl ) console.log( '→ Undo' )
-		if( redoEl ) console.log( '→ Redo' )
+		if( undoEl ){
+
+			console.log( '→ Undo' )
+			circuit.undo$()
+		}
+		if( redoEl ){
+
+			console.log( '→ Redo' )
+			circuit.redo$()
+		}
 		if( addMomentEl   ) console.log( '→ Add moment' )
 		if( addRegisterEl ) console.log( '→ Add register' )
 
@@ -1183,7 +1191,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			.from( Q.Circuit.Editor.dragEl.children )
 			.forEach( function( child ){
 
-				originCircuit.clearThisInput$(
+				originCircuit.clear$(
 
 					child.origin.momentIndex,			
 					child.origin.registerIndex
@@ -1191,7 +1199,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			})
 			window.dispatchEvent( new CustomEvent( 
 
-				'qjs gui altered circuit', 
+				'Q gui altered circuit', 
 				{ detail: { circuit: originCircuit }}
 			))
 			// originCircuit.evaluate$()
@@ -1289,7 +1297,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 		const originCircuit = Q.Circuit.Editor.dragEl.circuitEl.circuit
 		draggedOperations.forEach( function( child ){
 
-			originCircuit.clearThisInput$(
+			originCircuit.clear$(
 
 				child.origin.momentIndex,			
 				child.origin.registerIndex
@@ -1328,7 +1336,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 	// circuit.evaluate$()
 	window.dispatchEvent( new CustomEvent( 
 
-		'qjs gui altered circuit', 
+		'Q gui altered circuit', 
 		{ detail: { circuit }}
 	))
 
@@ -1355,7 +1363,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 		window.dispatchEvent( new CustomEvent( 
 
-			'qjs gui altered circuit', 
+			'Q gui altered circuit', 
 			{ detail: { circuit: originCircuit }}
 		))
 	}

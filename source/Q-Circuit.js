@@ -49,6 +49,12 @@ Q.Circuit = function( bandwidth, timewidth ){
 
 	this.results = []
 	this.matrix  = null
+
+
+	//  Undo / Redo history.
+
+	this.history = []
+	this.historyIndex = 0
 }
 
 
@@ -323,12 +329,17 @@ Object.assign( Q.Circuit, {
 
 		window.dispatchEvent( new CustomEvent( 
 
-			'qjs evaluate began', { 
+			'Q.Circuit.evaluate began', { 
 
 				detail: { circuit }
 			}
 		))
 
+
+		//  Our circuit’s operations must be in the correct order
+		//  before we attempt to step through them!
+
+		circuit.sort$()
 
 
 
@@ -424,7 +435,7 @@ Object.assign( Q.Circuit, {
 			const progress = operationsCompleted / operationsTotal
 
 
-			window.dispatchEvent( new CustomEvent( 'qjs evaluate progressed', { detail: {
+			window.dispatchEvent( new CustomEvent( 'Q.Circuit.evaluate progressed', { detail: {
 
 				circuit,
 				progress,
@@ -475,7 +486,7 @@ Object.assign( Q.Circuit, {
 
 
 
-		window.dispatchEvent( new CustomEvent( 'qjs evaluate completed', { detail: {
+		window.dispatchEvent( new CustomEvent( 'Q.Circuit.evaluate completed', { detail: {
 		// circuit.dispatchEvent( new CustomEvent( 'evaluation complete', { detail: {
 
 			circuit,
@@ -1042,157 +1053,11 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 	    //////////////
 	   //          //
 	  //   Edit   //
 	 //          //
 	//////////////
-
-
-	fillEmptyOperations$: function(){
-
-		`
-		Step through each moment of this circuit,
-		find any qubits that have no assigned operations
-		and add an IDENTITY operation 
-		for that qubit at that moment.
-		`
-
-		const scope = this
-		if( this.inputs instanceof Array !== true ) this.inputs = []
-		while( this.inputs.length < this.bandwidth ){
-
-			this.inputs.push( Q.Qubit.HORIZONTAL )
-		}
-		this.moments.forEach( function( moment ){
-
-			scope.inputs.forEach( function( qubit, q ){
-
-				const qubitHasOperation = moment.find( function( operation ){
-
-					return operation.qubitIndices.includes( q )
-				})
-				if( qubitHasOperation === undefined ){
-
-					moment.push({ 
-
-						gate: Q.Gate.IDENTITY,
-						qubitIndices: [ q ]
-					})
-				}
-			})
-		})
-		return this
-	},
-	removeHangingOperations$: function(){
-
-		`
-		First: If the inputs array is longer than 
-		our designated bandwidth we need to trim it.
-		Then: Step through each moment of this circuit
-		and remove any “hanging” gate operations
-		that contain qubit indices outside the expected range.
-		This is useful after a copy() command
-		that may contain stray qubit indices from multi-qubit gates
-		or after a trim$() command with a similar result.
-		`
-		
-		if( this.inputs.length > this.bandwidth ) this.inputs.splice( this.timewidth )
-		const bandwidth = this.bandwidth
-		this.moments = this.moments.map( function( moment ){
-
-			moment = moment.filter( function( operation ){
-
-				return operation.qubitIndices.every( function( index ){
-
-					return index >= 0 && index < bandwidth
-				})
-			})
-			return moment
-		})
-		return this
-	},
-
-
-
-
-	clearThisInput$: function( momentIndex, registerIndices ){
-
-		const circuit = this
-
-		if( registerIndices instanceof Array === false ){
-
-			registerIndices = [ registerIndices ]
-		}
-
-
-		//  We need to dispatch an event based on the actual 
-		//  operations found, with its full registerIndices intact.
-
-		circuit.operations.filter( function( operation ){
-
-			return (
-
-				operation.momentIndex === momentIndex && 
-				operation.registerIndices.some( function( registerIndex ){
-
-					return registerIndices.includes( registerIndex )
-				})
-			)
-		
-		}).forEach( function( operation ){
-
-			window.dispatchEvent( new CustomEvent( 
-
-				'qjs clearThisInput$', { detail: { 
-
-					circuit,
-					momentIndex,
-					registerIndices: operation.registerIndices
-				}}
-			))
-		})
-		
-
-		//  And we need the operations’ indices -- not REGISTER indices,
-		//  but the actual index of the operation itself -- so we can
-		//  splice the operations array.
-
-		let spliceIndex = 0
-		while( spliceIndex >= 0 ){
-			
-			spliceIndex = circuit.operations.findIndex( function( operation, o ){
-
-				return (
-
-					operation.momentIndex === momentIndex && 
-					operation.registerIndices.some( function( registerIndex ){
-
-						return registerIndices.includes( registerIndex )
-					})
-				)
-			})
-			if( spliceIndex >= 0 ){
-
-				circuit.operations.splice( spliceIndex, 1 )
-			}
-		}
-		return circuit
-	},
-
-
 
 
 	get: function( momentIndex, registerIndex ){
@@ -1203,7 +1068,109 @@ s3_folder = (“my_bucket”, “my_prefix”)
 				op.registerIndices.includes( registerIndex )
 		})
 	},
-	set$: function( momentIndex, gate, registerIndices, gateId, allowOverrun ){
+	clear$: function( momentIndex, registerIndices ){
+
+		const circuit = this
+		
+
+		//  Validate our arguments.
+		
+		if( arguments.length !== 2 ) 
+			Q.warn( `Q.Circuit.clear$ expected 2 arguments but received ${ arguments.length }.` )
+		if( Q.isUsefulInteger( momentIndex ) !== true )
+			return Q.error( `Q.Circuit attempted to clear an input on Circuit #${ circuit.index } using an invalid moment index:`, momentIndex )
+		if( Q.isUsefulInteger( registerIndices )) registerIndices = [ registerIndices ]
+		if( registerIndices instanceof Array !== true )
+			return Q.error( `Q.Circuit attempted to clear an input on Circuit #${ circuit.index } using an invalid register indices array:`, registerIndices )
+
+
+		//  Let’s find any operations 
+		//  with a footprint at this moment index and one of these register indices
+		//  and collect not only their content, but their index in the operations array.
+		// (We’ll need that index to splice the operations array later.)
+
+		const foundOperations = circuit.operations.reduce( function( filtered, operation, o ){
+
+			if( operation.momentIndex === momentIndex && 
+				operation.registerIndices.some( function( registerIndex ){
+
+					return registerIndices.includes( registerIndex )
+				})
+			) filtered.push({
+
+				index: o,
+				momentIndex: operation.momentIndex,
+				registerIndices: operation.registerIndices,
+				gate: operation.gate
+			})
+			return filtered
+
+		}, [] )
+
+
+		//  Because we held on to each found operation’s index
+		//  within the circuit’s operations array
+		//  we can now easily splice them out of the array.
+
+		foundOperations.reduce( function( deletionsSoFar, operation ){
+
+			circuit.operations.splice( operation.index - deletionsSoFar, 1 )
+			return deletionsSoFar + 1
+
+		}, 0 )
+
+
+		//  Let’s make history.
+
+		this.recordHistory$({
+
+			redo: {
+				
+				function: 'clear$',
+				arguments: Array.from( arguments )
+			},
+			undo: foundOperations.reduce( function( undos, operation ){
+
+				undos.push({
+
+					function: 'set$',
+					arguments: [
+
+						operation.momentIndex,
+						operation.gate,
+						operation.registerIndices,
+						operation.gateId
+					]
+				})
+				return undos
+			
+			}, [] )
+		})
+
+
+		//  Let anyone listening, 
+		//  including any circuit editor interfaces,
+		//  know about what we’ve just completed here.
+
+		foundOperations.forEach( function( operation ){
+
+			window.dispatchEvent( new CustomEvent( 
+
+				'Q.Circuit.clear$', { detail: { 
+
+					circuit,
+					momentIndex,
+					registerIndices: operation.registerIndices
+				}}
+			))
+		})
+
+
+		//  Enable that “fluent interface” method chaining :)
+
+		return circuit
+	},
+	set$: function( momentIndex, gate, registerIndices, gateId ){
 
 		const circuit = this
 
@@ -1214,54 +1181,59 @@ s3_folder = (“my_bucket”, “my_prefix”)
 			Number.isInteger( momentIndex ) !== true ||
 			momentIndex < 1 || momentIndex > this.timewidth ){
 
-			return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at a moment index that is not valid:`, momentIndex )
+			return Q.error( `Q.Circuit attempted to add a gate to circuit #${ this.index } at a moment index that is not valid:`, momentIndex )
 		}
 
 
 		//  Is this a valid gate?
 
 		if( typeof gate === 'string' ) gate = Q.Gate.findByLabel( gate )
-		if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} that is not a gate:`, gate )
+		if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } that is not a gate:`, gate )
 
 
 		//  Are these valid register indices?
 
-		if( allowOverrun !== true ){
-		
-			if( registerIndices instanceof Array !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an invalid register indices array:`, registerIndices )
-			if( registerIndices.length === 0 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with an empty register indices array:`, registerIndices )
-			//if( registerIndices.length !== gate.bandwidth ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} but the number of register indices (${registerIndices}) did not match the gate’s bandwidth (${gate.bandwidth}).` )
-			if( registerIndices.reduce( function( accumulator, registerIndex ){
+		if( typeof registerIndices === 'number' ) registerIndices = [ registerIndices ]
+		if( registerIndices instanceof Array !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } with an invalid register indices array:`, registerIndices )
+		if( registerIndices.length === 0 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } with an empty register indices array:`, registerIndices )
+		if( registerIndices.reduce( function( accumulator, registerIndex ){
 
-				return accumulator && registerIndex > 0 && registerIndex <= circuit.bandwidth
+			return (
 
-			}, false )){
+				accumulator && 
+				registerIndex > 0 && 
+				registerIndex <= circuit.bandwidth
+			)
 
-				return Q.warn( `Q.Circuit attempted to add a gate to circuit #${this.index} at moment #${momentIndex} with some out of range qubit indices:`, registerIndices )
-			}
+		}, false )){
+
+			return Q.warn( `Q.Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } with some out of range qubit indices:`, registerIndices )
 		}
 
 
 		//  Ok, now we can check if this set$ command
 		//  is redundant.
 
-		const 
-		existingOperation = circuit.get( momentIndex, registerIndices[ 0 ]),
-		isRedundant = !!(
+		const
+		foundOperation = circuit.operations.find( function( operation ){
 
-			existingOperation &&
-			existingOperation.gate &&
-			existingOperation.gate === gate &&
-			JSON.stringify( existingOperation.registerIndices ) === JSON.stringify( registerIndices )
-		)
-		
+			return (
 
-		//  If it’s NOT redudant 
+				momentIndex === operation.momentIndex &&
+				gate === operation.gate &&
+				registerIndices.lengt === operation.registerIndices.length &&
+				registerIndices.every( val => operation.registerIndices.includes( val ))
+			)
+		}),
+		isRedundant = !!foundOperation || ( foundOperation === undefined && gate === Q.Gate.IDENTITY )
+
+
+		//  If it’s NOT redundant 
 		//  then we’re clear to proceed.
 
 		if( isRedundant !== true ){
 
-			this.clearThisInput$( momentIndex, registerIndices )
+			this.clear$( momentIndex, registerIndices )
 			if( gate !== Q.Gate.IDENTITY ){
 			
 				this.operations.push({
@@ -1271,8 +1243,39 @@ s3_folder = (“my_bucket”, “my_prefix”)
 					gate,
 					gateId
 				})
-			}
-			this.sort$()
+			}	
+			// this.sort$()
+
+
+			//  Let’s make history.
+
+			this.recordHistory$({
+
+				redo: {
+					
+					function: 'set$',
+					arguments: Array.from( arguments )
+				}//,
+				// undo: foundOperations.reduce( function( undos, operation ){
+
+				// 	undos.push({
+
+				// 		function: 'set$',
+				// 		arguments: [
+
+				// 			operation.momentIndex,
+				// 			operation.gate,
+				// 			operation.registerIndices,
+				// 			operation.gateId
+				// 		]
+				// 	})
+				// 	return undos
+				
+				// }, [] )
+			})
+
+
+
 
 			
 			//  Emit an event that we have set an operation
@@ -1280,7 +1283,7 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 			window.dispatchEvent( new CustomEvent( 
 
-				'qjs set$ completed', { detail: { 
+				'Q.Circuit.set$', { detail: { 
 
 					circuit,
 					gate,
@@ -1290,6 +1293,79 @@ s3_folder = (“my_bucket”, “my_prefix”)
 			))
 		}
 	},
+
+
+
+
+
+	recordHistory$: function( entry ){
+		
+		const circuit = this
+	
+		if( circuit.historyState === undefined ){
+		
+			circuit.history.splice( circuit.historyIndex )
+			circuit.history.push( entry )
+			circuit.historyIndex ++
+		}
+	},
+	undo$: function(){
+		
+		const circuit = this
+
+
+		//  Find the most recent “undo” entry.
+		//  Note that this will be an array rather than a single action
+		//  because an “undo” may require multiple actions.
+
+		let entryCollection
+		while( circuit.historyIndex > 0 && entryCollection === undefined ){
+
+			circuit.historyIndex --
+			entryCollection = circuit.history[ circuit.historyIndex ].undo
+		}
+
+
+		//  Execute on each undo action from this undo entry.
+
+		if( entryCollection ){
+		
+			circuit.historyState = 'undoing'
+			entryCollection.forEach( function( entry ){
+
+				const
+				action = circuit[ entry.function ],
+				args   = entry.arguments
+
+				action.apply( circuit, args )
+			})
+			circuit.historyState = undefined
+		}
+
+		return this
+	},
+	redo$: function(){
+
+		const circuit = this
+
+		// if( circuit.historyIndex + 1 < circuit.history.length )
+		// 	circuit.historyIndex ++
+	
+		const 
+		entry   = circuit.history[ circuit.historyIndex ].redo,
+		action  = circuit[ entry.function ],
+		args    = entry.arguments
+
+		circuit.historyState = 'redoing'
+		action.apply( circuit, args )
+		circuit.historyState = undefined
+
+		if( circuit.historyIndex + 1 < circuit.history.length )
+			circuit.historyIndex ++
+	
+		return this
+	},
+
 
 
 

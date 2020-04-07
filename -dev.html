@@ -13,8 +13,8 @@
 			quantum simulator, quantum computer simulator, 
 			qubit, qbit, gate, Hadamard, Bloch, Bloch Sphere,
 			Web, Web site, website, Web browser, browser, HTML, HTML5, JavaScript, ES6, CSS,
-			Chrome, Firefox, Safari, Opera, Brave, Edge, WebKit, Blink,
-			Stewart Smith, Stewart, Stew, Stuart, Steven, Steve, Stewdio, stew_rtsmith, @stew_rtsmith,
+			Chrome, Firefox, Safari, Opera, Brave, Edge, WebKit, Blink, Gecko, Mozilla,
+			Stewart Smith, Stewart, Stew, Stuart, Steven, Steve, Stewdio, stewartsmith, stew_rtsmith, @stew_rtsmith,
 			Moar, Moar Technologies Corp, MTC,
 			Google, IBM, Microsoft, Amazon, NASA, DWave, D-Wave,
 			Quil, OpenQASM,
@@ -335,7 +335,7 @@ window.addEventListener( 'DOMContentLoaded', function(){
 
 //  EVALUATION.
 
-window.addEventListener( 'qjs evaluate began', function( event ){
+window.addEventListener( 'Q.Circuit.evaluate began', function( event ){
 
 	console.log( 
 
@@ -343,7 +343,7 @@ window.addEventListener( 'qjs evaluate began', function( event ){
 		event.detail.circuit.toDiagram() +'\n\n'
 	)
 })
-window.addEventListener( 'qjs evaluate progressed', function( event ){
+window.addEventListener( 'Q.Circuit.evaluate progressed', function( event ){
 
 	const 
 	length       = 20,
@@ -372,7 +372,7 @@ window.addEventListener( 'qjs evaluate progressed', function( event ){
 	// console.log( 'state width', state.getWidth(), 'state height', state.getHeight() )
 	// console.log( 'state', state.toTsv() )
 })
-window.addEventListener( 'qjs evaluate completed', function( event ){
+window.addEventListener( 'Q.Circuit.evaluate completed', function( event ){
 
 	console.log( 
 
@@ -387,7 +387,7 @@ window.addEventListener( 'qjs evaluate completed', function( event ){
 	//if( reportEl ) reportEl.innerText = circuit.report$()
 	updateCircuitParts( circuit )
 })
-window.addEventListener( 'qjs gui altered circuit', function( event ){
+window.addEventListener( 'Q gui altered circuit', function( event ){
 
 	updatePlaygroundFromDom( event.detail.circuit )
 })

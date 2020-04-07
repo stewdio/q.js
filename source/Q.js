@@ -227,7 +227,7 @@ Object.assign( Q, {
 
 Q.createConstants( 
 
-	'REVISION', 15,
+	'REVISION', 16,
 
 
 	//  Yeah... F’ing floating point numbers, Man!
