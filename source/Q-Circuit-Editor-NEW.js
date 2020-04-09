@@ -56,6 +56,14 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	circuitEl.appendChild( toolbarEl )
 	toolbarEl.classList.add( 'Q-circuit-toolbar' )
 
+	//  Add a toggle switch for locking the circuit.
+
+	const lockToggle = createDiv()
+	toolbarEl.appendChild( lockToggle )
+	lockToggle.classList.add( 'Q-circuit-button', 'Q-circuit-toggle', 'Q-circuit-toggle-lock' )
+	lockToggle.setAttribute( 'title', 'Lock / unlock' )
+	lockToggle.innerText = '🔓'
+
 	// const modeButton = createDiv()
 	// toolbarEl.appendChild( modeButton )
 	// modeButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-select-toggle' )
@@ -66,13 +74,35 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	toolbarEl.appendChild( undoButton )
 	undoButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-undo' )
 	undoButton.setAttribute( 'title', 'Undo' )
+	undoButton.setAttribute( 'Q-disabled', 'Q-disabled' )
 	undoButton.innerHTML = '&larr;'
+	window.addEventListener( 'Q.History undo is depleted', function( event ){
+
+		if( event.detail.instance === circuit )
+			undoButton.setAttribute( 'Q-disabled', 'Q-disabled' )
+	})
+	window.addEventListener( 'Q.History undo is capable', function( event ){
+
+		if( event.detail.instance === circuit )
+			undoButton.removeAttribute( 'Q-disabled' )
+	})
 
 	const redoButton = createDiv()
 	toolbarEl.appendChild( redoButton )
 	redoButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-redo' )
 	redoButton.setAttribute( 'title', 'Redo' )
+	redoButton.setAttribute( 'Q-disabled', 'Q-disabled' )
 	redoButton.innerHTML = '&rarr;'
+	window.addEventListener( 'Q.History redo is depleted', function( event ){
+
+		if( event.detail.instance === circuit )
+			redoButton.setAttribute( 'Q-disabled', 'Q-disabled' )
+	})
+	window.addEventListener( 'Q.History redo is capable', function( event ){
+
+		if( event.detail.instance === circuit )
+			redoButton.removeAttribute( 'Q-disabled' )
+	})
 
 
 	//  Create a circuit board container
@@ -135,15 +165,6 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	const foregroundEl = createDiv()
 	boardEl.appendChild( foregroundEl )
 	foregroundEl.classList.add( 'Q-circuit-board-foreground' )
-
-
-	//  Add a toggle switch for locking the circuit.
-
-	const lockToggle = createDiv()
-	foregroundEl.appendChild( lockToggle )
-	lockToggle.classList.add( 'Q-circuit-header', 'Q-circuit-toggle', 'Q-circuit-toggle-lock' )
-	lockToggle.setAttribute( 'title', 'Lock / unlock' )
-	lockToggle.innerText = '🔓'
 
 
 	//  Add “Select All” toggle button to upper-left corner.
@@ -809,7 +830,7 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		
 		if( circuitIsLocked ) {
 
-			Q.log( 0.5, `User attempted to interact with a circuit editor but it was locked.` )
+			Q.warn( `User attempted to interact with a circuit editor but it was locked.` )
 			return
 		}
 
@@ -853,12 +874,12 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		if( undoEl ){
 
 			console.log( '→ Undo' )
-			circuit.undo$()
+			circuit.history.undo$()
 		}
 		if( redoEl ){
 
 			console.log( '→ Redo' )
-			circuit.redo$()
+			circuit.history.redo$()
 		}
 		if( addMomentEl   ) console.log( '→ Add moment' )
 		if( addRegisterEl ) console.log( '→ Add register' )
@@ -1187,13 +1208,14 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 			const originCircuit = Q.Circuit.Editor.dragEl.circuitEl.circuit
 			
+			originCircuit.history.createEntry$()
 			Array
 			.from( Q.Circuit.Editor.dragEl.children )
 			.forEach( function( child ){
 
 				originCircuit.clear$(
 
-					child.origin.momentIndex,			
+					child.origin.momentIndex,
 					child.origin.registerIndex
 				)
 			})
@@ -1285,6 +1307,12 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 	//  where they need to go!
 
 	const draggedOperations = Array.from( Q.Circuit.Editor.dragEl.children )
+
+
+	//  Whatever the next action is that we perform on the circuit,
+	//  this was user-initiated via the graphic user interface (GUI).
+
+	circuit.history.createEntry$()
 
 
 	//  Whether we’ve ripped operations from THIS circuit

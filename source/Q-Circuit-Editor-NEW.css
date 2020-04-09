@@ -169,6 +169,16 @@
 	cursor: pointer;
 	overflow: hidden;
 }
+.Q-circuit-button[Q-disabled] {
+	
+	color: hsl( 
+		
+		var( --Q-color-base-hue ), 
+		10%, 
+		70%
+	);
+	cursor: not-allowed;
+}
 
 
 
@@ -200,6 +210,8 @@
 	display: grid;
 	grid-auto-rows:    4rem;
 	grid-auto-columns: 4rem;
+	/*grid-auto-rows:    3rem;
+	grid-auto-columns: 3rem;*/
 	grid-auto-flow: column;
 
 	/*grid-template-columns: repeat( auto-fill, minmax( 4rem, 1fr ));*/
@@ -304,8 +316,11 @@
 	z-index: 3;
 	margin: 0;
 	top:  0;
-	left: 4rem;
-	grid-column: 2;
+	/*left: 4rem;*/
+	/*grid-column: 2;*/
+	left: 0;
+	grid-column-start: 1;
+	grid-column-end: 3;
 	grid-row: 1;
 	cursor: se-resize;
 }

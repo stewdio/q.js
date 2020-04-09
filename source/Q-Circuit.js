@@ -53,8 +53,7 @@ Q.Circuit = function( bandwidth, timewidth ){
 
 	//  Undo / Redo history.
 
-	this.history = []
-	this.historyIndex = 0
+	this.history = new Q.History( this )
 }
 
 
@@ -1071,7 +1070,7 @@ s3_folder = (“my_bucket”, “my_prefix”)
 	clear$: function( momentIndex, registerIndices ){
 
 		const circuit = this
-		
+
 
 		//  Validate our arguments.
 		
@@ -1122,19 +1121,19 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 		//  Let’s make history.
 
-		this.recordHistory$({
+		this.history.record$({
 
 			redo: {
 				
-				function: 'clear$',
-				arguments: Array.from( arguments )
+				func: circuit.clear$,
+				args: Array.from( arguments )
 			},
 			undo: foundOperations.reduce( function( undos, operation ){
 
 				undos.push({
 
-					function: 'set$',
-					arguments: [
+					func: circuit.set$,
+					args: [
 
 						operation.momentIndex,
 						operation.gate,
@@ -1173,6 +1172,8 @@ s3_folder = (“my_bucket”, “my_prefix”)
 	set$: function( momentIndex, gate, registerIndices, gateId ){
 
 		const circuit = this
+
+
 
 
 		//  Is this a valid moment index?
@@ -1244,38 +1245,23 @@ s3_folder = (“my_bucket”, “my_prefix”)
 					gateId
 				})
 			}	
-			// this.sort$()
 
 
 			//  Let’s make history.
 
-			this.recordHistory$({
+			this.history.record$({
 
 				redo: {
 					
-					function: 'set$',
-					arguments: Array.from( arguments )
-				}//,
-				// undo: foundOperations.reduce( function( undos, operation ){
+					func: circuit.set$,
+					args: Array.from( arguments )
+				},
+				undo: [{
 
-				// 	undos.push({
-
-				// 		function: 'set$',
-				// 		arguments: [
-
-				// 			operation.momentIndex,
-				// 			operation.gate,
-				// 			operation.registerIndices,
-				// 			operation.gateId
-				// 		]
-				// 	})
-				// 	return undos
-				
-				// }, [] )
+					func: circuit.clear$,
+					args: [ momentIndex, registerIndices ]
+				}]
 			})
-
-
-
 
 			
 			//  Emit an event that we have set an operation
@@ -1293,79 +1279,6 @@ s3_folder = (“my_bucket”, “my_prefix”)
 			))
 		}
 	},
-
-
-
-
-
-	recordHistory$: function( entry ){
-		
-		const circuit = this
-	
-		if( circuit.historyState === undefined ){
-		
-			circuit.history.splice( circuit.historyIndex )
-			circuit.history.push( entry )
-			circuit.historyIndex ++
-		}
-	},
-	undo$: function(){
-		
-		const circuit = this
-
-
-		//  Find the most recent “undo” entry.
-		//  Note that this will be an array rather than a single action
-		//  because an “undo” may require multiple actions.
-
-		let entryCollection
-		while( circuit.historyIndex > 0 && entryCollection === undefined ){
-
-			circuit.historyIndex --
-			entryCollection = circuit.history[ circuit.historyIndex ].undo
-		}
-
-
-		//  Execute on each undo action from this undo entry.
-
-		if( entryCollection ){
-		
-			circuit.historyState = 'undoing'
-			entryCollection.forEach( function( entry ){
-
-				const
-				action = circuit[ entry.function ],
-				args   = entry.arguments
-
-				action.apply( circuit, args )
-			})
-			circuit.historyState = undefined
-		}
-
-		return this
-	},
-	redo$: function(){
-
-		const circuit = this
-
-		// if( circuit.historyIndex + 1 < circuit.history.length )
-		// 	circuit.historyIndex ++
-	
-		const 
-		entry   = circuit.history[ circuit.historyIndex ].redo,
-		action  = circuit[ entry.function ],
-		args    = entry.arguments
-
-		circuit.historyState = 'redoing'
-		action.apply( circuit, args )
-		circuit.historyState = undefined
-
-		if( circuit.historyIndex + 1 < circuit.history.length )
-			circuit.historyIndex ++
-	
-		return this
-	},
-
 
 
 
