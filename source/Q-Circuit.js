@@ -598,7 +598,10 @@ Object.assign( Q.Circuit.prototype, {
 	////////////////
 
 
+	//  This is absolutely required by toTable.
+
 	sort$: function(){
+
 
 		//  Sort this circuit’s operations
 		//  primarily by momentIndex,
@@ -637,6 +640,14 @@ Object.assign( Q.Circuit.prototype, {
 	 //               //
 	///////////////////
 
+
+	//  Many export functions rely on toTable
+	//  and toTable itself absolutely relies on 
+	//  a circuit’s operations to be SORTED correctly.
+	//  We could force circuit.sort$() here,
+	//  but then toTable would become toTable$
+	//  and every exporter that relies on it would 
+	//  also become destructive.
 
 	toTable: function(){
 
@@ -692,7 +703,7 @@ Object.assign( Q.Circuit.prototype, {
 		let 
 		momentIndex = 1,
 		multiRegisterOperationIndex = 0,
-		operationsThisMoment = {}
+		gateTypesUsedThisMoment = {}
 
 		this.operations.forEach( function( operation, operationIndex, operations ){
 
@@ -703,21 +714,21 @@ Object.assign( Q.Circuit.prototype, {
 
 			if( momentIndex !== operation.momentIndex ){
 
-				table[ momentIndex ].operationsThisMoment = operationsThisMoment
+				table[ momentIndex ].gateTypesUsedThisMoment = gateTypesUsedThisMoment
 				momentIndex = operation.momentIndex
 				multiRegisterOperationIndex = 0
-				operationsThisMoment = {}
+				gateTypesUsedThisMoment = {}
 			}
 			if( operation.registerIndices.length > 1 ){
 
 				table[ momentIndex - 1 ].multiRegisterOperationIndex = multiRegisterOperationIndex
 				multiRegisterOperationIndex ++
 			}
-			if( operationsThisMoment[ operation.gate.label ] === undefined ){
+			if( gateTypesUsedThisMoment[ operation.gate.label ] === undefined ){
 
-				operationsThisMoment[ operation.gate.label ] = 1
+				gateTypesUsedThisMoment[ operation.gate.label ] = 1
 			}
-			else operationsThisMoment[ operation.gate.label ] ++
+			else gateTypesUsedThisMoment[ operation.gate.label ] ++
 
 
 			//  By default, an operation’s CSS name
@@ -756,17 +767,51 @@ Object.assign( Q.Circuit.prototype, {
 					registerIndex,
 					isMultiRegisterOperation,
 					multiRegisterOperationIndex,
-					operationsOfThisTypeNow: operationsThisMoment[ operation.gate.label ],
+					gatesOfThisTypeNow: gateTypesUsedThisMoment[ operation.gate.label ],
 					indexAmongSiblings,
 					siblingExistsAbove: Math.min( ...operation.registerIndices ) < registerIndex,
 					siblingExistsBelow: Math.max( ...operation.registerIndices ) > registerIndex
 				}
 			})
-			//if( operationIndex === operations.length - 1 ){
+
+/*
+
+
+++++++++++++++++++++++
+
+Non-fatal problem to solve here:
+
+Previously we were concerned with “gates of this type used this moment”
+when we were thinking about CNOT as its own special gate.
+But now that we treat CNOT as just connected X gates,
+we now have situations 
+where a moment can have one “CNOT” but also a stand-alone X gate
+and toTable will label the “CNOT” as X.0 
+(never X.1, because it’s the only multi-register gate that moment)
+but still uses the label X.0 instead of just X
+because there’s another stand-alone X there tripping the logic!!!
+
+
+
+
+
+*/
+
+
+			// if( operationIndex === operations.length - 1 ){
 				
-				table[ momentIndex - 1 ].operationsThisMoment = operationsThisMoment
-			//}
+				table[ momentIndex - 1 ].gateTypesUsedThisMoment = gateTypesUsedThisMoment
+			// }
 		})
+
+
+
+
+
+
+
+
+
 
 
 		table.forEach( function( moment, m ){
@@ -775,9 +820,9 @@ Object.assign( Q.Circuit.prototype, {
 
 				if( operation.isMultiRegisterOperation ){
 
-					if( moment.operationsThisMoment[ operation.label ] > 1 ){
+					if( moment.gateTypesUsedThisMoment[ operation.label ] > 1 ){
 
-						operation.labelDisplay = operation.label +'.'+ ( operation.operationsOfThisTypeNow - 1 )
+						operation.labelDisplay = operation.label +'.'+ ( operation.gatesOfThisTypeNow - 1 )
 					}
 					operation.labelDisplay += '#'+ operation.indexAmongSiblings
 				}
@@ -1119,6 +1164,14 @@ s3_folder = (“my_bucket”, “my_prefix”)
 		}, 0 )
 
 
+		//  IMPORTANT!
+		//  Operations must be sorted properly
+		//  for toTable to work reliably with
+		//  multi-register operations!!
+				
+		this.sort$()
+
+
 		//  Let’s make history.
 
 		this.history.record$({
@@ -1172,8 +1225,6 @@ s3_folder = (“my_bucket”, “my_prefix”)
 	set$: function( momentIndex, gate, registerIndices, gateId ){
 
 		const circuit = this
-
-
 
 
 		//  Is this a valid moment index?
@@ -1234,9 +1285,20 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 		if( isRedundant !== true ){
 
+
+			//  If there’s already an operation here,
+			//  we’d better get rid of it!
+			//  This will also entirely remove any multi-register operations
+			//  that happen to have a component at this moment / register.
+			
 			this.clear$( momentIndex, registerIndices )
 			if( gate !== Q.Gate.IDENTITY ){
 			
+
+				//  Finally. 
+				//  Finally we can actually set this operation.
+				//  Aren’t you glad we handle all this for you?
+
 				this.operations.push({
 
 					momentIndex,
@@ -1244,7 +1306,15 @@ s3_folder = (“my_bucket”, “my_prefix”)
 					gate,
 					gateId
 				})
-			}	
+
+				
+				//  IMPORTANT!
+				//  Operations must be sorted properly
+				//  for toTable to work reliably with
+				//  multi-register operations!!
+				
+				this.sort$()
+			}
 
 
 			//  Let’s make history.

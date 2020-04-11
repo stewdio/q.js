@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Q.js is Quantum JavaScript</title>
+		<title>Quantum JavaScript</title>
 		<meta charset="utf-8">
 		<meta name="viewport"             content="width=device-width,initial-scale=1.0">
 		<meta name="description"          content="Quantum computing in your browser.">
@@ -13,8 +13,8 @@
 			quantum simulator, quantum computer simulator, 
 			qubit, qbit, gate, Hadamard, Bloch, Bloch Sphere,
 			Web, Web site, website, Web browser, browser, HTML, HTML5, JavaScript, ES6, CSS,
-			Chrome, Firefox, Safari, Opera, Brave, Edge, WebKit, Blink,
-			Stewart Smith, Stewart, Stew, Stuart, Steven, Steve, Stewdio, stew_rtsmith, @stew_rtsmith,
+			Chrome, Firefox, Safari, Opera, Brave, Edge, WebKit, Blink, Gecko, Mozilla,
+			Stewart Smith, Stewart, Stew, Stuart, Steven, Steve, Stewdio, stewartsmith, stew_rtsmith, @stew_rtsmith,
 			Moar, Moar Technologies Corp, MTC,
 			Google, IBM, Microsoft, Amazon, NASA, DWave, D-Wave,
 			Quil, OpenQASM,
@@ -26,40 +26,40 @@
 		<meta name="twitter:card"         content="summary_large_image">
 		<meta name="twitter:site"         content="@stew_rtsmith">
 		<meta name="twitter:creator"      content="@stew_rtsmith">
-		<meta name="twitter:title"        content="Q.js is Quantum JavaScript">
+		<meta name="twitter:title"        content="Quantum JavaScript">
 		<meta name="twitter:description"  content="Quantum computing in your browser.">
-		<meta name="twitter:image"        content="https://stewdio.github.io/q.js/other/q-thumbnail.png">
+		<meta name="twitter:image"        content="https://quantumjavascript.app/other/q-thumbnail.png">
 		
 		<meta property="og:type"          content="website">
-		<meta property="og:title"         content="Q.js is Quantum JavaScript">
+		<meta property="og:title"         content="Quantum JavaScript">
 		<meta property="og:description"   content="Quantum computing in your browser.">
-		<meta property="og:image"         content="https://stewdio.github.io/q.js/other/q-thumbnail.png">
-		<meta property="og:url"           content="https://stewdio.github.io/q.js/">
+		<meta property="og:image"         content="https://quantumjavascript.app/other/q-thumbnail.png">
+		<meta property="og:url"           content="https://quantumjavascript.app/">
 		
-		<link rel="canonical" href="https://stewdio.github.io/q.js/">
+		<link rel="canonical" href="https://quantumjavascript.app/">
 		<link href="other/q-favicon-064.png" rel="icon" type="image/png">
 		<link href="other/q-favicon-144.png" rel="apple-touch-icon">
 		
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900&display=swap">
 		<link rel="stylesheet" href="source/Q.css">
 		<link rel="stylesheet" href="source/Q-Circuit-Editor.css">
 		<link rel="stylesheet" href="other/documentation.css">
 
 		<script src="https://www.googletagmanager.com/gtag/js" async></script>
-		<script src="other/ga.js"></script>				
+		<script src="other/ga.js"></script>
 		<script src="source/Q.js"></script>
 		<script src="source/Q-ComplexNumber.js"></script>
 		<script src="source/Q-Matrix.js"></script>
 		<script src="source/Q-Qubit.js"></script>
 		<script src="source/Q-Gate.js"></script>
+		<script src="source/Q-History.js"></script>
 		<script src="source/Q-Circuit.js"></script>
 		<script src="source/Q-Circuit-Editor.js"></script>
-		<script src="other/navigation.js"></script>	
+		<script src="other/navigation.js"></script>
 	
 	</head>
 	<body>
 		<main>
-			<h3>Welcome to Q.js</h3>
+			<h3>Quantum, made easy</h3>
 			<p>
 				Q is a quantum circuit editor and simulator that runs right in your Web browser.
 				There is nothing to install and nothing to configure.
@@ -75,7 +75,7 @@
 				</span>
 			</p>
 			<br>
-			<div class="qjs-circuit-palette"></div>
+			<div class="Q-circuit-palette"></div>
 			<div id="example-dom"></div>
 			<pre><samp id="example-report" for="example-dom"></samp></pre>
 			<p>
@@ -92,7 +92,7 @@
 				available for download from GitHub at
 				<a href="https://github.com/stewdio/q.js" target="_blank">https://github.com/stewdio/q.js</a>
 				and this documentation website is live at
-				<a href="https://stewdio.github.io/q.js">https://stewdio.github.io/q.js</a>
+				<a href="https://quantumjavascript.app/">https://quantumjavascript.app</a>
 			</p>
 			<h3>Open your JavaScript console</h3>
 			<p>
@@ -398,26 +398,28 @@ var example = Q`
 	I I   I I I
 `
 example.name = 'example'
-example.sort$()
-example.toDom( document.getElementById( 'example-dom' ))
+example.toDom( 'example-dom' )
 
 
 
 //  Let’s also place circuit palettes
-//  inside anything with the class '.qjs-circuit-palette'.
+//  inside anything with the class 'Q-circuit-palette'.
 
-Array.from( document.querySelectorAll( '.qjs-circuit-palette' )).forEach( function( el ){
+Array
+.from( document.querySelectorAll( '.Q-circuit-palette' ))
+.forEach( function( el ){
 
-	Q.Circuit.createDomPalette( el )
+	Q.Circuit.Editor.createPalette( el )
 	document.getElementById( 'example-report' )
 		.innerText = example.report$()
 })
 
 
 
+
 //  EVALUATION.
 
-window.addEventListener( 'qjs evaluate began', function( event ){
+window.addEventListener( 'Q.Circuit.evaluate began', function( event ){
 
 	console.log( 
 
@@ -425,7 +427,7 @@ window.addEventListener( 'qjs evaluate began', function( event ){
 		event.detail.circuit.toDiagram() +'\n\n'
 	)
 })
-window.addEventListener( 'qjs evaluate progressed', function( event ){
+window.addEventListener( 'Q.Circuit.evaluate progressed', function( event ){
 
 	const 
 	length       = 20,
@@ -454,7 +456,7 @@ window.addEventListener( 'qjs evaluate progressed', function( event ){
 	// console.log( 'state width', state.getWidth(), 'state height', state.getHeight() )
 	// console.log( 'state', state.toTsv() )
 })
-window.addEventListener( 'qjs evaluate completed', function( event ){
+window.addEventListener( 'Q.Circuit.evaluate completed', function( event ){
 
 	const circuit = event.detail.circuit
 	console.log( 
@@ -469,6 +471,12 @@ window.addEventListener( 'qjs evaluate completed', function( event ){
 			.innerText = circuit.report$()
 	}
 })
+window.addEventListener( 'Q gui altered circuit', function( event ){
+
+	// updatePlaygroundFromDom( event.detail.circuit )
+	event.detail.circuit.evaluate$()
+})
+
 
 
 

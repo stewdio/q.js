@@ -13,8 +13,8 @@
 			quantum simulator, quantum computer simulator, 
 			qubit, qbit, gate, Hadamard, Bloch, Bloch Sphere,
 			Web, Web site, website, Web browser, browser, HTML, HTML5, JavaScript, ES6, CSS,
-			Chrome, Firefox, Safari, Opera, Brave, Edge, WebKit, Blink,
-			Stewart Smith, Stewart, Stew, Stuart, Steven, Steve, Stewdio, stew_rtsmith, @stew_rtsmith,
+			Chrome, Firefox, Safari, Opera, Brave, Edge, WebKit, Blink, Gecko, Mozilla,
+			Stewart Smith, Stewart, Stew, Stuart, Steven, Steve, Stewdio, stewartsmith, stew_rtsmith, @stew_rtsmith,
 			Moar, Moar Technologies Corp, MTC,
 			Google, IBM, Microsoft, Amazon, NASA, DWave, D-Wave,
 			Quil, OpenQASM,
@@ -28,43 +28,37 @@
 		<meta name="twitter:creator"      content="@stew_rtsmith">
 		<meta name="twitter:title"        content="Q ⟩ Playground">
 		<meta name="twitter:description"  content="Quantum computing in your browser.">
-		<meta name="twitter:image"        content="https://stewdio.github.io/q.js/other/q-thumbnail.png">
+		<meta name="twitter:image"        content="https://quantumjavascript.app/other/q-thumbnail.png">
 		
 		<meta property="og:type"          content="website">
 		<meta property="og:title"         content="Q ⟩ Playground">
 		<meta property="og:description"   content="Quantum computing in your browser.">
-		<meta property="og:image"         content="https://stewdio.github.io/q.js/other/q-thumbnail.png">
-		<meta property="og:url"           content="https://stewdio.github.io/q.js/playground.html">
+		<meta property="og:image"         content="https://quantumjavascript.app/other/q-thumbnail.png">
+		<meta property="og:url"           content="https://quantumjavascript.app/playground.html">
 		
-		<link rel="canonical" href="https://stewdio.github.io/q.js/playground.html">
+		<link rel="canonical" href="https://quantumjavascript.app/playground.html">
 		<link href="other/q-favicon-064.png" rel="icon" type="image/png">
 		<link href="other/q-favicon-144.png" rel="apple-touch-icon">
 		
-		<link rel="stylesheet" type="text/css" href="source/Q.css">
-		<link rel="stylesheet" type="text/css" href="source/Q-Circuit-Editor.css">
-		<link rel="stylesheet" type="text/css" href="other/documentation.css">
+		<link rel="stylesheet" href="source/Q.css">
+		<link rel="stylesheet" href="source/Q-Circuit-Editor.css">
+		<link rel="stylesheet" href="other/documentation.css">
 
 		<script src="https://www.googletagmanager.com/gtag/js" async></script>
-		<script src="other/ga.js"></script>				
+		<script src="other/ga.js"></script>
 		<script src="source/Q.js"></script>
 		<script src="source/Q-ComplexNumber.js"></script>
 		<script src="source/Q-Matrix.js"></script>
 		<script src="source/Q-Qubit.js"></script>
 		<script src="source/Q-Gate.js"></script>
+		<script src="source/Q-History.js"></script>
 		<script src="source/Q-Circuit.js"></script>
 		<script src="source/Q-Circuit-Editor.js"></script>
 		<script src="other/navigation.js"></script>
-		
+
 	</head>
 	<body>
 		<main>
-			
-			<!--<div class="color-swatch cos" id="color-swatch-1">1</div
-			><div class="color-swatch cos" id="color-swatch-2">2</div
-			><div class="color-swatch cos" id="color-swatch-3">3</div
-			><div class="color-swatch cos" id="color-swatch-4">4</div
-			><div class="color-swatch cos" id="color-swatch-5">5</div>-->
-
 			<h3>Playground</h3>
 			<p>
 				Type, paste, or edit your circuit here.
@@ -78,22 +72,30 @@
 I-H-X#0-I-I
 I-I-X#1-I-I
 I-I-I---I-I</textarea>
-<p class="right">
-			<button class="Q-button" id="playground-apply-button" type="button" onclick="updatePlaygroundFromText()">
-				Apply
-			</button>
-			<br><br>
-		</p>
-			<h4>Interactive circuit diagram</h4>
-			<p>
-				Drag and drop quantum gates from this gates palette 
-				on to the circuit diagram just below it. 
-				You can also drag gates around within the circuit diagram itself.
-				Editing the diagram will recalculate the results below
-				as well as re-export the circuit to various formats.
+			<p class="right">
+				<button class="Q-button" id="playground-apply-button" type="button" onclick="updatePlaygroundFromText()">
+					Apply
+				</button>
+				<br><br>
 			</p>
-			<div class="qjs-circuit-palette"></div>
-			<div id="playground-dom"></div>
+			
+
+
+
+<!-- <div id="palette-1"></div>
+<div id="tester"></div>
+<div id="tester2"></div> -->
+
+
+
+
+
+
+
+
+
+			<div class='Q-circuit-palette'></div>
+			<div id="playground"></div>
 
 
 			<h4>Result probabilities</h4>
@@ -188,32 +190,32 @@ H  X.1#0  X#0  I    X#0
 H  X.0#1  Y    X#0  S
 H  X      X#1  X#1  I
 H  X.1#1  Y    Z    S</code></pre>
+			<br><br><br>
+			<div class="color-swatch cos" id="color-swatch-1">1</div
+			><div class="color-swatch cos" id="color-swatch-2">2</div
+			><div class="color-swatch cos" id="color-swatch-3">3</div
+			><div class="color-swatch cos" id="color-swatch-4">4</div
+			><div class="color-swatch cos" id="color-swatch-5">5</div>
 		</main>
 		<script>
 
 
 
 
-//  This is purely to make exploring from 
-//  the JavaScript console possible.
-//  It is not necessary at all for everything
-//  else on this page to function.
-
-let playground
-
-
-
-
 //  Let’s place circuit palettes
-//  inside anything with the class '.qjs-circuit-palette'.
+//  inside anything with the class 'Q-circuit-palette'.
 
-Array.from( document.querySelectorAll( '.qjs-circuit-palette' )).forEach( function( el ){
+Array
+.from( document.querySelectorAll( '.Q-circuit-palette' ))
+.forEach( function( el ){
 
-	Q.Circuit.createDomPalette( el )
+	Q.Circuit.Editor.createPalette( el )
 })
 
 
 
+
+//  Hook up our input text field and “Apply” button.
 
 function applyButtonActivated(){
 
@@ -252,21 +254,20 @@ function updatePlaygroundFromText(){
 		document.getElementById( 'playground-apply-button' ).setAttribute( 'disabled', 'disabled' )
 	
 		const circuit = Q( text )
-		if( circuit instanceof Q.Circuit ){
+		if( circuit instanceof Q.Circuit ){//+++++  This validation appears broken!
 
 			circuit.name = 'playground'
-			playground = circuit
-			const domEl = document.getElementById( circuit.name +'-dom' )
+			const domEl = document.getElementById( 'playground' )
 			if( domEl ){
 
-				while( domEl.lastChild) {
+				while( domEl.lastChild ){
 					
 					domEl.removeChild( domEl.lastChild )
 				}
 				circuit.sort$()//  Is this still necessary??
-				circuit.toDom( domEl )
+				circuit.toDom( domEl )				
 			}
-			updateCircuitParts( circuit )
+			circuit.evaluate$()
 		}
 		else {
 
@@ -287,7 +288,8 @@ function updatePlaygroundFromDom( circuit ){
 
 		const text = circuit.toText().substr( 1 )
 		inputEl.value = text
-		updateCircuitParts( circuit )
+		circuit.evaluate$()
+		// updateCircuitParts( circuit )
 		playgroundInputText = text
 	}
 }
@@ -319,8 +321,6 @@ function updateCircuitParts( circuit ){
 
 window.addEventListener( 'DOMContentLoaded', function(){
 
-	// updateEverything( bell )
-	// updateEverything( whiplash )
 	updatePlaygroundFromText()
 	setInterval( hasTextInputUpdated, 100 )
 })
@@ -334,7 +334,7 @@ window.addEventListener( 'DOMContentLoaded', function(){
 
 //  EVALUATION.
 
-window.addEventListener( 'qjs evaluate began', function( event ){
+window.addEventListener( 'Q.Circuit.evaluate began', function( event ){
 
 	console.log( 
 
@@ -342,7 +342,7 @@ window.addEventListener( 'qjs evaluate began', function( event ){
 		event.detail.circuit.toDiagram() +'\n\n'
 	)
 })
-window.addEventListener( 'qjs evaluate progressed', function( event ){
+window.addEventListener( 'Q.Circuit.evaluate progressed', function( event ){
 
 	const 
 	length       = 20,
@@ -371,7 +371,7 @@ window.addEventListener( 'qjs evaluate progressed', function( event ){
 	// console.log( 'state width', state.getWidth(), 'state height', state.getHeight() )
 	// console.log( 'state', state.toTsv() )
 })
-window.addEventListener( 'qjs evaluate completed', function( event ){
+window.addEventListener( 'Q.Circuit.evaluate completed', function( event ){
 
 	console.log( 
 
@@ -383,9 +383,10 @@ window.addEventListener( 'qjs evaluate completed', function( event ){
 	circuit  = event.detail.circuit,
 	reportEl = document.getElementById( circuit.name +'-report' )
 
-	if( reportEl ) reportEl.innerText = circuit.report$()
+	//if( reportEl ) reportEl.innerText = circuit.report$()
+	updateCircuitParts( circuit )
 })
-window.addEventListener( 'qjs gui altered circuit', function( event ){
+window.addEventListener( 'Q gui altered circuit', function( event ){
 
 	updatePlaygroundFromDom( event.detail.circuit )
 })

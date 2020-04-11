@@ -8,14 +8,14 @@ Okay, okay, it’s a quantum circuit <em>simulator</em>—because you can’t do
 (So why build this?)
 The same reason Google, IBM, and Microsoft build quantum simulators:
 to explore quantum circuit design using a cheap and easy medium before applying those designs to the real hardware.
-Learn more at [https://stewdio.github.io/q.js](https://stewdio.github.io/q.js).
+Learn more at [https://quantumjavascript.app](https://quantumjavascript.app).
 
 
 It’s easy
 ------------------------------------------------------------------------------
 Ready to perform the most superfluous coin-flip code ever? Load up the Q 
 website at
-[https://stewdio.github.io/q.js](https://stewdio.github.io/q.js)
+[https://quantumjavascript.app](https://quantumjavascript.app)
 and paste this in to your JavaScript console:
 ```javascript
 Q`H`.try$()

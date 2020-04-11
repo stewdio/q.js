@@ -37,7 +37,10 @@ window.addEventListener( 'hashchange', onHashChange, false )
 
 document.addEventListener( 'DOMContentLoaded', function(){
 
-	const nav = document.createElement( 'nav' )
+	const 
+	nav = document.createElement( 'nav' ),
+	home = window.location.protocol === 'file:' ? 'index.html' : '/'
+	
 	nav.innerHTML = `
 		<header>
 			<h1>
@@ -185,7 +188,7 @@ document.addEventListener( 'DOMContentLoaded', function(){
 			</h1>
 		</header>
 		<ul>
-			<li><h2><a href="index.html">What is Q?</a></h2></li>
+			<li><h2><a href="${ home }">What is Q?</a></h2></li>
 			<li><h2><a href="playground.html">Playground</a></h2></li>
 			<li><h2><a href="resources.html">Resources</a></h2></li>
 		</ul>

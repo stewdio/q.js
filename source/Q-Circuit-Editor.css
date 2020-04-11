@@ -6,21 +6,13 @@
 @charset "utf-8";
 
 
-/*@import url('https://fonts.googleapis.com/css?family=Playfair+Display:700&display=swap');*/
-@import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:700&display=swap');
-
-/*@import url('https://fonts.googleapis.com/css?family=Michroma&display=swap');*/
-
-
-
 
 
 
 
 :root {
 
-	--z-index-gate: 50;
-	--z-index-gate-identity: 40;
+	/*--Q-color-background: white;*/
 }
 
 
@@ -28,6 +20,16 @@
 
 
 /*
+
+	Z-indices:
+
+	Clipboard:  100
+	Operation:    0
+	Shadow:     -10
+	Background: -20
+
+
+
 
 
 	Circuit	
@@ -94,197 +96,383 @@
 */
 
 
-.qjs-circuit, 
-.qjs-palette,
-.qjs-circuit-clipboard {
-	
-	display: inline-block;
+
+
+
+
+.Q-circuit,
+.Q-circuit-palette {
+
 	position: relative;
-	margin: 1rem 0 0.5rem 0;
-	max-width: 100%;
-	padding: 0;
-	font-family: var( --Q-font-family-sans );
-	font-style: italic;
-	color: var( --Q-color-titanium );
-	font-size:   1.0rem;
-	line-height: 2.7rem;
+	width:  100%;
 }
-.qjs-palette {
+.Q-circuit-palette {
 
-	min-height: 80px;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.Q-circuit {
+
+	margin: 1rem 0 2rem 0;
+	/*border-top: 2px solid hsl( 0, 0%, 50% );*/
+}
+.Q-circuit-board-foreground {
 	
-	border-radius: 1rem;
+	line-height: 3.85rem;
+	width: auto;
+}
+
+
+
+
+
+.Q-circuit-toolbar {
+
+	display: block;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.Q-circuit-button {
+
+	position: relative;
+	display: inline-block;
+	margin: 0 0.5rem 0.5rem 0;
+	width:  3rem;
+	height: 3rem;
+	box-shadow: 
+		-0.1rem -0.1rem 0 rgba( 255, 255, 255, 0.8 ),
+		 0.1rem  0.1rem 0.1rem rgba( 0, 0, 0, 0.35 );
 	background: 
-
-		hsl(
-
-			var( --Q-color-hue ),
-			var( --Q-color-saturation ),
-			var( --Q-color-lightness )
-		)
+		var( --Q-color-background )
 		linear-gradient(
 
-			0.375turn,
-			rgba( 0, 0, 0, 0.02 ),
-			rgba( 255, 255, 255, 0.2 )
+			0.45turn,
+			
+			rgba( 0, 0, 0, 0.04 ),
+			rgba( 255, 255, 255, 0.1 )
 		);
-	
-	box-shadow: 
-		-0.1rem -0.1rem 0.1rem rgba( 255, 255, 255, 0.8 ),
-		 0.2rem  0.2rem 0.2rem rgba( 0, 0, 0, 0.1 );
+	color: hsl( 
 		
-
+		var( --Q-color-base-hue ), 
+		10%, 
+		30%
+	);
+	text-shadow: 1px  1px 0 rgba( 255, 255, 255, 1 );
+	/*border-radius: 0.5rem;*/
+	border-radius: 100%;
+	line-height: 2.9rem;
+	text-align: center;
+	cursor: pointer;
+	overflow: hidden;
+	font-weight: 900;
 }
-.qjs-circuit-clipboard {
+.Q-circuit-button[Q-disabled] {
+	
+	color: hsl( 
+		
+		var( --Q-color-base-hue ), 
+		 3%, 
+		80%
+	);
+	cursor: not-allowed;
+}
+
+
+
+
+
+.Q-circuit-board-container {
+
+	position: relative;
+	margin: 0 0 2rem 0;
+	margin: 0;
+	width:  100%;
+	max-height: 60vh;
+	overflow: scroll;
+}
+.Q-circuit-board {
+
+	position: relative
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.Q-circuit-palette,
+.Q-circuit-board-foreground,
+.Q-circuit-board-background,
+.Q-circuit-clipboard {
+
+	box-sizing: border-box;
+	display: grid;
+	
+
+
+	grid-auto-rows:    4rem;
+	grid-auto-columns: 4rem;
+	/*grid-auto-rows:    3rem;
+	grid-auto-columns: 3rem;
+	*/
+
+
+	grid-auto-flow: column;
+
+	/*grid-template-columns: repeat( auto-fill, minmax( 4rem, 1fr ));*/
+	/*grid-template-columns: 4rem auto;*/
+	/*grid-template-columns: auto-fill;*/
+	/* https://github.com/w3c/csswg-drafts/issues/388 */
+}
+.Q-circuit-palette,
+.Q-circuit-board-foreground,
+.Q-circuit-board-background {
+
+	position: relative;
+	top:  0;
+	left: 0;
+	width:  100%;
+	height: 100%;
+}
+.Q-circuit-clipboard {
 
 	position: absolute;
-	z-index: 200;
-	min-width:  60px;
-	min-height: 60px;
-	cursor: grabbing;
-	cursor: -webkit-grabbing; 
-	cursor: -moz-grabbing;
+	z-index: 100;
+	min-width:  4rem;
+	min-height: 4rem;
+	transform: scale( 1.05 );
+	/*background-color: white;*/
+	/*box-shadow: 0.1rem 0.1rem 1rem rgba( 0, 0, 0, 0.3 );*/
 }
-.qjs-circuit svg {
+.Q-circuit-clipboard-destroy .Q-circuit-operation {
 
-	/*fill: var( --color-titanium );*/
+	background-color: var( --Q-color-red );
 }
+.Q-circuit-board-background {
+
+	/*
+
+	Clipboard:  100
+	Operation:    0
+	Shadow:     -10
+	Background: -20
+
+	*/
+	position: absolute;
+	z-index: -20;
+	color: rgba( 0, 0, 0, 0.2 );
+}
+.Q-circuit-board-background .Q-circuit-cell-highlighted {
+
+	/*background-color: hsl( 0, 0%, 95% );*/
+	/*background-color: white;*/
+	background-color: hsl(
+
+		var( --Q-color-base-hue ),
+		 3%,
+		87%
+	);
+}
+
+
+
+.Q-circuit-register-wire {
+
+	position: absolute;
+	top: calc( 50% - 0.5px );
+	width: 100%;
+	height: 1px;
+	/*background-color: hsl( 0, 0%, 50% );*/
+	background-color: hsl(
+
+		var( --Q-color-base-hue ),
+		 3%,
+		50%
+	);
+}
+
+
+
+.Q-circuit-palette > div,
+.Q-circuit-clipboard > div,
+.Q-circuit-board-foreground > div {
+
+	/*overflow: hidden;*/
+	/*font-style: italic;*/
+	text-align: center;
+}
+
+
 
 
 
 
     /***************/
    /*             */
-  /*   Layers    */
+  /*   Headers   */
  /*             */
 /***************/
 
 
-.qjs-circuit-layer {
+.Q-circuit-header {
 
-	box-sizing: border-box;
-	position: absolute;
-	display: grid;	
-	grid-auto-rows:    60px;
-	grid-auto-columns: 60px;	
-	top:  0;
-	left: 0;
-	width:  100%;
-	height: 100%;
-	text-align: center;
-}
-.qjs-palette .qjs-circuit-layer {
-
-	display: block;
-	position: relative;
-	padding: 10px;
-}
-.qjs-palette .qjs-circuit-layer::after { 
-  
-	content: '';
-	display: block; 
-	clear: both;
-}
-.qjs-palette .qjs-circuit-operation {
-
-	float: left;
-}
-.qjs-circuit-layer-wires,
-.qjs-circuit-layer-background {
-
-	position: relative;
-}
-.qjs-circuit-layer-background div.qjs-circuit-cell {
-
-	padding: 0;
-}
-.qjs-circuit-layer-connections {
-
-	top: 30px;
-	height: calc( 100% - 30px );
-	overflow: hidden;
-}
-.qjs-circuit-layer-connections div {
-
-	width:  60px;
-	height: auto;
-}
-.qjs-circuit-layer-connections svg {
-
-	width:  100%;
-	height: 100%;
-}
-
-
-
-
-    /*************/
-   /*           */
-  /*   Cells   */
- /*           */
-/*************/
-
-
-div.qjs-circuit-cell {
-
-	box-sizing: border-box;
-	width:   60px;
-	height:  60px;
-	padding: 10px;
-	overflow: hidden;
-}
-.qjs-circuit-menu,
-.qjs-circuit-moment,
-.qjs-circuit-register {
-
-	/*background-color: var( --color-chalk );*/
-}
-.qjs-circuit-menu  {
-	
-	grid-row: 1;
-	grid-column-start: 1;
-	grid-column-end:   3;
-	min-height: 100%;
-	min-width:  100%;
-	border-top-left-radius: 1rem;
-}
-.qjs-circuit-moment {
-
-	border-top-left-radius:  100%;
-	border-top-right-radius: 100%;
-	grid-row: 1;
-	cursor: s-resize;
-}
-.qjs-circuit-register {
-
-	border-top-left-radius:    100%;
-	border-bottom-left-radius: 100%;
-	grid-column: 1;
-	cursor: e-resize;
-}
-.qjs-circuit-input {
-
-	padding-left:  0;
-	padding-right: 0;
-	grid-column:   2;
-	font-family: var( --Q-font-family-mono );	
-	font-weight: bold;
-	font-size: 1.8rem;
-}
-#qjs-circuit-wire {
-
-	fill: hsl(
+	position: sticky;
+	z-index: 2;
+	margin: 0;
+	background-color: var( --Q-color-background );
+	/*color: hsl( 0, 0%, 85% );*/
+	color: hsl(
 
 		var( --Q-color-base-hue ),
-		10%,
-		80%
+		 3%,
+		77%
+	);
+	font-family: var( --Q-font-family-mono );
+}
+.Q-circuit-input.Q-circuit-cell-highlighted,
+.Q-circuit-header.Q-circuit-cell-highlighted {
+
+	/*background-color: hsl( 0, 0%, 95% );*/
+	background-color: hsl(
+
+		var( --Q-color-base-hue ),
+		 3%,
+		87%
+	);
+	color: hsl( 0, 0%, 0% );
+}
+.Q-circuit-selectall {
+
+	z-index: 3;
+	margin: 0;
+	top:  0;
+	/*left: 4rem;*/
+	/*grid-column: 2;*/
+	left: 0;
+	grid-column-start: 1;
+	grid-column-end: 3;
+	grid-row: 1;
+	cursor: se-resize;
+}
+.Q-circuit-moment-label,
+.Q-circuit-moment-add {
+
+	grid-row: 1;
+	top: 0;
+	cursor: s-resize;
+}
+.Q-circuit-register-label,
+.Q-circuit-register-add {
+
+	grid-column: 2;
+	left: 4rem;
+	cursor: e-resize;
+}
+.Q-circuit-moment-add,
+.Q-circuit-register-add {
+
+	cursor: pointer;
+}
+.Q-circuit-moment-add,
+.Q-circuit-register-add {
+
+	display: none;
+}
+
+
+.Q-circuit-toggle-lock,
+.Q-circuit-selectall,
+.Q-circuit-moment-label,
+.Q-circuit-moment-add {
+
+	/*border-bottom: 1px solid hsl( 0, 0%, 95% );*/
+	border-bottom: 1px solid hsl(
+
+		var( --Q-color-base-hue ),
+		 3%,
+		87%
 	);
 }
-svg.qjs-circuit-wire {
+.Q-circuit-selectall,
+.Q-circuit-register-label,
+.Q-circuit-register-add {
 
-	width:  60px;
-	height: 60px;
+	/*border-right: 1px solid hsl( 0, 0%, 95% );*/
+	border-right: 1px solid hsl(
+
+		var( --Q-color-base-hue ),
+		 3%,
+		87%
+	);
+
 }
+
+
+
+
+
+
+.Q-circuit-input {
+
+	position: sticky;
+	z-index: 2;
+	grid-column: 1;
+	left: 0;
+	background-color: var( --Q-color-background );
+	font-size: 1.5rem;
+	font-weight: 900;
+	font-family: var( --Q-font-family-mono );
+}
+
+
+
+
+
+.Q-circuit-operation-link-container {
+	
+	--Q-link-stroke: 3px;
+	--Q-link-radius: 100%;
+	
+	display: block;
+	position: relative;	
+	left:    calc( 50% - ( var( --Q-link-stroke ) / 2 ));
+	width:   50%;
+	height: 100%;
+	overflow: hidden;
+}
+.Q-circuit-operation-link-container.Q-circuit-cell-highlighted {
+
+	background-color: transparent;
+}
+.Q-circuit-operation-link {
+
+	display: block;
+	position: absolute;
+	width:  calc( var( --Q-link-stroke ) * 2 );
+	height: calc( 100% - 4rem + var( --Q-link-stroke ));
+	/*border: var( --Q-link-stroke ) solid hsl( 0, 0%, 50% );*/
+/*	border: var( --Q-link-stroke ) solid hsl(
+
+		var( --Q-color-base-hue ),
+		 3%,
+		50%
+	);*/
+	
+	border: var( --Q-link-stroke ) solid var( --Q-color-orange );
+
+	transform: translate( -50%, calc( 2rem - ( var( --Q-link-stroke ) / 2 )));
+	transform-origin: center;
+}
+.Q-circuit-operation-link.Q-circuit-operation-link-curved {
+
+	width: calc( var( --Q-link-radius ) - var( --Q-link-stroke ));
+	width: 200%;
+	border-radius: 100%;
+}
+
+
 
 
 
@@ -296,149 +484,302 @@ svg.qjs-circuit-wire {
 /******************/
 
 
-.qjs-circuit-operation {
+.Q-circuit-operation {
+	
+	position: relative;
+	--Q-operation-color-hue: var( --Q-color-green-hue );
+	--Q-operation-color-main: var( --Q-color-green );
+	
+/*	--Q-operation-color-hue:  0;
+	--Q-operation-color-main: hsl( 0, 0%, 50% );*/
 
-	box-sizing: border-box;
-	width:   60px;
-	height:  60px;
-	padding: 10px;	
-	overflow: hidden;
-	/*fill: #888;*/
-	fill: var( --Q-color-green );
-	/*fill: var( --Q-hyperlink-internal-color );*/
-}
-.qjs-palette,
-.qjs-circuit[qjs-circuit-mode="qjs-circuit-operation-move"] .qjs-circuit-operation {
 
+	--Q-operation-color-light: hsl(
+
+		var( --Q-operation-color-hue ),
+		90%,
+		70%
+	);
+	--Q-operation-color-dark: hsl(
+
+		var( --Q-operation-color-hue ),
+		50%,
+		50%
+	);
+	color: white;
+	text-shadow: -0.05rem -0.05rem 0 rgba( 0, 0, 0, 0.1 );
+	font-size:   1.5rem;
+	line-height: 2.9rem;
+	font-weight: 900;
 	cursor: grab;
 }
-.qjs-circuit-operation:hover {
+.Q-circuit-locked .Q-circuit-operation {
 
-	/*background-color: #EEE;*/
-	/*background-color: rgba( 0, 0, 0, 0.05 );*/
-	/*box-shadow: -1px 2px 8px rgba( 0, 0, 0, 0.5 );*/
-}
-
-
-.qjs-circuit-operation svg {
-
-	width:  40px;
-	height: 40px;
-}
-.qjs-circuit-operation-identity {
-
-	fill: hsl(
-
-		var( --Q-color-base-hue ),
-		10%,
-		80%
-	);
-	cursor: inherit;
-}
-#qjs-circuit-operation-hadamard {
-
-	/*fill: var( --Q-color-charcoal );*/
-	fill: var( --Q-color-red );
-}
-#qjs-circuit-operation-pauli-x,
-#qjs-circuit-operation-pauli-y,
-#qjs-circuit-operation-pauli-z {
-
-	fill: var( --Q-color-yellow );
-}
-#qjs-circuit-operation-control,
-#qjs-circuit-operation-target {
-
-	/*fill: var( --Q-color-charcoal );*/
-	fill: var( --Q-color-orange );
-}
-#qjs-circuit-control-straight,
-#qjs-circuit-control-curved {
-
-	fill: none;
-	/*stroke: var( --Q-color-charcoal );*/
-	stroke: var( --Q-color-orange );
-	stroke-width: 2;
-	stroke-miterlimit: 10;
-}
-.qjs-circuit-operation-label {
-
-	fill: var( --Q-color-white );
+	cursor: not-allowed;
 }
 
 
 
 
-    /**************/
-   /*            */
-  /*   States   */
- /*            */
-/**************/
+
+.Q-circuit-operation-tile {
+
+	position: absolute;
+	top:    0.5rem;
+	left:   0.5rem;
+	right:  0.5rem;
+	bottom: 0.5rem;
+
+	/*margin:  0.5rem;*/
+	/*padding: 0.5rem;*/
+
+	/*box-shadow: 0.1rem  0.1rem 0.2rem rgba( 0, 0, 0, 0.2 );*/
+	border-radius: 0.2rem;
+	/*
+	border-top:    0.1rem solid var( --Q-operation-color-light );
+	border-left:   0.1rem solid var( --Q-operation-color-light );
+	border-right:  0.1rem solid var( --Q-operation-color-dark );
+	border-bottom: 0.1rem solid var( --Q-operation-color-dark );
+	*/
+	background: 
+		var( --Q-operation-color-main )
+		/*linear-gradient(
+
+			0.45turn,
+			rgba( 255, 255, 255, 0.1 ),
+			rgba( 0, 0, 0, 0.05 )
+		)*/;
+}
+.Q-circuit-palette .Q-circuit-operation:hover {
+
+	background-color: rgba( 255, 255, 255, 0.6 );
+}
+.Q-circuit-palette .Q-circuit-operation-tile {
+
+	--Q-before-rotation: 12deg;
+	--Q-before-x: 1px;
+	--Q-before-y: -2px;
+	
+	--Q-after-rotation: -7deg;
+	--Q-after-x: -2px;
+	--Q-after-y: 3px;
+	
+	box-shadow: 0.2rem 0.2rem 0.2rem rgba( 0, 0, 0, 0.2 );
+}
+.Q-circuit-palette .Q-circuit-operation-tile:before,
+.Q-circuit-palette .Q-circuit-operation-tile:after {
+
+	content: "";
+	position: absolute;
+	top:    0;
+	right:  0;
+	bottom: 0;
+	left:   0;
+	border-radius: 0.2rem;
+	/*background-color: hsl( 0, 0%, 60% );*/
+	
+	background-color: var( --Q-operation-color-dark );
+	transform: 
+		translate( var( --Q-before-x ), var( --Q-before-y ))
+		rotate( var( --Q-before-rotation ));		
+	z-index: -10;
+	/*z-index: 10;*/
+	display: block;
+	box-shadow: 0.2rem 0.2rem 0.2rem rgba( 0, 0, 0, 0.2 );
+}
+.Q-circuit-palette .Q-circuit-operation-tile:after {
+
+	transform: 		
+		translate( var( --Q-after-x ), var( --Q-after-y ))
+		rotate( var( --Q-after-rotation ));
+	box-shadow: 0.2rem 0.2rem 0.2rem rgba( 0, 0, 0, 0.2 );
+}
+.Q-circuit-operation:hover .Q-circuit-operation-tile {
+
+	color: white;
+}
 
 
-.qjs-circuit-highlight {
 
+
+.Q-circuit-operation-hadamard {
+
+	--Q-operation-color-hue:  var( --Q-color-red-hue );
+	--Q-operation-color-main: var( --Q-color-red );
+
+	/*--Q-operation-color-hue:  0;
+	--Q-operation-color-main: hsl( 0, 0%, 10% );*/
+}
+.Q-circuit-operation-control .Q-circuit-operation-tile,
+.Q-circuit-operation-target .Q-circuit-operation-tile {
+
+	--Q-operation-color-hue:  var( --Q-color-orange-hue );
+	--Q-operation-color-main: var( --Q-color-orange );
+	border-radius: 100%;
+}
+.Q-circuit-operation-control .Q-circuit-operation-tile {
+
+	top:  calc( 50% - 0.7rem );
+	left: calc( 50% - 0.7rem );
+	width:  1.4rem;
+	height: 1.4rem;
+	overflow: hidden;
+/*	--Q-operation-color-hue:  0;
+	--Q-operation-color-main: hsl( 0, 0%, 10% );*/
+}
+
+.Q-circuit-operation-pauli-x,
+.Q-circuit-operation-pauli-y,
+.Q-circuit-operation-pauli-z {
+
+	--Q-operation-color-hue:  var( --Q-color-yellow-hue );
+	--Q-operation-color-main: var( --Q-color-yellow );
+
+/*	--Q-operation-color-hue:  0;
+	--Q-operation-color-main: hsl( 0, 0%, 30% );*/
+}
+
+
+
+
+
+
+    /********************/
+   /*                  */
+  /*   Other states   */
+ /*                  */
+/********************/
+
+
+.Q-circuit-palette > div:hover,
+.Q-circuit-board-foreground > div:hover {
+
+	outline: 1px solid black;
+	outline-offset: -1px;
+}
+.Q-circuit-palette > div:hover .Q-circuit-operation-tile {
+
+	box-shadow: none;
+}
+/*.Q-circuit-palette > div:hover,*/
+.Q-circuit-board-foreground > div:hover {
+	
+	background-color: white;
 	color: black;
 }
-.qjs-circuit-highlight .qjs-circuit-operation-identity {
 
-	fill: #BBB;
+
+
+
+
+
+
+.Q-circuit-cell-selected {
+
+	background-color: white;
+/*	background-color: hsl(
+
+		var( --Q-color-base-hue ),
+		70%,
+		80%
+	);*/
 }
-.qjs-circuit-layer-background .qjs-circuit-highlight {
+.Q-circuit-cell-selected:before {
+	
+	/*  
 
-	background-color: rgba( 0, 0, 0, 0.03 );
+	This was very helpful!
+	https://blog.dudak.me/2014/css-shadows-under-adjacent-elements/
+
+	Clipboard: 100
+	Operation:  50
+	Shadow:     40
+	Background: 30
+
+	*/
+	content: "";
+	position: absolute;
+	/*
+
+	Clipboard:  100
+	Operation:    0
+	Shadow:     -10
+	Background: -20
+
+	*/
+	z-index: -10;
+	top:    0;
+	right:  0;
+	bottom: 0;
+	left:   0;
+	display: block;
+	box-shadow:
+		0 0 1rem rgba( 0, 0, 0, 0.2 ),
+		0.4rem 0.4rem 0.2rem rgba( 0, 0, 0, 0.2 );
+	outline: 2px solid blue;
+	outline-offset: -1px;
+}
+
+
+
+
+.Q-circuit-clipboard > div {
+
 	background-color: white;
 }
-.qjs-circuit-layer-background  {
-/*
-	border-top-left-radius:  100%;
-	border-top-right-radius: 100%;*/
-/*	border-top-left-radius:    100%;
-	border-bottom-left-radius: 100%;*/
-}
+.Q-circuit-clipboard > div:before {
+	
+	/*  
 
+	This was very helpful!
+	https://blog.dudak.me/2014/css-shadows-under-adjacent-elements/
 
-
-
-.qjs-circuit-register.qjs-circuit-highlight,
-.qjs-circuit-input.qjs-circuit-highlight,
-.qjs-circuit-moment.qjs-circuit-highlight,
-.qjs-circuit-wire.qjs-circuit-highlight {
-
-	/*background-color: var( --color-newsprint );*/
-	/*background-color: var( --color-white );
-	box-shadow: 1px 2px 6px rgba( 0, 0, 0, 0.5 );*/
-}
-.qjs-circuit-wire.qjs-circuit-highlight {
-
-	/*fill: black;*/
-	/*stroke: black;*/
-}
-
-/*.qjs-circuit-register.qjs-circuit-selected,
-.qjs-circuit-input.qjs-circuit-selected,
-.qjs-circuit-moment.qjs-circuit-selected,
-.qjs-circuit-wire.qjs-circuit-selected 
-*/
-.qjs-selected {
-
-	background-color: rgba( 0, 0, 0, 0.2 );
-	background-color: var( --Q-color-white );
-}
-.qjs-circuit-clipboard .qjs-circuit-operation-identity,
-.qjs-selected.qjs-circuit-operation-identity {
-
-	fill: #888;
-}
-.qjs-palette .qjs-circuit-operation-identity {
-
-	fill: #BBB;
+	*/
+	content: "";
+	position: absolute;
+	top:    0;
+	right:  0;
+	bottom: 0;
+	left:   0;
+	z-index: -10;
+	display: block;
+	box-shadow: 0.4rem 0.4rem 0.3rem rgba( 0, 0, 0, 0.2 );
 }
 
 
 
 
 
+    /***************/
+   /*             */
+  /*   Buttons   */
+ /*             */
+/***************/
+
+
+.Q-circuit-locked .Q-circuit-toggle-lock,
+.Q-circuit-locked .Q-circuit-toggle-lock:hover {
+
+	background-color: var( --Q-color-red );
+}
+.Q-circuit-toggle-lock {
+
+	z-index: 3;
+	left: 0;
+	top: 0;
+	grid-column: 1;
+	grid-row: 1;
+	cursor: pointer;
+	font-size: 1.5rem;
+	text-shadow: none;
+}
+
+
+
+.Q-circuit p {
+
+	padding: 1rem;
+}
 
 
 

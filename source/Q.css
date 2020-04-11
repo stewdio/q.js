@@ -159,7 +159,7 @@ svg, :root {
 	/*  Fonts  */
 
 	--Q-font-family-serif:   'Source Serif Pro', 'Roboto Slab', 'Georgia', serif;
-	--Q-font-family-sans:    'Rubik', 'SF Pro Text', system-ui, -apple-system, 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+	--Q-font-family-sans:    'SF Pro Text', system-ui, -apple-system, 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 	--Q-font-family-mono:    'Roboto Mono', 'Source Code Pro', 'Menlo', 'Courier New', monospace;
 	--Q-font-family-symbols: 'Georgia', serif;
 }

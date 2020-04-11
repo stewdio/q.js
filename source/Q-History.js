@@ -1,5 +1,5 @@
 
-//  Copyright © 2020, Stewart Smith. See LICENSE for details.
+//  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 
 
@@ -91,7 +91,7 @@ Object.assign( Q.History.prototype, {
 		if(
 			( direction < 0 && this.index < 1 ) || 
 			( direction > 0 && this.index > this.entries.length - 2 )
-		) return this
+		) return false
 
 
 		//  Before we step backward (undo) or forward (redo)
@@ -147,7 +147,7 @@ Object.assign( Q.History.prototype, {
 		//  based on where or index is.
 		
 		this.assess()
-		return this
+		return true
 	},
 	undo$: function(){ return this.step$( -1 )},
 	redo$: function(){ return this.step$(  1 )}
