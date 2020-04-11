@@ -123,13 +123,17 @@ svg, :root {
 	--Q-color-black:     #000000;
 	
 
+	/*  Background  */
+
+	--Q-color-background-hue: var( --Q-color-base-hue );
+	--Q-color-background-saturation: 15%;
+	--Q-color-background-lightness:  95%;	
 	--Q-color-background: hsl(
 
-		var( --Q-color-base-hue ),
-		 3%,
-		93%
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		var( --Q-color-background-lightness )
 	);
-	/*--Q-color-background: white;*/
 
 
 	/*  Misc  */

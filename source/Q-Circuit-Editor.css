@@ -10,12 +10,6 @@
 
 
 
-:root {
-
-	/*--Q-color-background: white;*/
-}
-
-
 
 
 
@@ -24,6 +18,7 @@
 	Z-indices:
 
 	Clipboard:  100
+	Selected:    10
 	Operation:    0
 	Shadow:     -10
 	Background: -20
@@ -128,6 +123,14 @@
 
 
 
+
+    /***************/
+   /*             */
+  /*   Toolbar   */
+ /*             */
+/***************/
+
+
 .Q-circuit-toolbar {
 
 	display: block;
@@ -140,43 +143,79 @@
 
 	position: relative;
 	display: inline-block;
-	margin: 0 0.5rem 0.5rem 0;
-	width:  3rem;
+	/*margin: 0 0.5rem 0.5rem 0;*/
+	width:  4rem;
 	height: 3rem;
-	box-shadow: 
+/*	box-shadow: 
 		-0.1rem -0.1rem 0 rgba( 255, 255, 255, 0.8 ),
-		 0.1rem  0.1rem 0.1rem rgba( 0, 0, 0, 0.35 );
-	background: 
+		 0.1rem  0.1rem 0.1rem rgba( 0, 0, 0, 0.35 );*/
+
+	border-top: 1px solid hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		100%
+	);
+	border-right: 1px solid hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		90%
+	);
+	border-bottom: 1px solid hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		85%
+	);
+	border-left: 1px solid hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		97%
+	);
+
+/*	background: 
 		var( --Q-color-background )
 		linear-gradient(
 
-			0.45turn,
+			0.4turn,
 			
-			rgba( 0, 0, 0, 0.04 ),
+			rgba( 0, 0, 0, 0.02 ),
 			rgba( 255, 255, 255, 0.1 )
-		);
+		);*/
 	color: hsl( 
 		
-		var( --Q-color-base-hue ), 
-		10%, 
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
 		30%
 	);
 	text-shadow: 1px  1px 0 rgba( 255, 255, 255, 1 );
 	/*border-radius: 0.5rem;*/
-	border-radius: 100%;
+	/*border-radius: 100%;*/
 	line-height: 2.9rem;
 	text-align: center;
 	cursor: pointer;
 	overflow: hidden;
 	font-weight: 900;
 }
+.Q-circuit-toolbar .Q-circuit-button:first-child {
+
+	border-top-left-radius:    0.5rem;
+	border-bottom-left-radius: 0.5rem;
+}
+.Q-circuit-toolbar .Q-circuit-button:last-child {
+
+	border-top-right-radius:    0.5rem;
+	border-bottom-right-radius: 0.5rem;
+}
 .Q-circuit-button[Q-disabled] {
 	
 	color: hsl( 
 		
-		var( --Q-color-base-hue ), 
-		 3%, 
-		80%
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		85%
 	);
 	cursor: not-allowed;
 }
@@ -209,22 +248,9 @@
 
 	box-sizing: border-box;
 	display: grid;
-	
-
-
 	grid-auto-rows:    4rem;
 	grid-auto-columns: 4rem;
-	/*grid-auto-rows:    3rem;
-	grid-auto-columns: 3rem;
-	*/
-
-
 	grid-auto-flow: column;
-
-	/*grid-template-columns: repeat( auto-fill, minmax( 4rem, 1fr ));*/
-	/*grid-template-columns: 4rem auto;*/
-	/*grid-template-columns: auto-fill;*/
-	/* https://github.com/w3c/csswg-drafts/issues/388 */
 }
 .Q-circuit-palette,
 .Q-circuit-board-foreground,
@@ -243,8 +269,6 @@
 	min-width:  4rem;
 	min-height: 4rem;
 	transform: scale( 1.05 );
-	/*background-color: white;*/
-	/*box-shadow: 0.1rem 0.1rem 1rem rgba( 0, 0, 0, 0.3 );*/
 }
 .Q-circuit-clipboard-destroy .Q-circuit-operation {
 
@@ -266,15 +290,14 @@
 }
 .Q-circuit-board-background .Q-circuit-cell-highlighted {
 
-	/*background-color: hsl( 0, 0%, 95% );*/
-	/*background-color: white;*/
 	background-color: hsl(
 
-		var( --Q-color-base-hue ),
-		 3%,
-		87%
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		98%
 	);
 }
+
 
 
 
@@ -284,11 +307,10 @@
 	top: calc( 50% - 0.5px );
 	width: 100%;
 	height: 1px;
-	/*background-color: hsl( 0, 0%, 50% );*/
 	background-color: hsl(
 
-		var( --Q-color-base-hue ),
-		 3%,
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
 		50%
 	);
 }
@@ -299,8 +321,6 @@
 .Q-circuit-clipboard > div,
 .Q-circuit-board-foreground > div {
 
-	/*overflow: hidden;*/
-	/*font-style: italic;*/
 	text-align: center;
 }
 
@@ -322,26 +342,24 @@
 	z-index: 2;
 	margin: 0;
 	background-color: var( --Q-color-background );
-	/*color: hsl( 0, 0%, 85% );*/
 	color: hsl(
 
-		var( --Q-color-base-hue ),
-		 3%,
-		77%
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		75%
 	);
 	font-family: var( --Q-font-family-mono );
 }
 .Q-circuit-input.Q-circuit-cell-highlighted,
 .Q-circuit-header.Q-circuit-cell-highlighted {
 
-	/*background-color: hsl( 0, 0%, 95% );*/
 	background-color: hsl(
 
-		var( --Q-color-base-hue ),
-		 3%,
-		87%
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		98%
 	);
-	color: hsl( 0, 0%, 0% );
+	color: black;
 }
 .Q-circuit-selectall {
 
@@ -380,40 +398,28 @@
 
 	display: none;
 }
-
-
-.Q-circuit-toggle-lock,
 .Q-circuit-selectall,
 .Q-circuit-moment-label,
 .Q-circuit-moment-add {
 
-	/*border-bottom: 1px solid hsl( 0, 0%, 95% );*/
 	border-bottom: 1px solid hsl(
 
-		var( --Q-color-base-hue ),
-		 3%,
-		87%
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		98%
 	);
 }
 .Q-circuit-selectall,
 .Q-circuit-register-label,
 .Q-circuit-register-add {
 
-	/*border-right: 1px solid hsl( 0, 0%, 95% );*/
 	border-right: 1px solid hsl(
 
-		var( --Q-color-base-hue ),
-		 3%,
-		87%
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		98%
 	);
-
 }
-
-
-
-
-
-
 .Q-circuit-input {
 
 	position: sticky;
@@ -425,6 +431,7 @@
 	font-weight: 900;
 	font-family: var( --Q-font-family-mono );
 }
+
 
 
 
@@ -453,14 +460,14 @@
 	width:  calc( var( --Q-link-stroke ) * 2 );
 	height: calc( 100% - 4rem + var( --Q-link-stroke ));
 	/*border: var( --Q-link-stroke ) solid hsl( 0, 0%, 50% );*/
-/*	border: var( --Q-link-stroke ) solid hsl(
+	border: var( --Q-link-stroke ) solid hsl(
 
-		var( --Q-color-base-hue ),
-		 3%,
-		50%
-	);*/
+		var( --Q-color-background-hue ),
+		10%,
+		30%
+	);
 	
-	border: var( --Q-link-stroke ) solid var( --Q-color-orange );
+	/*border: var( --Q-link-stroke ) solid var( --Q-color-orange );*/
 
 	transform: translate( -50%, calc( 2rem - ( var( --Q-link-stroke ) / 2 )));
 	transform-origin: center;
@@ -487,24 +494,29 @@
 .Q-circuit-operation {
 	
 	position: relative;
-	--Q-operation-color-hue: var( --Q-color-green-hue );
-	--Q-operation-color-main: var( --Q-color-green );
+	/*--Q-operation-color-hue: var( --Q-color-green-hue );
+	--Q-operation-color-main: var( --Q-color-green );*/
 	
-/*	--Q-operation-color-hue:  0;
-	--Q-operation-color-main: hsl( 0, 0%, 50% );*/
+	--Q-operation-color-hue:  var( --Q-color-blue-hue );
+	--Q-operation-color-main: hsl( 
+
+		var( --Q-operation-color-hue ),
+		10%, 
+		35%
+	);
 
 
 	--Q-operation-color-light: hsl(
 
 		var( --Q-operation-color-hue ),
-		90%,
-		70%
+		10%,
+		50%
 	);
 	--Q-operation-color-dark: hsl(
 
 		var( --Q-operation-color-hue ),
-		50%,
-		50%
+		10%,
+		25%
 	);
 	color: white;
 	text-shadow: -0.05rem -0.05rem 0 rgba( 0, 0, 0, 0.1 );
@@ -517,11 +529,6 @@
 
 	cursor: not-allowed;
 }
-
-
-
-
-
 .Q-circuit-operation-tile {
 
 	position: absolute;
@@ -552,7 +559,8 @@
 }
 .Q-circuit-palette .Q-circuit-operation:hover {
 
-	background-color: rgba( 255, 255, 255, 0.6 );
+	/*background-color: rgba( 255, 255, 255, 0.6 );*/
+	background-color: white;
 }
 .Q-circuit-palette .Q-circuit-operation-tile {
 
@@ -604,8 +612,8 @@
 
 .Q-circuit-operation-hadamard {
 
-	--Q-operation-color-hue:  var( --Q-color-red-hue );
-	--Q-operation-color-main: var( --Q-color-red );
+	/*--Q-operation-color-hue:  var( --Q-color-red-hue );*/
+	/*--Q-operation-color-main: var( --Q-color-red );*/
 
 	/*--Q-operation-color-hue:  0;
 	--Q-operation-color-main: hsl( 0, 0%, 10% );*/
@@ -613,8 +621,8 @@
 .Q-circuit-operation-control .Q-circuit-operation-tile,
 .Q-circuit-operation-target .Q-circuit-operation-tile {
 
-	--Q-operation-color-hue:  var( --Q-color-orange-hue );
-	--Q-operation-color-main: var( --Q-color-orange );
+	/*--Q-operation-color-hue:  var( --Q-color-orange-hue );*/
+	/*--Q-operation-color-main: var( --Q-color-orange );*/
 	border-radius: 100%;
 }
 .Q-circuit-operation-control .Q-circuit-operation-tile {
@@ -632,8 +640,8 @@
 .Q-circuit-operation-pauli-y,
 .Q-circuit-operation-pauli-z {
 
-	--Q-operation-color-hue:  var( --Q-color-yellow-hue );
-	--Q-operation-color-main: var( --Q-color-yellow );
+	/*--Q-operation-color-hue:  var( --Q-color-yellow-hue );*/
+	/*--Q-operation-color-main: var( --Q-color-yellow );*/
 
 /*	--Q-operation-color-hue:  0;
 	--Q-operation-color-main: hsl( 0, 0%, 30% );*/
@@ -654,8 +662,8 @@
 .Q-circuit-palette > div:hover,
 .Q-circuit-board-foreground > div:hover {
 
-	outline: 1px solid black;
-	outline-offset: -1px;
+	outline: 2px solid var( --Q-hyperlink-internal-color );
+	outline-offset: -2px;
 }
 .Q-circuit-palette > div:hover .Q-circuit-operation-tile {
 
@@ -677,47 +685,27 @@
 .Q-circuit-cell-selected {
 
 	background-color: white;
-/*	background-color: hsl(
-
-		var( --Q-color-base-hue ),
-		70%,
-		80%
-	);*/
 }
 .Q-circuit-cell-selected:before {
-	
-	/*  
 
-	This was very helpful!
-	https://blog.dudak.me/2014/css-shadows-under-adjacent-elements/
-
-	Clipboard: 100
-	Operation:  50
-	Shadow:     40
-	Background: 30
-
-	*/
 	content: "";
 	position: absolute;
-	/*
-
-	Clipboard:  100
-	Operation:    0
-	Shadow:     -10
-	Background: -20
-
-	*/
-	z-index: -10;
 	top:    0;
 	right:  0;
 	bottom: 0;
 	left:   0;
 	display: block;
+	z-index: -10;
 	box-shadow:
 		0 0 1rem rgba( 0, 0, 0, 0.2 ),
 		0.4rem 0.4rem 0.2rem rgba( 0, 0, 0, 0.2 );
-	outline: 2px solid blue;
-	outline-offset: -1px;
+	outline: 1px solid hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		50%
+	);
+	/*outline-offset: -1px;*/
 }
 
 
@@ -770,7 +758,7 @@
 	grid-column: 1;
 	grid-row: 1;
 	cursor: pointer;
-	font-size: 1.5rem;
+	/*font-size: 1.5rem;*/
 	text-shadow: none;
 }
 

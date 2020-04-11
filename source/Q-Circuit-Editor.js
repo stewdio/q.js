@@ -98,7 +98,7 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 			redoButton.removeAttribute( 'Q-disabled' )
 	})
 
-	/*
+/*
 	const joinButton = createDiv()
 	toolbarEl.appendChild( joinButton )
 	joinButton.classList.add( 'Q-circuit-button', 'Q-circuit-toggle', 'Q-circuit-toggle-join' )
@@ -110,8 +110,7 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	controlButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-control' )
 	controlButton.setAttribute( 'title', 'Make control' )
 	controlButton.innerText = 'C'
-	*/
-
+*/
 
 	//  Create a circuit board container
 	//  so we can house a scrollable circuit board.
