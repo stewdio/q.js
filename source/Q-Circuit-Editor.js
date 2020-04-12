@@ -98,19 +98,21 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 			redoButton.removeAttribute( 'Q-disabled' )
 	})
 
-/*
-	const joinButton = createDiv()
-	toolbarEl.appendChild( joinButton )
-	joinButton.classList.add( 'Q-circuit-button', 'Q-circuit-toggle', 'Q-circuit-toggle-join' )
-	joinButton.setAttribute( 'title', 'Join operations' )
-	joinButton.innerText = 'J'
 
 	const controlButton = createDiv()
 	toolbarEl.appendChild( controlButton )
-	controlButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-control' )
-	controlButton.setAttribute( 'title', 'Make control' )
+	controlButton.classList.add( 'Q-circuit-button', 'Q-circuit-toggle', 'Q-circuit-toggle-control' )
+	controlButton.setAttribute( 'title', 'Create controlled operation' )
+	controlButton.setAttribute( 'Q-disabled', 'Q-disabled' )
 	controlButton.innerText = 'C'
-*/
+
+	const swapButton = createDiv()
+	toolbarEl.appendChild( swapButton )
+	swapButton.classList.add( 'Q-circuit-button', 'Q-circuit-toggle-swap' )
+	swapButton.setAttribute( 'title', 'Create swap operation' )
+	swapButton.setAttribute( 'Q-disabled', 'Q-disabled' )
+	swapButton.innerText = 'S'
+
 
 	//  Create a circuit board container
 	//  so we can house a scrollable circuit board.
@@ -379,7 +381,7 @@ Object.assign( Q.Circuit.Editor, {
 
 		paletteEl.classList.add( 'Q-circuit-palette' )
 
-		'HXYZS'
+		'HXYZSTI'
 		.split( '' )
 		.forEach( function( label ){
 
@@ -394,7 +396,7 @@ Object.assign( Q.Circuit.Editor, {
 			const tileEl = document.createElement( 'div' )
 			operationEl.appendChild( tileEl )
 			tileEl.classList.add( 'Q-circuit-operation-tile' )
-			tileEl.innerText = label
+			if( label !== 'I' ) tileEl.innerText = label
 
 			;[ 'before', 'after' ].forEach( function( layer ){
 
@@ -497,7 +499,7 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 		operationEl.appendChild( tileEl )
 		tileEl.classList.add( 'Q-circuit-operation-tile' )
 		tileEl.setAttribute( 'title', operation.gate.name )
-		tileEl.innerText = operation.gate.label
+		if( operation.gate.label !== 'I' ) tileEl.innerText = operation.gate.label
 
 
 		//  Add operation link wires
@@ -540,6 +542,175 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 		}
 	})
 }
+
+
+
+
+Q.Circuit.Editor.isValidControlCandidate = function( circuitEl ){
+
+	const
+	selectedOperations = Array
+	.from( circuitEl.querySelectorAll( '.Q-circuit-cell-selected' ))
+
+
+	//  We must have at least two operations selected,
+	//  hopefully a control and something else,
+	//  in order to attempt a join.
+
+	if( selectedOperations.length < 2 ) return false
+
+	
+	//  Note the different moment indices present
+	//  among the selected operations.
+
+	const moments = selectedOperations.reduce( function( moments, operationEl ){
+
+		moments[ operationEl.getAttribute( 'moment-index' )] = true
+		return moments
+
+	}, {} )
+
+
+	//  All selected operations must be in the same moment.
+
+	if( Object.keys( moments ).length > 1 ) return false
+
+
+	//  Note the different gate types present
+	//  among the selected operations.
+
+	const gates = selectedOperations.reduce( function( gates, operationEl ){
+
+		gates[ operationEl.getAttribute( 'gate-label' )] = true
+		return gates
+
+	}, {} )
+
+
+	//  One of the selected operations
+	//  MUST be a control.
+
+	if( gates.I !== true ) return false
+
+
+	//  We can only add a control to 
+	//  one other kind of operation at a time.
+	//  No mixing operations!
+
+	if( Object.keys( gates ).length > 2 ) return false
+
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  We also need to make sure they are not already joined to anything!!!!!!!!!!!!!!!!!!
+//  do we eneed to store data in register-indices too? 'siblings' ??
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	return true
+}
+Q.Circuit.Editor.createControl = function( circuitEl ){
+
+	if( Q.Circuit.Editor.isValidControlCandidate( circuitEl ) !== true ) return this
+
+	const
+	circuit = circuitEl.circuit,
+	selectedOperations = Array
+		.from( circuitEl.querySelectorAll( '.Q-circuit-cell-selected' )),
+	control = selectedOperations
+		.find( function( el ){
+
+			return el.getAttribute( 'gate-label' ) === 'I'
+		}),
+	targets = selectedOperations
+		.reduce( function( targets, el ){
+
+			if( el.getAttribute( 'gate-label' ) !== 'I' ) targets.push( el )
+			return targets
+
+		}, [] )
+
+
+	circuit.history.createEntry$()
+	selectedOperations.forEach( function( operation ){
+
+		circuit.clear$(
+
+			+operation.getAttribute( 'moment-index' ),
+			+operation.getAttribute( 'register-index' )
+		)
+	})
+	circuit.set$(
+
+		+control.getAttribute( 'moment-index' ),
+		targets[ 0 ].getAttribute( 'gate-label' ),
+		[ +control.getAttribute( 'register-index' )].concat(
+
+			targets.reduce( function( registers, operation ){
+
+				registers.push( +operation.getAttribute( 'register-index' ))
+				return registers
+
+			}, [] )
+		)
+	)
+	Q.Circuit.Editor.onSelectionChanged( circuitEl )
+	Q.Circuit.Editor.onCircuitChanged( circuitEl )	
+	return this
+}
+
+
+
+
+Q.Circuit.Editor.isValidSwapCandidate = function( circuitEl ){
+
+	const
+	selectedOperations = Array
+	.from( circuitEl.querySelectorAll( '.Q-circuit-cell-selected' ))
+
+
+}
+Q.Circuit.Editor.createSwap = function( circuitEl ){
+
+	if( Q.Circuit.Editor.isValidSwapCandidate( circuitEl ) !== true ) return this
+
+
+	Q.Circuit.Editor.updateToolbarAbilities( circuitEl )
+}
+
+
+
+
+Q.Circuit.Editor.onSelectionChanged = function( circuitEl ){
+
+	const controlButtonEl = circuitEl.querySelector( '.Q-circuit-toggle-control' )
+	if( Q.Circuit.Editor.isValidControlCandidate( circuitEl )){
+
+		controlButtonEl.removeAttribute( 'Q-disabled' )
+	}
+	else controlButtonEl.setAttribute( 'Q-disabled', true )
+
+	const swapButtonEl = circuitEl.querySelector( '.Q-circuit-toggle-swap' )
+	if( Q.Circuit.Editor.isValidSwapCandidate( circuitEl )){
+
+		swapButtonEl.removeAttribute( 'Q-disabled' )
+	}
+	else swapButtonEl.setAttribute( 'Q-disabled', true )
+}
+Q.Circuit.Editor.onCircuitChanged = function( circuitEl ){
+
+	const circuit = circuitEl.circuit
+	window.dispatchEvent( new CustomEvent( 
+
+		'Q gui altered circuit', 
+		{ detail: { circuit: circuit }}
+	))
+
+	//  Should we trigger a circuit.evaluate$() here?
+	//  Particularly when we move all that to a new thread??
+	//  console.log( originCircuit.report$() ) ??
+}
+
 
 
 
@@ -806,6 +977,7 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		
 		if( lockEl ){
 
+			// const toolbarEl = Array.from( circuitEl.querySelectorAll( '.Q-circuit-button' ))
 			if( circuitIsLocked ){
 
 				circuitEl.classList.remove( 'Q-circuit-locked' )
@@ -843,19 +1015,23 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 
 
 		const
-		undoEl = targetEl.closest( '.Q-circuit-button-undo' ),
-		redoEl = targetEl.closest( '.Q-circuit-button-redo' ),
-		addMomentEl   = targetEl.closest( '.Q-circuit-moment-add' ),
-		addRegisterEl = targetEl.closest( '.Q-circuit-register-add' ),
 		cellEl = targetEl.closest(`
 
 			.Q-circuit-board-foreground > div,
 			.Q-circuit-palette > div
-		`)
+		`),
+		undoEl        = targetEl.closest( '.Q-circuit-button-undo' ),
+		redoEl        = targetEl.closest( '.Q-circuit-button-redo' ),
+		controlEl     = targetEl.closest( '.Q-circuit-toggle-control' ),
+		swapEl        = targetEl.closest( '.Q-circuit-toggle-swap' ),
+		addMomentEl   = targetEl.closest( '.Q-circuit-moment-add' ),
+		addRegisterEl = targetEl.closest( '.Q-circuit-register-add' )
 
 		if( !cellEl &&
 			!undoEl &&
 			!redoEl &&
+			!controlEl &&
+			!swapEl &&
 			!addMomentEl &&
 			!addRegisterEl ) return
 
@@ -874,28 +1050,18 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		event.stopPropagation()
 
 
-		//  +++++++++++++
-		//  Come back and add fuctionality here 
-		//  for undo, redo, add !
+		if( undoEl && circuit.history.undo$() ){
 
-		if( undoEl ){
-
-			console.log( '→ Undo' )
-			if( circuit.history.undo$() ) window.dispatchEvent( new CustomEvent( 
-
-				'Q gui altered circuit', 
-				{ detail: { circuit: circuit }}
-			))
+			Q.Circuit.Editor.onSelectionChanged( circuitEl )
+			Q.Circuit.Editor.onCircuitChanged( circuitEl )	
 		}
-		if( redoEl ){
+		if( redoEl && circuit.history.redo$() ){
 
-			console.log( '→ Redo' )
-			if( circuit.history.redo$() ) window.dispatchEvent( new CustomEvent( 
-
-				'Q gui altered circuit', 
-				{ detail: { circuit: circuit }}
-			))
+			Q.Circuit.Editor.onSelectionChanged( circuitEl )
+			Q.Circuit.Editor.onCircuitChanged( circuitEl )	
 		}
+		if( controlEl ) Q.Circuit.Editor.createControl( circuitEl )
+		if( swapEl ) Q.Circuit.Editor.createSwap( circuitEl )
 		if( addMomentEl   ) console.log( '→ Add moment' )
 		if( addRegisterEl ) console.log( '→ Add register' )
 
@@ -980,6 +1146,7 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 					el.classList.add( 'Q-circuit-cell-selected' )
 				})
 			}
+			Q.Circuit.Editor.onSelectionChanged( circuitEl )
 		}
 
 
@@ -1209,6 +1376,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				else el.classList.add( 'Q-circuit-cell-selected' )
 			})
 		}
+		Q.Circuit.Editor.onSelectionChanged( Q.Circuit.Editor.dragEl.circuitEl )
 		document.body.removeChild( Q.Circuit.Editor.dragEl )
 		Q.Circuit.Editor.dragEl = null
 	}
@@ -1221,7 +1389,9 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 	
 		if( Q.Circuit.Editor.dragEl.circuitEl ){
 
-			const originCircuit = Q.Circuit.Editor.dragEl.circuitEl.circuit
+			const 
+			originCircuitEl = Q.Circuit.Editor.dragEl.circuitEl
+			originCircuit = originCircuitEl.circuit
 			
 			originCircuit.history.createEntry$()
 			Array
@@ -1234,16 +1404,12 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 					child.origin.registerIndex
 				)
 			})
-			window.dispatchEvent( new CustomEvent( 
-
-				'Q gui altered circuit', 
-				{ detail: { circuit: originCircuit }}
-			))
-			// originCircuit.evaluate$()
-			//  ++++++++++++
-			//  need to trigger a new eval?
-			// console.log( originCircuit.report$() )
+			Q.Circuit.Editor.onSelectionChanged( originCircuitEl )
+			Q.Circuit.Editor.onCircuitChanged( originCircuitEl )
 		}
+
+
+
 
 		//+++++++++
 		//  We should do a puff of smoke animation here
@@ -1371,21 +1537,10 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 	})
 	
 
+	//  Are we capable of making controls? Swaps?
 
-	//  +++++++++++++++++++++++++++++++++++++
-	// console.log( circuit.toDiagram() )
-	// console.log( circuit.report$() )
-	//  +++++++++++++++++++++++++++++++++++++
-	// circuit.evaluate$()
-	window.dispatchEvent( new CustomEvent( 
-
-		'Q gui altered circuit', 
-		{ detail: { circuit }}
-	))
-
-
-
-
+	Q.Circuit.Editor.onSelectionChanged( circuitEl )
+	Q.Circuit.Editor.onCircuitChanged( circuitEl )
 
 
 	//  If the original circuit and destination circuit
@@ -1396,19 +1551,8 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 		Q.Circuit.Editor.dragEl.circuitEl !== circuitEl ){
 
 		const originCircuit = Q.Circuit.Editor.dragEl.circuitEl.circuit
-
-		//  ++++++++++++++++++++++++++++++++++++++++++
-		// console.log( 'ALSO - trigger an eval on the original circuit.' )
-		// console.log( originCircuit.toDiagram() )
-		// console.log( originCircuit.report$() )
-		//  ++++++++++++++++++++++++++++++++++++++++++
-		// originCircuit.evaluate$()
-
-		window.dispatchEvent( new CustomEvent( 
-
-			'Q gui altered circuit', 
-			{ detail: { circuit: originCircuit }}
-		))
+		Q.Circuit.Editor.onSelectionChanged( originCircuit )
+		Q.Circuit.Editor.onCircuitChanged( originCircuit )
 	}
 
 

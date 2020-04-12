@@ -31,7 +31,7 @@
 
 	   Menu     Moments
 	  ╭───────┬───┬───┬───┬───╮
-	  │ ≡     │ 1 │ 2 │ 3 │ + │ Add moment
+	  │ ≡   ↘ │ 1 │ 2 │ 3 │ + │ Add moment
 	  ├───┬───┼───┼───┼───┼───╯
 	R │ 0 │|0⟩│ H │ C0│ X │ -
 	e ├───┼───┼───┼───┼───┤
@@ -209,6 +209,7 @@
 	border-top-right-radius:    0.5rem;
 	border-bottom-right-radius: 0.5rem;
 }
+.Q-circuit-locked .Q-circuit-button,
 .Q-circuit-button[Q-disabled] {
 	
 	color: hsl( 
@@ -219,7 +220,11 @@
 	);
 	cursor: not-allowed;
 }
+.Q-circuit-locked .Q-circuit-toggle-lock {
 
+	color: inherit;
+	cursor: pointer;
+}
 
 
 
@@ -618,6 +623,7 @@
 	/*--Q-operation-color-hue:  0;
 	--Q-operation-color-main: hsl( 0, 0%, 10% );*/
 }
+.Q-circuit-operation-identity .Q-circuit-operation-tile,
 .Q-circuit-operation-control .Q-circuit-operation-tile,
 .Q-circuit-operation-target .Q-circuit-operation-tile {
 
@@ -625,6 +631,7 @@
 	/*--Q-operation-color-main: var( --Q-color-orange );*/
 	border-radius: 100%;
 }
+.Q-circuit-operation-identity .Q-circuit-operation-tile,
 .Q-circuit-operation-control .Q-circuit-operation-tile {
 
 	top:  calc( 50% - 0.7rem );
@@ -635,7 +642,6 @@
 /*	--Q-operation-color-hue:  0;
 	--Q-operation-color-main: hsl( 0, 0%, 10% );*/
 }
-
 .Q-circuit-operation-pauli-x,
 .Q-circuit-operation-pauli-y,
 .Q-circuit-operation-pauli-z {

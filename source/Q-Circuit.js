@@ -1267,17 +1267,16 @@ s3_folder = (“my_bucket”, “my_prefix”)
 		//  is redundant.
 
 		const
-		foundOperation = circuit.operations.find( function( operation ){
+		isRedundant = !!circuit.operations.find( function( operation ){
 
 			return (
 
 				momentIndex === operation.momentIndex &&
 				gate === operation.gate &&
-				registerIndices.lengt === operation.registerIndices.length &&
+				registerIndices.length === operation.registerIndices.length &&
 				registerIndices.every( val => operation.registerIndices.includes( val ))
 			)
-		}),
-		isRedundant = !!foundOperation || ( foundOperation === undefined && gate === Q.Gate.IDENTITY )
+		})
 
 
 		//  If it’s NOT redundant 
@@ -1292,29 +1291,27 @@ s3_folder = (“my_bucket”, “my_prefix”)
 			//  that happen to have a component at this moment / register.
 			
 			this.clear$( momentIndex, registerIndices )
-			if( gate !== Q.Gate.IDENTITY ){
 			
 
-				//  Finally. 
-				//  Finally we can actually set this operation.
-				//  Aren’t you glad we handle all this for you?
+			//  Finally. 
+			//  Finally we can actually set this operation.
+			//  Aren’t you glad we handle all this for you?
 
-				this.operations.push({
+			this.operations.push({
 
-					momentIndex,
-					registerIndices,
-					gate,
-					gateId
-				})
+				momentIndex,
+				registerIndices,
+				gate,
+				gateId
+			})
 
-				
-				//  IMPORTANT!
-				//  Operations must be sorted properly
-				//  for toTable to work reliably with
-				//  multi-register operations!!
-				
-				this.sort$()
-			}
+			
+			//  IMPORTANT!
+			//  Operations must be sorted properly
+			//  for toTable to work reliably with
+			//  multi-register operations!!
+			
+			this.sort$()
 
 
 			//  Let’s make history.

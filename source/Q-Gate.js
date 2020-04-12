@@ -201,78 +201,25 @@ Q.Gate.createConstants(
 
 
 
+	//  Swap
+	//   ┌──────┐
+	//  ─┤ SWAP ├─
+	//   └──────┘
+	
+	'SWAP', new Q.Gate({
 
-
-	//  https://qiskit.org/documentation/terra/summary_of_quantum_operations.html#multi-qubit-gates
-
-
-	'CONTROLLED_NOT', new Q.Gate({
-
-		//  https://cs.stackexchange.com/questions/10616/controlled-not-gate-a-type-of-measurement
-
-/*
-
-what i’m seeing here:
-
-const result = Q.Matrix.CONTROLLED_NOT.multiply( targetQubit.multiplyTensor( controlQubit ))
-|0> * |0> = 1000
-|0> * |1> = 0001
-|1> * |0> = 0100
-|1> * |1> = 0010
-
-
-const result = Q.Matrix.CONTROLLED_NOT.multiply( controlQubit.multiplyTensor( targetQubit ))
-|0> * |0> = 1000
-|0> * |1> = 0100
-|1> * |0> = 0001
-|1> * |1> = 0010
-
-
-
-
-
-
-*/
-		name:  'Controlled Not (C-Not)',
-		label: 'C',
-		css:   'controlled-not',
-		bandwidth: 2,
+		name:  'Swap',
+		label: '*',
+		css:   'swap',
 		matrix: new Q.Matrix(
 			[ 1, 0, 0, 0 ],
+			[ 0, 0, 1, 0 ],
 			[ 0, 1, 0, 0 ],
-			[ 0, 0, 0, 1 ],
-			[ 0, 0, 1, 0 ]),
-		operation: function( controlQubit, targetQubit ){
+			[ 0, 0, 0, 1 ]),
+		operation: function( qubit ){
 
-// console.log('controlQubit', controlQubit )
-// console.log('targetQubit', targetQubit )
-
-
-			const tensor = controlQubit.multiplyTensor( targetQubit )
-			//const tensor = targetQubit.multiplyTensor( controlQubit )
-			
-			// console.log( 'controlQubit', controlQubit.toTsv() )
-			// console.log( 'targetQubit', targetQubit.toTsv() )
-			// console.log( 'tensor', tensor.toTsv() )
-
-			const result = this.matrix.multiply( tensor )
-
-
-//  actually this seems to describe it well:
-//  http://www.ijoart.org/docs/Design-and-realization-of-a-quantum-Controlled-NOT-gate-using-optical-implementation.pdf
-
-//  so replace all this w that!
-
-// console.log( 'result!', result.toTsv() )
-
-			return [
-
-				new Q.Qubit( result.rows[ 0 ][ 0 ], result.rows[ 1 ][ 0 ]),
-				new Q.Qubit( result.rows[ 2 ][ 0 ], result.rows[ 3 ][ 0 ])
-			]
-		}}),
-
-
+			return new Q.Qubit( this.matrix.multiply( qubit ))
+		}})
 
 
 
