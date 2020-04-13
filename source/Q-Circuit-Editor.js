@@ -392,6 +392,7 @@ Object.assign( Q.Circuit.Editor, {
 			operationEl.classList.add( 'Q-circuit-operation' )
 			operationEl.classList.add( 'Q-circuit-operation-'+ gate.css )
 			operationEl.setAttribute( 'gate-label', label )
+			operationEl.setAttribute( 'title', gate.name )
 
 			const tileEl = document.createElement( 'div' )
 			operationEl.appendChild( tileEl )
@@ -492,13 +493,13 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 		operationEl.setAttribute( 'gate-label', operation.gate.label )
 		operationEl.setAttribute( 'moment-index', operation.momentIndex )
 		operationEl.setAttribute( 'register-index', registerIndex )
+		operationEl.setAttribute( 'title', operation.gate.name )
 		operationEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( operation.momentIndex )
 		operationEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
 
 		const tileEl = document.createElement( 'div' )
 		operationEl.appendChild( tileEl )
-		tileEl.classList.add( 'Q-circuit-operation-tile' )
-		tileEl.setAttribute( 'title', operation.gate.name )
+		tileEl.classList.add( 'Q-circuit-operation-tile' )		
 		if( operation.gate.label !== 'I' ) tileEl.innerText = operation.gate.label
 
 
@@ -535,7 +536,7 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 			if( i === 0 ){
 
 				operationEl.classList.add( 'Q-circuit-operation-control' )
-				tileEl.setAttribute( 'title', 'Control' )
+				operationEl.setAttribute( 'title', 'Control' )
 				tileEl.innerText = ''
 			}
 			else operationEl.classList.add( 'Q-circuit-operation-target' )
