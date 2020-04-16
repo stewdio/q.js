@@ -5,7 +5,8 @@
 Q is a quantum circuit editor and simulator that runs right in your
 web browser. There’s nothing to install and nothing to configure—so
 [jump right in and start experimenting!](https://quantumjavascript.app)
-Q’s drag-and-drop circuit editor makes codeless composition easy. Or
+Q’s drag-and-drop circuit editor makes codeless composition
+easy—regardless of whether you’re on a desktop or mobile device. Or
 pop open your browser’s JavaScript console to go deeper with Q’s
 intuitive—and heavily documented—API. (Because Q’s visual editor and
 the underlying circuit it represents are always listening to each
