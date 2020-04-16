@@ -2,25 +2,25 @@
 
 ![Q.js](./other/q-mark.svg)  
 
-Q is quantum computing in your browser.
-(What?!)
-Okay, okay, it’s a quantum circuit <em>simulator</em>—because you can’t do actual quantum computing using whatever non-quantum device you’re reading this on.
-(So why build this?)
-The same reason Google, IBM, and Microsoft build quantum simulators:
-to explore quantum circuit design using a cheap and easy medium before applying those designs to the real hardware.
-Learn more at [https://quantumjavascript.app](https://quantumjavascript.app).
+Q is a quantum circuit editor and simulator that runs right in your
+web browser. There’s nothing to install and nothing to configure—so
+[jump right in and start experimenting!](https://quantumjavascript.app)
+Q’s drag-and-drop circuit editor makes codeless composition easy. Or
+pop open your browser’s JavaScript console to go deeper with Q’s
+intuitive—and heavily documented—API. (Because Q’s visual editor and
+the underlying circuit it represents are always listening to each
+other, it’s easy to hop back and forth between code and interface.)
+Q’s editor crunches live probability results and circuits are 
+exportable as a variety of formats. 
+  
+Q is free to use, open-source, and includes simple explanations to get
+you up to speed on the basics of quantum computing. This makes Q ideal
+for the classroom as well as autodidacts at home. Q just might be the
+most accessible quantum circuit suite in the world. Q’s source
+code—including documentation—is available for download right here on
+GitHub: https://github.com/stewdio/q.js
+  
+Give Q a try right now at https://quantumjavascript.app.
 
 
-It’s easy
-------------------------------------------------------------------------------
-Ready to perform the most superfluous coin-flip code ever? Load up the Q 
-website at
-[https://quantumjavascript.app](https://quantumjavascript.app)
-and paste this in to your JavaScript console:
-```javascript
-Q`H`.try$()
-``` 
-Each time you run the above code there’s a 50% chance of receiving a 
-"0"—let’s call that heads—and a 50% chance of receiving a "1"—and we’ll call 
-that tails. Go ahead and try it out. 
 
