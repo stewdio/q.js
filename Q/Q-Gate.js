@@ -69,6 +69,14 @@ Q.Gate.createConstants(
 		matrix: Q.Matrix.IDENTITY_2X2
 	}),
 	
+	'NOOP', new Q.Gate({//  Used as a marker by the circuit editor interface.
+
+		name:  'Identity',
+		label: '!',
+		css:   'identity',
+		AmazonBraketName: 'i',
+		matrix: Q.Matrix.IDENTITY_2X2
+	}),
 	
 	'MEASURE', new Q.Gate({
 

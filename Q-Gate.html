@@ -37,33 +37,35 @@
 		<meta property="og:url"           content="https://quantumjavascript.app/Gate.html">
 		
 		<link rel="canonical" href="https://quantumjavascript.app/Gate.html">
-		<link href="other/q-favicon-064.png" rel="icon" type="image/png">
-		<link href="other/q-favicon-144.png" rel="apple-touch-icon">
+		<link href="assets/q-favicon-064.png" rel="icon" type="image/png">
+		<link href="assets/q-favicon-144.png" rel="apple-touch-icon">
 		
-		<link rel="stylesheet" href="source/Q.css">
-		<link rel="stylesheet" href="source/Q-Circuit-Editor.css">
-		<link rel="stylesheet" href="other/documentation.css">
+		<link rel="stylesheet" href="Q/Q.css">
+		<link rel="stylesheet" href="Q/Q-Circuit-Editor.css">
+		<link rel="stylesheet" href="assets/documentation.css">
 
 		<script src="https://www.googletagmanager.com/gtag/js" async></script>
-		<script src="other/ga.js"></script>
-		<script src="source/Q.js"></script>
-		<script src="source/Q-ComplexNumber.js"></script>
-		<script src="source/Q-Matrix.js"></script>
-		<script src="source/Q-Qubit.js"></script>
-		<script src="source/Q-Gate.js"></script>
-		<script src="source/Q-History.js"></script>
-		<script src="source/Q-Circuit.js"></script>
-		<script src="source/Q-Circuit-Editor.js"></script>
-		<script src="other/navigation.js"></script>
+		<script src="assets/ga.js"></script>
+		<script src="Q/Q.js"></script>
+		<script src="Q/Q-ComplexNumber.js"></script>
+		<script src="Q/Q-Matrix.js"></script>
+		<script src="Q/Q-Qubit.js"></script>
+		<script src="Q/Q-Gate.js"></script>
+		<script src="Q/Q-History.js"></script>
+		<script src="Q/Q-Circuit.js"></script>
+		<script src="Q/Q-Circuit-Editor.js"></script>
+		<script src="assets/navigation.js"></script>
 		
 	</head>
 	<body>
 		<main class="api">
 			<p>
+				Source code:
 				<a href="https://github.com/stewdio/q.js/blob/master/source/Q-Gate.js?ts=4" target="_blank">
 					<code>Q-Gate.js</code>
 				</a>
 			</p>
+			<hr>
 			<h3>Operations, not just matrices</h3>
 			<p>
 				Mathematically, a 
@@ -221,7 +223,7 @@ new <a href="Q.html">Q</a>.Gate({
 })
 </code></pre>
 						Matrix representation as declared in 
-						<code><a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>.<a href="Matrix.html#.IDENTITY_2X2">IDENTITY_2X2</a></code>:
+						<code><a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>.<a href="Q-Matrix.html#.IDENTITY_2X2">IDENTITY_2X2</a></code>:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -278,14 +280,14 @@ new <a href="Q.html">Q</a>.Gate({
 
 	name:  'Hadamard',
 	label: 'H',
-	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+	matrix: new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
 			
 			[ Math.SQRT1_2,  Math.SQRT1_2 ],
 			[ Math.SQRT1_2, -Math.SQRT1_2 ]
 	),
 	operation: function( qubit ){
 
-		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
+		return new <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>( this.matrix.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( qubit ))
 	}
 })
 </code></pre>
@@ -319,14 +321,14 @@ new <a href="Q.html">Q</a>.Gate({<span class="comment">//  Rπ</span>
 
 	name:  'Pauli X',
 	label: 'X',
-	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+	matrix: new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
 		
 		[ 0, 1 ],
 		[ 1, 0 ]
 	),
 	operation: function( qubit ){
 
-		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
+		return new <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>( this.matrix.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( qubit ))
 	}
 })
 </code></pre>
@@ -355,14 +357,14 @@ new <a href="Q.html">Q</a>.Gate({
 
 	name:  'Pauli Y',
 	label: 'Y',
-	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+	matrix: new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
 		
-		[ 0, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, -1 )],
-		[ new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 ), 0 ]
+		[ 0, new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, -1 )],
+		[ new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, 1 ), 0 ]
 	),
 	operation: function( qubit ){
 
-		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
+		return new <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>( this.matrix.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( qubit ))
 	}
 })
 </code></pre>
@@ -391,14 +393,14 @@ new <a href="Q.html">Q</a>.Gate({
 
 	name:  'Pauli Z',
 	label: 'Z', 
-	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+	matrix: new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
 		
 		[ 1,  0 ],
 		[ 0, -1 ]
 	),
 	operation: function( qubit ){
 
-		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
+		return new <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>( this.matrix.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( qubit ))
 	}
 })
 </code></pre>
@@ -427,14 +429,14 @@ new <a href="Q.html">Q</a>.Gate({
 
 	name:  'Phase',
 	label: 'S',
-	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+	matrix: new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
 		
 		[ 1, 0 ],
-		[ 0, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, 1 )]
+		[ 0, new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, 1 )]
 	),
 	operation: function( qubit ){
 
-		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
+		return new <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>( this.matrix.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( qubit ))
 	}
 })
 </code></pre>
@@ -463,14 +465,14 @@ new <a href="Q.html">Q</a>.Gate({
 
 	name:  'π ÷ 8',
 	label: 'T',
-	matrix: new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>(
+	matrix: new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
 		
 		[ 1, 0 ],
-		[ 0, <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>.<a href="ComplexNumber.html#.E">E</a>.<a href="ComplexNumber.html#.prototype.power">power</a>( new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, Math.PI / 4 )) ]
+		[ 0, <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>.<a href="Q-ComplexNumber.html#.E">E</a>.<a href="Q-ComplexNumber.html#.prototype.power">power</a>( new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, Math.PI / 4 )) ]
 	),
 	operation: function( qubit ){
 
-		return new <a href="Q.html">Q</a>.<a href="Qubit.html">Qubit</a>( this.matrix.<a href="Matrix.html#.prototype.multiply">multiply</a>( qubit ))
+		return new <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>( this.matrix.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( qubit ))
 	}
 })
 </code></pre>

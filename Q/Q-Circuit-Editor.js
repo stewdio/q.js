@@ -44,10 +44,19 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 
 	if( typeof targetEl === 'string' ) targetEl = document.getElementById( targetEl )	
 	const circuitEl = targetEl instanceof HTMLElement ? targetEl : createDiv()
-	this.domElement = circuitEl
 	circuitEl.classList.add( 'Q-circuit' )
 	circuitEl.setAttribute( 'id', this.domId )
+
+
+	//  We want a way to easily get to the circuit 
+	//  from this interface’s DOM element.
+	// (But we don’t need a way to reference this DOM element
+	//  from the circuit. A circuit can have many DOM elements!)
+	//  And we also want an easy way to reference this DOM element
+	//  from this Editor instance.
+
 	circuitEl.circuit = circuit
+	this.domElement = circuitEl
 
 
 	//  Toolbar.
@@ -288,7 +297,7 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	const referenceEl = document.createElement( 'p' )
 	circuitEl.appendChild( referenceEl )
 	referenceEl.innerHTML = `
-		This circuit is accessible via your 
+		This circuit is accessible in your 
 		<a href="index.html#Open_your_JavaScript_console" target="_blank">JavaScript console</a>
 		as <code>$('#${ domId }').circuit</code>`
 
@@ -308,10 +317,13 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 
 //  Augment Q.Circuit to have this functionality.
 
-Q.Circuit.toDom = Q.Circuit.Editor
+Q.Circuit.toDom = function( circuit, targetEl ){
+
+	return new Q.Circuit.Editor( circuit, targetEl ).domElement
+}
 Q.Circuit.prototype.toDom = function( targetEl ){
 
-	return new Q.Circuit.Editor( this, targetEl )
+	return new Q.Circuit.Editor( this, targetEl ).domElement
 }
 
 
@@ -381,7 +393,7 @@ Object.assign( Q.Circuit.Editor, {
 
 		paletteEl.classList.add( 'Q-circuit-palette' )
 
-		'HXYZSTI'
+		'HXYZST!'
 		.split( '' )
 		.forEach( function( label ){
 
@@ -397,11 +409,11 @@ Object.assign( Q.Circuit.Editor, {
 			const tileEl = document.createElement( 'div' )
 			operationEl.appendChild( tileEl )
 			tileEl.classList.add( 'Q-circuit-operation-tile' )
-			if( label !== 'I' ) tileEl.innerText = label
+			if( label !== '!' ) tileEl.innerText = label
 
 			;[ 'before', 'after' ].forEach( function( layer ){
 
-				tileEl.style.setProperty( '--Q-'+ layer +'-rotation', randomRangeAndSign( 0, 6 ) +'deg' )
+				tileEl.style.setProperty( '--Q-'+ layer +'-rotation', randomRangeAndSign( 0.5, 4 ) +'deg' )
 				tileEl.style.setProperty( '--Q-'+ layer +'-x', randomRangeAndSign( 1, 4 ) +'px' )
 				tileEl.style.setProperty( '--Q-'+ layer +'-y', randomRangeAndSign( 1, 3 ) +'px' )
 			})
@@ -481,18 +493,27 @@ Q.Circuit.Editor.prototype.onExternalSet = function( event ){
 }
 Q.Circuit.Editor.set = function( circuitEl, operation ){
 
-	const 
+	const
 	backgroundEl = circuitEl.querySelector( '.Q-circuit-board-background' ),
-	foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' )
+	foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' ),
+	circuit = circuitEl.circuit,
+	operationIndex = circuit.operations
+		.findIndex( function( op ){
+
+			return op === operation
+		})
 
 	operation.registerIndices.forEach( function( registerIndex, i ){
 
 		const operationEl = document.createElement( 'div' )
 		foregroundEl.appendChild( operationEl )
 		operationEl.classList.add( 'Q-circuit-operation', 'Q-circuit-operation-'+ operation.gate.css )
+		operationEl.setAttribute( 'operation-index', operationIndex )
 		operationEl.setAttribute( 'gate-label', operation.gate.label )
+		operationEl.setAttribute( 'gate-index', operation.gate.index )//  Used as an application-wide unique ID!
 		operationEl.setAttribute( 'moment-index', operation.momentIndex )
 		operationEl.setAttribute( 'register-index', registerIndex )
+		operationEl.setAttribute( 'register-array-index', i )//  Where within the registerIndices array is this operations fragment located?
 		operationEl.setAttribute( 'title', operation.gate.name )
 		operationEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( operation.momentIndex )
 		operationEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
@@ -500,7 +521,7 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 		const tileEl = document.createElement( 'div' )
 		operationEl.appendChild( tileEl )
 		tileEl.classList.add( 'Q-circuit-operation-tile' )		
-		if( operation.gate.label !== 'I' ) tileEl.innerText = operation.gate.label
+		if( operation.gate.label !== '!' ) tileEl.innerText = operation.gate.label
 
 
 		//  Add operation link wires
@@ -508,6 +529,17 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 
 		if( operation.registerIndices.length > 1 ){
 
+			operationEl.setAttribute( 'register-indices', operation.registerIndices )
+			operationEl.setAttribute( 'register-indices-index', i )
+			operationEl.setAttribute( 
+				
+				'sibling-indices', 
+				 operation.registerIndices
+				.filter( function( siblingRegisterIndex ){
+
+					return registerIndex !== siblingRegisterIndex
+				})
+			)
 			operation.registerIndices.forEach( function( registerIndex, i ){
 
 				if( i < operation.registerIndices.length - 1 ){			
@@ -591,7 +623,7 @@ Q.Circuit.Editor.isValidControlCandidate = function( circuitEl ){
 	//  One of the selected operations
 	//  MUST be a control.
 
-	if( gates.I !== true ) return false
+	if( gates[ '!' ] !== true ) return false
 
 
 	//  We can only add a control to 
@@ -621,12 +653,12 @@ Q.Circuit.Editor.createControl = function( circuitEl ){
 	control = selectedOperations
 		.find( function( el ){
 
-			return el.getAttribute( 'gate-label' ) === 'I'
+			return el.getAttribute( 'gate-label' ) === '!'
 		}),
 	targets = selectedOperations
 		.reduce( function( targets, el ){
 
-			if( el.getAttribute( 'gate-label' ) !== 'I' ) targets.push( el )
+			if( el.getAttribute( 'gate-label' ) !== '!' ) targets.push( el )
 			return targets
 
 		}, [] )
@@ -643,8 +675,8 @@ Q.Circuit.Editor.createControl = function( circuitEl ){
 	})
 	circuit.set$(
 
-		+control.getAttribute( 'moment-index' ),
 		targets[ 0 ].getAttribute( 'gate-label' ),
+		+control.getAttribute( 'moment-index' ),		
 		[ +control.getAttribute( 'register-index' )].concat(
 
 			targets.reduce( function( registers, operation ){
@@ -1284,9 +1316,9 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 
 		const
 		boardEl = circuitEl.querySelector( '.Q-circuit-board-foreground' ),
-		bounds   = boardEl.getBoundingClientRect(),
-		minX     = Q.Circuit.Editor.gridToPoint( columnIndexMin ),
-		minY     = Q.Circuit.Editor.gridToPoint( rowIndexMin )		
+		bounds  = boardEl.getBoundingClientRect(),
+		minX    = Q.Circuit.Editor.gridToPoint( columnIndexMin ),
+		minY    = Q.Circuit.Editor.gridToPoint( rowIndexMin )		
 		
 		dragEl.offsetX = bounds.left + minX - x
 		dragEl.offsetY = bounds.top  + minY - y
@@ -1295,10 +1327,13 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 	}
 	else if( paletteEl ){
 
-		const 
-		operationEl = targetEl.closest( '.Q-circuit-operation' ),
-		bounds      = operationEl.getBoundingClientRect(),
-		{ x, y }    = Q.Circuit.Editor.getInteractionCoordinates( event )
+		const operationEl = targetEl.closest( '.Q-circuit-operation' )
+
+		if( !operationEl ) return
+		
+		const
+		bounds   = operationEl.getBoundingClientRect(),
+		{ x, y } = Q.Circuit.Editor.getInteractionCoordinates( event )
 
 		dragEl.appendChild( operationEl.cloneNode( true ))
 		dragEl.originEl = paletteEl
@@ -1440,17 +1475,17 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 	//  Where exactly are we dropping on to this circuit??
 
 	const 
-	circuit     = circuitEl.circuit,
-	bounds      = boardContainerEl.getBoundingClientRect(),
-	xAdjusted   = x - bounds.left + boardContainerEl.scrollLeft,
-	yAdjusted   = y - bounds.top  + boardContainerEl.scrollTop,
-	momentIndex = Q.Circuit.Editor.gridColumnToMomentIndex( 
+	circuit    = circuitEl.circuit,
+	bounds     = boardContainerEl.getBoundingClientRect(),
+	droppedAtX = x - bounds.left + boardContainerEl.scrollLeft,
+	droppedAtY = y - bounds.top  + boardContainerEl.scrollTop,
+	droppedAtMomentIndex = Q.Circuit.Editor.gridColumnToMomentIndex( 
 
-		Q.Circuit.Editor.pointToGrid( xAdjusted )
+		Q.Circuit.Editor.pointToGrid( droppedAtX )
 	),
-	registerIndex = Q.Circuit.Editor.gridRowToRegisterIndex(
+	droppedAtRegisterIndex = Q.Circuit.Editor.gridRowToRegisterIndex(
 
-		Q.Circuit.Editor.pointToGrid( yAdjusted )
+		Q.Circuit.Editor.pointToGrid( droppedAtY )
 	),
 	foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' )
 
@@ -1459,8 +1494,8 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 	//  we can also just return to origin and bail.
 
 	if( Q.Circuit.Editor.dragEl.circuitEl === circuitEl &&
-		Q.Circuit.Editor.dragEl.momentIndex === momentIndex &&
-		Q.Circuit.Editor.dragEl.registerIndex === registerIndex ){
+		Q.Circuit.Editor.dragEl.momentIndex === droppedAtMomentIndex &&
+		Q.Circuit.Editor.dragEl.registerIndex === droppedAtRegisterIndex ){
 
 		returnToOrigin()
 		return
@@ -1470,10 +1505,10 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 	//  Is this a valid drop target within this circuit?
 
 	if(
-		momentIndex   < 1 || 
-		momentIndex   > circuit.timewidth ||
-		registerIndex < 1 ||
-		registerIndex > circuit.bandwidth
+		droppedAtMomentIndex   < 1 || 
+		droppedAtMomentIndex   > circuit.timewidth ||
+		droppedAtRegisterIndex < 1 ||
+		droppedAtRegisterIndex > circuit.bandwidth
 	){
 
 		returnToOrigin()
@@ -1505,12 +1540,12 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 	if( Q.Circuit.Editor.dragEl.circuitEl ){
 
 		const originCircuit = Q.Circuit.Editor.dragEl.circuitEl.circuit
-		draggedOperations.forEach( function( child ){
+		draggedOperations.forEach( function( childEl ){
 
 			originCircuit.clear$(
 
-				child.origin.momentIndex,			
-				child.origin.registerIndex
+				childEl.origin.momentIndex,			
+				childEl.origin.registerIndex
 			)
 		})
 	}
@@ -1518,23 +1553,321 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 	//  Now we can safely send new operations to circuit.set().
 
-	draggedOperations.forEach( function( child ){
+	draggedOperations.forEach( function( childEl, i ){
 
 		let
-		momentIndexTarget   = momentIndex, 
-		registerIndexTarget = registerIndex
+		momentIndexTarget   = droppedAtMomentIndex, 
+		registerIndexTarget = droppedAtRegisterIndex
 		
 		if( Q.Circuit.Editor.dragEl.circuitEl ){
 
-			momentIndexTarget   += child.origin.momentIndex   - Q.Circuit.Editor.dragEl.momentIndex
-			registerIndexTarget += child.origin.registerIndex - Q.Circuit.Editor.dragEl.registerIndex
+			momentIndexTarget   += childEl.origin.momentIndex   - Q.Circuit.Editor.dragEl.momentIndex
+			registerIndexTarget += childEl.origin.registerIndex - Q.Circuit.Editor.dragEl.registerIndex
 		}
-		circuit.set$( 
 
-			momentIndexTarget,
-			child.getAttribute( 'gate-label' ), 
-			[ registerIndexTarget ]
-		)
+
+		//  Is this a multi-register operation?
+
+		const registerIndicesString = childEl.getAttribute( 'register-indices' )
+		if( registerIndicesString ){
+
+			
+			//  The operation index acts as circuit-wide unique ID
+			//  but note it can change whenever a SET / CLEAR or SORT occurs!
+
+			const
+			operationIndex = +childEl.getAttribute( 'operation-index' ),
+
+
+			//  What are ALL of the registerIndices
+			//  associated with this multi-register operation?
+			// (We may use them later as a checklist.)
+
+			registerIndices = registerIndicesString
+			.split( ',' )
+			.map( function( str ){ return +str }),
+
+			
+			//  The unassuming “gateIndex” is actually an
+			//  application-wide unique ID
+			//  assigned to each Q.Gate instance upon creation.
+//++++++++ this instead should be an operationIndex number unique to the circuit!!!!!!!
+// because there are only like 10 gate instances total! everything else is a reference!!!!
+			
+			gateIndex = childEl.getAttribute( 'gate-index' ),
+
+
+			//  What 
+			
+			foundComponents = Array.from( 
+
+				Q.Circuit.Editor.dragEl.querySelectorAll( 
+
+					`[gate-index="${ gateIndex }"][register-indices="${ registerIndicesString }"]` 
+				)
+			),
+
+
+			//  We can’t pick the gate label off the 0th gate in the register indices array
+			//  because that will be an identity / control / null gate.
+			//  We need to look at 1 or higher.
+
+			component1 = Q.Circuit.Editor.dragEl.querySelector( 
+
+				`[gate-index="${ gateIndex }"][register-index="${ registerIndices[ 1 ] }"]`
+			),
+			gateLabel = component1 ? component1.getAttribute( 'gate-label' ) : childEl.getAttribute( 'gate-label' )
+
+
+
+console.log( '\n\n\nthis is a multi-register operation' )
+console.log( 'the gate label is', gateLabel, 'and the app-wide gate index ID is', gateIndex )
+
+
+
+
+			//  If we are dragging all of the components
+			//  of a multi-register operation
+			//  then we are good to go.
+
+			if( registerIndices.length === foundComponents.length ){
+
+				circuit.set$( 
+
+					gateLabel,
+					momentIndexTarget,
+
+
+					//  We need to remap EACH register index here
+					//  acoording to the drop position.
+					//  Let’s let set$ do all the validation on this.
+					
+					registerIndices.map( function( registerIndex ){
+
+						const siblingDelta = registerIndex - childEl.origin.registerIndex
+						registerIndexTarget = droppedAtRegisterIndex
+						if( Q.Circuit.Editor.dragEl.circuitEl ){
+
+							registerIndexTarget += childEl.origin.registerIndex - Q.Circuit.Editor.dragEl.registerIndex + siblingDelta
+						}
+						return registerIndexTarget
+					})
+				)
+			}
+
+
+			//  It appears we are NOT dragging all components
+			//  of a multi-register operation.
+			//  But if we’re dragging within the same circuit
+			//  and we’re staying within the same moment index
+			//  that might be ok!
+
+			else if( Q.Circuit.Editor.dragEl.circuitEl === circuitEl &&
+				momentIndexTarget === childEl.origin.momentIndex ){
+				
+
+
+
+
+/*
+
+
++++++++++++++++++++++++++++++++++++++++++++++++
+
+Ok. We need to know which siblings we are dragging
+and what their registerIndices # number is
+so we can update ONLY THOSE with new registerIndexTarget values
+while leaving the other sibling registerIndex values as they were
+
+
+
+*/
+
+console.log( 'about to edit SOME of this multi-register op', childEl.origin.registerIndex )
+
+
+/*
+				const testmap = registerIndices.map( function( registerIndex ){
+
+					const siblingDelta = registerIndex - childEl.origin.registerIndex
+					registerIndexTarget = droppedAtRegisterIndex
+					if( Q.Circuit.Editor.dragEl.circuitEl ){
+
+						registerIndexTarget += childEl.origin.registerIndex - Q.Circuit.Editor.dragEl.registerIndex + siblingDelta
+					}
+					return registerIndexTarget
+				})
+				// console.log( 'testmap', testmap )
+*/
+
+
+console.log( Q.Circuit.Editor.dragEl )
+console.log( 'gateIndex', gateIndex )
+
+
+
+
+const draggedSiblingRegisterIndices = Array
+.from( Q.Circuit.Editor.dragEl.querySelectorAll( 
+
+	`[gate-index="${ gateIndex }"]`
+))
+.sort( function( a, b ){
+
+	const 
+	aRegisterIndicesIndex = +a.getAttribute( 'register-indices-index' ),
+	bRegisterIndicesIndex = +b.getAttribute( 'register-indices-index' )
+	
+	return aRegisterIndicesIndex - bRegisterIndicesIndex
+})
+
+
+draggedSiblingRegisterIndices
+.forEach( function( e, i ){
+
+	console.log( '#', i, +e.getAttribute( 'register-indices-index' ))
+})
+//console.log(componentz.length, componentz)
+
+
+/*
+
+
+Ok. Now I know what siblings are being dragged
+and what their registerIndicesIndex is for each
+they are sorted in ascending order.
+
+which means I can step thru this operations's register indices
+start "r" at zero
+and when i hit a registerIndicesIndex that matches
+	(componentz[ r ] === ???operation.registerIndices???)
+i can modify its register-index according to the drop!
+	and increment my "r" r++
+
+
+*/
+
+
+let r = 0
+const fixedRegisterIndices = registerIndices
+.reduce( function( fixedRegisterIndices, componentRegisterIndex, i ){
+
+	if( r < draggedSiblingRegisterIndices.length ){
+
+		const draggedSiblingRegisterIndex = +draggedSiblingRegisterIndices[ r ].getAttribute( 'register-index' )
+		console.log( r, 'draggedSiblingRegisterIndex', draggedSiblingRegisterIndex )
+		console.log( i, 'componentRegisterIndex', componentRegisterIndex )
+
+		if( componentRegisterIndex === draggedSiblingRegisterIndex ){
+
+			fixedRegisterIndices.push(
+
+				//
+				 droppedAtRegisterIndex + componentRegisterIndex - Q.Circuit.Editor.dragEl.registerIndex
+			)
+			r ++
+		}
+	}
+	else fixedRegisterIndices.push( componentRegisterIndex )//  Unmodified by drag.
+	return fixedRegisterIndices
+
+}, [])
+
+
+
+
+
+
+				circuit.set$( 
+
+					childEl.getAttribute( 'gate-label' ), 
+					momentIndexTarget,
+					fixedRegisterIndices
+					/*registerIndices
+					.reduce( function( newRegisterIndices, reg ){
+
+						if( reg !== registerIndexTarget ){
+
+							if( reg === childEl.origin.registerIndex ) newRegisterIndices.push( registerIndexTarget )
+							else newRegisterIndices.push( reg )
+						}
+						return newRegisterIndices
+
+					}, [] )
+					*/
+				)
+			}
+			else {
+
+
+
+
+
+//+++++++++++++++++++++++++++++
+				
+
+//  It’s all getting broken up.
+//  BUT
+//  is there a way to keep SOME of it together?
+
+//  like if it’s i-X-X
+//  and you drag the i-X to a new register, can that stay together as just i-X?
+//  and the left-behind X becomes a lone X?
+
+
+
+
+
+
+
+			}
+
+
+
+//+++++ we should SPLICE the draggedOperations array
+//  to remove all the other siblings!
+//  otherwise we are processing them multiple times!
+
+console.log( '\n\n\nFinished processing 1st of a multi-register op. Now looking at siblings...' )
+console.log( 'gateIndex', gateIndex )
+console.log( 'registerIndexTarget', registerIndexTarget )
+
+let j = i + 1
+while( j < draggedOperations.length ){
+
+	const possibleSibling = draggedOperations[ j ]
+	if( possibleSibling.getAttribute( 'gate-index' ) === gateIndex ){
+
+		console.log( 'found a sibling at', j, ' w gate index:', gateIndex )
+		draggedOperations.splice( j, 1 )
+	}
+	else j ++
+}
+/*
+for( let j = i + 1; j < draggedOperations.length; j ++ ){
+
+	const possibleSibling = draggedOperations[ j ]
+	if( possibleSibling.getAttribute( 'gate-index' ) === gateIndex ){
+
+		console.log( 'found a sibling at', j, ' w gate index:', gateIndex )
+		draggedOperations.splice( j, 1 )
+	}
+}
+*/
+
+
+
+
+		}
+		else {
+
+			circuit.set$( 
+
+				childEl.getAttribute( 'gate-label' ), 
+				momentIndexTarget,
+				[ registerIndexTarget ]
+			)
+		}
 	})
 	
 

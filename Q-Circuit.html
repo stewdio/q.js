@@ -28,42 +28,44 @@
 		<meta name="twitter:creator"      content="@stew_rtsmith">
 		<meta name="twitter:title"        content="Q ⟩ Circuit">
 		<meta name="twitter:description"  content="Quantum computing in your browser.">
-		<meta name="twitter:image"        content="https://quantumjavascript.app/other/q-thumbnail.png">
+		<meta name="twitter:image"        content="https://quantumjavascript.app/assets/q-thumbnail.png">
 		
 		<meta property="og:type"          content="website">
 		<meta property="og:title"         content="Q ⟩ Circuit">
 		<meta property="og:description"   content="Quantum computing in your browser.">
-		<meta property="og:image"         content="https://quantumjavascript.app/other/q-thumbnail.png">
+		<meta property="og:image"         content="https://quantumjavascript.app/assets/q-thumbnail.png">
 		<meta property="og:url"           content="https://quantumjavascript.app/Circuit.html">
 		
 		<link rel="canonical" href="https://quantumjavascript.app/Circuit.html">
-		<link href="other/q-favicon-064.png" rel="icon" type="image/png">
-		<link href="other/q-favicon-144.png" rel="apple-touch-icon">
+		<link href="assets/q-favicon-064.png" rel="icon" type="image/png">
+		<link href="assets/q-favicon-144.png" rel="apple-touch-icon">
 		
-		<link rel="stylesheet" href="source/Q.css">
-		<link rel="stylesheet" href="source/Q-Circuit-Editor.css">
-		<link rel="stylesheet" href="other/documentation.css">
+		<link rel="stylesheet" href="Q/Q.css">
+		<link rel="stylesheet" href="Q/Q-Circuit-Editor.css">
+		<link rel="stylesheet" href="assets/documentation.css">
 
 		<script src="https://www.googletagmanager.com/gtag/js" async></script>
-		<script src="other/ga.js"></script>
-		<script src="source/Q.js"></script>
-		<script src="source/Q-ComplexNumber.js"></script>
-		<script src="source/Q-Matrix.js"></script>
-		<script src="source/Q-Qubit.js"></script>
-		<script src="source/Q-Gate.js"></script>
-		<script src="source/Q-History.js"></script>
-		<script src="source/Q-Circuit.js"></script>
-		<script src="source/Q-Circuit-Editor.js"></script>
-		<script src="other/navigation.js"></script>
+		<script src="assets/ga.js"></script>
+		<script src="Q/Q.js"></script>
+		<script src="Q/Q-ComplexNumber.js"></script>
+		<script src="Q/Q-Matrix.js"></script>
+		<script src="Q/Q-Qubit.js"></script>
+		<script src="Q/Q-Gate.js"></script>
+		<script src="Q/Q-History.js"></script>
+		<script src="Q/Q-Circuit.js"></script>
+		<script src="Q/Q-Circuit-Editor.js"></script>
+		<script src="assets/navigation.js"></script>
 		
 	</head>
 	<body>
 		<main class="api">
 			<p>
+				Source code:
 				<a href="https://github.com/stewdio/q.js/blob/master/source/Q-Circuit.js?ts=4" target="_blank">
 					<code>Q-Circuit.js</code>
 				</a>
 			</p>
+			<hr>
 			<h3 id="The_sounds_of_circuitry">The sounds of circuitry</h3>
 			<p>
 				Quantum circuits are represented by diagrams similar to
@@ -267,7 +269,7 @@
 				observing what happens at each passing moment.
 				We begin at moment zero (<code>t0</code>) with our initial qubit values.
 				Both qubit #0 and qubit #1 begin with a value of <span class="complex-vector beta">0</span>.
-				This is a <a href="Qubit.html#.HORIZONTAL">“horizontal” qubit state</a>.
+				This is a <a href="Q-Qubit.html#.HORIZONTAL">“horizontal” qubit state</a>.
 				In normal quantum circuit design these initial values will always be <span class="complex-vector beta">0</span>.
 				Q, however, allows us to manually change these input values 
 				to any possible qubit state
@@ -276,18 +278,18 @@
 			</p>
 			<p>
 				During our first moment of true operation (<code>t1</code>)
-				we apply a <a href="Gate.html#.HADAMARD">Hadamard</a> gate to qubit #0,
+				we apply a <a href="Q-Gate.html#.HADAMARD">Hadamard</a> gate to qubit #0,
 				putting it in to a <a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition state</a>.
 				(This is represented by the “H” within a square on qubit #0’s circuit wire.)
 				We leave qubit #1 as-is by
 				applying an
-				<a href="Gate.html#.IDENTITY">Identity</a> gate; a
+				<a href="Q-Gate.html#.IDENTITY">Identity</a> gate; a
 				<code>null</code> operator or “do nothing” gate.
 				This is represented by the small circle on qubit #1’s circuit wire.
 			</p>
 			<p>
 				In our next moment (<code>t2</code>) we operate on both qubits at once
-				by applying a <a href="Gate.html#.CONTROLLED_NOT">Controlled-Not</a> gate.
+				by applying a <a href="Q-Gate.html#.CONTROLLED_NOT">Controlled-Not</a> gate.
 				This operation will flip the value of qubit #1 if, and only if, 
 				the value of qubit #0 collapses to <span class="complex-vector beta">1</span>.
 				This action 
@@ -301,7 +303,7 @@
 			<p>
 				In our circuit’s final moment (<code>t3</code>)
 				we apply a
-				<a href="Gate.html#.PAULI_X">Pauli X</a> gate
+				<a href="Q-Gate.html#.PAULI_X">Pauli X</a> gate
 				to each qubit, 
 				flipping the value of both.
 			</p>
@@ -310,7 +312,7 @@
 				To create the above circuit we can take advantage of several Q shortcuts.
 				To beging with, the <a href="Q.html"><code>Q</code> object</a> itself is a function
 				that internally passess its arguments to the
-				<code>Circuit.<a href="Circuit.html#.fromText">fromText()</a></code>
+				<code>Circuit.<a href="Q-Circuit.html#.fromText">fromText()</a></code>
 				static method.
 				This function can accept text as an argument, 
 				but also accepts 
@@ -339,7 +341,7 @@ var fox = <a href="Q.html">Q</a>`<strong>H X#0--X
 I  X#1   X</strong>`
 </code></pre>
 			<p>
-				Internally, <code><a href="Circuit.html#.fromText">fromText</a></code>
+				Internally, <code><a href="Q-Circuit.html#.fromText">fromText</a></code>
 				is making the following calls to create the circuit.
 				Note the extreme difference between
 				the very little we must type (above) to create the circuit
@@ -353,30 +355,31 @@ I  X#1   X</strong>`
 var fox = new <a href="Q.html">Q</a>.Circuit( 2, 3 )
 
 
-<span class="comment">//  At moment #1 (the first moment we can operate),
-//  we’ll use a Hadamard gate
-//  to put the value of qubit #0 in to superposition.</span>
+	<span class="comment">//  At moment #1 (the first moment we can operate),
+	//  we’ll use a Hadamard gate
+	//  to set the value of the qubit 
+	//  on register #1 in to superposition.</span>
 
-fox.<a href="#.prototype.set$">set$</a>( 1, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.HADAMARD">HADAMARD</a>, [ 0 ])
-
-
-<span class="comment">//  Then at moment #2
-//  we’ll use a Controlled-Not gate
-//  to invert the value of qubit #1
-//  if the value of qubit #0 is 1.
-//  Note this is actually created from a 
-//  Pauli X gate with two inputs!</span>
-
-fox.<a href="#.prototype.set$">set$</a>( 2, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.PAULI_X">PAULI_X</a>, [ 0, 1 ])
+	.<a href="#.prototype.set$">set$</a>( <a href="Q.html">Q</a>.<a href="Q-Gate.html">Gate</a>.<a href="Q-Gate.html#.HADAMARD">HADAMARD</a>, 1, 1 )
 
 
-<span class="comment">//  Finally, at moment #3
-//  we’ll use a Pauli X gate
-//  to flip the value of qubit #0,
-//  and do the same for qubit #1.</span>
+	<span class="comment">//  Then at moment #2
+	//  we’ll use a Controlled-Not gate
+	//  to invert the value on register #2
+	//  if the value of register #1 is 1.
+	//  Note this is actually created from a 
+	//  Pauli X gate with two inputs!</span>
 
-fox.<a href="#.prototype.set$">set$</a>( 3, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.PAULI_X">PAULI_X</a>, [ 0 ])
-fox.<a href="#.prototype.set$">set$</a>( 3, <a href="Q.html">Q</a>.<a href="Gate.html">Gate</a>.<a href="Gate.html#.PAULI_X">PAULI_X</a>, [ 1 ])
+	.<a href="#.prototype.set$">set$</a>( <a href="Q.html">Q</a>.<a href="Q-Gate.html">Gate</a>.<a href="Q-Gate.html#.PAULI_X">PAULI_X</a>, 2, [ 1, 2 ])
+
+
+	<span class="comment">//  Finally, at moment #3
+	//  we’ll use a Pauli X gate
+	//  to flip the value of register #1,
+	//  and do the same for register #2.</span>
+
+	.<a href="#.prototype.set$">set$</a>( <a href="Q.html">Q</a>.<a href="Q-Gate.html">Gate</a>.<a href="Q-Gate.html#.PAULI_X">PAULI_X</a>, 3, 1 )
+	.<a href="#.prototype.set$">set$</a>( <a href="Q.html">Q</a>.<a href="Q-Gate.html">Gate</a>.<a href="Q-Gate.html#.PAULI_X">PAULI_X</a>, 3, 2 )
 
 </code></pre>
 			<p>
@@ -498,10 +501,10 @@ document.body.appendChild( fox.<a href="#.prototype.toDom">toDom</a>() )
 <pre><code>
 fox.<a href="#.prototype.report">report$</a>()
 <samp>
-|00⟩   50% chance  ████████████████
-|01⟩    0% chance  
-|10⟩    0% chance  
-|11⟩   50% chance  ████████████████
+1  |00⟩  ██████████░░░░░░░░░░  50% chance
+2  |01⟩  ░░░░░░░░░░░░░░░░░░░░   0% chance
+3  |10⟩  ░░░░░░░░░░░░░░░░░░░░   0% chance
+4  |11⟩  ██████████░░░░░░░░░░  50% chance
 </samp>
 </code></pre>
 			<p>
@@ -1075,7 +1078,9 @@ var fox = Q`
 	H  X#0  X
 	I  X#1  X
 `
-Array.from( document.querySelectorAll( '.fox-dom' )).forEach( function( el ){
+Array
+.from( document.querySelectorAll( '.fox-dom' ))
+.forEach( function( el ){
 
 	el.appendChild( fox.toDom() )
 })

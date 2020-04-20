@@ -135,6 +135,7 @@ body {
 
 	margin: 0;
 	background-color: var( --Q-color-background );
+	background-color: white;
 	padding: 0;
 	color: var( --Q-text-color );
 	font-family: var( --Q-font-family-sans );
@@ -220,39 +221,21 @@ a[ target=_blank ]:hover svg {
 	
 	display: block;
 	position: absolute;
-	
-	top:   -0.8rem;
+	top:    1.0rem;
 	right: -0.8rem;
-	
 	width:  1.6rem;
 	height: 1.6rem;
-
 	border-radius: 100%;
-	border: 1px solid hsl(
+	background-color: hsl( 
 
 		var( --Q-color-base-hue ),
 		10%,
-		80%
+		85%
 	);
-	background-color: var( --Q-color-background );
-	/*background: 
-		var( --Q-color-background )
-		linear-gradient(
-
-			0.45turn,
-			rgba( 255, 255, 255, 0.1 ),
-			rgba( 0, 0, 0, 0.05 )
-		);*/
-
 	font-size: 1rem;
-	line-height: 1.97rem;
+	line-height: 2rem;
 	font-weight: 400;
 	text-align: center;
-
-/*	box-shadow: 
-		-0.1rem -0.1rem 0 rgba( 255, 255, 255, 0.5 ),
-		 0.1rem  0.1rem 0.1rem rgba( 0, 0, 0, 0.15 );*/
-
 	overflow: hidden;
 }
 li .section-anchor {
@@ -279,12 +262,12 @@ li .section-anchor a {
 	position: relative;
 	min-width:  100%;
 	min-height: 100%;
-	color: var( --Q-hyperlink-internal-color );
+	color: white;
 }
 .section-anchor a:hover {
 
 	background-color: inherit;
-	color: var( --Q-hyperlink-internal-color );
+	color: white;
 }
 
 
@@ -300,7 +283,7 @@ li .section-anchor a {
 /*********************/
 
 
-h1, h2, h3, h4, h5 {
+h1, h2, h3, h4, h5, h6 {
 
 	position: relative;
 	margin:  0;
@@ -312,41 +295,36 @@ h1, h2, h3, h4, h5 {
 		20%
 	);
 	font-family: var( --Q-font-family-sans );
-	font-weight: normal;
-}
-h3, h4, h5 {
-
-	border-top: 1px solid hsl(
-
-		var( --Q-color-base-hue ),
-		10%,
-		80%
-	);
-	/*font-weight: 700;*/
-	font-weight: 500;
+	font-weight: 600;
 }
 h3 {
 
-	margin-top:     2.0rem;
+	margin-top:     0.5rem;
 	padding-top:    1.5rem;
-	padding-bottom: 1.0rem;
+	padding-bottom: 0.6rem;
 	font-size:      2.0rem;
 	line-height:    2.5rem;
-	letter-spacing: -0.03rem;
+	letter-spacing: -0.04rem;
 }
 h4 {
 
-	margin-top:     2.0rem;
+	margin-top:     0.5rem;
 	padding-top:    1.5rem;
 	padding-bottom: 0.5rem;
 	font-size:      1.5rem;
-	letter-spacing: -0.02rem;
-	/*font-weight: 700;*/
+	letter-spacing: -0.03rem;
 }
 h5  {
 
 	padding-top: 1em;
 	padding-bottom: 0em;
+	font-size: 1em;
+	letter-spacing: -0.02rem;
+}
+h6 {
+
+	display: inline;
+	padding-left: 1rem;
 	font-size: 1em;
 }
 
@@ -512,17 +490,17 @@ nav {
 	position: fixed;
 	top:  0;
 	left: 0;
-	width: 260px;
+	width: 16rem;
 	height: 100%;
 	background-color: var( --Q-color-background );
 	padding: 0 0 8rem 0;
 	overflow: auto;
 	font-size:   1rem;
-	line-height: 2rem;
+	line-height: 1.5rem;
 }
 header {
 
-	margin: 1rem 4rem 1rem 1.5rem;
+	margin: 1rem 4rem 1rem 1rem;
 }
 /*header h1 a {
 
@@ -538,7 +516,7 @@ header h1 svg {
 
 		var( --Q-color-blue-hue ),
 		10%,
-		60%
+		40%
 	);
 	/*fill: white;*/
 }
@@ -552,18 +530,23 @@ nav li {
 	list-style: none;
 	padding: 0;
 }
+nav li h2 {
+
+	font-size:   1.2rem;
+	line-height: 2.4rem;
+	font-weight: 400;
+}
 nav li a {
 
 	display: block;
-	height: 3rem;
+	height: 2.5rem;
 	padding: 0 0 0 2rem;	
 	font-family: var( --Q-font-family-sans );
-	line-height: 2.9rem;
+	/*line-height: 2rem;*/
 }
 nav a.selected {
 
 	color: #000;
-	/*font-weight: 700;*/
 }
 nav a.selected svg {
 
@@ -579,14 +562,14 @@ nav section {
 }
 nav p {
 
-	padding: 1.5rem 0 0 2rem;
+	padding: 1.5rem 0 0.25rem 2rem;
 	color: hsl(
 
 		var( --Q-color-base-hue ),
 		10%,
-		60%
+		75%
 	);
-	text-shadow: 1px 1px 0 rgba( 255, 255, 255, 0.5 );
+	/*text-shadow: 1px 1px 0 white;*/
 }
 
 
@@ -605,19 +588,18 @@ main {
 	
 	position: absolute;
 	top: 0;
-	left: 260px;
+	left: 16rem;
 	min-height: 100vh;
-	padding: calc( 6.6rem - 1px ) 2rem 12rem 1rem;	
+	padding: 7.6rem 2rem 12rem 1rem;	
 	overflow: auto;
 	min-width: 320px;
 	max-width: 620px;
 	font-size:   0.9rem;
 	line-height: 1.5rem;
-	/*box-shadow: 0 0 1rem rgba( 0, 0, 0, 0.2 );*/
 }
 main.api {
 
-	padding: calc( 5.0rem - 1px ) 2rem 12rem 1rem;
+	padding: 1.6rem 2rem 12rem 1rem;
 }
 main > p, main > ol, main > footer {
 

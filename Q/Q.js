@@ -214,12 +214,56 @@ Object.assign( Q, {
 		}
 		else return text
 	},
+
+
+
+
+
+
+
+
+	namesIndex: 0,
+	shuffledNames: [],
+	shuffleNames$: function(){
+
+		let m = []
+		for( let c = 0; c < Q.COLORS.length; c ++ ){
+
+			for( let a = 0; a < Q.ANIMALS.length; a ++ ){
+
+				m.push([ c, a, Math.random() ])
+			}
+		}		
+		Q.shuffledNames = m.sort( function( a, b ){
+
+			return a[ 2 ] - b[ 2 ]
+		})
+	},
+	getRandomName$: function(){
+
+		if( Q.shuffledNames.length === 0 ) Q.shuffleNames$()	
+		
+		const 
+		pair = Q.shuffledNames[ Q.namesIndex ],
+		name = Q.COLORS[ pair[ 0 ]] +' '+ Q.ANIMALS[ pair[ 1 ]]
+		
+		Q.namesIndex = ( Q.namesIndex + 1 ) % Q.shuffledNames.length
+		return name
+	},
 	hueToColorName: function( hue ){
 
 		hue = hue % 360
 		hue = Math.floor( hue / 10 )
 		return Q.COLORS[ hue ]
+	},
+	colorIndexToHue: function( i ){
+
+		return i * 10
 	}
+
+
+
+
 })
 
 
@@ -227,7 +271,7 @@ Object.assign( Q, {
 
 Q.createConstants( 
 
-	'REVISION', 16,
+	'REVISION', 17,
 
 
 	//  Yeah... F’ing floating point numbers, Man!

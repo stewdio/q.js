@@ -185,7 +185,7 @@
 		var( --Q-color-background-saturation ),
 		97%
 	);
-
+	background: var( --Q-color-background );
 /*	background: 
 		var( --Q-color-background )
 		linear-gradient(
@@ -314,7 +314,7 @@
 
 		var( --Q-color-background-hue ),
 		var( --Q-color-background-saturation ),
-		98%
+		95%
 	);
 }
 
@@ -361,7 +361,8 @@
 	position: sticky;
 	z-index: 2;
 	margin: 0;
-	background-color: var( --Q-color-background );
+	/*background-color: var( --Q-color-background );*/
+	background-color: white;
 	color: hsl(
 
 		var( --Q-color-background-hue ),
@@ -377,7 +378,7 @@
 
 		var( --Q-color-background-hue ),
 		var( --Q-color-background-saturation ),
-		98%
+		95%
 	);
 	color: black;
 }
@@ -426,7 +427,7 @@
 
 		var( --Q-color-background-hue ),
 		var( --Q-color-background-saturation ),
-		98%
+		95%
 	);
 }
 .Q-circuit-selectall,
@@ -437,7 +438,7 @@
 
 		var( --Q-color-background-hue ),
 		var( --Q-color-background-saturation ),
-		98%
+		95%
 	);
 }
 .Q-circuit-input {
@@ -446,7 +447,8 @@
 	z-index: 2;
 	grid-column: 1;
 	left: 0;
-	background-color: var( --Q-color-background );
+	/*background-color: var( --Q-color-background );*/
+	background-color: white;
 	font-size: 1.5rem;
 	font-weight: 900;
 	font-family: var( --Q-font-family-mono );
@@ -788,6 +790,12 @@
 .Q-circuit p {
 
 	padding: 1rem;
+	color: hsl( 
+		
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		66%
+	);
 }
 
 

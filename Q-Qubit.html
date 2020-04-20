@@ -37,39 +37,41 @@
 		<meta property="og:url"           content="https://quantumjavascript.app/Qubit.html">
 		
 		<link rel="canonical" href="https://quantumjavascript.app/Qubit.html">
-		<link href="other/q-favicon-064.png" rel="icon" type="image/png">
-		<link href="other/q-favicon-144.png" rel="apple-touch-icon">
-
-		<link rel="stylesheet" href="source/Q.css">
-		<link rel="stylesheet" href="source/Q-Circuit-Editor.css">
-		<link rel="stylesheet" href="other/documentation.css">
+		<link href="assets/q-favicon-064.png" rel="icon" type="image/png">
+		<link href="assets/q-favicon-144.png" rel="apple-touch-icon">
+		
+		<link rel="stylesheet" href="Q/Q.css">
+		<link rel="stylesheet" href="Q/Q-Circuit-Editor.css">
+		<link rel="stylesheet" href="assets/documentation.css">
 
 		<script src="https://www.googletagmanager.com/gtag/js" async></script>
-		<script src="other/ga.js"></script>
-		<script src="source/Q.js"></script>
-		<script src="source/Q-ComplexNumber.js"></script>
-		<script src="source/Q-Matrix.js"></script>
-		<script src="source/Q-Qubit.js"></script>
-		<script src="source/Q-Gate.js"></script>
-		<script src="source/Q-History.js"></script>
-		<script src="source/Q-Circuit.js"></script>
-		<script src="source/Q-Circuit-Editor.js"></script>
-		<script src="other/navigation.js"></script>
+		<script src="assets/ga.js"></script>
+		<script src="Q/Q.js"></script>
+		<script src="Q/Q-ComplexNumber.js"></script>
+		<script src="Q/Q-Matrix.js"></script>
+		<script src="Q/Q-Qubit.js"></script>
+		<script src="Q/Q-Gate.js"></script>
+		<script src="Q/Q-History.js"></script>
+		<script src="Q/Q-Circuit.js"></script>
+		<script src="Q/Q-Circuit-Editor.js"></script>
+		<script src="assets/navigation.js"></script>s
 
-		<script src="other/Three/three.105.min.js"></script>
-		<script src="other/Three/OrbitControls.js"></script>
-		<script src="other/Tween/tween.min.js"></script>
-		<script src="other/blochSphere.js"></script>
-		<script src="other/SurfaceText.js"></script>
+		<script src="assets/Three/three.105.min.js"></script>
+		<script src="assets/Three/OrbitControls.js"></script>
+		<script src="assets/Tween/tween.min.js"></script>
+		<script src="assets/blochSphere.js"></script>
+		<script src="assets/SurfaceText.js"></script>
 			
 	</head>
 	<body>
 		<main class="api">
 			<p>
+				Source code:
 				<a href="https://github.com/stewdio/q.js/blob/master/source/Q-Qubit.js?ts=4" target="_blank">
 					<code>Q-Qubit.js</code>
 				</a>
 			</p>
+			<hr>
 			<h3>Perfect pairs</h3>
 			<p>
 				A <a href="https://en.wikipedia.org/wiki/Qubit" target="_blank">qubit</a>
@@ -78,24 +80,24 @@
 				<a href="https://youtu.be/YYOKMUTTDdA" target="_blank">shiny happy number values,
 				holding hands</a>.
 				Let’s call the first number
-				“<code><a href="Qubit.html#this.alpha">alpha</a></code>” 
+				“<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>” 
 				and the second one
-				“<code><a href="Qubit.html#this.beta">beta</a></code>.”
+				“<code><a href="Q-Qubit.html#this.beta">beta</a></code>.”
 				We can couple this
-				<code><a href="Qubit.html#this.alpha">alpha</a></code>
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
 				and
-				<code><a href="Qubit.html#this.beta">beta</a></code>
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
 				together
 				by storing them in a very small matrix
 				that is 1 unit wide
 				and 2 units tall.
-				(See <code><a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a></code> for a refresher on what a matrix is.)
+				(See <code><a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a></code> for a refresher on what a matrix is.)
 				So when you think of a qubit you can imagine it as 
-				a 1 × 2 <a href="Matrix.html">matrix</a>
+				a 1 × 2 <a href="Q-Matrix.html">matrix</a>
 				containing its 
-				<code><a href="Qubit.html#this.alpha">alpha</a></code> value on the top
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code> value on the top
 				and its
-				<code><a href="Qubit.html#this.beta">beta</a></code> value on the bottom,
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code> value on the bottom,
 				like so:
 			</p>
 			<div class="center">
@@ -116,18 +118,18 @@
 				we know the value of one number 
 				then we have a pretty good idea what the other’s value is.
 				That is to say, if we know the 
-				<code><a href="Qubit.html#this.alpha">alpha</a></code>
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
 				then we also know the 
-				<code><a href="Qubit.html#this.beta">beta</a></code>.
-				(Or at least <code><a href="Qubit.html#this.beta">beta</a></code>’s <a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute value</a>.)
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code>.
+				(Or at least <code><a href="Q-Qubit.html#this.beta">beta</a></code>’s <a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute value</a>.)
 				For this reason, when we discuss the value of a qubit
 				we often only refer to one of these values instead of both.
 				By convention the value we choose to represent a qubit
 				is its 
-				<code><a href="Qubit.html#this.beta">beta</a></code> value.
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code> value.
 				So when we say “this qubit has a value of zero”
 				what we’re really saying is that its 
-				<code><a href="Qubit.html#this.beta">beta</a></code> value is <code>0</code>:
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code> value is <code>0</code>:
 			</p>
 			<div class="center maths">
 				“zero” =
@@ -144,7 +146,7 @@
 			<p>
 				Conversely, when we say “this qubit has a value of one”
 				we’re claiming that its 
-				<code><a href="Qubit.html#this.beta">beta</a></code> value is <code>1</code>:
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code> value is <code>1</code>:
 			</p>
 			<div class="center maths">
 				“one” =
@@ -166,11 +168,11 @@
 				offers us a more compact (and quantum-specific)
 				means of describing qubit states.
 				Let’s look again at the 
-				<a href="Matrix.html">matrix</a> form
+				<a href="Q-Matrix.html">matrix</a> form
 				for a qubit in a “zero” state—again the
-				<code><a href="Qubit.html#this.alpha">alpha</a></code> value is on top
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code> value is on top
 				and the
-				<code><a href="Qubit.html#this.beta">beta</a></code> value is on the bottom:
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code> value is on the bottom:
 			</p>
 			<div class="center maths">
 				<div class="matrix qubit">
@@ -186,7 +188,7 @@
 			<p>
 				With <a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket notation</a>
 				we can rewrite the 
-				<a href="Matrix.html">matrix</a>
+				<a href="Q-Matrix.html">matrix</a>
 				in <a href="https://en.wikipedia.org/wiki/Row_and_column_vectors" target="_blank">vector form</a> like so:
 			</p>
 			<br>
@@ -197,17 +199,17 @@
 			<br>
 			<p>
 				Notice how the 
-				<code><a href="Qubit.html#this.alpha">alpha</a></code> value
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code> value
 				has moved from its position on the top of a matrix
 				to the left-side of a vector.
 				Similarly, the 
-				<code><a href="Qubit.html#this.beta">beta</a></code> value
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code> value
 				has moved from its position on the bottom of a matrix
 				to the right-side of a vector.
 				We can reference the 
-				<code><a href="Qubit.html#this.alpha">alpha</a></code>
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
 				and
-				<code><a href="Qubit.html#this.beta">beta</a></code>
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
 				separately without confusion, 
 				writing them as
 				<span class="complex-vector alpha">1</span>
@@ -216,16 +218,16 @@
 				respectively.
 				The position and direction of the angle alphacbetas 
 				let us know immediately which one is the
-				<code><a href="Qubit.html#this.alpha">alpha</a></code>
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
 				(<em>begins</em> with and angle alphacbeta pointing to the <em>left</em>)
 				and which one is the
-				<code><a href="Qubit.html#this.beta">beta</a></code>
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
 				(<em>ends</em> with and angle alphacbeta pointing to the <em>right</em>).
 			</p>
 			<p>
 				Because we often refer to a qubit’s value
 				using only its 
-				<code><a href="Qubit.html#this.beta">beta</a></code>,
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code>,
 				we can describe a “zero” qubit as
 				<span class="complex-vector beta">0</span>,
 				and a “one” qubit as
@@ -248,17 +250,17 @@
 				The thing that makes this pair of numbers special
 				is their relationship to each other.
 				We can express this relationship as
-				|<code><a href="Qubit.html#this.alpha">alpha</a></code>|<sup>2</sup> + 
-				|<code><a href="Qubit.html#this.beta">beta</a></code>|<sup>2</sup> = 1. 
+				|<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>|<sup>2</sup> + 
+				|<code><a href="Q-Qubit.html#this.beta">beta</a></code>|<sup>2</sup> = 1. 
 				That is to the say, 
 				the <a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute value</a> of
-				<code><a href="Qubit.html#this.alpha">alpha</a></code>
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
 				multiplied by the <a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute value</a> of 
-				<code><a href="Qubit.html#this.alpha">alpha</a></code>, 
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>, 
 				added to the <a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute value</a> of 
-				<code><a href="Qubit.html#this.beta">beta</a></code>
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
 				multiplied by the <a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute value</a> of 
-				<code><a href="Qubit.html#this.beta">beta</a></code>,
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code>,
 				equals one.
 				This is what defines a qubit.
 				If a pair of numbers does <em>not</em> satisfy this equation
@@ -272,36 +274,36 @@
 				<a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute value</a>?
 				While that is true of <em>real</em> numbers,
 				it is not true of of <em>complex</em> numbers.
-				(See <code><a href="ComplexNumber.html">ComplexNumber</a></code>
+				(See <code><a href="Q-ComplexNumber.html">ComplexNumber</a></code>
 				for a refresher on this subject.)
 			</p>
 			<h4 id="Complex_couple">A complex couple</h4>
 			<p>
 				So far we’ve described qubits as containing
-				<code><a href="Qubit.html#this.alpha">alpha</a></code>
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
 				and 
-				<code><a href="Qubit.html#this.beta">beta</a></code>
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
 				values ranging from <code>0</code> to <code>1</code>,
 				and that remains true—but there’s more to the story.
 				Qubits are actually made of 
-				<a href="ComplexNumber.html">complex number</a> pairs,
+				<a href="Q-ComplexNumber.html">complex number</a> pairs,
 				meaning there is an <em>imaginary component.</em>
-				(See <code><a href="ComplexNumber.html">ComplexNumber</a></code>
+				(See <code><a href="Q-ComplexNumber.html">ComplexNumber</a></code>
 				for a refresher on this subject.)
 				So <em>one</em> qubit is actually made of <em>four</em> parts:
-				The <code><a href="Qubit.html#this.alpha">alpha</a></code>
-				has a ① <code><a href="ComplexNumber.html#this.real">real</a></code>
+				The <code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
+				has a ① <code><a href="Q-ComplexNumber.html#this.real">real</a></code>
 				component and an ②
-				<code><a href="ComplexNumber.html#this.imaginary">imaginary</a></code>
+				<code><a href="Q-ComplexNumber.html#this.imaginary">imaginary</a></code>
 				one.
-				The <code><a href="Qubit.html#this.beta">beta</a></code>
-				also has a ③ <code><a href="ComplexNumber.html#this.real">real</a></code>
+				The <code><a href="Q-Qubit.html#this.beta">beta</a></code>
+				also has a ③ <code><a href="Q-ComplexNumber.html#this.real">real</a></code>
 				component and an ④
-				<code><a href="ComplexNumber.html#this.imaginary">imaginary</a></code>
+				<code><a href="Q-ComplexNumber.html#this.imaginary">imaginary</a></code>
 				one.
-				(See <code><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code> for more details.)
+				(See <code><a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a></code> for more details.)
 				This makes 
-				<a href="Qubit.html#Visualizing_qubit_states">visualizing qubit states</a> all the more interesting.
+				<a href="Q-Qubit.html#Visualizing_qubit_states">visualizing qubit states</a> all the more interesting.
 			</p>
 
 			<h3>Superposition</h3>
@@ -321,9 +323,9 @@
 			</p>
 			<p>
 				What the 
-				<code><a href="Qubit.html#this.alpha">alpha</a></code>
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
 				and 
-				<code><a href="Qubit.html#this.beta">beta</a></code>
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
 				values represent together are the 
 				<a href="https://en.wikipedia.org/wiki/Probability_amplitude" target="_blank">probability amplitude</a> that a qubit,
 				when measured, will be in either a
@@ -339,30 +341,30 @@
 				will 
 				<a href="#.prototype.collapse">collapse</a> to 
 				<span class="complex-vector ket">0</span>
-				is |<code><a href="Qubit.html#this.alpha">alpha</a></code>|<sup>2</sup>,
+				is |<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>|<sup>2</sup>,
 				while the probabilty that it will 
 				<a href="#.prototype.collapse">collapse</a> to 
 				<span class="complex-vector ket">1</span>
-				is |<code><a href="Qubit.html#this.beta">beta</a></code>|<sup>2</sup>.
+				is |<code><a href="Q-Qubit.html#this.beta">beta</a></code>|<sup>2</sup>.
 			</p>
 			<br>
 			<ul>
 				<li>
 					A qubit, <code>{
-						<a href="Qubit.html#this.alpha">alpha</a>: 1,
-						<a href="Qubit.html#this.alpha">beta</a>: 0
+						<a href="Q-Qubit.html#this.alpha">alpha</a>: 1,
+						<a href="Q-Qubit.html#this.alpha">beta</a>: 0
 					}</code>, has a 100% chance of collapsing to <span class="complex-vector ket">0</span>.
 				</li>
 				<li>
 					A qubit, <code>{
-						<a href="Qubit.html#this.alpha">alpha</a>: 0,
-						<a href="Qubit.html#this.alpha">beta</a>: 1
+						<a href="Q-Qubit.html#this.alpha">alpha</a>: 0,
+						<a href="Q-Qubit.html#this.alpha">beta</a>: 1
 					}</code>, has a 100% chance of collapsing to <span class="complex-vector ket">1</span>.
 				</li>
 				<li>
 					A qubit, <code>{
-						<a href="Qubit.html#this.alpha">alpha</a>: 1÷√2,
-						<a href="Qubit.html#this.alpha">beta</a>: 1÷√2
+						<a href="Q-Qubit.html#this.alpha">alpha</a>: 1÷√2,
+						<a href="Q-Qubit.html#this.alpha">beta</a>: 1÷√2
 					}</code>, 
 					has a 50% chance of collapsing to <span class="complex-vector ket">0</span>
 					and a 50% chance of collapsing to <span class="complex-vector ket">1</span>.
@@ -372,19 +374,19 @@
 			<h3>Visualizing qubit states</h3>
 			<p>
 				Given the constraint
-				|<code><a href="Qubit.html#this.alpha">alpha</a></code>|<sup>2</sup> + 
-				|<code><a href="Qubit.html#this.beta">beta</a></code>|<sup>2</sup> = 1, if we plot all of the possible <em>real</em>
-				<code><a href="Qubit.html#this.alpha">alpha</a></code>
+				|<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>|<sup>2</sup> + 
+				|<code><a href="Q-Qubit.html#this.beta">beta</a></code>|<sup>2</sup> = 1, if we plot all of the possible <em>real</em>
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
 				and 
-				<code><a href="Qubit.html#this.beta">beta</a></code>
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
 				values on a graph
 				as <span class="symbol">x</span> and <span class="symbol">y</span> respectively,
 				the outcome is a circle with a radius of 1 centered at the origin (0, 0); 
 				ie. a <a href="https://en.wikipedia.org/wiki/Unit_circle)" target="_blank">unit circle</a>.
 				All possilbe combinations of 
-				<code><a href="Qubit.html#this.alpha">alpha</a></code>
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
 				and
-				<code><a href="Qubit.html#this.beta">beta</a></code>
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
 				lay on the perimeter of this circle.
 			</p>
 			<div class="unit-circle">
@@ -452,7 +454,7 @@
 			</div>
 			<h4 id="Bloch_sphere">The Bloch sphere</h4>
 			<p>
-				But a qubit isn’t just a pair of <em>real</em> numbers—it’s a pair of <a href="ComplexNumber.html">complex numbers</a> and plotting the relationship of these values requires a third dimension.
+				But a qubit isn’t just a pair of <em>real</em> numbers—it’s a pair of <a href="Q-ComplexNumber.html">complex numbers</a> and plotting the relationship of these values requires a third dimension.
 				This transforms our unit circle with a radius of 1 in to a
 				<a href="https://en.wikipedia.org/wiki/Bloch_sphere" target="_blank">Bloch sphere</a>,
 				also with a radius of 1.
@@ -478,8 +480,8 @@
 			<div class="interactive-container" id="bloch-sphere">
 				<div class="interactive-component" id="bloch-angles">
 					<code>
-						<a href="Qubit.html#this.alpha">alpha</a> = <span id="bloch-alpha">—</span><br>
-						<a href="Qubit.html#this.beta" >beta&nbsp;</a> = <span id="bloch-beta">—</span>
+						<a href="Q-Qubit.html#this.alpha">alpha</a> = <span id="bloch-alpha">—</span><br>
+						<a href="Q-Qubit.html#this.beta" >beta&nbsp;</a> = <span id="bloch-beta">—</span>
 					</code><br>
 					<br>
 					<code><span id="bloch-theta">—</span>˚</code> polar angle θ (theta)<br>
@@ -494,20 +496,20 @@
 			<p>
 				<span class="constructor">Qubit</span>
 				<code class="value-type">Function([ <a href="Q.html">Q</a>.Matrix* ][ 
-					alpha: Number or <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>, 
-					beta: Number or <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a> [, 
+					alpha: Number or <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>, 
+					beta: Number or <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a> [, 
 					label: String [, name: String ]]]) => <a href="Q.html">Q</a>.Qubit</code>
 				<br>
 				<code>Qubit</code>
-				extends <code><a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a></code>
+				extends <code><a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a></code>
 				and therefore inherits its 
-				<a href="Matrix.html#Static_properties">static</a> and 
-				<a href="Matrix.html#Prototype_properties">prototypal</a> properties.
+				<a href="Q-Matrix.html#Static_properties">static</a> and 
+				<a href="Q-Matrix.html#Prototype_properties">prototypal</a> properties.
 				The <code>Qubit</code> constructor 
 				can accept as a single argument a 
-				<code><a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a></code> instance, 
+				<code><a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a></code> instance, 
 				or anything that inherits from 
-				<code><a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a></code>—such as
+				<code><a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a></code>—such as
 				a <code><a href="Q.html">Q</a>.Qubit</code> instance—and will 
 				return a new qubit constructed from the passed object’s values.
 			</p>
@@ -515,52 +517,52 @@
 				Alternatively, the constructor
 				expects two arguments that are each either
 				instances of <code>Number</code> or 
-				<code><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code>
+				<code><a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a></code>
 				which will will then correspond to the qubit’s 
-				<code><a href="Qubit.html#this.alpha">alpha</a></code>
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
 				and 
-				<code><a href="Qubit.html#this.beta">beta</a></code>
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
 				values.
 				Further, an optional third argument may be supplied for
-				<code><a href="Qubit.html#this.label">label</a></code>—expected 
+				<code><a href="Q-Qubit.html#this.label">label</a></code>—expected 
 				in the form of a single character <code>String</code>—to be
 				used as a tiny label for the qubit when represented in diagram or graphic form. 
 				Even further, an optional fourth argument may be supplied for
-				<code><a href="Qubit.html#this.name">name</a></code>—expected
+				<code><a href="Q-Qubit.html#this.name">name</a></code>—expected
 				as a <code>String</code>—to be
 				used as a more descriptive name for the qubit.
 				If arguments for 
-				<code><a href="Qubit.html#this.label">label</a></code>
+				<code><a href="Q-Qubit.html#this.label">label</a></code>
 				or 
-				<code><a href="Qubit.html#this.name">name</a></code>
+				<code><a href="Q-Qubit.html#this.name">name</a></code>
 				are not supplied then
 				the constructor checks against the list of existing 
 				<code><a href="#.constants">constants</a></code>
 				and if a qubit with matching
-				<code><a href="Qubit.html#this.alpha">alpha</a></code>
+				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
 				and 
-				<code><a href="Qubit.html#this.beta">beta</a></code>
+				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
 				values is found then the corresponding
-				<code><a href="Qubit.html#this.label">label</a></code>
+				<code><a href="Q-Qubit.html#this.label">label</a></code>
 				and / or 
-				<code><a href="Qubit.html#this.name">name</a></code>
+				<code><a href="Q-Qubit.html#this.name">name</a></code>
 				will be copied to this new instance.
 			</p>
 			<p>
 				When a new qubit is created it internally invokes the
-				<code><a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a></code> constructor,
+				<code><a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a></code> constructor,
 				such that <code>new <a href="Q.html">Q</a>.Qubit( 
-					<a href="Qubit.html#this.alpha">alpha</a>,
-					<a href="Qubit.html#this.beta">beta</a>
+					<a href="Q-Qubit.html#this.alpha">alpha</a>,
+					<a href="Q-Qubit.html#this.beta">beta</a>
 				)</code>
 				is similar to
-				<code>new <a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a>([ 
-					<a href="Qubit.html#this.alpha">alpha</a> ],
-					[ <a href="Qubit.html#this.beta">beta</a>
+				<code>new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>([ 
+					<a href="Q-Qubit.html#this.alpha">alpha</a> ],
+					[ <a href="Q-Qubit.html#this.beta">beta</a>
 				])</code>.
 				If the two supplied values do not satisfy the assertion that
-				|<code><a href="Qubit.html#this.alpha">alpha</a></code>|<sup>2</sup> + 
-				|<code><a href="Qubit.html#this.beta">beta</a></code>|<sup>2</sup> = 1 
+				|<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>|<sup>2</sup> + 
+				|<code><a href="Q-Qubit.html#this.beta">beta</a></code>|<sup>2</sup> = 1 
 				then an error is thrown.
 			</p>
 <pre><code>
@@ -570,7 +572,7 @@ var fox = new <a href="Q.html">Q</a>.Qubit( 1, 0 )
 				<li>
 					<dt id="this.alpha">alpha</dt>
 					<dd>
-						<code class="value-type"><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code>
+						<code class="value-type"><a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a></code>
 						The first of two values 
 						that identify the state of a qubit.
 					</dd>
@@ -578,7 +580,7 @@ var fox = new <a href="Q.html">Q</a>.Qubit( 1, 0 )
 				<li>
 					<dt id="this.beta">beta</dt>
 					<dd>
-						<code class="value-type"><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code>
+						<code class="value-type"><a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a></code>
 						The second of two values 
 						that identify the state of a qubit.
 					</dd>
@@ -615,9 +617,9 @@ var fox = new <a href="Q.html">Q</a>.Qubit( 1, 0 )
 			<hr>
 			<h3>Static properties</h3>
 			<p>
-				Because <code>Q.Qubit</code> extends <code>Q.<a href="Matrix.html">Matrix</a></code>,
+				Because <code>Q.Qubit</code> extends <code>Q.<a href="Q-Matrix.html">Matrix</a></code>,
 				the following append or replace the latter’s existing 
-				<a href="Matrix.html#Static_properties">static properties</a>.
+				<a href="Q-Matrix.html#Static_properties">static properties</a>.
 			</p>
 			<ul class="properties">
 				<li>
@@ -775,7 +777,7 @@ var fox = new <a href="Q.html">Q</a>.Qubit( 1, 0 )
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Qubit</code>
 						Initialized as
-						<code>new <a href="Q.html">Q</a>.Qubit( Math.SQRT1_2, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, -Math.SQRT1_2 ), 'R', 'Right-hand Circular Polarized' )</code>.
+						<code>new <a href="Q.html">Q</a>.Qubit( Math.SQRT1_2, new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, -Math.SQRT1_2 ), 'R', 'Right-hand Circular Polarized' )</code>.
 						Described by the following matrix:<br>
 						<div class="maths">
 							<div class="matrix qubit">
@@ -799,7 +801,7 @@ var fox = new <a href="Q.html">Q</a>.Qubit( 1, 0 )
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Qubit</code>
 						Initialized as
-						<code>new <a href="Q.html">Q</a>.Qubit( Math.SQRT1_2, new <a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a>( 0, Math.SQRT1_2 ), 'L', 'Left-hand Circular Polarized' )</code>.
+						<code>new <a href="Q.html">Q</a>.Qubit( Math.SQRT1_2, new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, Math.SQRT1_2 ), 'L', 'Left-hand Circular Polarized' )</code>.
 						Described by the following matrix:<br>
 						<div class="maths">
 							<div class="matrix qubit">
@@ -908,7 +910,7 @@ var fox = new <a href="Q.html">Q</a>.Qubit( 1, 0 )
 			<hr>
 			<h3>Prototype properties</h3>
 			<p>
-				Because <code><a href="Q.html">Q</a>.Qubit</code> extends <code><a href="Q.html">Q</a>.<a href="Matrix.html">Matrix</a></code>,
+				Because <code><a href="Q.html">Q</a>.Qubit</code> extends <code><a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a></code>,
 				the following append or replace the latter’s existing prototype properties.
 			</p>
 			<h4>Non-destructive methods</h4>
@@ -984,7 +986,7 @@ var fox = new <a href="Q.html">Q</a>.Qubit( 1, 0 )
 					<dd>
 						<code class="value-type">Function( otherQubit: <a href="Q.html">Q</a>.Qubit ) ⇒ <a href="Q.html">Q</a>.Qubit</code>
 						Overwrites this instances’s
-						<code><a href="Matrix.html#this.rows">rows</a> Array</code>
+						<code><a href="Q-Matrix.html#this.rows">rows</a> Array</code>
 						with that of 
 						<code>otherQubit</code>.
 					</dd>

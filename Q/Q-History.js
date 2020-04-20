@@ -114,8 +114,11 @@ Object.assign( Q.History.prototype, {
 		//  Take this history entry, which itself is an Array.
 		//  It may contain several tasks.
 
-		this.entries[ this.index ]
-		.reverse()//  Only for undo -- not for redo?
+		const entry = this.entries[ this.index ].slice()
+
+		if( command < 0 ) entry.reverse()
+		
+		entry
 		.reduce( function( tasks, subentry, s ){
 
 			return tasks.concat( subentry[ command ])
@@ -123,6 +126,7 @@ Object.assign( Q.History.prototype, {
 		}, [] )
 		.forEach( function( task, i ){
 
+			console.log( task.args, task.func )
 			if( typeof task.func === 'function' ){
 
 				task.func.apply( instance, task.args )
@@ -150,7 +154,39 @@ Object.assign( Q.History.prototype, {
 		return true
 	},
 	undo$: function(){ return this.step$( -1 )},
-	redo$: function(){ return this.step$(  1 )}
+	redo$: function(){ return this.step$(  1 )},
+	report: function(){
+
+		const argsParse = function( output, entry, i ){
+
+			if( i > 0 ) output += ',  '
+			return output + ( typeof entry === 'object' && entry.name ? entry.name : entry )
+		}
+		return this.entries.reduce( function( output, entry, i ){
+
+			output += '\n\n'+ i + ' ════════════════════════════════════════'+
+			entry.reduce( function( output, entry, i ){
+
+				output += '\n\n    '+ i +' ────────────────────────────────────────\n'+
+				entry.undo.reduce( function( output, entry, i ){
+
+					output += '\n        Undo '+ i +' ── '+ entry.name +'  '
+					if( entry.args ) output += entry.args.reduce( argsParse, '' )
+					return output
+
+				}, '' )
+				if( entry.redo ){
+				
+					output += '\n        Redo   ── '+ entry.redo.name +'  '
+					if( entry.redo.args ) output += entry.redo.args.reduce( argsParse, '' )
+				}
+				return output
+
+			}, '' )
+			return output
+		
+		}, 'History entry cursor: '+ this.index )		
+	}
 })
 
 

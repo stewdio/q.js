@@ -386,7 +386,8 @@ Object.assign( Q.Circuit, {
 			
 				if( operation.registerIndices.length > 1 ){
 
-					operation.gate = Q.Gate.PAULI_X
+					// operation.gate = Q.Gate.PAULI_X
+					//  why the F was this hardcoded in there?? what was i thinking?!
 				}
 				U = operation.gate.matrix
 			} 
@@ -1178,20 +1179,21 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 			redo: {
 				
-				func: circuit.clear$,
+				name: 'clear$',
+				func: circuit.clear$,				
 				args: Array.from( arguments )
 			},
 			undo: foundOperations.reduce( function( undos, operation ){
 
 				undos.push({
 
+					name: 'set$',
 					func: circuit.set$,
 					args: [
 
-						operation.momentIndex,
 						operation.gate,
-						operation.registerIndices,
-						operation.gateId
+						operation.momentIndex,
+						operation.registerIndices
 					]
 				})
 				return undos
@@ -1222,9 +1224,29 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 		return circuit
 	},
-	set$: function( momentIndex, gate, registerIndices, gateId ){
+	
+
+	setProperty$: function( key, value ){
+
+		this[ key ] = value
+		return this
+	},
+	setName$: function( name ){
+
+		if( typeof name === 'function' ) name = name()
+		return this.setProperty$( 'name', name )
+	},
+
+
+	set$: function( gate, momentIndex, registerIndices ){
 
 		const circuit = this
+
+
+		//  Is this a valid gate?
+
+		if( typeof gate === 'string' ) gate = Q.Gate.findByLabel( gate )
+		if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } that is not a gate:`, gate )
 
 
 		//  Is this a valid moment index?
@@ -1235,12 +1257,6 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 			return Q.error( `Q.Circuit attempted to add a gate to circuit #${ this.index } at a moment index that is not valid:`, momentIndex )
 		}
-
-
-		//  Is this a valid gate?
-
-		if( typeof gate === 'string' ) gate = Q.Gate.findByLabel( gate )
-		if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } that is not a gate:`, gate )
 
 
 		//  Are these valid register indices?
@@ -1301,8 +1317,7 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 				momentIndex,
 				registerIndices,
-				gate,
-				gateId
+				gate
 			})
 
 			
@@ -1320,11 +1335,13 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 				redo: {
 					
+					name: 'set$',
 					func: circuit.set$,
 					args: Array.from( arguments )
 				},
 				undo: [{
 
+					name: 'clear$',
 					func: circuit.clear$,
 					args: [ momentIndex, registerIndices ]
 				}]
@@ -1345,6 +1362,7 @@ s3_folder = (“my_bucket”, “my_prefix”)
 				}}
 			))
 		}
+		return circuit
 	},
 
 
@@ -1438,11 +1456,9 @@ s3_folder = (“my_bucket”, “my_prefix”)
 			})
 			copy.set$(
 
-				1 + m - momentFirstIndex, 
 				operation.gate, 
-				adjustedRegisterIndices, 
-				operation.gateId,
-				true//  Allow overrun; ghost indices.
+				1 + m - momentFirstIndex, 
+				adjustedRegisterIndices
 			)
 		})
 
@@ -1633,14 +1649,12 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 				scope.set$(
 
-					m + atMoment + 1,
 					operation.gate,
+					m + atMoment + 1,
 					operation.qubitIndices.map( function( qubitIndex ){
 
 						return qubitIndex + atQubit
-					}),
-					operation.gateId,
-					true
+					})
 				)
 			})
 		})

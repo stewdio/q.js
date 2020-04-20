@@ -12,25 +12,23 @@ function onHashChange(){
 	if( hashTarget    ){
 
 		hashTarget.classList.add( 'hash-target' )
+		
 		setTimeout( function(){
 
 			const 
 			//nav = document.getElementsByTagName( 'nav' )[ 0 ],
 			//navIsExpanded = nav.classList.contains( 'expand' ),
 			//navHeight = nav.offsetHeight,
-			rootEm = parseFloat( window.getComputedStyle( document.body ).fontSize ),
-			dropAmount = rootEm * 10// + ( navIsExpanded === true ? navHeight : 0 )
+			rootEm  = parseFloat( window.getComputedStyle( document.body ).fontSize ),
+			yBuffer = rootEm * 10,// + ( navIsExpanded === true ? navHeight : 0 )
+			bounds  = hashTarget.getBoundingClientRect(),
+			yTarget = bounds.top - yBuffer + window.scrollY
 
-			window.scrollTo( 
-
-				hashTarget.offsetLeft,
-				hashTarget.offsetTop - dropAmount
-			)
+			window.scrollTo({ left: 0, top: yTarget, behavior: 'smooth' })
 
 		}, 10 )
 	}
 }
-window.addEventListener( 'hashchange', onHashChange, false )
 
 
 
@@ -190,16 +188,17 @@ document.addEventListener( 'DOMContentLoaded', function(){
 		<ul>
 			<li><h2><a href="${ home }">What is Q?</a></h2></li>
 			<li><h2><a href="playground.html">Playground</a></h2></li>
+			<li><h2><a href="contributing.html">Contributing</a></h2></li>
 			<li><h2><a href="resources.html">Resources</a></h2></li>
 		</ul>
 		<p>API documentation</p>
 		<ul>
 			<li><h2><a href="Q.html"><code>Q</code></a></h2></li>
-			<li><h2><a href="ComplexNumber.html"><code>ComplexNumber</code></a></h2></li>
-			<li><h2><a href="Matrix.html"><code>Matrix</code></a></h2></li>
-			<li><h2><a href="Qubit.html"><code>Qubit</code></a></h2></li>
-			<li><h2><a href="Gate.html"><code>Gate</code></a></h2></li>
-			<li><h2><a href="Circuit.html"><code>Circuit</code></a></h2></li>			
+			<li><h2><a href="Q-ComplexNumber.html"><code>Q.ComplexNumber</code></a></h2></li>
+			<li><h2><a href="Q-Matrix.html"><code>Q.Matrix</code></a></h2></li>
+			<li><h2><a href="Q-Qubit.html"><code>Q.Qubit</code></a></h2></li>
+			<li><h2><a href="Q-Gate.html"><code>Q.Gate</code></a></h2></li>
+			<li><h2><a href="Q-Circuit.html"><code>Q.Circuit</code></a></h2></li>
 		</ul>
 		<div id="veggie-burger">
 			<div id="vb-top-dexter"></div>
@@ -250,7 +249,7 @@ document.addEventListener( 'DOMContentLoaded', function(){
 	document.querySelector( 'main' ).addEventListener( 'click', vbClose )
 
 	
-	Array.from( document.querySelectorAll( 'main h2, main h3, main h4' )).forEach( function( el ){
+	Array.from( document.querySelectorAll( 'main h2, main h3, main h4, main h5' )).forEach( function( el ){
 
 		if( el.getAttribute( 'id' ) === null ){
 
@@ -278,12 +277,13 @@ document.addEventListener( 'DOMContentLoaded', function(){
 		container.classList.add( 'section-anchor' )
 		container.appendChild( link )
 		link.setAttribute( 'href', '#'+ el.getAttribute( 'id' ))
-		link.innerText = '&nbsp;'
+		link.innerHTML = '&nbsp;'
 		el.parentNode.appendChild( container )
 	})
 
-
+	
 	onHashChange()
+	window.addEventListener( 'hashchange', onHashChange, false )
 })
 
 

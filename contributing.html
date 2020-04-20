@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Q ⟩ Contributing</title>
+		<meta charset="utf-8">
+		<meta name="viewport"             content="width=device-width,initial-scale=1.0">
+		<meta name="description"          content="Quantum computing in your browser.">
+		<meta name="copyright"            content="Stewart Smith 2019–2020">
+		<meta name="keywords"             content="
+			Q, Q.js, Q-js, Qjs, quantum JavaScript,
+			quantum, quantum physics, quantum mechanics, superposition,
+			quantum computer, quantum computer programming, quantum computing, QC, 
+			quantum simulator, quantum computer simulator, 
+			qubit, qbit, gate, Hadamard, Bloch, Bloch Sphere,
+			Web, Web site, website, Web browser, browser, HTML, HTML5, JavaScript, ES6, CSS,
+			Chrome, Firefox, Safari, Opera, Brave, Edge, WebKit, Blink, Gecko, Mozilla,
+			Stewart Smith, Stewart, Stew, Stuart, Steven, Steve, Stewdio, stewartsmith, stew_rtsmith, @stew_rtsmith,
+			Moar, Moar Technologies Corp, MTC,
+			Google, IBM, Microsoft, Amazon, NASA, DWave, D-Wave,
+			Quil, OpenQASM,
+				ProjectQ, Qiskit, 
+				Quantum Development Kit, Cirq, Strawberry Fields, t|ket>,
+				QCL, Quantum pseudocode, Q#, Q|SI>, Q language, qGCL, QFC, QML, LIQUi|>, Quipper,
+			Stanford CS 269 Q: Quantum Computer Programming">
+		
+		<meta name="twitter:card"         content="summary_large_image">
+		<meta name="twitter:site"         content="@stew_rtsmith">
+		<meta name="twitter:creator"      content="@stew_rtsmith">
+		<meta name="twitter:title"        content="Q ⟩ Contributing">
+		<meta name="twitter:description"  content="Quantum computing in your browser.">
+		<meta name="twitter:image"        content="https://quantumjavascript.app/other/q-thumbnail.png">
+		
+		<meta property="og:type"          content="website">
+		<meta property="og:title"         content="Q ⟩ Contributing">
+		<meta property="og:description"   content="Quantum computing in your browser.">
+		<meta property="og:image"         content="https://quantumjavascript.app/other/q-thumbnail.png">
+		<meta property="og:url"           content="https://quantumjavascript.app/contributing.html">
+		
+		<link rel="canonical" href="https://quantumjavascript.app/contributing.html">
+		<link href="assets/q-favicon-064.png" rel="icon" type="image/png">
+		<link href="assets/q-favicon-144.png" rel="apple-touch-icon">
+		
+		<link rel="stylesheet" href="Q/Q.css">
+		<link rel="stylesheet" href="Q/Q-Circuit-Editor.css">
+		<link rel="stylesheet" href="assets/documentation.css">
+
+		<script src="https://www.googletagmanager.com/gtag/js" async></script>
+		<script src="assets/ga.js"></script>
+		<script src="Q/Q.js"></script>
+		<script src="Q/Q-ComplexNumber.js"></script>
+		<script src="Q/Q-Matrix.js"></script>
+		<script src="Q/Q-Qubit.js"></script>
+		<script src="Q/Q-Gate.js"></script>
+		<script src="Q/Q-History.js"></script>
+		<script src="Q/Q-Circuit.js"></script>
+		<script src="Q/Q-Circuit-Editor.js"></script>
+		<script src="assets/navigation.js"></script>
+	
+	</head>
+	<body>
+		<main>			
+			<h3>Contributing to Q</h3>
+			<p>
+				It’s time for Q to grow.
+				But it’s also Spring 2020—a time of isolation and quarantine
+				due to <a href="https://en.wikipedia.org/wiki/Coronavirus_disease_2019" target="_blank">COVID-19</a>.
+				Are you in need of a project to take your mind off current events?
+				Do you love JavaScript, CSS, and the free Web?
+				How about breaking down complex subjects in to simple bite-sized chunks of 
+				<a href="https://en.wikipedia.org/wiki/Copywriting" target="_blank">copywriting</a> and minimalist diagrams?
+				Are you a graphic designer or copywriter?
+				Are you excited about quantum computing?
+				<a href="https://github.com/stewdio/q.js" target="_blank">Join our Q.js project on GitHub</a>,
+				<a href="https://github.com/stewdio/q.js/issues" target="_blank">creating or resolve some issues</a>,
+				and help us make quatum accessible!
+			</p>
+			<h4>Roadmap</h4>
+			<p>
+				As of March 2020
+				we are focussed on refining the editor interface
+				and adding features to it.
+				The highest priority is including editor support for controlled gates.
+				(Controlled gates are already supported directly in code.)
+				Following these editor updates
+				the priority will shift back to the simulator itself.
+				Optimization is key,
+				including <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers" target="_blank">multiple execution threads</a> and hardware acceleration via
+				<a href="https://en.wikipedia.org/wiki/WebGPU" target="_blank">WebGPU</a>.
+			</p>
+
+			<h4>Code style</h4>
+			<p>
+				Q’s source code is verbose, heavily commented, and there’s great empathy for fellow learners.
+				<a href="https://en.wikipedia.org/wiki/Visual_hierarchy" target="_blank">Visual hierarchy</a> is key when facing a brick of monospace code gibberish. 
+				<a href="https://en.wikipedia.org/wiki/White_space_(visual_arts)" target="_blank">White space</a> helps; white space around variables, between conceptually different blocks of code.
+				(You’ve got to let code breathe.)
+				Semicolons as line-enders are avoided unless absolutely necessary. 
+				(They’re just visual clutter otherwise; <a href="https://en.wikipedia.org/wiki/Typography" target="_blank">typographic</a> noise in the signal.)
+				Q is meant to be flexible and expressive to adapt to your style.
+				<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a> is prized, but Q often uses static class methods as a foundation for instance methods, so you’re free to use either approach.
+				Some ES6 syntax is preferred, but the bits that disfigure JavaScript to look more like Java are weeded out, bagged, and tossed in the river.
+			</p>
+			<p>
+				Q’s main goal is to make learning and experimenting with quantum computing easier—not harder.
+				While Q’s internal code uses <code>let</code> and <code>const</code> when declaring variables,
+				the examples here use <code>var</code> instead;
+				redeclare and overwrite example variables to your heart’s content.
+				Similarly, Q is composed of plain old JavaScript includes
+				rather than modules.
+				Because of this, all of Q can run directly from your desktop 
+				using the <code>file://</code> protocol with no server required.
+				Just drag and drop any of Q’s <code>HTML</code> files on to your browser window.
+				You can also inspect any piece of Q right from the console as its running.
+			</p>
+			<h5>Destructive vs non-destructive methods</h5>
+			<p>
+				Q pays particular attention to <em>destructive</em> versus <em>non-destructive</em> instance methods. 
+				For example, the archetypal <em>non-destructive</em> method is <code>.<strong>clone</strong>()</code>
+				which returns a new sibling instance of the object it was called from 
+				and by its nature makes no alterations to that original object.
+				In contrast, <code>.<strong>copy</strong>$(&nbsp;sibling&nbsp;)</code> is the archetypal <em>destructive</em> method
+				which causes an instance to alter itself by overwriting its own properties’ values with values from a sibling instance, then returns itself.
+				The dollar sign suffix is similar to 
+				<a href="https://en.wikipedia.org/wiki/Ruby_(programming_language)" target="_blank">Ruby</a>’s
+				exclamation point suffix and is a reminder that the operation is destructive; will alter the instance.
+			</p>
+<pre><code>
+var 
+cat = new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 1,  2 ),
+dog = new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 3, -4 )
+
+cat.<a href="Q-ComplexNumber.html#.toText">toText</a>()   <span class="comment">//  Returns '1 + 2i'</span>
+dog.<a href="Q-ComplexNumber.html#.toText">toText</a>()   <span class="comment">//  Returns '3 - 4i'</span>
+
+cat.<a href="Q-ComplexNumber.html#.add"><strong>add</strong></a>( dog ) <span class="comment">//  Non-destructive.</span>
+cat.<a href="Q-ComplexNumber.html#.toText">toText</a>()   <span class="comment">//  Still returns '1 + 2i'</span>
+
+cat.<a href="Q-ComplexNumber.html#.add$"><strong>add$</strong></a>( dog )<span class="comment">//  Destructive. Note the ‘$’ suffix.</span>
+cat.<a href="Q-ComplexNumber.html#.toText">toText</a>()   <span class="comment">//  Now returns '4 - 2i'</span>
+</pre></code>
+			<h4>Documentation interface style</h4>
+			<p>
+				This collection of <code>HTML</code> files serves as Q’s interactive
+				documentation. 
+				It’s design objectives are tidiness, shareability, and consistency. 
+				When possible the general UI features,
+				such as the main navigation 
+				or body modules,
+				are visually flat.
+				Buttons intended to be “pushed” 
+				or circuit operations intended to be “dragged and dropped”
+				are represented as dimensional.
+			</p>
+		</main>
+	</body>
+</html>

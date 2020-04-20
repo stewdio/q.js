@@ -37,33 +37,35 @@
 		<meta property="og:url"           content="https://quantumjavascript.app/Matrix.html">
 		
 		<link rel="canonical" href="https://quantumjavascript.app/Matrix.html">
-		<link href="other/q-favicon-064.png" rel="icon" type="image/png">
-		<link href="other/q-favicon-144.png" rel="apple-touch-icon">
+		<link href="assets/q-favicon-064.png" rel="icon" type="image/png">
+		<link href="assets/q-favicon-144.png" rel="apple-touch-icon">
 		
-		<link rel="stylesheet" href="source/Q.css">
-		<link rel="stylesheet" href="source/Q-Circuit-Editor.css">
-		<link rel="stylesheet" href="other/documentation.css">
+		<link rel="stylesheet" href="Q/Q.css">
+		<link rel="stylesheet" href="Q/Q-Circuit-Editor.css">
+		<link rel="stylesheet" href="assets/documentation.css">
 
 		<script src="https://www.googletagmanager.com/gtag/js" async></script>
-		<script src="other/ga.js"></script>
-		<script src="source/Q.js"></script>
-		<script src="source/Q-ComplexNumber.js"></script>
-		<script src="source/Q-Matrix.js"></script>
-		<script src="source/Q-Qubit.js"></script>
-		<script src="source/Q-Gate.js"></script>
-		<script src="source/Q-History.js"></script>
-		<script src="source/Q-Circuit.js"></script>
-		<script src="source/Q-Circuit-Editor.js"></script>
-		<script src="other/navigation.js"></script>
+		<script src="assets/ga.js"></script>
+		<script src="Q/Q.js"></script>
+		<script src="Q/Q-ComplexNumber.js"></script>
+		<script src="Q/Q-Matrix.js"></script>
+		<script src="Q/Q-Qubit.js"></script>
+		<script src="Q/Q-Gate.js"></script>
+		<script src="Q/Q-History.js"></script>
+		<script src="Q/Q-Circuit.js"></script>
+		<script src="Q/Q-Circuit-Editor.js"></script>
+		<script src="assets/navigation.js"></script>
 		
 	</head>
 	<body>
 		<main class="api">
 			<p>
+				Source code:
 				<a href="https://github.com/stewdio/q.js/blob/master/source/Q-Matrix.js?ts=4" target="_blank">
 					<code>Q-Matrix.js</code>
 				</a>
 			</p>
+			<hr>
 			<h3>Grid of numbers</h3>
 			<p>
 				A <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)" target="_blank">matrix</a>
@@ -156,20 +158,20 @@
 			<h4>Complex numbers</h4>
 			<p>
 				Instead of just storing 
-				<a href="ComplexNumber.html#Real_numbers">regular old numbers</a>,
+				<a href="Q-ComplexNumber.html#Real_numbers">regular old numbers</a>,
 				our matrices are geared to store
-				<a href="ComplexNumber.html#Complex_numbers">complex numbers</a>.
+				<a href="Q-ComplexNumber.html#Complex_numbers">complex numbers</a>.
 				(This is because 
-				<a href="Qubit.html">qubits</a> are really just a pair of
+				<a href="Q-Qubit.html">qubits</a> are really just a pair of
 				complex numbers
 				that we store in a 1 × 2 matrix.
 				So, yes—the examples matrices above are actually <em>more complicated</em> than qubits are!)
 				In general, we don’t even have to think about 
 				the fact that our matrices are storing complex numbers
 				because 
-				<code><a href="Q.html">Q</a>.<a href="Matrix.html#Constructor">Matrix</a></code> is
+				<code><a href="Q.html">Q</a>.<a href="Q-Matrix.html#Constructor">Matrix</a></code> is
 				happy to accept regular JavaScript <code>Number</code> values as input—and 
-				<code><a href="Q.html">Q</a>.<a href="ComplexNumber.html#Constructor">ComplexNumber</a></code>
+				<code><a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html#Constructor">ComplexNumber</a></code>
 				will silently handle the conversion for us.
 			</p>
 			<hr>
@@ -191,7 +193,7 @@
 			</p>
 			<p>
 				Upon creation <code>Matrix</code> converts all argument values of type <code>Number</code> 
-				to <code><a href="Q.html">Q</a>.<a href="ComplexNumber.html">ComplexNumber</a></code> instances.
+				to <code><a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a></code> instances.
 				Currently <code>Matrix</code> does not support recursion;
 				a matrix cannot contain matrices as values.
 				A matrix also cannot change its dimensions, making destructive properties 
