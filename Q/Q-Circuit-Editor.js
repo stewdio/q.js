@@ -716,6 +716,7 @@ Q.Circuit.Editor.createSwap = function( circuitEl ){
 
 Q.Circuit.Editor.onSelectionChanged = function( circuitEl ){
 
+	
 	const controlButtonEl = circuitEl.querySelector( '.Q-circuit-toggle-control' )
 	if( Q.Circuit.Editor.isValidControlCandidate( circuitEl )){
 
@@ -1411,8 +1412,8 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				if( el.wasSelected === true ) el.classList.remove( 'Q-circuit-cell-selected' )
 				else el.classList.add( 'Q-circuit-cell-selected' )
 			})
+			Q.Circuit.Editor.onSelectionChanged( Q.Circuit.Editor.dragEl.circuitEl )
 		}
-		Q.Circuit.Editor.onSelectionChanged( Q.Circuit.Editor.dragEl.circuitEl )
 		document.body.removeChild( Q.Circuit.Editor.dragEl )
 		Q.Circuit.Editor.dragEl = null
 	}
@@ -1587,6 +1588,8 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			.split( ',' )
 			.map( function( str ){ return +str }),
 
+
+
 			
 			//  The unassuming “gateIndex” is actually an
 			//  application-wide unique ID
@@ -1594,7 +1597,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 //++++++++ this instead should be an operationIndex number unique to the circuit!!!!!!!
 // because there are only like 10 gate instances total! everything else is a reference!!!!
 			
-			gateIndex = childEl.getAttribute( 'gate-index' ),
+//			gateIndex = childEl.getAttribute( 'gate-index' ),
 
 
 			//  What 
@@ -1603,7 +1606,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 				Q.Circuit.Editor.dragEl.querySelectorAll( 
 
-					`[gate-index="${ gateIndex }"][register-indices="${ registerIndicesString }"]` 
+					`[operation-index="${ operationIndex }"][register-indices="${ registerIndicesString }"]` 
 				)
 			),
 
@@ -1614,14 +1617,19 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 			component1 = Q.Circuit.Editor.dragEl.querySelector( 
 
-				`[gate-index="${ gateIndex }"][register-index="${ registerIndices[ 1 ] }"]`
+				`[operation-index="${ operationIndex }"][register-index="${ registerIndices[ 1 ] }"]`
 			),
 			gateLabel = component1 ? component1.getAttribute( 'gate-label' ) : childEl.getAttribute( 'gate-label' )
 
 
 
-console.log( '\n\n\nthis is a multi-register operation' )
-console.log( 'the gate label is', gateLabel, 'and the app-wide gate index ID is', gateIndex )
+// console.log( 'registerIndices', registerIndices )
+
+//console.log( 'foundComponents', foundComponents )
+
+
+//console.log( '\n\n\nthis is a multi-register operation' )
+//console.log( 'the gate label is', gateLabel, 'and the app-wide operation index ID is', operationIndex )
 
 
 
@@ -1683,7 +1691,7 @@ while leaving the other sibling registerIndex values as they were
 
 */
 
-console.log( 'about to edit SOME of this multi-register op', childEl.origin.registerIndex )
+// console.log( 'about to edit SOME of this multi-register op', childEl.origin.registerIndex )
 
 
 /*
@@ -1701,8 +1709,8 @@ console.log( 'about to edit SOME of this multi-register op', childEl.origin.regi
 */
 
 
-console.log( Q.Circuit.Editor.dragEl )
-console.log( 'gateIndex', gateIndex )
+// console.log( Q.Circuit.Editor.dragEl )
+
 
 
 
@@ -1710,7 +1718,7 @@ console.log( 'gateIndex', gateIndex )
 const draggedSiblingRegisterIndices = Array
 .from( Q.Circuit.Editor.dragEl.querySelectorAll( 
 
-	`[gate-index="${ gateIndex }"]`
+	`[operation-index="${ operationIndex }"]`
 ))
 .sort( function( a, b ){
 
@@ -1722,11 +1730,11 @@ const draggedSiblingRegisterIndices = Array
 })
 
 
-draggedSiblingRegisterIndices
-.forEach( function( e, i ){
+// draggedSiblingRegisterIndices
+// .forEach( function( e, i ){
 
-	console.log( '#', i, +e.getAttribute( 'register-indices-index' ))
-})
+// 	console.log( 'Dragged sibling #', i, ' register indices index:', +e.getAttribute( 'register-indices-index' ))
+// })
 //console.log(componentz.length, componentz)
 
 
@@ -1747,7 +1755,8 @@ i can modify its register-index according to the drop!
 
 */
 
-
+// console.log( 'registerIndices AGAIN', registerIndices )
+// console.log( 'draggedSiblingRegisterIndices.length', draggedSiblingRegisterIndices.length )
 let r = 0
 const fixedRegisterIndices = registerIndices
 .reduce( function( fixedRegisterIndices, componentRegisterIndex, i ){
@@ -1755,26 +1764,37 @@ const fixedRegisterIndices = registerIndices
 	if( r < draggedSiblingRegisterIndices.length ){
 
 		const draggedSiblingRegisterIndex = +draggedSiblingRegisterIndices[ r ].getAttribute( 'register-index' )
-		console.log( r, 'draggedSiblingRegisterIndex', draggedSiblingRegisterIndex )
-		console.log( i, 'componentRegisterIndex', componentRegisterIndex )
+		// console.log( r, 'draggedSiblingRegisterIndex', draggedSiblingRegisterIndex )
+		// console.log( i, 'componentRegisterIndex', componentRegisterIndex )
+
 
 		if( componentRegisterIndex === draggedSiblingRegisterIndex ){
 
-			fixedRegisterIndices.push(
 
-				//
-				 droppedAtRegisterIndex + componentRegisterIndex - Q.Circuit.Editor.dragEl.registerIndex
-			)
+			const dropTargettt = droppedAtRegisterIndex + componentRegisterIndex - Q.Circuit.Editor.dragEl.registerIndex
+
+			// console.log( '#'+i, 'origin', componentRegisterIndex, 'target', dropTargettt )
+
+			fixedRegisterIndices.push( dropTargettt )
 			r ++
 		}
+		else {
+
+			// console.log( '#'+i, 'origin', componentRegisterIndex, 'target (SAME)' )
+			fixedRegisterIndices.push( componentRegisterIndex )//  Unmodified by drag.
+		}
 	}
-	else fixedRegisterIndices.push( componentRegisterIndex )//  Unmodified by drag.
+	else {
+
+		// console.log( '#'+i, 'origin', componentRegisterIndex, 'target (SAME)' )
+		fixedRegisterIndices.push( componentRegisterIndex )//  Unmodified by drag.
+	}
 	return fixedRegisterIndices
 
 }, [])
 
 
-
+// console.log( 'fixedRegisterIndices', fixedRegisterIndices )
 
 
 
@@ -1783,18 +1803,6 @@ const fixedRegisterIndices = registerIndices
 					childEl.getAttribute( 'gate-label' ), 
 					momentIndexTarget,
 					fixedRegisterIndices
-					/*registerIndices
-					.reduce( function( newRegisterIndices, reg ){
-
-						if( reg !== registerIndexTarget ){
-
-							if( reg === childEl.origin.registerIndex ) newRegisterIndices.push( registerIndexTarget )
-							else newRegisterIndices.push( reg )
-						}
-						return newRegisterIndices
-
-					}, [] )
-					*/
 				)
 			}
 			else {
@@ -1828,17 +1836,16 @@ const fixedRegisterIndices = registerIndices
 //  to remove all the other siblings!
 //  otherwise we are processing them multiple times!
 
-console.log( '\n\n\nFinished processing 1st of a multi-register op. Now looking at siblings...' )
-console.log( 'gateIndex', gateIndex )
-console.log( 'registerIndexTarget', registerIndexTarget )
+// console.log( '\n\n\nFinished processing 1st of a multi-register op. Now looking at siblings...' )
+// console.log( 'registerIndexTarget', registerIndexTarget )
 
 let j = i + 1
 while( j < draggedOperations.length ){
 
 	const possibleSibling = draggedOperations[ j ]
-	if( possibleSibling.getAttribute( 'gate-index' ) === gateIndex ){
+	if( possibleSibling.getAttribute( 'operation-index' ) === operationIndex ){
 
-		console.log( 'found a sibling at', j, ' w gate index:', gateIndex )
+		console.log( 'found a sibling at', j, ' w operation index:', operationIndex )
 		draggedOperations.splice( j, 1 )
 	}
 	else j ++

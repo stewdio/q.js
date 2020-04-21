@@ -127,7 +127,7 @@ svg, :root {
 
 	--Q-color-background-hue: var( --Q-color-base-hue );
 	--Q-color-background-saturation: 15%;
-	--Q-color-background-lightness:  97%;	
+	--Q-color-background-lightness:  98%;	
 	--Q-color-background: hsl(
 
 		var( --Q-color-background-hue ),

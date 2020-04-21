@@ -126,7 +126,6 @@ Object.assign( Q.History.prototype, {
 		}, [] )
 		.forEach( function( task, i ){
 
-			console.log( task.args, task.func )
 			if( typeof task.func === 'function' ){
 
 				task.func.apply( instance, task.args )

@@ -1644,6 +1644,10 @@ header h1 svg {
 		padding: 0;
 		box-shadow: 0 0 0.5rem rgba( 0, 0, 0, 0.5 );
 	}
+	nav li h2 {
+
+		line-height: 3rem;
+	}
 	nav li a {
 
 		height: 0;

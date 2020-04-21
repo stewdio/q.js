@@ -37,24 +37,24 @@
 		<meta property="og:url"           content="https://quantumjavascript.app/playground.html">
 		
 		<link rel="canonical" href="https://quantumjavascript.app/playground.html">
-		<link href="other/q-favicon-064.png" rel="icon" type="image/png">
-		<link href="other/q-favicon-144.png" rel="apple-touch-icon">
+		<link href="assets/q-favicon-064.png" rel="icon" type="image/png">
+		<link href="assets/q-favicon-144.png" rel="apple-touch-icon">
 		
-		<link rel="stylesheet" href="source/Q.css">
-		<link rel="stylesheet" href="source/Q-Circuit-Editor.css">
-		<link rel="stylesheet" href="other/documentation.css">
+		<link rel="stylesheet" href="Q/Q.css">
+		<link rel="stylesheet" href="Q/Q-Circuit-Editor.css">
+		<link rel="stylesheet" href="assets/documentation.css">
 
 		<script src="https://www.googletagmanager.com/gtag/js" async></script>
-		<script src="other/ga.js"></script>
-		<script src="source/Q.js"></script>
-		<script src="source/Q-ComplexNumber.js"></script>
-		<script src="source/Q-Matrix.js"></script>
-		<script src="source/Q-Qubit.js"></script>
-		<script src="source/Q-Gate.js"></script>
-		<script src="source/Q-History.js"></script>
-		<script src="source/Q-Circuit.js"></script>
-		<script src="source/Q-Circuit-Editor.js"></script>
-		<script src="other/navigation.js"></script>
+		<script src="assets/ga.js"></script>
+		<script src="Q/Q.js"></script>
+		<script src="Q/Q-ComplexNumber.js"></script>
+		<script src="Q/Q-Matrix.js"></script>
+		<script src="Q/Q-Qubit.js"></script>
+		<script src="Q/Q-Gate.js"></script>
+		<script src="Q/Q-History.js"></script>
+		<script src="Q/Q-Circuit.js"></script>
+		<script src="Q/Q-Circuit-Editor.js"></script>
+		<script src="assets/navigation.js"></script>
 
 	</head>
 	<body>
@@ -66,12 +66,18 @@
 				generate an interactive circuit diagram 
 				and other output formats below.
 				You can learn more about Q’s plain text format
-				in <a href="Circuit.html#Writing_quantum_circuits">“Writing quantum circuits.”</a>
+				in <a href="Q-Circuit.html#Writing_quantum_circuits">“Writing quantum circuits.”</a>
 			</p>
-			<textarea class="Q-circuit-text-input" id="playground-input">I-I-I---I-I
+			<!-- textarea class="Q-circuit-text-input" id="playground-input">I-I-I---I-I
 I-H-X#0-I-I
 I-I-X#1-I-I
-I-I-I---I-I</textarea>
+I-I-I---I-I</textarea -->
+
+			<textarea class="Q-circuit-text-input" id="playground-input">
+H#0-Z#0-I-H-I-X#0-I---I-H
+I---Z#1-I-H-I-I---X#0-I-H
+H#1-Z#2-I-X-H-X#1-X#1-H-X
+H#2-I---I-I-I-I---I---I-I</textarea>
 			<p class="right">
 				<button class="Q-button" id="playground-apply-button" type="button" onclick="updatePlaygroundFromText()">
 					Apply
@@ -157,7 +163,7 @@ I-I-I---I-I</textarea>
 				Here’s a <a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>
 				(which produces <a href="https://en.wikipedia.org/wiki/Quantum_entanglement" target="_blank">quantum entanglement</a>), 
 				but with 
-				<a href="Gate.html#.PAULI_X">Pauli X</a>
+				<a href="Q-Gate.html#.PAULI_X">Pauli X</a>
 				operations added to both registers as a finale—so
 				the only two possible results are 
 				<span class="complex-vector ket">00</span>
@@ -167,6 +173,17 @@ I-I-I---I-I</textarea>
 <pre><code>
 H X#0 X
 I X#1 X</code></pre>
+			<h4>Deutsch oracle</h4>
+			<p>
+				 which 
+
+				The <a href="https://en.wikipedia.org/wiki/Deutsch%E2%80%93Jozsa_algorithm" target="_blank">Deutsch–Jozsa algorithm</a> is a deterministic quantum algorithm proposed by David Deutsch and Richard Jozsa in 1992 with improvements by Richard Cleve, Artur Ekert, Chiara Macchiavello, and Michele Mosca in 1998.[1][2] Although of little practical use, it is one of the first examples of a quantum algorithm that is exponentially faster than any possible deterministic classical algorithm and is the inspiration for Simon's Algorithm, which is, in turn, the inspiration for Shor's Algorithm.
+				[Wikipedia]
+			</p>
+<pre><code>
+H-I-X#0-I---I-H
+H-I-I---X#0-I-H
+X-H-X#1-X#1-H-X</code></pre>
 			<h4>Whiplash</h4>
 			<p>
 				This monster demonstrates some
@@ -333,7 +350,7 @@ window.addEventListener( 'DOMContentLoaded', function(){
 
 
 //  EVALUATION.
-
+/*
 window.addEventListener( 'Q.Circuit.evaluate began', function( event ){
 
 	console.log( 
@@ -390,6 +407,7 @@ window.addEventListener( 'Q gui altered circuit', function( event ){
 
 	updatePlaygroundFromDom( event.detail.circuit )
 })
+*/
 
 
 
