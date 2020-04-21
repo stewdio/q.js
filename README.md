@@ -1,6 +1,6 @@
 
 
-![Q.js](./other/q-mark.svg)  
+![Q.js](./assets/q-mark.svg)  
 
 Quantum, made easy
 ==============================================================================
@@ -44,10 +44,10 @@ generate an outcome probabilities report. (And
 [what are those dollar signs about?](https://quantumjavascript.app/contributing.html#Destructive_vs_non-destructive_methods))
 ```javascript
 new Q.Circuit( 2, 2 )
-	.set$( Q.Gate.HADAMARD, 1, 1 )
-	.set$( Q.Gate.PAULI_X, 2, [ 1, 2 ])
-	.setName$( Q.getRandomName$ )
-	.evaluate$()
+    .set$( Q.Gate.HADAMARD, 1, 1 )
+    .set$( Q.Gate.PAULI_X, 2, [ 1, 2 ])
+    .setName$( Q.getRandomName$ )
+    .evaluate$()
 ```
 
 
@@ -59,7 +59,7 @@ become cumbersome—and difficult to read. That’s why we built
 [Q’s shorthand syntax](https://quantumjavascript.app/Q-Circuit.html#.fromText). 
 Just type your circuit operations out as text (using “I” for 
 [identity gates](https://quantumjavascript.app/Q-Gate.html#.IDENTITY) in the 
-spots where no operations occur) and enclose your text block in backticks 
+spots where no operations occur), enclose your text block in backticks 
 (instead of quotes) and you’re good to go! This code snippet below does 
 exactly the same thing as the snippet above. (To learn more about 
 [Q’s shorthand syntax](https://quantumjavascript.app/Q-Circuit.html#.fromText) 
@@ -68,8 +68,8 @@ and other convenient tricks, see
 
 ```javascript
 Q`
-	H  X#0
-	I  X#1
+    H  X#0
+    I  X#1
 `
 .setName$( Q.getRandomName$ )
 .evaluate$()
@@ -107,6 +107,7 @@ with these results:
 2  |01⟩  ░░░░░░░░░░░░░░░░░░░░   0% chance
 3  |10⟩  ░░░░░░░░░░░░░░░░░░░░   0% chance
 4  |11⟩  ██████████░░░░░░░░░░  50% chance
+
 ```
 
 
@@ -123,10 +124,10 @@ to experiment with converting circuits between various formats.
 As always, new features are in the works.
 [Join our project on GitHub](https://github.com/stewdio/q.js")
 and help us build bridges to everywhere.
-
-
-
-
+  
+  
+  
+  
 Give Q a try right now at 
 [https://quantumjavascript.app](https://quantumjavascript.app).
 
