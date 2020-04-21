@@ -72,12 +72,19 @@
 I-H-X#0-I-I
 I-I-X#1-I-I
 I-I-I---I-I</textarea -->
+<!--
 
-			<textarea class="Q-circuit-text-input" id="playground-input">
 H#0-Z#0-I-H-I-X#0-I---I-H
 I---Z#1-I-H-I-I---X#0-I-H
 H#1-Z#2-I-X-H-X#1-X#1-H-X
-H#2-I---I-I-I-I---I---I-I</textarea>
+H#2-I---I-I-I-I---I---I-I
+
+--->
+			<textarea class="Q-circuit-text-input" id="playground-input">
+H-I-X#0-I---I-H
+H-I-I---X#0-I-H
+X-H-X#1-X#1-H-X
+I-I-I---I---I-I</textarea>
 			<p class="right">
 				<button class="Q-button" id="playground-apply-button" type="button" onclick="updatePlaygroundFromText()">
 					Apply
@@ -350,7 +357,7 @@ window.addEventListener( 'DOMContentLoaded', function(){
 
 
 //  EVALUATION.
-/*
+
 window.addEventListener( 'Q.Circuit.evaluate began', function( event ){
 
 	console.log( 
@@ -407,7 +414,7 @@ window.addEventListener( 'Q gui altered circuit', function( event ){
 
 	updatePlaygroundFromDom( event.detail.circuit )
 })
-*/
+
 
 
 
