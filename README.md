@@ -12,7 +12,9 @@ Fire up the [Q editor](https://quantumjavascript.app), then tap and drag the
 pieces around to get a feel for how it works. It’s easy to use on both 
 desktop and mobile devices. Made a mistake? Just tap the Undo button.
 
-
+![Q editor demo](./assets/Q-demo-editor-1.gif)  
+  
+  
 Free and open-source
 ------------------------------------------------------------------------------
 Q is free to use, our code is open-source, and our API is heavily documented. 
