@@ -704,11 +704,12 @@
 
 
 
-
+.Q-circuit-clipboard > div,
 .Q-circuit-cell-selected {
 
 	background-color: white;
 }
+.Q-circuit-clipboard > div:before,
 .Q-circuit-cell-selected:before {
 
 	content: "";

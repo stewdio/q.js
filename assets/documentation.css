@@ -388,12 +388,19 @@ sub {
 pre {
 
 	margin: 0.5rem 0;
-	padding:  0  0 1rem 1rem;
-	tab-size: 4;
-	-moz-tab-size: 4;
 	max-width: 100%;
+	border-radius: 0.5rem;
+	background-color: hsl( 
+		
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		98%
+	);
+	padding: 0  0 1rem 1rem;
 	white-space: pre;
 	word-wrap: normal;/*  iOS, you make me sad.  */
+	tab-size: 4;
+	-moz-tab-size: 4;
 	overflow: auto;
 	overflow-wrap: normal;
 }
@@ -644,7 +651,12 @@ td {
 }
 td:hover {
 	
-	background-color: rgba( 255, 255, 255, 1 );
+	background-color: hsl( 
+		
+		var( --Q-color-blue-hue ), 
+		10%, 
+		93%
+	);
 	color: rgba( 0, 0, 0, 1 );
 	transition: background-color 0s, color 0s;
 }
@@ -886,7 +898,16 @@ svg .st10 {
 
 @keyframes blink {
 
-	 0% { background-color: rgba( 255, 255, 255, 1 ); color: rgba( 0, 0, 0, 1 ); }
+	 0% { 
+
+	 	background-color: hsl( 
+		
+			var( --Q-color-background-hue ),
+			var( --Q-color-background-saturation ),
+			93%
+		);
+	 	color: rgba( 0, 0, 0, 1 ); 
+	 }
 	40% { background-color: unset; color: unset; }
 }
 
@@ -1038,6 +1059,12 @@ table#console-open-commands {
 	margin: 1em 0 1em 0;
 	overflow: hidden;
 	font-family: var( --Q-font-family-sans );
+	background-color: hsl( 
+		
+		var( --Q-color-blue-hue ), 
+		10%, 
+		98%
+	);
 }
 table#console-open-commands td {
 
@@ -1063,8 +1090,8 @@ table#console-open-commands td.highlighted{
 	background-color: hsl( 
 		
 		var( --Q-color-blue-hue ), 
-		100%, 
-		100%
+		10%, 
+		93%
 	);
 	transition: background-color 0s;
 }
@@ -1165,6 +1192,12 @@ table#console-open-commands .na {
 	top:  24px;
 	left: 24px;
 	z-index: 40;
+	background-color: hsl( 
+		
+		var( --Q-color-blue-hue ), 
+		10%, 
+		98%
+	);
 }
 
 
@@ -1198,9 +1231,8 @@ table#console-open-commands .na {
 
 		var( --Q-color-base-hue ),
 		10%,
-		85%
+		90%
 	);
-	border: 1px solid white;
 	border-radius: 100%;
 	width:  100%;
 	height: 100%;
@@ -1218,9 +1250,8 @@ table#console-open-commands .na {
 
 		var( --Q-color-base-hue ),
 		10%,
-		85%
+		90%
 	);
-	background-color: white;
 }
 .unit-circle-spoke-45 {
 

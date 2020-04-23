@@ -388,6 +388,11 @@ Object.assign( Q.Circuit, {
 
 					// operation.gate = Q.Gate.PAULI_X
 					//  why the F was this hardcoded in there?? what was i thinking?!
+					//  OH I KNOW !
+					//  that was from back when i represented this as "C" -- its own gate
+					//  rather than an X with multiple registers.
+					//  so now no need for this "if" block at all.
+					//  will remove in a few cycles.
 				}
 				U = operation.gate.matrix
 			} 
