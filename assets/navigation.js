@@ -284,6 +284,21 @@ document.addEventListener( 'DOMContentLoaded', function(){
 	
 	onHashChange()
 	window.addEventListener( 'hashchange', onHashChange, false )
+
+
+	//  Let’s redirect folks from the old GitHub page
+	//  to our shiny new domain name.
+
+	if( window.location.host === 'stewdio.github.io' &&
+		window.location.pathname.startsWith( '/q.js/' )){
+
+		const 
+		url = 'https://quantumjavascript.app/' +
+			document.location.pathname.substr( 6 ) +
+			document.location.hash
+	
+		window.location = url
+	}
 })
 
 

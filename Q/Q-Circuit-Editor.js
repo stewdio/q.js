@@ -1681,39 +1681,8 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				}, {} )
 
 
-				// const registers = registerIndices
-				// .reduce( function( registers, registerIndex, r ){
-
-				// 	registers[ registerIndex ] = r
-				// 	return registers
-
-				// }, [] )
-
-
-
-
-
-
-
-
-				console.log( 'droppedAtRegisterIndex', droppedAtRegisterIndex )
-				console.log( 'Q.Circuit.Editor.dragEl.registerIndex', Q.Circuit.Editor.dragEl.registerIndex )
-				console.log( 'draggedMomentDelta:', draggedMomentDelta  )
-				console.log( 'draggedRegisterDelta:', draggedRegisterDelta  )
-
-
-
-
-
-				console.log( '\n\nregisters BEFORE' )
-				for( let [ key, value ] of Object.entries( registerMap )){
-
-					console.log( `operation.registerIndices[ ${ value } ] = r${ key }` )
-				}
-
-
-
-
+				//  First, we must remove each dragged component
+				//  from the register it was sitting at.
 
 				foundComponents.forEach( function( component ){
 
@@ -1723,13 +1692,14 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 					//  Remove this component from 
 					//  where this component used to be.
 
-					//registers.splice( registers.indexOf( componentRegisterIndex ), 1 )
-
-					// console.log( 'componentRegisterIndex', componentRegisterIndex )
-
-
 					delete registerMap[ componentRegisterIndex ]
 				})
+
+
+				//  Now we can seat it at its new position.
+				//  Note: This may OVERWRITE one of its siblings!
+				//  And that’s ok.
+
 				foundComponents.forEach( function( component ){
 
 					const 
@@ -1748,148 +1718,26 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				})
 
 
+				//  Now let’s flip that registerMap
+				//  back into an array of register indices.
 
-
-				// console.log( 'registerIndices', registerIndices )
-				console.log( '\n\nregisters AFTER' )
-				for( let [ key, value ] of Object.entries( registerMap )){
-
-					console.log( `operation.registerIndices[ ${ value } ] = r${ key }` )
-				}
-
-				// Object.entries( registers ).forEach( function( reg, r ){
-
-				// 	console.log( 'operation.registerIndices[', reg, '] = r'+r,  )
-				// })
-
-
-
-
-
-				// let r =registers.length
-
-
-				const fixedRegisters = Object.entries( registerMap )
+				const fixedRegistersIndices = Object.entries( registerMap )
 				.reduce( function( registers, entry, i ){
 
-
-					//  Subtle, but if we PUSH
-					//  instead of ASSIGN:
 					registers[ +entry[ 1 ]] = +entry[ 0 ]
-					// registers[ i ] = entry[ 0 ]
-					 // Then we 
-
-					// registers.push( entry[ 0 ])
 					return registers
 
 				}, [] )
+
+
+				//  This will remove any blank entries in the array
+				//  ie. if a dragged sibling overwrote a seated one.
+
 				.filter( function( entry ){
 				
-					console.log( 'E ? ', entry, Q.isUsefulInteger( entry ))
 					return Q.isUsefulInteger( entry )
 				})
-				// .sort( function( a, b ){
 
-				// 	return a - b
-				// })
-
-				console.log( '\n\nfixedRegisters AFTER' )
-				fixedRegisters.forEach( function( reg, r ){
-
-					console.log( `operation.registerIndices[ ${ r } ] = r${ reg }` )
-				})
-
-
-
-
-
-
-
-
-				//  ++++++++++++++++++++++++++++++++++++++
-				//  We have a problem here:
-				//  This code allows you to place one component ON TOP OF another!
-				//  we should not have more than one component occupying same moment/register!
-				//  need to prioritize by what was under the drag cursor
-				//  then by what was being dragged vs not dragged
-				//  and then i guess by register indices index ascending?
-
-
-
-
-
-
-
-
-				/*
-
-				
-				STRATEGY:
-
-				first try “updating” all the NON-moving pieces?
-				then try updating the MOVING pieces
-					because those would be dropped on top of and replace existing pieces
-
-				if a control piece is replaced
-					then we need to break apart the whole operation into individual gates.
-
-
-				*/
-
-
-/*
-				let r = 0
-				const fixedRegisterIndices = registerIndices
-				.reduce( function( fixedRegisterIndices, componentRegisterIndex, i ){
-
-					if( r < foundComponents.length &&
-						componentRegisterIndex === 
-						+foundComponents[ r ].getAttribute( 'register-index' )){
-
-						fixedRegisterIndices.push( 
-
-							droppedAtRegisterIndex + 
-							componentRegisterIndex - 
-							Q.Circuit.Editor.dragEl.registerIndex 
-						)
-						r ++
-					}
-					else fixedRegisterIndices.push( componentRegisterIndex )//  Unmodified by drag.
-					return fixedRegisterIndices
-
-				}, [])
-*/
-
-/*
-
-
-
-circuit.history.createEntry$()
-	selectedOperations.forEach( function( operation ){
-
-		circuit.clear$(
-
-			+operation.getAttribute( 'moment-index' ),
-			+operation.getAttribute( 'register-index' )
-		)
-	})
-	circuit.set$(
-
-		targets[ 0 ].getAttribute( 'gate-label' ),
-		+control.getAttribute( 'moment-index' ),		
-		[ +control.getAttribute( 'register-index' )].concat(
-
-			targets.reduce( function( registers, operation ){
-
-				registers.push( +operation.getAttribute( 'register-index' ))
-				return registers
-
-			}, [] )
-		)
-	)
-
-
-*/
 
 				//  Finally, we’re ready to set.
 
@@ -1897,8 +1745,7 @@ circuit.history.createEntry$()
 
 					childEl.getAttribute( 'gate-label' ), 
 					momentIndexTarget,
-					// fixedRegisterIndices
-					fixedRegisters
+					fixedRegistersIndices
 				)
 			}
 			else {
@@ -1953,7 +1800,7 @@ circuit.history.createEntry$()
 				const possibleSibling = draggedOperations[ j ]
 				if( +possibleSibling.getAttribute( 'operation-index' ) === operationIndex ){
 
-					console.log( 'found a sibling at', j, ' w operation index:', operationIndex, possibleSibling )
+					// console.log( 'found a sibling at', j, ' w operation index:', operationIndex, possibleSibling )
 					draggedOperations.splice( j, 1 )
 				}
 				else j ++
