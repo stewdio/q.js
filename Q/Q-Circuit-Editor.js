@@ -483,12 +483,7 @@ Q.Circuit.Editor.prototype.onExternalSet = function( event ){
 
 	if( event.detail.circuit === this.circuit ){
 
-		Q.Circuit.Editor.set( this.domElement, {
-
-			gate: event.detail.gate,
-			momentIndex: event.detail.momentIndex,
-			registerIndices: event.detail.registerIndices
-		})
+		Q.Circuit.Editor.set( this.domElement, event.detail.operation )
 	}
 }
 Q.Circuit.Editor.set = function( circuitEl, operation ){
@@ -497,11 +492,7 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 	backgroundEl = circuitEl.querySelector( '.Q-circuit-board-background' ),
 	foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' ),
 	circuit = circuitEl.circuit,
-	operationIndex = circuit.operations
-		.findIndex( function( op ){
-
-			return op === operation
-		})
+	operationIndex = circuitEl.circuit.operations.indexOf( operation )
 
 	operation.registerIndices.forEach( function( registerIndex, i ){
 
@@ -1627,11 +1618,24 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			gateLabel = component1 ? component1.getAttribute( 'gate-label' ) : childEl.getAttribute( 'gate-label' )
 
 
+// console.log( 'registerIndices.length', registerIndices.length )
+// console.log( 'foundComponents.length', foundComponents.length )
+// foundComponents.forEach( function( c, i ){
+
+// 	console.log( i, c )
+// })
+
+
+
+
 			//  If we are dragging all of the components
 			//  of a multi-register operation
 			//  then we are good to go.
 
 			if( registerIndices.length === foundComponents.length ){
+
+
+// console.log( 'full multi-register drag' )
 
 				circuit.set$( 
 
@@ -1666,6 +1670,8 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			else if( Q.Circuit.Editor.dragEl.circuitEl === circuitEl &&
 				momentIndexTarget === childEl.origin.momentIndex ){
 				
+
+// console.log( 'in-moment partial multi-register drag' )
 
 				//  We must ensure that only one component
 				//  can sit at each register index.
@@ -1751,7 +1757,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			else {
 
 
-
+console.log( 'cross-moment and/or cross-circuit partial multi-register drag' )
 
 
 

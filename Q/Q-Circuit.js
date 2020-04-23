@@ -1318,12 +1318,13 @@ s3_folder = (“my_bucket”, “my_prefix”)
 			//  Finally we can actually set this operation.
 			//  Aren’t you glad we handle all this for you?
 
-			this.operations.push({
+			const operation = {
 
 				momentIndex,
 				registerIndices,
 				gate
-			})
+			}
+			this.operations.push( operation )
 
 			
 			//  IMPORTANT!
@@ -1361,9 +1362,10 @@ s3_folder = (“my_bucket”, “my_prefix”)
 				'Q.Circuit.set$', { detail: { 
 
 					circuit,
-					gate,
-					momentIndex,
-					registerIndices
+					operation//,
+					// gate,
+					// momentIndex,
+					// registerIndices
 				}}
 			))
 		}
