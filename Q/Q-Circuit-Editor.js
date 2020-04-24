@@ -1576,11 +1576,19 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			.split( ',' )
 			.map( function( str ){ return +str }),
 
-			
-			//  The operation index acts as circuit-wide unique ID
-			//  but note it can change whenever a SET / CLEAR or SORT occurs!
 
-			operationIndex = +childEl.getAttribute( 'operation-index' ),
+			//  We can’t pick the gate label off the 0th gate in the register indices array
+			//  because that will be an identity / control / null gate.
+			//  We need to look at 1 or higher.
+
+			component1 = Q.Circuit.Editor.dragEl.querySelector( 
+
+				`[moment-index="${ childEl.origin.momentIndex }"]`+
+				`[register-index="${ registerIndices[ 1 ] }"]`
+			),
+			gateLabel = component1 ? 
+				component1.getAttribute( 'gate-label' ) : 
+				childEl.getAttribute( 'gate-label' ),
 
 
 			//  Lets look for ALL of the sibling components of this operation.
@@ -1594,7 +1602,8 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 				Q.Circuit.Editor.dragEl.querySelectorAll( 
 
-					`[operation-index="${ operationIndex }"]` 
+					`[gate-label="${ gateLabel }"]`+
+					`[register-indices="${ registerIndicesString }"]`
 				)
 			)
 			.sort( function( a, b ){
@@ -1604,18 +1613,10 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				bRegisterIndicesIndex = +b.getAttribute( 'register-indices-index' )
 				
 				return aRegisterIndicesIndex - bRegisterIndicesIndex
-			}),
+			})
 
 
-			//  We can’t pick the gate label off the 0th gate in the register indices array
-			//  because that will be an identity / control / null gate.
-			//  We need to look at 1 or higher.
-
-			component1 = Q.Circuit.Editor.dragEl.querySelector( 
-
-				`[operation-index="${ operationIndex }"][register-index="${ registerIndices[ 1 ] }"]`
-			),
-			gateLabel = component1 ? component1.getAttribute( 'gate-label' ) : childEl.getAttribute( 'gate-label' )
+			
 
 
 // console.log( 'registerIndices.length', registerIndices.length )
@@ -1757,7 +1758,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			else {
 
 
-console.log( 'cross-moment and/or cross-circuit partial multi-register drag' )
+// console.log( 'cross-moment and/or cross-circuit partial multi-register drag' )
 
 
 
@@ -1793,6 +1794,22 @@ console.log( 'cross-moment and/or cross-circuit partial multi-register drag' )
 			}
 
 
+
+/*
+
+
+
+Need a new solution for this!!!!!
+that does not use operationIndex
+
+Will these still have same momentIndex and registerIndicesString?
+(after all the processing above?)
+If so then just use that.
+
+
+
+
+*/
 			//  We’ve just completed the movement 
 			//  of a multi-register operation.
 			//  But all of the sibling components 
@@ -1804,7 +1821,8 @@ console.log( 'cross-moment and/or cross-circuit partial multi-register drag' )
 			while( j < draggedOperations.length ){
 
 				const possibleSibling = draggedOperations[ j ]
-				if( +possibleSibling.getAttribute( 'operation-index' ) === operationIndex ){
+				if( possibleSibling.getAttribute( 'gate-label' ) === gateLabel &&
+					possibleSibling.getAttribute( 'register-indices' ) === registerIndicesString ){
 
 					// console.log( 'found a sibling at', j, ' w operation index:', operationIndex, possibleSibling )
 					draggedOperations.splice( j, 1 )

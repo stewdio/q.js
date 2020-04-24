@@ -374,7 +374,50 @@ sub {
 
 	top: 0.4em; 
 }
+blockquote {
 
+	position: relative;
+	margin: 1rem 0 0 0;
+	border-radius: 0.5rem;
+	background-color: var( --Q-color-background );
+	padding: 1.5rem 2rem;
+	font-size: 1rem;
+	line-height: 1.5rem;
+}
+blockquote:before {
+
+	position: absolute;
+	left: 1.5rem;
+	content: "“";
+}
+blockquote:after {
+
+	content: "”";
+}
+cite {
+
+	display: block;
+	position: relative;
+	/*left: 50%;*/
+	margin: 0 0 1.5rem 0;
+	width: 100%;
+	/*width: 50%;*/
+	padding-top: 1rem; 
+	/*text-align: right;*/
+
+}
+cite p {
+
+	position: relative;
+	left:  50%;
+	width: calc( 50% - 2rem );
+}
+cite p:before {
+
+	position: absolute;
+	left: -1.1rem;
+	content: "—";
+}
 
 
 
