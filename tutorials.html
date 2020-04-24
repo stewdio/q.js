@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Q ⟩ Tutorials</title>
+		<meta charset="utf-8">
+		<meta name="viewport"             content="width=device-width,initial-scale=1.0">
+		<meta name="description"          content="Quantum computing in your browser.">
+		<meta name="copyright"            content="Stewart Smith 2019–2020">
+		<meta name="keywords"             content="
+			Q, Q.js, Q-js, Qjs, quantum JavaScript,
+			quantum, quantum physics, quantum mechanics, superposition,
+			quantum computer, quantum computer programming, quantum computing, QC, 
+			quantum simulator, quantum computer simulator, 
+			qubit, qbit, gate, Hadamard, Bloch, Bloch Sphere,
+			Web, Web site, website, Web browser, browser, HTML, HTML5, JavaScript, ES6, CSS,
+			Chrome, Firefox, Safari, Opera, Brave, Edge, WebKit, Blink, Gecko, Mozilla,
+			Stewart Smith, Stewart, Stew, Stuart, Steven, Steve, Stewdio, stewartsmith, stew_rtsmith, @stew_rtsmith,
+			Moar, Moar Technologies Corp, MTC,
+			Google, IBM, Microsoft, Amazon, NASA, DWave, D-Wave,
+			Quil, OpenQASM,
+				ProjectQ, Qiskit, 
+				Quantum Development Kit, Cirq, Strawberry Fields, t|ket>,
+				QCL, Quantum pseudocode, Q#, Q|SI>, Q language, qGCL, QFC, QML, LIQUi|>, Quipper,
+			Stanford CS 269 Q: Quantum Computer Programming">
+		
+		<meta name="twitter:card"         content="summary_large_image">
+		<meta name="twitter:site"         content="@stew_rtsmith">
+		<meta name="twitter:creator"      content="@stew_rtsmith">
+		<meta name="twitter:title"        content="Q ⟩ Tutorials">
+		<meta name="twitter:description"  content="Quantum computing in your browser.">
+		<meta name="twitter:image"        content="https://quantumjavascript.app/assets/q-thumbnail.png">
+		
+		<meta property="og:type"          content="website">
+		<meta property="og:title"         content="Q ⟩ Tutorials">
+		<meta property="og:description"   content="Quantum computing in your browser.">
+		<meta property="og:image"         content="https://quantumjavascript.app/assets/q-thumbnail.png">
+		<meta property="og:url"           content="https://quantumjavascript.app/tutorials.html">
+		
+		<link rel="canonical" href="https://quantumjavascript.app/tutorials.html">
+		<link href="assets/q-favicon-064.png" rel="icon" type="image/png">
+		<link href="assets/q-favicon-144.png" rel="apple-touch-icon">
+		
+		<link rel="stylesheet" href="Q/Q.css">
+		<link rel="stylesheet" href="Q/Q-Circuit-Editor.css">
+		<link rel="stylesheet" href="assets/documentation.css">
+
+		<script src="https://www.googletagmanager.com/gtag/js" async></script>
+		<script src="assets/ga.js"></script>
+		<script src="Q/Q.js"></script>
+		<script src="Q/Q-ComplexNumber.js"></script>
+		<script src="Q/Q-Matrix.js"></script>
+		<script src="Q/Q-Qubit.js"></script>
+		<script src="Q/Q-Gate.js"></script>
+		<script src="Q/Q-History.js"></script>
+		<script src="Q/Q-Circuit.js"></script>
+		<script src="Q/Q-Circuit-Editor.js"></script>
+		<script src="assets/navigation.js"></script>
+	
+	</head>
+	<body>
+		<main>
+			<h3>Expanding soon</h3>
+			<p>
+				What good is a novel drag-and-drop circuit editor interface
+				if no one knows how to use it?
+				Expect to see a slew of mini-tutorials like the one below landing in Summer 2020.
+			</p>
+			<h4>Create controlled gates</h4>
+			<p>				
+				<a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Controlled_(cX_cY_cZ)_gates" target="_blank">Controlled gates</a> 
+				are fundamental to quantum computing.
+				This simple example uses a 
+				<a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Hadamard_(H)_gate" target="_blank">Hadamard gate</a>,
+				then joins an “identity cursor”
+				(an abstraction invented specifically for the Q editor)
+				with a 
+				<a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Pauli-X_gate" target="_blank">Pauli X gate</a>
+				to create a 
+				<a href="https://en.wikipedia.org/wiki/Controlled_NOT_gate" target="_blank">controlled-not gate</a>,
+				resulting in a 
+				<a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>.
+			</p>
+			<p>
+				Drag an identity cursor onto your circuit,
+				then drag another gate to the same moment.
+				Highlighting the two gates will enabled the “C” (control) button.
+				Tap the control button to join the two, 
+				creating a controlled gate.
+			</p>
+			<img src="assets/demos/Q-demo-editor-1.gif">
+		</main>
+	</body>
+</html>

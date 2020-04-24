@@ -188,8 +188,9 @@ document.addEventListener( 'DOMContentLoaded', function(){
 		<ul>
 			<li><h2><a href="${ home }">What is Q?</a></h2></li>
 			<li><h2><a href="playground.html">Playground</a></h2></li>
-			<li><h2><a href="contributing.html">Contributing</a></h2></li>
+			<li><h2><a href="tutorials.html">Tutorials</a></h2></li>
 			<li><h2><a href="resources.html">Resources</a></h2></li>
+			<li><h2><a href="contributing.html">Contributing</a></h2></li>
 		</ul>
 		<p>API documentation</p>
 		<ul>
