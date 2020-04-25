@@ -56,6 +56,8 @@ Object.assign( Q.History.prototype, {
 	},
 	createEntry$: function(){
 		
+		// console.log( 'CREATE ENTRY!' )
+
 		this.entries.splice( this.index + 1 )
 		this.entries.push([])
 		this.index = this.entries.length - 1

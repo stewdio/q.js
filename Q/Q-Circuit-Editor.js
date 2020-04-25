@@ -802,8 +802,8 @@ Q.Circuit.Editor.onPointerMove = function( event ){
 		Q.Circuit.Editor.dragEl.style.left = ( x + window.pageXOffset + Q.Circuit.Editor.dragEl.offsetX ) +'px'
 		Q.Circuit.Editor.dragEl.style.top  = ( y + window.pageYOffset + Q.Circuit.Editor.dragEl.offsetY ) +'px'
 
-		if( !boardContainerEl ) Q.Circuit.Editor.dragEl.classList.add( 'Q-circuit-clipboard-destroy' )
-		else Q.Circuit.Editor.dragEl.classList.remove( 'Q-circuit-clipboard-destroy' )
+		if( !boardContainerEl && Q.Circuit.Editor.dragEl.circuitEl ) Q.Circuit.Editor.dragEl.classList.add( 'Q-circuit-clipboard-danger' )
+		else Q.Circuit.Editor.dragEl.classList.remove( 'Q-circuit-clipboard-danger' )
 	}
 
 
@@ -1437,14 +1437,41 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 		}
 
 
+		//  TIME TO DIE.
+		//  Let’s keep a private reference to 
+		//  the current clipboard.
+		
+		let clipboardToDestroy = Q.Circuit.Editor.dragEl
 
 
-		//+++++++++
-		//  We should do a puff of smoke animation here
-		//  like removing shit from Apple’s macOS dock!
+		//  Now we can remove our dragging reference.
 
-		document.body.removeChild( Q.Circuit.Editor.dragEl )
 		Q.Circuit.Editor.dragEl = null
+
+
+		//  Add our CSS animation routine
+		//  which will run for 1 second.
+		//  If we were SUPER AWESOME
+		//  we would have also calculated drag momentum
+		//  and we’d let this glide away!
+
+		clipboardToDestroy.classList.add( 'Q-circuit-clipboard-destroy' )
+
+		
+		//  And around the time that animation is completing
+		//  we can go ahead and remove our clipboard from the DOM
+		//  and kill the reference.
+
+		setTimeout( function(){
+
+			document.body.removeChild( clipboardToDestroy )
+			clipboardToDestroy = null
+
+		}, 500 )
+		
+
+		//  No more to do here. Goodbye.
+
 		return
 	}
 
@@ -1527,37 +1554,6 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 	circuit.history.createEntry$()
 
 
-
-//++++++++++
-//  THIS is where we need to grab any info about what is what gate label.
-// scary eh??????
-
-
-
-
-
-
-	//  Whether we’ve ripped operations from THIS circuit
-	//  or from another circuit
-	//  we had better send “clear” commands for those positions
-	//  BEFORE we try “setting” anything new down!
-
-	// if( Q.Circuit.Editor.dragEl.circuitEl ){
-
-	// 	const originCircuit = Q.Circuit.Editor.dragEl.circuitEl.circuit
-	// 	draggedOperations.forEach( function( childEl ){
-
-	// 		originCircuit.clear$(
-
-	// 			childEl.origin.momentIndex,
-	// 			childEl.origin.registerIndex
-	// 		)
-	// 	})
-	// }
-
-
-	//  Now we can safely send new operations to circuit.set().
-
 	draggedOperations.forEach( function( childEl, i ){
 
 		let
@@ -1589,11 +1585,6 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			.map( function( str ){ return +str }),
 
 
-
-
-
-
-
 			//  Lets look for ALL of the sibling components of this operation.
 			//  Later we’ll check and see if the length of this array
 			//  is equal to the total number of components for this operation.
@@ -1617,74 +1608,38 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				
 				return aRegisterIndicesIndex - bRegisterIndicesIndex
 			}),
-			draggedIndices = foundComponents.reduce( function( draggedIndices, componentEl ){
-
-				draggedIndices.push( +componentEl.getAttribute( 'register-index' ))
-				return draggedIndices
-
-			}, []),
-			remainingIndices = registerIndices.filter( function( index ){
-
-				return !draggedIndices.includes( index )
-			}),
-
-
-
-//+++++++
-//  which of these do we actually need?
-
-
-
 			allComponents = Array.from( Q.Circuit.Editor.dragEl.circuitEl.querySelectorAll(
 
 				`[moment-index="${ childEl.origin.momentIndex }"]`+
 				`[register-indices="${ registerIndicesString }"]`
 			)),
-			// draggedIndices = foundComponents.reduce( function( draggedIndices, componentEl ){
-
-			// 	draggedIndices.push( +componentEl.getAttribute( 'register-index' ))
-			// 	return draggedIndices
-
-			// }, []),
 			remainingComponents = allComponents.filter( function( componentEl, i ){
 
 				return !foundComponents.includes( componentEl )
-				// return foundComponents.indexOf( component ) === -1
-				// console.log( i, 'keep this one?', !draggedIndices.includes( +componentEl.getAttribute( 'register-index' )))
-				// return !draggedIndices.includes( +componentEl.getAttribute( 'register-index' ))
-
-				// return foundComponents.every( function( foundComponentEl ){
-
-				// 	return +foundComponentEl.getAttribute( 'register-index' ) !== +componentEl.getAttribute( 'register-index' )
-				// })
 			}),
 
 
-
-			//  We can’t pick the gate label off the 0th gate in the register indices array
+			//  We can’t pick the gate label 
+			//  off the 0th gate in the register indices array
 			//  because that will be an identity / control / null gate.
-			//  We need to look at 1 or higher.
+			//  We need to look at slot 1.
 
-			// component1 = Q.Circuit.Editor.dragEl.querySelector( 
+			component1 = Q.Circuit.Editor.dragEl.querySelector( 
 
-			// 	`[moment-index="${ childEl.origin.momentIndex }"]`+
-			// 	`[register-index="${ registerIndices[ 1 ] }"]`
-			// ),
-			//gateLabel = component1 ? 
-			//	component1.getAttribute( 'gate-label' ) : 
-			//	childEl.getAttribute( 'gate-label' ),
-
-			gateLabel = foundComponents[ 0 ].getAttribute( 'gate-label' )
+				`[moment-index="${ childEl.origin.momentIndex }"]`+
+				`[register-index="${ registerIndices[ 1 ] }"]`
+			),
+			gateLabel = component1 ? 
+				component1.getAttribute( 'gate-label' ) : 
+				childEl.getAttribute( 'gate-label' )
 
 
-
-
-// console.log( 'allComponents', allComponents.length )
-// console.log( 'foundComponents', foundComponents.length )
-// console.log( 'remainingComponents', remainingComponents.length )
-			
-
-			// CLEAR$ !++++++++++++++++
+			//  We needed to grab the above gateLabel information
+			//  before we sent any clear$ commands
+			//  which would in turn delete those componentEls.
+			//  We’ve just completed that, 
+			//  so now’s the time to send a clear$ command
+			//  before we do any set$ commands.
 
 			draggedOperations.forEach( function( childEl ){
 
@@ -1696,25 +1651,12 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			})
 
 
-
-// console.log( 'registerIndices.length', registerIndices.length )
-// console.log( 'foundComponents.length', foundComponents.length )
-// foundComponents.forEach( function( c, i ){
-
-// 	console.log( i, c )
-// })
-
-
-
-
+			//  FULL MULTI-REGISTER DRAG (TO ANY POSITION ON ANY CIRCUIT).
 			//  If we are dragging all of the components
 			//  of a multi-register operation
 			//  then we are good to go.
 
 			if( registerIndices.length === foundComponents.length ){
-
-
-// console.log( 'full multi-register drag' )
 
 				circuit.set$( 
 
@@ -1740,6 +1682,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			}
 
 
+			//  IN-MOMENT (IN-CIRCUIT) PARTIAL MULTI-REGISTER DRAG.
 			//  It appears we are NOT dragging all components
 			//  of a multi-register operation.
 			//  But if we’re dragging within the same circuit
@@ -1749,8 +1692,6 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			else if( Q.Circuit.Editor.dragEl.circuitEl === circuitEl &&
 				momentIndexTarget === childEl.origin.momentIndex ){
 				
-
-// console.log( 'in-moment partial multi-register drag' )
 
 				//  We must ensure that only one component
 				//  can sit at each register index.
@@ -1835,46 +1776,8 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			}
 			else {
 
-// console.log( 'cross-moment and/or cross-circuit partial multi-register drag' )
-				
-
-				//  First, we need to take “all components” of this operation
-				//  and “subtract” the ones that have been dragged.
-
-
-
-
-
-
-
-// console.log( 'registerIndices', registerIndices )
-// console.log( 'draggedIndices', draggedIndices )
-// console.log( 'remainingIndices', remainingIndices )
-
-
-				// remainingIndices.forEach( function( registerIndex ){
-
-				// 	const 
-				// 	momentIndex = childEl.origin.momentIndex//,
-				// 	// componentEl = Q.Circuit.Editor.dragEl.circuitEl.querySelector(
-
-				// 	// 	`[moment-index="${ momentIndex }"]`+
-				// 	// 	`[register-index="${ registerIndex }"]`
-				// 	// )
-
-				// 	circuit.set$( 
-
-				// 		gateLabel,///  +++++++++ this needs to be either CONTROL or regular.
-				// 		momentIndex,
-				// 		registerIndex
-				// 	)
-				// })
-
-
-
 				remainingComponents.forEach( function( componentEl, i ){
 
-					// console.log( 'remaining component #', i, componentEl )
 					circuit.set$( 
 
 						+componentEl.getAttribute( 'register-indices-index' ) ? 
@@ -1886,55 +1789,6 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				})
 
 
-/*
-console.log(Q.Circuit.Editor.dragEl.circuitEl)
-
-
-				const 
-				allComponents = Array.from( Q.Circuit.Editor.dragEl.circuitEl.querySelectorAll(
-
-					`[moment-index="${ childEl.origin.momentIndex }"]`+
-					`[register-indices="${ registerIndicesString }"]`
-				)),
-				draggedIndices = foundComponents.reduce( function( draggedIndices, componentEl ){
-
-					draggedIndices.push( +componentEl.getAttribute( 'register-index' ))
-					return draggedIndices
-
-				}, []),
-				leftComponents = allComponents.filter( function( componentEl, i ){
-
-					// return !foundComponents.includes( component )
-					// return foundComponents.indexOf( component ) === -1
-					// console.log( i, 'keep this one?', !draggedIndices.includes( +componentEl.getAttribute( 'register-index' )))
-					// return !draggedIndices.includes( +componentEl.getAttribute( 'register-index' ))
-
-					return foundComponents.every( function( foundComponentEl ){
-
-						return +foundComponentEl.getAttribute( 'register-index' ) !== +componentEl.getAttribute( 'register-index' )
-					})
-				})
-
-console.log( 'allComponents.length', allComponents.length )
-console.log( 'registerIndices', registerIndices )
-console.log( 'draggedIndices', draggedIndices )
-console.log( 'leftComponents', leftComponents )
-
-				//  Now, let’s separate and update
-				//  all of the left-behind components.
-
-				leftComponents.forEach( function( componentEl, i ){
-
-console.log( i, componentEl.getAttribute( 'gate-label' ))
-					Q.Circuit.Editor.dragEl.circuit.set$( 
-
-						componentEl.getAttribute( 'register-indices-index' ) === 0 ? Q.Gate.NOOP : gateLabel,
-						+componentEl.getAttribute( 'moment-index' ),
-						+componentEl.getAttribute( 'register-index' )
-					)
-				})
-*/
-
 				//  Finally, let’s separate and update
 				//  all the components that were part of the drag.
 
@@ -1942,7 +1796,6 @@ console.log( i, componentEl.getAttribute( 'gate-label' ))
 
 					circuit.set$( 
 
-						// componentEl.getAttribute( 'register-indices-index' ) === 0 ? Q.Gate.NOOP : gateLabel,
 						+componentEl.getAttribute( 'register-indices-index' ) ? 
 							gateLabel : 
 							Q.Gate.NOOP,
@@ -1973,7 +1826,18 @@ console.log( i, componentEl.getAttribute( 'gate-label' ))
 				else j ++
 			}
 		}
+
+
+		//  This is just a single-register operation.
+		//  How simple this looks 
+		//  compared to all the gibberish above.
+		
 		else {
+			
+
+			//  First, if this operation comes from a circuit
+			// (and not a circuit palette)
+			//  make sure the old positions are cleared away.
 			
 			if( Q.Circuit.Editor.dragEl.circuitEl ){
 
@@ -1986,6 +1850,11 @@ console.log( i, componentEl.getAttribute( 'gate-label' ))
 					)
 				})
 			}
+
+
+			//  And now set$ the operation 
+			//  in its new home.
+
 			circuit.set$( 
 
 				childEl.getAttribute( 'gate-label' ), 

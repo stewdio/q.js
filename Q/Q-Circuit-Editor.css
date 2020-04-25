@@ -290,9 +290,24 @@
 
 	cursor: grabbing;
 }
-.Q-circuit-clipboard-destroy .Q-circuit-operation {
+.Q-circuit-clipboard-danger .Q-circuit-operation {
 
-	background-color: var( --Q-color-red );
+	background-color: var( --Q-color-yellow );
+}
+.Q-circuit-clipboard-destroy {
+	
+	animation-name: Q-circuit-clipboard-poof;
+	animation-fill-mode: forwards;
+	animation-duration: 0.3s;
+	animation-iteration-count: 1;
+}
+@keyframes Q-circuit-clipboard-poof {
+
+	100% {
+
+		transform: scale( 1.5 );
+		opacity: 0;
+	}
 }
 .Q-circuit-board-background {
 
