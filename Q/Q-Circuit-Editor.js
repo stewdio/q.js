@@ -1527,23 +1527,33 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 	circuit.history.createEntry$()
 
 
+
+//++++++++++
+//  THIS is where we need to grab any info about what is what gate label.
+// scary eh??????
+
+
+
+
+
+
 	//  Whether we’ve ripped operations from THIS circuit
 	//  or from another circuit
 	//  we had better send “clear” commands for those positions
 	//  BEFORE we try “setting” anything new down!
 
-	if( Q.Circuit.Editor.dragEl.circuitEl ){
+	// if( Q.Circuit.Editor.dragEl.circuitEl ){
 
-		const originCircuit = Q.Circuit.Editor.dragEl.circuitEl.circuit
-		draggedOperations.forEach( function( childEl ){
+	// 	const originCircuit = Q.Circuit.Editor.dragEl.circuitEl.circuit
+	// 	draggedOperations.forEach( function( childEl ){
 
-			originCircuit.clear$(
+	// 		originCircuit.clear$(
 
-				childEl.origin.momentIndex,			
-				childEl.origin.registerIndex
-			)
-		})
-	}
+	// 			childEl.origin.momentIndex,
+	// 			childEl.origin.registerIndex
+	// 		)
+	// 	})
+	// }
 
 
 	//  Now we can safely send new operations to circuit.set().
@@ -1562,6 +1572,8 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 
 		//  Is this a multi-register operation?
+		//  If so, this is also a from-circuit drop
+		//  rather than a from-palette drop.
 
 		const registerIndicesString = childEl.getAttribute( 'register-indices' )
 		if( registerIndicesString ){
@@ -1577,18 +1589,9 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			.map( function( str ){ return +str }),
 
 
-			//  We can’t pick the gate label off the 0th gate in the register indices array
-			//  because that will be an identity / control / null gate.
-			//  We need to look at 1 or higher.
 
-			component1 = Q.Circuit.Editor.dragEl.querySelector( 
 
-				`[moment-index="${ childEl.origin.momentIndex }"]`+
-				`[register-index="${ registerIndices[ 1 ] }"]`
-			),
-			gateLabel = component1 ? 
-				component1.getAttribute( 'gate-label' ) : 
-				childEl.getAttribute( 'gate-label' ),
+
 
 
 			//  Lets look for ALL of the sibling components of this operation.
@@ -1602,7 +1605,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 				Q.Circuit.Editor.dragEl.querySelectorAll( 
 
-					`[gate-label="${ gateLabel }"]`+
+					`[moment-index="${ childEl.origin.momentIndex }"]`+
 					`[register-indices="${ registerIndicesString }"]`
 				)
 			)
@@ -1613,10 +1616,85 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				bRegisterIndicesIndex = +b.getAttribute( 'register-indices-index' )
 				
 				return aRegisterIndicesIndex - bRegisterIndicesIndex
+			}),
+			draggedIndices = foundComponents.reduce( function( draggedIndices, componentEl ){
+
+				draggedIndices.push( +componentEl.getAttribute( 'register-index' ))
+				return draggedIndices
+
+			}, []),
+			remainingIndices = registerIndices.filter( function( index ){
+
+				return !draggedIndices.includes( index )
+			}),
+
+
+
+//+++++++
+//  which of these do we actually need?
+
+
+
+			allComponents = Array.from( Q.Circuit.Editor.dragEl.circuitEl.querySelectorAll(
+
+				`[moment-index="${ childEl.origin.momentIndex }"]`+
+				`[register-indices="${ registerIndicesString }"]`
+			)),
+			// draggedIndices = foundComponents.reduce( function( draggedIndices, componentEl ){
+
+			// 	draggedIndices.push( +componentEl.getAttribute( 'register-index' ))
+			// 	return draggedIndices
+
+			// }, []),
+			remainingComponents = allComponents.filter( function( componentEl, i ){
+
+				return !foundComponents.includes( componentEl )
+				// return foundComponents.indexOf( component ) === -1
+				// console.log( i, 'keep this one?', !draggedIndices.includes( +componentEl.getAttribute( 'register-index' )))
+				// return !draggedIndices.includes( +componentEl.getAttribute( 'register-index' ))
+
+				// return foundComponents.every( function( foundComponentEl ){
+
+				// 	return +foundComponentEl.getAttribute( 'register-index' ) !== +componentEl.getAttribute( 'register-index' )
+				// })
+			}),
+
+
+
+			//  We can’t pick the gate label off the 0th gate in the register indices array
+			//  because that will be an identity / control / null gate.
+			//  We need to look at 1 or higher.
+
+			// component1 = Q.Circuit.Editor.dragEl.querySelector( 
+
+			// 	`[moment-index="${ childEl.origin.momentIndex }"]`+
+			// 	`[register-index="${ registerIndices[ 1 ] }"]`
+			// ),
+			//gateLabel = component1 ? 
+			//	component1.getAttribute( 'gate-label' ) : 
+			//	childEl.getAttribute( 'gate-label' ),
+
+			gateLabel = foundComponents[ 0 ].getAttribute( 'gate-label' )
+
+
+
+
+// console.log( 'allComponents', allComponents.length )
+// console.log( 'foundComponents', foundComponents.length )
+// console.log( 'remainingComponents', remainingComponents.length )
+			
+
+			// CLEAR$ !++++++++++++++++
+
+			draggedOperations.forEach( function( childEl ){
+
+				Q.Circuit.Editor.dragEl.circuitEl.circuit.clear$(
+
+					childEl.origin.momentIndex,
+					childEl.origin.registerIndex
+				)
 			})
 
-
-			
 
 
 // console.log( 'registerIndices.length', registerIndices.length )
@@ -1757,8 +1835,11 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			}
 			else {
 
-
 // console.log( 'cross-moment and/or cross-circuit partial multi-register drag' )
+				
+
+				//  First, we need to take “all components” of this operation
+				//  and “subtract” the ones that have been dragged.
 
 
 
@@ -1766,50 +1847,112 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 
 
-
-				//+++++++++++++++++++++++++++++
-								
-
-				//  It’s all getting broken up.
-				//  BUT
-				//  is there a way to keep SOME of it together?
-
-				//  like if it’s i-X-X
-				//  and you drag the i-X to a new register, can that stay together as just i-X?
-				//  and the left-behind X becomes a lone X?
-
-				// does not matter if across circuits!
+// console.log( 'registerIndices', registerIndices )
+// console.log( 'draggedIndices', draggedIndices )
+// console.log( 'remainingIndices', remainingIndices )
 
 
+				// remainingIndices.forEach( function( registerIndex ){
+
+				// 	const 
+				// 	momentIndex = childEl.origin.momentIndex//,
+				// 	// componentEl = Q.Circuit.Editor.dragEl.circuitEl.querySelector(
+
+				// 	// 	`[moment-index="${ momentIndex }"]`+
+				// 	// 	`[register-index="${ registerIndex }"]`
+				// 	// )
+
+				// 	circuit.set$( 
+
+				// 		gateLabel,///  +++++++++ this needs to be either CONTROL or regular.
+				// 		momentIndex,
+				// 		registerIndex
+				// 	)
+				// })
 
 
 
+				remainingComponents.forEach( function( componentEl, i ){
 
+					// console.log( 'remaining component #', i, componentEl )
+					circuit.set$( 
 
-
-
-
-
-
-			}
-
+						+componentEl.getAttribute( 'register-indices-index' ) ? 
+							gateLabel : 
+							Q.Gate.NOOP,
+						+componentEl.getAttribute( 'moment-index' ),
+						+componentEl.getAttribute( 'register-index' )
+					)
+				})
 
 
 /*
+console.log(Q.Circuit.Editor.dragEl.circuitEl)
 
 
+				const 
+				allComponents = Array.from( Q.Circuit.Editor.dragEl.circuitEl.querySelectorAll(
 
-Need a new solution for this!!!!!
-that does not use operationIndex
+					`[moment-index="${ childEl.origin.momentIndex }"]`+
+					`[register-indices="${ registerIndicesString }"]`
+				)),
+				draggedIndices = foundComponents.reduce( function( draggedIndices, componentEl ){
 
-Will these still have same momentIndex and registerIndicesString?
-(after all the processing above?)
-If so then just use that.
+					draggedIndices.push( +componentEl.getAttribute( 'register-index' ))
+					return draggedIndices
 
+				}, []),
+				leftComponents = allComponents.filter( function( componentEl, i ){
 
+					// return !foundComponents.includes( component )
+					// return foundComponents.indexOf( component ) === -1
+					// console.log( i, 'keep this one?', !draggedIndices.includes( +componentEl.getAttribute( 'register-index' )))
+					// return !draggedIndices.includes( +componentEl.getAttribute( 'register-index' ))
 
+					return foundComponents.every( function( foundComponentEl ){
 
+						return +foundComponentEl.getAttribute( 'register-index' ) !== +componentEl.getAttribute( 'register-index' )
+					})
+				})
+
+console.log( 'allComponents.length', allComponents.length )
+console.log( 'registerIndices', registerIndices )
+console.log( 'draggedIndices', draggedIndices )
+console.log( 'leftComponents', leftComponents )
+
+				//  Now, let’s separate and update
+				//  all of the left-behind components.
+
+				leftComponents.forEach( function( componentEl, i ){
+
+console.log( i, componentEl.getAttribute( 'gate-label' ))
+					Q.Circuit.Editor.dragEl.circuit.set$( 
+
+						componentEl.getAttribute( 'register-indices-index' ) === 0 ? Q.Gate.NOOP : gateLabel,
+						+componentEl.getAttribute( 'moment-index' ),
+						+componentEl.getAttribute( 'register-index' )
+					)
+				})
 */
+
+				//  Finally, let’s separate and update
+				//  all the components that were part of the drag.
+
+				foundComponents.forEach( function( componentEl ){
+
+					circuit.set$( 
+
+						// componentEl.getAttribute( 'register-indices-index' ) === 0 ? Q.Gate.NOOP : gateLabel,
+						+componentEl.getAttribute( 'register-indices-index' ) ? 
+							gateLabel : 
+							Q.Gate.NOOP,
+						+componentEl.getAttribute( 'moment-index' ) + draggedMomentDelta,
+						+componentEl.getAttribute( 'register-index' ) + draggedRegisterDelta,
+					)
+				})
+			}
+
+
 			//  We’ve just completed the movement 
 			//  of a multi-register operation.
 			//  But all of the sibling components 
@@ -1824,14 +1967,25 @@ If so then just use that.
 				if( possibleSibling.getAttribute( 'gate-label' ) === gateLabel &&
 					possibleSibling.getAttribute( 'register-indices' ) === registerIndicesString ){
 
-					// console.log( 'found a sibling at', j, ' w operation index:', operationIndex, possibleSibling )
+					console.log( 'found a sibling at', j, possibleSibling )
 					draggedOperations.splice( j, 1 )
 				}
 				else j ++
 			}
 		}
 		else {
+			
+			if( Q.Circuit.Editor.dragEl.circuitEl ){
 
+				draggedOperations.forEach( function( childEl ){
+
+					Q.Circuit.Editor.dragEl.circuitEl.circuit.clear$(
+
+						childEl.origin.momentIndex,
+						childEl.origin.registerIndex
+					)
+				})
+			}
 			circuit.set$( 
 
 				childEl.getAttribute( 'gate-label' ), 
