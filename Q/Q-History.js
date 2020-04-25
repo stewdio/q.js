@@ -56,8 +56,6 @@ Object.assign( Q.History.prototype, {
 	},
 	createEntry$: function(){
 		
-		// console.log( 'CREATE ENTRY!' )
-
 		this.entries.splice( this.index + 1 )
 		this.entries.push([])
 		this.index = this.entries.length - 1
@@ -115,11 +113,13 @@ Object.assign( Q.History.prototype, {
 
 		//  Take this history entry, which itself is an Array.
 		//  It may contain several tasks.
+		//  Put my thing down, flip and reverse it.
+		//  .ti esrever dna pilf ,nwod gniht ym tuP
 
-		const entry = this.entries[ this.index ].slice()
+		const entry = direction > 0 ?
+			Array.from( this.entries[ this.index ]) :
+			Array.from( this.entries[ this.index ]).reverse()
 
-		if( command < 0 ) entry.reverse()
-		
 		entry
 		.reduce( function( tasks, subentry, s ){
 
@@ -168,19 +168,20 @@ Object.assign( Q.History.prototype, {
 			output += '\n\n'+ i + ' ════════════════════════════════════════'+
 			entry.reduce( function( output, entry, i ){
 
-				output += '\n\n    '+ i +' ────────────────────────────────────────\n'+
-				entry.undo.reduce( function( output, entry, i ){
+				output += '\n\n    '+ i +' ────────────────────────────────────────\n'
+				if( entry.redo ){
+				
+					output += '\n        ⟳ Redo   ── '+ entry.redo.name +'  '
+					if( entry.redo.args ) output += entry.redo.args.reduce( argsParse, '' )
+				}
+				output += entry.undo.reduce( function( output, entry, i ){
 
-					output += '\n        Undo '+ i +' ── '+ entry.name +'  '
+					output += '\n        ⟲ Undo '+ i +' ── '+ entry.name +'  '
 					if( entry.args ) output += entry.args.reduce( argsParse, '' )
 					return output
 
 				}, '' )
-				if( entry.redo ){
-				
-					output += '\n        Redo   ── '+ entry.redo.name +'  '
-					if( entry.redo.args ) output += entry.redo.args.reduce( argsParse, '' )
-				}
+
 				return output
 
 			}, '' )

@@ -78,7 +78,7 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	undoButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-undo' )
 	undoButton.setAttribute( 'title', 'Undo' )
 	undoButton.setAttribute( 'Q-disabled', 'Q-disabled' )
-	undoButton.innerHTML = '&larr;'
+	undoButton.innerHTML = '⟲'
 	window.addEventListener( 'Q.History undo is depleted', function( event ){
 
 		if( event.detail.instance === circuit )
@@ -95,7 +95,7 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	redoButton.classList.add( 'Q-circuit-button', 'Q-circuit-button-redo' )
 	redoButton.setAttribute( 'title', 'Redo' )
 	redoButton.setAttribute( 'Q-disabled', 'Q-disabled' )
-	redoButton.innerHTML = '&rarr;'
+	redoButton.innerHTML = '⟳'
 	window.addEventListener( 'Q.History redo is depleted', function( event ){
 
 		if( event.detail.instance === circuit )
@@ -1820,7 +1820,6 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				if( possibleSibling.getAttribute( 'gate-label' ) === gateLabel &&
 					possibleSibling.getAttribute( 'register-indices' ) === registerIndicesString ){
 
-					console.log( 'found a sibling at', j, possibleSibling )
 					draggedOperations.splice( j, 1 )
 				}
 				else j ++

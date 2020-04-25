@@ -797,8 +797,16 @@
 	grid-column: 1;
 	grid-row: 1;
 	cursor: pointer;
-	/*font-size: 1.5rem;*/
+	font-size: 1.2rem;
 	text-shadow: none;
+	font-weight: normal;
+}
+.Q-circuit-button-undo,
+.Q-circuit-button-redo {
+
+	font-size:   1.2rem;
+	line-height: 2.6rem;
+	font-weight: normal;
 }
 
 

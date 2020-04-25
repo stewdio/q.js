@@ -1180,49 +1180,52 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 		//  Let’s make history.
 
-		this.history.record$({
+		if( foundOperations.length ){
 
-			redo: {
+			this.history.record$({
+
+				redo: {
+					
+					name: 'clear$',
+					func:  circuit.clear$,				
+					args:  Array.from( arguments )
+				},
+				undo: foundOperations.reduce( function( undos, operation ){
+
+					undos.push({
+
+						name: 'set$',
+						func: circuit.set$,
+						args: [
+
+							operation.gate,
+							operation.momentIndex,
+							operation.registerIndices
+						]
+					})
+					return undos
 				
-				name: 'clear$',
-				func: circuit.clear$,				
-				args: Array.from( arguments )
-			},
-			undo: foundOperations.reduce( function( undos, operation ){
-
-				undos.push({
-
-					name: 'set$',
-					func: circuit.set$,
-					args: [
-
-						operation.gate,
-						operation.momentIndex,
-						operation.registerIndices
-					]
-				})
-				return undos
-			
-			}, [] )
-		})
+				}, [] )
+			})
 
 
-		//  Let anyone listening, 
-		//  including any circuit editor interfaces,
-		//  know about what we’ve just completed here.
+			//  Let anyone listening, 
+			//  including any circuit editor interfaces,
+			//  know about what we’ve just completed here.
 
-		foundOperations.forEach( function( operation ){
+			foundOperations.forEach( function( operation ){
 
-			window.dispatchEvent( new CustomEvent( 
+				window.dispatchEvent( new CustomEvent( 
 
-				'Q.Circuit.clear$', { detail: { 
+					'Q.Circuit.clear$', { detail: { 
 
-					circuit,
-					momentIndex,
-					registerIndices: operation.registerIndices
-				}}
-			))
-		})
+						circuit,
+						momentIndex,
+						registerIndices: operation.registerIndices
+					}}
+				))
+			})
+		}
 
 
 		//  Enable that “fluent interface” method chaining :)
