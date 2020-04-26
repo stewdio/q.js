@@ -323,6 +323,12 @@
 	z-index: -20;
 	color: rgba( 0, 0, 0, 0.2 );
 }
+.Q-circuit-board-background > div {
+
+/*	transition: 
+		background-color 0.2s,
+		color 0.2s;*/
+}
 .Q-circuit-board-background .Q-circuit-cell-highlighted {
 
 	background-color: hsl(
@@ -331,6 +337,7 @@
 		var( --Q-color-background-saturation ),
 		95%
 	);
+	/*transition: none;*/
 }
 
 
@@ -683,6 +690,17 @@
 
 /*	--Q-operation-color-hue:  0;
 	--Q-operation-color-main: hsl( 0, 0%, 30% );*/
+}
+.Q-circuit-operation-swap .Q-circuit-operation-tile {
+
+	top:  calc( 50% - 0.55rem );
+	left: calc( 50% - 0.55rem );
+	width:  1.2rem;
+	height: 1.2rem;
+	border-radius: 0;
+	transform-origin: center;
+	transform: rotate( 45deg );
+	font-size: 0;
 }
 
 

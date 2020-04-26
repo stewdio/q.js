@@ -4,7 +4,7 @@
 
 
 
-const Q = function( circuitText ){
+const Q = function(){
 
 	`
 	Hi. Do you need help with something? 
@@ -14,7 +14,25 @@ const Q = function( circuitText ){
 	Q.Qubit.help()
 	`
 
-	return Q.Circuit.fromText( circuitText )
+
+	//  Did we send arguments of the form
+	//  ( bandwidth, timewidth )?
+
+	if( arguments.length === 2 &&
+		Array.from( arguments ).every( function( argument ){
+
+		return Q.isUsefulInteger( argument )
+
+	})){
+
+		return new Q.Circuit( arguments[ 0 ], arguments[ 1 ])
+	}
+
+
+	//  Otherwise assume we are creating a circuit
+	//  from a text block.
+
+	return Q.Circuit.fromText( arguments[ 0 ])
 }
 
 
@@ -271,7 +289,7 @@ Object.assign( Q, {
 
 Q.createConstants( 
 
-	'REVISION', 17,
+	'REVISION', 18,
 
 
 	//  Yeah... F’ing floating point numbers, Man!

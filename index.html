@@ -76,13 +76,13 @@
 			</p>
 			<br>
 			<div class="Q-circuit-palette"></div>
-			<div id="example-dom"></div>
+			<div id="example"></div>
 			<h4>Live probabilty results</h4>
 			<p>
 				Edit the code above
 				and watch the probabilty results update in realtime.
 			</p>
-			<pre><samp id="example-report" for="example-dom"></samp></pre>
+			<pre><samp id="example-report" for="example"></samp></pre>
 			<h3>Free and open-source</h3>
 			<p>
 				Q is free to use, 
@@ -418,125 +418,8 @@ with these results:
 
 
 
-//  Exploration encouragement!
-
-console.log( '\n\n\nYou did it! You opened your browser’s JavaScript console!!\n\n\n\n' )
-console.log( '\n\n\nNow try navigating to the other topic pages to learn more and experiment with Q.\n\n\n\n' )
-
-
-
-const circuitNameRandom = Q.getRandomName$()
-
-Array
-.from( document.querySelectorAll( '.circuit-name-random' ))
-.forEach( function( el ){
-
-	el.innerText = circuitNameRandom
-})
-
-
-
-var example = Q`
-
-	I I I   I I I
-	I H X#0 I I I
-	I I X#1 I I I
-	I I I   I I I
-`
-example.name = 'example'
-example.toDom( 'example-dom' )
-
-
-
-//  Let’s also place circuit palettes
-//  inside anything with the class 'Q-circuit-palette'.
-
-Array
-.from( document.querySelectorAll( '.Q-circuit-palette' ))
-.forEach( function( el ){
-
-	Q.Circuit.Editor.createPalette( el )
-	document.getElementById( 'example-report' )
-		.innerText = example.report$()
-})
-
-
-
-
-//  EVALUATION.
-
-window.addEventListener( 'Q.Circuit.evaluate began', function( event ){
-
-	console.log( 
-
-		'\n\nBeginning evaluation for “'+ event.detail.circuit.name +'”\n'+
-		event.detail.circuit.toDiagram() +'\n\n'
-	)
-})
-window.addEventListener( 'Q.Circuit.evaluate progressed', function( event ){
-
-	const 
-	length       = 20,
-	percent      = Math.round( event.detail.progress * 100 ),
-	percentText  = ( ''+ percent ).padStart( 3 ) +'%',
-	barLength    = Math.round( length * event.detail.progress ),
-	barComplete  = ''.padStart( barLength, '█' ),
-	barRemaining = ''.padStart( length - barLength, '░' ),
-	opsTotal     = event.detail.operationsTotal,
-	opsCompleted = ( ''+ event.detail.operationsCompleted ).padStart( Math.log( opsTotal ) * Math.LOG10E + 1 | 0, ' ' )
-
-	console.log( 
-
-		barComplete  + 
-		barRemaining +' '+ 
-		percentText  +'   '+
-		opsCompleted +' of '+
-		opsTotal
-	)
-
-	
-	//  What’s the actual state of the circuit at this moment?
-	//  We should come back and do a cool animated version of this data :)
-
-	const state = event.detail.state
-	// console.log( 'state width', state.getWidth(), 'state height', state.getHeight() )
-	// console.log( 'state', state.toTsv() )
-})
-window.addEventListener( 'Q.Circuit.evaluate completed', function( event ){
-
-	const circuit = event.detail.circuit
-	console.log( 
-
-		'\nEvaluation completed for “'+ circuit.name +'”'+
-		'\nwith these results:\n'+ circuit.report$() +'\n\n\n'
-	)
-	// updateEverything( event.detail.circuit )
-	if( circuit.name !== undefined ){
-	
-		const el = document.getElementById( circuit.name +'-report' )
-		if( el ) el.innerText = circuit.report$()
-	}
-})
-window.addEventListener( 'Q gui altered circuit', function( event ){
-
-	// updatePlaygroundFromDom( event.detail.circuit )
-	event.detail.circuit.evaluate$()
-})
-
-
-
-
-//  Let’s go ahead and add those examples to the current interpreter state
-//  so a read can begin playing with them straight away.
-
-var 
-cat = new Q.ComplexNumber( 1,  2 ),
-dog = new Q.ComplexNumber( 3, -4 )
-
-
-
-
-//  Enable hover interactions for the compatability table.
+//  Enable hover interactions 
+//  for the “open JavaScript console” table.
 
 const 
 elements  = Array.from( document.querySelectorAll( '#console-open-commands td' )),
@@ -587,6 +470,154 @@ elements.forEach( function( el ){
 	el.addEventListener( 'mouseleave',  unhighlight )
 	el.addEventListener( 'touchend',    unhighlight )
 })
+
+
+
+
+
+
+    /////////////////////////
+   //                     //
+  //   Event listeners   //
+ //                     //
+/////////////////////////
+
+
+window.addEventListener( 'Q.Circuit.evaluate began', function( event ){
+
+	console.log( 
+
+		'\n\nBeginning evaluation for “'+ event.detail.circuit.name +'”\n'+
+		event.detail.circuit.toDiagram() +'\n\n'
+	)
+})
+window.addEventListener( 'Q.Circuit.evaluate progressed', function( event ){
+
+	const 
+	length       = 20,
+	percent      = Math.round( event.detail.progress * 100 ),
+	percentText  = ( ''+ percent ).padStart( 3 ) +'%',
+	barLength    = Math.round( length * event.detail.progress ),
+	barComplete  = ''.padStart( barLength, '█' ),
+	barRemaining = ''.padStart( length - barLength, '░' ),
+	opsTotal     = event.detail.operationsTotal,
+	opsCompleted = ( ''+ event.detail.operationsCompleted ).padStart( Math.log( opsTotal ) * Math.LOG10E + 1 | 0, ' ' )
+
+	console.log( 
+
+		barComplete  + 
+		barRemaining +' '+ 
+		percentText  +'   '+
+		opsCompleted +' of '+
+		opsTotal
+	)
+
+	
+	//  What’s the actual state of the circuit at this moment?
+	//  We should come back and do a cool animated version of this data :)
+
+	// const state = event.detail.state
+	// console.log( 'state width', state.getWidth(), 'state height', state.getHeight() )
+	// console.log( 'state', state.toTsv() )
+})
+window.addEventListener( 'Q.Circuit.evaluate completed', function( event ){
+
+	const circuit = event.detail.circuit
+	console.log( 
+
+		'\nEvaluation completed for “'+ circuit.name +'”'+
+		'\nwith these results:\n'+ circuit.report$() +'\n\n\n'
+	)
+	if( circuit.name !== undefined ){
+	
+		const el = document.getElementById( circuit.name +'-report' )
+		if( el ) el.innerText = circuit.report$()
+	}
+})
+window.addEventListener( 'Q gui altered circuit', function( event ){
+
+	event.detail.circuit.evaluate$()
+})
+
+
+
+
+
+
+    ////////////////////
+   //                //
+  //   As per doc   //
+ //                //
+////////////////////
+
+
+//  Exploration encouragement!
+
+console.log( '\n\n\nYou did it! You opened your browser’s JavaScript console!!\n\n\n\n' )
+console.log( '\n\n\nNow try navigating to the other topic pages to learn more and experiment with Q.\n\n\n\n' )
+
+
+//  Demonstrate Q’s random naming feature.
+
+const circuitNameRandom = Q.getRandomName$()
+
+Array
+.from( document.querySelectorAll( '.circuit-name-random' ))
+.forEach( function( el ){
+
+	el.innerText = circuitNameRandom
+})
+
+
+//  Let’s go ahead and add those examples 
+//  to the current interpreter state
+//  so wee can begin playing with them straight away.
+
+var 
+cat = new Q.ComplexNumber( 1,  2 ),
+dog = new Q.ComplexNumber( 3, -4 )
+
+
+
+
+
+
+    /////////////////
+   //             //
+  //   THE FUN   //
+ //             //
+/////////////////
+
+
+//  Let’s place circuit palettes
+//  inside anything with the class 'Q-circuit-palette'.
+
+Array
+.from( document.querySelectorAll( '.Q-circuit-palette' ))
+.forEach( function( el ){
+
+	Q.Circuit.Editor.createPalette( el )
+})
+
+
+//  Create an example circuit and add it to the DOM.
+//  Notice everything works
+//  even though we didn’t even assign a variable!
+
+Q`
+
+	I I I   I I I
+	I H X#0 I I I
+	I I X#1 I I I
+	I I I   I I I
+`
+.setName$( 'example' )
+.toDom( 'example' )
+.circuit.evaluate$()
+
+
+
+
 
 
 

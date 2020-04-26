@@ -69,7 +69,13 @@ Object.assign( Q.Circuit, {
 
 
 	fromText: function( text ){
-		
+
+
+		//  This is a quick way to enable `fromText()`
+		//  to return a default new Q.Circuit().
+
+		if( text === undefined ) return new Q.Circuit()
+
 
 		//  Is this a String Template -- as opposed to a regular String?
 		//  If so, let’s convert it to a regular String.
@@ -147,6 +153,7 @@ Object.assign( Q.Circuit, {
 						})
 						// console.log( 'operationsIndex?', operationsIndex )
 						circuit.operations[ operationsIndex ].registerIndices[ operation.mappingIndex ] = registerIndex
+						circuit.operations[ operationsIndex ].isControlled = operation.gateLabel != '*'//  Q.Gate.SWAP.
 						siblingHasBeenFound = true
 					}
 				}
@@ -154,18 +161,19 @@ Object.assign( Q.Circuit, {
 
 					const 
 					gate = Q.Gate.findByLabel( operation.gateLabel ),
-					registerIndices = []
+					registerIndices = []					
 
 					if( Q.isUsefulInteger( operation.mappingIndex )){
 					
 						registerIndices[ operation.mappingIndex ] = registerIndex
 					}
-					else registerIndices[ 0 ] = registerIndex
+					else registerIndices[ 0 ] = registerIndex					
 					circuit.operations.push({
 
+						gate,
 						momentIndex,
 						registerIndices,
-						gate,
+						isControlled: false,
 						operationMomentId: operation.operationMomentId
 					})
 				}
@@ -384,7 +392,8 @@ Object.assign( Q.Circuit, {
 			let U
 			if( operation.registerIndices.length < Infinity ){
 			
-				if( operation.registerIndices.length > 1 ){
+				if( operation.isControlled ){
+				//if( operation.registerIndices.length > 1 ){
 
 					// operation.gate = Q.Gate.PAULI_X
 					//  why the F was this hardcoded in there?? what was i thinking?!
@@ -1274,6 +1283,9 @@ s3_folder = (“my_bucket”, “my_prefix”)
 		if( registerIndices.length === 0 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } with an empty register indices array:`, registerIndices )
 		if( registerIndices.reduce( function( accumulator, registerIndex ){
 
+			// console.log(accumulator && 
+			// 	registerIndex > 0 && 
+			// 	registerIndex <= circuit.bandwidth)
 			return (
 
 				accumulator && 
@@ -1321,11 +1333,14 @@ s3_folder = (“my_bucket”, “my_prefix”)
 			//  Finally we can actually set this operation.
 			//  Aren’t you glad we handle all this for you?
 
-			const operation = {
+			const 
+			isControlled = registerIndices.length > 1 && gate !== Q.Gate.SWAP,
+			operation = {
 
+				gate,
 				momentIndex,
 				registerIndices,
-				gate
+				isControlled
 			}
 			this.operations.push( operation )
 
@@ -1365,10 +1380,7 @@ s3_folder = (“my_bucket”, “my_prefix”)
 				'Q.Circuit.set$', { detail: { 
 
 					circuit,
-					operation//,
-					// gate,
-					// momentIndex,
-					// registerIndices
+					operation
 				}}
 			))
 		}
@@ -1749,25 +1761,161 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 
 
-Q.Circuit.BELL = Q`
-
-	H-C0
-	I-C1
-`
 
 
 
+//  Against my predilection for verbose clarity...
+//  I offer you super short convenience methods
+//  that do NOT use the $ suffix to delcare they are destructive.
+//  Don’t shoot your foot off.
+
+Object.entries( Q.Gate.constants ).forEach( function( entry ){
+
+	const 
+	gateConstantName = entry[ 0 ],
+	gate = entry[ 1 ],
+	set$ = function( momentIndex, registerIndexOrIndices ){
+
+		this.set$( gate, momentIndex, registerIndexOrIndices )
+		return this
+	}
+	Q.Circuit.prototype[ gateConstantName ] = set$
+	Q.Circuit.prototype[ gate.label ] = set$
+	Q.Circuit.prototype[ gate.label.toLowerCase() ] = set$
+})
 
 
 
 /*
+const bells = [
+
+
+	//  Verbose without shortcuts.
+
+	new Q.Circuit( 2, 2 )
+		.set$( Q.Gate.HADAMARD, 1, [ 1 ])
+		.set$( Q.Gate.PAULI_X,  2, [ 1 , 2 ]),
+
+	new Q.Circuit( 2, 2 )
+		.set$( Q.Gate.HADAMARD, 1, 1 )
+		.set$( Q.Gate.PAULI_X,  2, [ 1 , 2 ]),
+
+
+	//  Uses Q.Gate.findByLabel() to lookup gates.
+
+	new Q.Circuit( 2, 2 )
+		.set$( 'H', 1, [ 1 ])
+		.set$( 'X', 2, [ 1 , 2 ]),
+
+	new Q.Circuit( 2, 2 )
+		.set$( 'H', 1, 1 )
+		.set$( 'X', 2, [ 1 , 2 ]),
+
+
+	//  Convenience gate functions -- constant name.
+
+	new Q.Circuit( 2, 2 )
+		.HADAMARD( 1, [ 1 ])
+		.PAULI_X(  2, [ 1, 2 ]),
+
+	new Q.Circuit( 2, 2 )
+		.HADAMARD( 1, 1 )
+		.PAULI_X(  2, [ 1, 2 ]),
+
+
+	//  Convenience gate functions -- uppercase label.
+
+	new Q.Circuit( 2, 2 )
+		.H( 1, [ 1 ])
+		.X( 2, [ 1, 2 ]),
+
+	new Q.Circuit( 2, 2 )
+		.H( 1, 1 )
+		.X( 2, [ 1, 2 ]),
+
+
+	//  Convenience gate functions -- lowercase label.
+
+	new Q.Circuit( 2, 2 )
+		.h( 1, [ 1 ])
+		.x( 2, [ 1, 2 ]),
+
+	new Q.Circuit( 2, 2 )//  Perhaps the closest to Braket style.
+		.h( 1, 1 )
+		.x( 2, [ 1, 2 ]),
+
+
+	//  Q function -- bandwidth / timewidth arguments.
+
+	Q( 2, 2 )
+		.h( 1, [ 1 ])
+		.x( 2, [ 1, 2 ]),
+
+	Q( 2, 2 )
+		.h( 1, 1 )
+		.x( 2, [ 1, 2 ]),
+
+
+	//  Q function -- text block argument
+	//  with operation labels
+	//  and operation component IDs.
+
+	Q`
+		H-X.0#0
+		I-X.0#1`,
+
+	
+	//  Q function -- text block argument
+	//  using only component IDs
+	// (ie. no operation labels)
+	//  because the operation that the 
+	//  components should belong to is NOT ambiguous.
+	
+	Q`
+		H-X#0
+		I-X#1`,
+
+
+	//  Q function -- text block argument
+	//  as above, but using only whitespace
+	//  to partition between moments.
+
+	Q`
+		H X#0
+		I X#1`	
+],
+bellsAreEqual = !!bells.reduce( function( a, b ){
+
+	return a.toText() === b.toText() ? a : NaN
+
+})
+if( bellsAreEqual ){
+
+	console.log( `\n\nYES. All of ${ bells.length } our “Bell” circuits are equal.\n\n`, bells ) 
+}
+*/
+
+
+
+
+
+
+
 Q.Circuit.createConstants(
 
-	'BELL', Q(`
+	'BELL', Q`
 
-		H-C0
-		I-C1
-	`),
+		H  X#0
+		I  X#1
+	`,	
+	// 'GROVER', Q`
+
+	// 	H  X  *#0  X#0  I    X#0  I    I    I    X#0  I    I    I    X#0  I  X    H  X  I  *#0
+	// 	H  X  I    X#1  *#0  X#1  *#0  X#0  I    I    I    X#0  X    I    H  X    I  I  I  I
+	// 	H  X  I    I    I    I    I    X#1  *#0  X#1  *#0  X#1  *#0  X#1  I  *#0  X  H  X  I
+	// 	H  X  *#1  I    *#1  I    *#1  I    *#1  I    *#1  I    *#1  I    I  *#1  X  H  X  *#1
+	// `
+
 	//https://docs.microsoft.com/en-us/quantum/concepts/circuits?view=qsharp-preview
 	// 'TELEPORT', Q.(`
 		
@@ -1776,28 +1924,6 @@ Q.Circuit.createConstants(
 	// 	I-C1-I-I-X-Z-
 	// `)
 )
-
-
-
-
-
-
-
-*/
-
-
-
-
-var grover = 
-
-//  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20
-`	H  X  W  C0 I  C0 I  I  I  C0 I  I  I  C0 I  X  H  X  I  W
-	H  X  I  C1 W  C1 W  C0 I  I  I  C0 X  I  H  X  I  I  I  I
-	H  X  I  I  I  I  I  C1 W  C1 W  C1 W  C1 I  W  X  H  X  I
-	H  X  W  I  W  I  W  I  W  I  W  I  W  I  I  W  X  H  X  W
-`
-
-
 
 
 

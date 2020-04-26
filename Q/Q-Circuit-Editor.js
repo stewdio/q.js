@@ -10,13 +10,13 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	//  First order of business,
 	//  we require a valid circuit.
 
-	if( circuit instanceof Q.Circuit !== true ) return
+	if( circuit instanceof Q.Circuit !== true ) circuit = new Q.Circuit()
 	this.circuit = circuit
 	this.index = Q.Circuit.Editor.index ++
 
 
 	//  Q.Circuit.Editor is all about the DOM
-	//  so we’re going to get som use out of this
+	//  so we’re going to get some use out of this
 	//  stupid (but convenient) shorthand here.
 
 	const createDiv = function(){
@@ -25,18 +25,18 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	}
 
 
-	//  ++++++++++++++++++
-	//  The nature of the domId needs to be better thought out!
-	//  Check for name collisions beforehand???
-	//  What’s the contingency??
 
-	const
-	name  = typeof circuit.name === 'string' ? circuit.name : 'Q-editor-'+ this.index,
-	domId = name.replace( /^[^a-z]+|[^\w:.-]+/gi, '' )
-	
-	this.name  = name
-	this.domId = domId
 
+	//  We want to “name” our circuit editor instance
+	//  but more importantly we want to give it a unique DOM ID.
+	//  Keep in mind we can have MULTIPLE editors
+	//  for the SAME circuit!
+	//  This is a verbose way to do it,
+	//  but each step is clear and I needed clarity today! ;)
+
+	this.name = typeof circuit.name === 'string' ?
+		circuit.name :
+		'Q Editor '+ this.index
 
 
 	//  If we’ve been passed a target DOM element
@@ -45,7 +45,37 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	if( typeof targetEl === 'string' ) targetEl = document.getElementById( targetEl )	
 	const circuitEl = targetEl instanceof HTMLElement ? targetEl : createDiv()
 	circuitEl.classList.add( 'Q-circuit' )
-	circuitEl.setAttribute( 'id', this.domId )
+
+
+	//  If the target element already has an ID
+	//  then we want to use that as our domID.
+
+	if( typeof circuitEl.getAttribute( 'id' ) === 'string' ){
+
+		this.domId = circuitEl.getAttribute( 'id' )
+	}
+
+
+	//  Otherwise let’s transform our name value
+	//  into a usable domId.
+
+	else {
+
+		let domIdBase = this.name
+			.replace( /^[^a-z]+|[^\w:.-]+/gi, '-' ),
+		domId = domIdBase,
+		domIdAttempt = 1
+
+		while( document.getElementById( domId ) !== null ){
+
+			domIdAttempt ++
+			domId = domIdBase +'-'+ domIdAttempt
+		}
+		this.domId = domId
+		circuitEl.setAttribute( 'id', this.domId )
+	}
+
+
 
 
 	//  We want a way to easily get to the circuit 
@@ -59,19 +89,25 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	this.domElement = circuitEl
 
 
-	//  Toolbar.
+	//  Create a toolbar for containing buttons.
 
 	const toolbarEl = createDiv()
 	circuitEl.appendChild( toolbarEl )
 	toolbarEl.classList.add( 'Q-circuit-toolbar' )
 
-	//  Add a toggle switch for locking the circuit.
+
+	//  Create a toggle switch for locking the circuit.
 
 	const lockToggle = createDiv()
 	toolbarEl.appendChild( lockToggle )
 	lockToggle.classList.add( 'Q-circuit-button', 'Q-circuit-toggle', 'Q-circuit-toggle-lock' )
 	lockToggle.setAttribute( 'title', 'Lock / unlock' )
 	lockToggle.innerText = '🔓'
+
+
+	//  Create an “Undo” button
+	//  that enables and disables
+	//  based on available undo history.
 
 	const undoButton = createDiv()
 	toolbarEl.appendChild( undoButton )
@@ -89,6 +125,11 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 		if( event.detail.instance === circuit )
 			undoButton.removeAttribute( 'Q-disabled' )
 	})
+
+
+	//  Create an “Redo” button
+	//  that enables and disables
+	//  based on available redo history.
 
 	const redoButton = createDiv()
 	toolbarEl.appendChild( redoButton )
@@ -108,12 +149,24 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	})
 
 
+	//  Create a button for joining 
+	//  an “identity cursor”
+	//  and one or more same-gate operations
+	//  into a controlled operation.
+	// (Will be enabled / disabled from elsewhere.)
+
 	const controlButton = createDiv()
 	toolbarEl.appendChild( controlButton )
 	controlButton.classList.add( 'Q-circuit-button', 'Q-circuit-toggle', 'Q-circuit-toggle-control' )
 	controlButton.setAttribute( 'title', 'Create controlled operation' )
 	controlButton.setAttribute( 'Q-disabled', 'Q-disabled' )
 	controlButton.innerText = 'C'
+
+
+	//  Create a button for joining 
+	//  two “identity cursors”
+	//  into a swap operation.
+	// (Will be enabled / disabled from elsewhere.)
 
 	const swapButton = createDiv()
 	toolbarEl.appendChild( swapButton )
@@ -299,7 +352,7 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	referenceEl.innerHTML = `
 		This circuit is accessible in your 
 		<a href="index.html#Open_your_JavaScript_console" target="_blank">JavaScript console</a>
-		as <code>$('#${ domId }').circuit</code>`
+		as <code>$('#${ this.domId }').circuit</code>`
 
 
 	//  Put a note in the JavaScript console
@@ -308,7 +361,7 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 
 	Q.log( 0.5,
 		
-		`\n\nCreated a DOM interface for $('#${ domId }').circuit\n\n`,
+		`\n\nCreated a DOM interface for $('#${ this.domId }').circuit\n\n`,
 		 circuit.toDiagram(),
 		'\n\n\n'
 	)
@@ -499,12 +552,13 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 		const operationEl = document.createElement( 'div' )
 		foregroundEl.appendChild( operationEl )
 		operationEl.classList.add( 'Q-circuit-operation', 'Q-circuit-operation-'+ operation.gate.css )
-		operationEl.setAttribute( 'operation-index', operationIndex )
+		// operationEl.setAttribute( 'operation-index', operationIndex )		
 		operationEl.setAttribute( 'gate-label', operation.gate.label )
 		operationEl.setAttribute( 'gate-index', operation.gate.index )//  Used as an application-wide unique ID!
 		operationEl.setAttribute( 'moment-index', operation.momentIndex )
 		operationEl.setAttribute( 'register-index', registerIndex )
 		operationEl.setAttribute( 'register-array-index', i )//  Where within the registerIndices array is this operations fragment located?
+		operationEl.setAttribute( 'is-controlled', operation.isControlled )
 		operationEl.setAttribute( 'title', operation.gate.name )
 		operationEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( operation.momentIndex )
 		operationEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
@@ -556,7 +610,7 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 					if( registerDelta > 1 ) linkEl.classList.add( 'Q-circuit-operation-link-curved' )
 				}
 			})
-			if( i === 0 ){
+			if( operation.isControlled && i === 0 ){
 
 				operationEl.classList.add( 'Q-circuit-operation-control' )
 				operationEl.setAttribute( 'title', 'Control' )
@@ -600,48 +654,161 @@ Q.Circuit.Editor.isValidControlCandidate = function( circuitEl ){
 	if( Object.keys( moments ).length > 1 ) return false
 
 
+	//  If there are multi-register operations present,
+	//  regardless of whether those are controls or swaps,
+	//  all siblings must be present 
+	//  in order to join a new gate to this selection.
+
+	//  I’m sure we can make this whole routine much more efficient
+	//  but its results are correct and boy am I tired ;)
+
+	const allSiblingsPresent = selectedOperations
+	.reduce( function( status, operationEl ){
+
+		const registerIndicesString = operationEl.getAttribute( 'register-indices' )
+
+
+		//  If it’s a single-register operation
+		//  there’s no need to search further.
+
+		if( !registerIndicesString ) return status
+
+
+		//  How many registers are in use
+		//  by this operation?
+
+		const 
+		registerIndicesLength = registerIndicesString
+			.split( ',' )
+			.map( function( registerIndex ){
+
+				return +registerIndex
+			})
+			.length,
+		
+
+		//  How many of this operation’s siblings
+		// (including itself) can we find?
+
+		allSiblingsLength = selectedOperations
+		.reduce( function( siblings, operationEl ){
+
+			if( operationEl.getAttribute( 'register-indices' ) === registerIndicesString ){
+				
+				siblings.push( operationEl )
+			}
+			return siblings
+
+		}, [])
+		.length
+
+
+		//  Did we find all of the siblings for this operation?
+		//  Square that with previous searches.
+
+		return status && allSiblingsLength === registerIndicesLength
+
+	}, true )
+
+
+	//  If we’re missing some siblings
+	//  then we cannot modify whatever we have selected here.
+
+	if( allSiblingsPresent !== true ) return false
+
+
 	//  Note the different gate types present
 	//  among the selected operations.
 
 	const gates = selectedOperations.reduce( function( gates, operationEl ){
 
-		gates[ operationEl.getAttribute( 'gate-label' )] = true
+		const gateLabel = operationEl.getAttribute( 'gate-label' )
+		if( !Q.isUsefulInteger( gates[ gateLabel ])) gates[ gateLabel ] = 1
+		else gates[ gateLabel ] ++
 		return gates
 
 	}, {} )
 
 
-	//  One of the selected operations
-	//  MUST be a control.
+	//  Note if each operation is already controlled or not.
 
-	if( gates[ '!' ] !== true ) return false
+	const { 
+
+		totalControlled, 
+		totalNotControlled 
+
+	} = selectedOperations
+	.reduce( function( stats, operationEl ){
+
+		if( operationEl.getAttribute( 'is-controlled' ) === 'true' )
+			stats.totalControlled ++
+		else stats.totalNotControlled ++
+		return stats
+
+	}, { 
+
+		totalControlled:    0, 
+		totalNotControlled: 0
+	})
 
 
-	//  We can only add a control to 
-	//  one other kind of operation at a time.
-	//  No mixing operations!
+	//  This could be ONE “identity cursor” 
+	//  and one or more of a regular single gate
+	//  that is NOT already controlled.
 
-	if( Object.keys( gates ).length > 2 ) return false
+	if( gates[ '!' ] === 1 && 
+		Object.keys( gates ).length === 2 &&
+		totalNotControlled === selectedOperations.length ){
+
+		return true
+	}
 
 
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//  We also need to make sure they are not already joined to anything!!!!!!!!!!!!!!!!!!
-//  do we eneed to store data in register-indices too? 'siblings' ??
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//  There’s NO “identity cursor”
+	//  but there is one or more of specific gate type
+	//  and at least one of those is already controlled.
 
-	return true
+	if( gates[ '!' ] === undefined &&
+		Object.keys( gates ).length === 1 &&
+		totalControlled > 0 &&
+		totalNotControlled > 0 ){
+
+		return true
+	}
+
+
+	//  Any other combination allowed? Nope!
+
+	return false
 }
 Q.Circuit.Editor.createControl = function( circuitEl ){
 
 	if( Q.Circuit.Editor.isValidControlCandidate( circuitEl ) !== true ) return this
 
+
 	const
 	circuit = circuitEl.circuit,
 	selectedOperations = Array
 		.from( circuitEl.querySelectorAll( '.Q-circuit-cell-selected' )),
-	control = selectedOperations
+	
+
+	//  Are any of these controlled operations??
+	//  If so, we need to find its control component
+	//  and re-use it.
+
+	existingControlEl = selectedOperations.find( function( operationEl ){
+
+		return (
+
+			operationEl.getAttribute( 'is-controlled' ) === 'true' &&
+			operationEl.getAttribute( 'register-array-index' ) === '0'
+		)
+	}),
+
+	
+	//  One control. One or more targets.
+	
+	control = existingControlEl || selectedOperations
 		.find( function( el ){
 
 			return el.getAttribute( 'gate-label' ) === '!'
@@ -649,11 +816,97 @@ Q.Circuit.Editor.createControl = function( circuitEl ){
 	targets = selectedOperations
 		.reduce( function( targets, el ){
 
-			if( el.getAttribute( 'gate-label' ) !== '!' ) targets.push( el )
+			//if( el.getAttribute( 'gate-label' ) !== '!' ) targets.push( el )
+			if( el !== control ) targets.push( el )
 			return targets
 
 		}, [] )
 
+
+	//  Ready to roll.
+
+	circuit.history.createEntry$()
+	selectedOperations.forEach( function( operationEl ){
+
+		circuit.clear$(
+
+			+operationEl.getAttribute( 'moment-index' ),
+			+operationEl.getAttribute( 'register-index' )
+		)
+	})
+	circuit.set$(
+
+		targets[ 0 ].getAttribute( 'gate-label' ),
+		+control.getAttribute( 'moment-index' ),
+		[ +control.getAttribute( 'register-index' )].concat(
+
+			targets.reduce( function( registers, operationEl ){
+
+				registers.push( +operationEl.getAttribute( 'register-index' ))
+				return registers
+
+			}, [] )
+		)
+	)
+
+	
+	//  Update our toolbar button states.
+	
+	Q.Circuit.Editor.onSelectionChanged( circuitEl )
+	Q.Circuit.Editor.onCircuitChanged( circuitEl )	
+	
+	return this
+}
+
+
+
+
+Q.Circuit.Editor.isValidSwapCandidate = function( circuitEl ){
+
+	const
+	selectedOperations = Array
+		.from( circuitEl.querySelectorAll( '.Q-circuit-cell-selected' ))
+
+
+	//  We can only swap between two registers.
+	//  No crazy rotation-swap bullshit. (Yet.)
+
+	if( selectedOperations.length !== 2 ) return false
+
+
+	//  Both operations must be “identity cursors.”
+	//  If so, we are good to go.
+
+	areBothCursors = selectedOperations.every( function( operationEl ){
+
+		return operationEl.getAttribute( 'gate-label' ) === '!'
+	})
+	if( areBothCursors ) return true
+
+
+	//  Otherwise this is not a valid swap candidate.
+
+	return false
+}
+Q.Circuit.Editor.createSwap = function( circuitEl ){
+
+	if( Q.Circuit.Editor.isValidSwapCandidate( circuitEl ) !== true ) return this
+
+	const
+	selectedOperations = Array
+		.from( circuitEl.querySelectorAll( '.Q-circuit-cell-selected' )),
+	momentIndex = +selectedOperations[ 0 ].getAttribute( 'moment-index' )
+	registerIndices = selectedOperations
+	.reduce( function( registerIndices, operationEl ){
+
+		registerIndices.push( +operationEl.getAttribute( 'register-index' ))
+		return registerIndices
+
+	}, [] ),
+	circuit = circuitEl.circuit
+
+
+	//  Create the swap operation.
 
 	circuit.history.createEntry$()
 	selectedOperations.forEach( function( operation ){
@@ -666,40 +919,18 @@ Q.Circuit.Editor.createControl = function( circuitEl ){
 	})
 	circuit.set$(
 
-		targets[ 0 ].getAttribute( 'gate-label' ),
-		+control.getAttribute( 'moment-index' ),		
-		[ +control.getAttribute( 'register-index' )].concat(
-
-			targets.reduce( function( registers, operation ){
-
-				registers.push( +operation.getAttribute( 'register-index' ))
-				return registers
-
-			}, [] )
-		)
+		Q.Gate.SWAP,
+		momentIndex,
+		registerIndices
 	)
+
+
+	//  Update our toolbar button states.
+
 	Q.Circuit.Editor.onSelectionChanged( circuitEl )
-	Q.Circuit.Editor.onCircuitChanged( circuitEl )	
+	Q.Circuit.Editor.onCircuitChanged( circuitEl )
+
 	return this
-}
-
-
-
-
-Q.Circuit.Editor.isValidSwapCandidate = function( circuitEl ){
-
-	const
-	selectedOperations = Array
-	.from( circuitEl.querySelectorAll( '.Q-circuit-cell-selected' ))
-
-
-}
-Q.Circuit.Editor.createSwap = function( circuitEl ){
-
-	if( Q.Circuit.Editor.isValidSwapCandidate( circuitEl ) !== true ) return this
-
-
-	Q.Circuit.Editor.updateToolbarAbilities( circuitEl )
 }
 
 
@@ -707,7 +938,6 @@ Q.Circuit.Editor.createSwap = function( circuitEl ){
 
 Q.Circuit.Editor.onSelectionChanged = function( circuitEl ){
 
-	
 	const controlButtonEl = circuitEl.querySelector( '.Q-circuit-toggle-control' )
 	if( Q.Circuit.Editor.isValidControlCandidate( circuitEl )){
 
@@ -1877,9 +2107,9 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 	if( Q.Circuit.Editor.dragEl.circuitEl &&
 		Q.Circuit.Editor.dragEl.circuitEl !== circuitEl ){
 
-		const originCircuit = Q.Circuit.Editor.dragEl.circuitEl.circuit
-		Q.Circuit.Editor.onSelectionChanged( originCircuit )
-		Q.Circuit.Editor.onCircuitChanged( originCircuit )
+		const originCircuitEl = Q.Circuit.Editor.dragEl.circuitEl
+		Q.Circuit.Editor.onSelectionChanged( originCircuitEl )
+		Q.Circuit.Editor.onCircuitChanged( originCircuitEl )
 	}
 
 
