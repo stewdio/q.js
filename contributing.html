@@ -238,6 +238,20 @@ cat.<a href="Q-ComplexNumber.html#.toText">toText</a>()   <span class="comment">
 cat.<a href="Q-ComplexNumber.html#.add$"><strong>add$</strong></a>( dog )<span class="comment">//  Destructive. Note the ‘$’ suffix.</span>
 cat.<a href="Q-ComplexNumber.html#.toText">toText</a>()   <span class="comment">//  Now returns '4 - 2i'</span>
 </pre></code>
+			<p>
+				The notable exception to this is the “python-inspired”
+				super-short circuit editing syntax
+				which uses convenience functions <strong>not</strong>
+				suffixed with a dollar sign.
+				This allows creating a circuit in Q to more closely resemble
+				editing a python script for Amazon Braket, Qiskit, and so on:
+			</p>
+<pre><code>
+<a href="Q.html">Q</a>( 2, 2 )
+	.h( 1, 1 )
+	.x( 2, [ 1, 2 ])
+
+</code></pre>
 			<h4>CSS style</h4>
 			<p>
 				Similar to our JavaScript style,

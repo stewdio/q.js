@@ -107,61 +107,106 @@
 			<hr>
 			<h3>Quantum JavaScript</h3>
 			<p>
-				What does coding a quantum circuit look like in JavaScript?
-				Let’s recreate that 
-				<a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>
-				example together
-				using Q.
-				First, we’ll create a circuit that uses 2 qubits for 2 moments of time.
-				Then, let’s place a <a href="Q-Gate.html#.HADAMARD">Hadamard</a> gate at moment 1 on register 1.
-				Finally, we’ll place a <a href="Q-Gate.html#.PAULI_X">Controlled-Not</a> gate at moment 2, 
-				with the control component on register 1
-				and the target component on register 2.
-				For fun we’ll give our circuit a random name
-				and generate an outcome probabilities report.
-				(And <a href="contributing.html#Destructive_vs_non-destructive_methods">what are those dollar signs about?</a>)
+				What does coding a quantum circuit look like?				
+				Let’s recreate the above
+				<a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a> using 
+				<strong>three separate
+				circuit authoring styles</strong>
+				to demonstrate Q’s flexibility.
+				
+				For each of the three examples
+				we’ll create a circuit that uses 2 qubit registers for 2 moments of time.
+				We’ll place a <a href="Q-Gate.html#.HADAMARD">Hadamard</a> 
+				gate at moment 1 on register 1.
+				Then we’ll place a <a href="Q-Gate.html#.PAULI_X">Controlled-Not</a> gate at moment 2, 
+				with its control component on register 1
+				and its target component on register 2.
 			</p>
-<pre><code>
-new <a href="Q.html">Q</a>.<a href="Q-Circuit.html">Circuit</a>( 2, 2 )
-	.<a href="Q-Circuit.html#.set$">set$</a>( <a href="Q.html">Q</a>.<a href="Q-Gate.html">Gate</a>.<a href="Q-Gate.html#.HADAMARD">HADAMARD</a>, 1, 1 )
-	.<a href="Q-Circuit.html#.set$">set$</a>( <a href="Q.html">Q</a>.<a href="Q-Gate.html">Gate</a>.<a href="Q-Gate.html#.PAULI_X">PAULI_X</a>, 2, [ 1, 2 ])
-	.<a href="Q-Circuit.html#.setName$">setName$</a>( <a href="Q.html">Q</a>.<a href="Q.html#.getRandomName$">getRandomName$</a> )
-	.<a href="Q-Circuit.html#.evaluate$">evaluate$</a>()
-</code></pre>
-			<h4>Shorthand syntax</h4>
+			<h5 id="text-as-input">1. Text as input</h5>
 			<p>
-				As your circuits become longer and more complex,
-				typing out all those <a href="Q-Circuit.html#.set$">set$</a> commands
-				can become cumbersome—and difficult to read.
-				That’s why we built 
-				<a href="Q-Circuit.html#.fromText">Q’s shorthand syntax</a>. 
-				Just type your circuit operations out as text
+				Q’s <a href="Q-Circuit.html#.fromText">text-as-input</a> feature 
+				directly converts your text into a
+				functioning quantum circuit.
+				Just type your operations out as if creating a text-only circuit diagram
 				(using “I” for 
 				<a href="Q-Gate.html#.IDENTITY">identity gates</a> 
 				in the spots where no operations occur)
-				and enclose your text block in backticks (instead of quotes)
-				and you’re good to go!
-				This code snippet below does exactly the same thing as the snippet above.				
-				(To learn more about 
-				<a href="Q-Circuit.html#.fromText">Q’s shorthand syntax</a> 
-				and other convenient tricks, 
-				see <a href="Q-Circuit.html#Writing_quantum_circuits">“Writing quantum circuits.”</a>)
+				and enclose your text block in 
+				<a href="https://en.wikipedia.org/wiki/Grave_accent" targt="_blank">backticks</a> 
+				(instead of quotation marks).
+				Note that parentheses are not required to invoke the function call
+				when using backticks.
 			</p>
 <pre><code>
 <a href="Q.html">Q</a>`
 	H  X#0
 	I  X#1
 `
+</code></pre>
+			<h5 id="python-inspired">2. Python-inspired</h5>
+			<p>
+				Folks coming to Q from Python-based quantum suites
+				may find this syntax more familiar. 
+				Here the <code><a href="Q.html">Q</a></code> function expects 
+				the number of qubit registers to use,
+				followed by the number of moments to use.
+				Afterward,
+				each single-letter quantum gate label is also a function name.
+				For these functions 
+				the first argument is a moment index
+				and the second is a qubit register index or array of qubit register indices.
+			</p>
+<pre><code>
+<a href="Q.html">Q</a>( 2, 2 )
+	.h( 1, 1 )
+	.x( 2, [ 1, 2 ])
+</code></pre>
+			<h5 id="verbose-for-clarity">3. Verbose for clarity</h5>
+			<p>
+				Under the hood, Q is making more verbose declarations.
+				You can also make direct declarations like so.
+				(And <a href="contributing.html#Destructive_vs_non-destructive_methods">what are those dollar signs about?</a>)
+			</p>
+<pre><code>
+new <a href="Q.html">Q</a>.<a href="Q-Circuit.html">Circuit</a>( 2, 2 )
+	.<a href="Q-Circuit.html#.set$">set$</a>( <a href="Q.html">Q</a>.<a href="Q-Gate.html">Gate</a>.<a href="Q-Gate.html#.HADAMARD">HADAMARD</a>, 1, 1 )
+	.<a href="Q-Circuit.html#.set$">set$</a>( <a href="Q.html">Q</a>.<a href="Q-Gate.html">Gate</a>.<a href="Q-Gate.html#.PAULI_X">PAULI_X</a>, 2, [ 1, 2 ])
+</code></pre>
+			<h5>More variations</h5>
+			<p>
+				There are many ways to build a quantum circuit with Q.
+				What feels right for you?
+				To learn more about 
+				<a href="Q-Circuit.html#.fromText">Q’s text syntax</a> 
+				and other convenience tricks, 
+				see <a href="Q-Circuit.html#Writing_quantum_circuits">“Writing quantum circuits.”</a>
+			</p>
+			<h4>Clear, legible output</h4>
+			<p>
+				Whether you use Q’s drag-and-drop circuit editor interface,
+				<a href="Q-Circuit.html#.fromText">text syntax</a>,
+				Python-inspired syntax,
+				or prefer to type out every <a href="Q-Circuit.html#.set$">set$</a> command yourself,
+				Q makes inspecting and evaluating your circuits easy.
+			</p>
+			<p>
+				Let’s add two commands which could directly follow any 
+				of the three examples above.
+				Hey—deciding what to name a circuit 
+				can sometimes be difficult,
+				so we’ll let Q choose a random name for us. 
+				Then we’ll generate
+				an outcome probabilities report.
+				Just add the following two lines
+				to any of the above examples:
+			</p>
+<pre><code>
 .<a href="Q-Circuit.html#.setName$">setName$</a>( <a href="Q.html">Q</a>.<a href="Q.html#.getRandomName$">getRandomName$</a> )
 .<a href="Q-Circuit.html#.evaluate$">evaluate$</a>()
 </code></pre>
-			<h4>Clear, legible output</h4>
 			<p>
-				Whether you use Q’s circuit editor,
-				<a href="Q-Circuit.html#.fromText">shorthand syntax</a>,
-				or prefer to type out every <a href="Q-Circuit.html#.set$">set$</a> command yourself,
-				Q makes inspecting and evaluating your circuits easy.
-				Here’s the output generated by the code above:
+				And that combination will yield 
+				something like the following:
 			</p>
 <pre><samp>
 Beginning evaluation for “<span class="circuit-name-random">Example</span>”
