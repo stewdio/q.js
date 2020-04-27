@@ -1784,6 +1784,12 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 	circuit.history.createEntry$()
 
 
+draggedOperations.forEach( function( childEl, i ){
+
+	console.log( 'dragged operation', i, childEl )
+})
+
+
 	draggedOperations.forEach( function( childEl, i ){
 
 		let
@@ -2050,6 +2056,13 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				if( possibleSibling.getAttribute( 'gate-label' ) === gateLabel &&
 					possibleSibling.getAttribute( 'register-indices' ) === registerIndicesString ){
 
+
+					console.log(
+
+						'\n\nWas parsing dragged item #', i, ': ', childEl,
+						'\nwhen found sibling at', j, 'within', draggedOperations.length,' dragged operations.',
+						'\nwith gate label', gateLabel, 'and indices string',  registerIndicesString, ' #', possibleSibling.getAttribute( 'register-indices-index' )
+					)
 					draggedOperations.splice( j, 1 )
 				}
 				else j ++

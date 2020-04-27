@@ -1326,6 +1326,8 @@ s3_folder = (“my_bucket”, “my_prefix”)
 			//  This will also entirely remove any multi-register operations
 			//  that happen to have a component at this moment / register.
 			
+			console.log( '\n\nAUTO calling CLEAR$ from within SET$ !')
+			console.log( 'so we can SET$', gate.name, 'at moment', momentIndex,' registers', registerIndices )
 			this.clear$( momentIndex, registerIndices )
 			
 

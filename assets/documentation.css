@@ -409,8 +409,8 @@ cite {
 cite p {
 
 	position: relative;
-	left:  50%;
-	width: calc( 50% - 2rem );
+	left:  25%;
+	width: calc( 75% - 2rem );
 }
 cite p:before {
 

@@ -149,13 +149,20 @@
 	-ms-user-select: none;
 	user-select: none;
 	margin-bottom: 0.5rem;
+
+	box-sizing: border-box;
+	display: grid;
+	grid-auto-columns: 3.6rem;
+	grid-auto-rows:    3.0rem;
+	grid-auto-flow: column;
+
 }
 .Q-circuit-button {
 
 	position: relative;
 	display: inline-block;
 	/*margin: 0 0.5rem 0.5rem 0;*/
-	width:  4rem;
+	width:  3.6rem;
 	height: 3rem;
 /*	box-shadow: 
 		-0.1rem -0.1rem 0 rgba( 255, 255, 255, 0.8 ),
@@ -549,7 +556,6 @@
 		35%
 	);
 
-
 	--Q-operation-color-light: hsl(
 
 		var( --Q-operation-color-hue ),
@@ -560,7 +566,7 @@
 
 		var( --Q-operation-color-hue ),
 		10%,
-		25%
+		30%
 	);
 	color: white;
 	text-shadow: -0.05rem -0.05rem 0 rgba( 0, 0, 0, 0.1 );
@@ -654,13 +660,23 @@
 
 
 
-.Q-circuit-operation-hadamard {
+.Q-circuit-operation-hadamard .Q-circuit-operation-tile {
 
 	/*--Q-operation-color-hue:  var( --Q-color-red-hue );*/
 	/*--Q-operation-color-main: var( --Q-color-red );*/
 
 	/*--Q-operation-color-hue:  0;
 	--Q-operation-color-main: hsl( 0, 0%, 10% );*/
+
+
+/*	background: 
+		linear-gradient(
+
+			-33deg,
+			var( --Q-color-blue ) 20%,
+			#6f3c69 50%,
+			var( --Q-color-red  ) 80%
+		);*/
 }
 .Q-circuit-operation-identity .Q-circuit-operation-tile,
 .Q-circuit-operation-control .Q-circuit-operation-tile,
@@ -685,8 +701,8 @@
 .Q-circuit-operation-pauli-y,
 .Q-circuit-operation-pauli-z {
 
-	/*--Q-operation-color-hue:  var( --Q-color-yellow-hue );*/
-	/*--Q-operation-color-main: var( --Q-color-yellow );*/
+	/*--Q-operation-color-hue:  var( --Q-color-red-hue );*/
+	/*--Q-operation-color-main: var( --Q-color-red );*/
 
 /*	--Q-operation-color-hue:  0;
 	--Q-operation-color-main: hsl( 0, 0%, 30% );*/
@@ -815,7 +831,7 @@
 	grid-column: 1;
 	grid-row: 1;
 	cursor: pointer;
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 	text-shadow: none;
 	font-weight: normal;
 }
