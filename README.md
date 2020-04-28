@@ -29,7 +29,7 @@ and drop a link to Q’s website
 [https://quantumjavascript.app](https://quantumjavascript.app)
 on social media with the hashtag 
 [#Qjs](https://twitter.com/search?q=%23Qjs).
-Let’s make quantum computing accesible!
+Let’s make quantum computing accessible!
   
   
 
