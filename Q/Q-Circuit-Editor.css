@@ -566,7 +566,7 @@
 
 		var( --Q-operation-color-hue ),
 		10%,
-		30%
+		25%
 	);
 	color: white;
 	text-shadow: -0.05rem -0.05rem 0 rgba( 0, 0, 0, 0.1 );

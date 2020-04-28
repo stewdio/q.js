@@ -1775,7 +1775,8 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 	const 
 	draggedOperations    = Array.from( Q.Circuit.Editor.dragEl.children ),
 	draggedMomentDelta   = droppedAtMomentIndex - Q.Circuit.Editor.dragEl.momentIndex,
-	draggedRegisterDelta = droppedAtRegisterIndex - Q.Circuit.Editor.dragEl.registerIndex
+	draggedRegisterDelta = droppedAtRegisterIndex - Q.Circuit.Editor.dragEl.registerIndex,
+	setCommands = []
 
 
 	//  Whatever the next action is that we perform on the circuit,
@@ -1894,7 +1895,8 @@ draggedOperations.forEach( function( childEl, i ){
 
 			if( registerIndices.length === foundComponents.length ){
 
-				circuit.set$( 
+				//circuit.set$( 
+				setCommands.push([
 
 					gateLabel,
 					momentIndexTarget,
@@ -1914,7 +1916,8 @@ draggedOperations.forEach( function( childEl, i ){
 						}
 						return registerIndexTarget
 					})
-				)
+				// )
+				])
 			}
 
 
@@ -2003,25 +2006,29 @@ draggedOperations.forEach( function( childEl, i ){
 
 				//  Finally, we’re ready to set.
 
-				circuit.set$( 
+				// circuit.set$( 
+				setCommands.push([
 
 					childEl.getAttribute( 'gate-label' ), 
 					momentIndexTarget,
 					fixedRegistersIndices
-				)
+				// )
+				])
 			}
 			else {
 
 				remainingComponents.forEach( function( componentEl, i ){
 
-					circuit.set$( 
+					//circuit.set$( 
+					setCommands.push([
 
 						+componentEl.getAttribute( 'register-indices-index' ) ? 
 							gateLabel : 
 							Q.Gate.NOOP,
 						+componentEl.getAttribute( 'moment-index' ),
 						+componentEl.getAttribute( 'register-index' )
-					)
+					// )
+					])
 				})
 
 
@@ -2030,14 +2037,16 @@ draggedOperations.forEach( function( childEl, i ){
 
 				foundComponents.forEach( function( componentEl ){
 
-					circuit.set$( 
+					// circuit.set$( 
+					setCommands.push([
 
 						+componentEl.getAttribute( 'register-indices-index' ) ? 
 							gateLabel : 
 							Q.Gate.NOOP,
 						+componentEl.getAttribute( 'moment-index' ) + draggedMomentDelta,
 						+componentEl.getAttribute( 'register-index' ) + draggedRegisterDelta,
-					)
+					// )
+					])
 				})
 			}
 
@@ -2097,15 +2106,25 @@ draggedOperations.forEach( function( childEl, i ){
 			//  And now set$ the operation 
 			//  in its new home.
 
-			circuit.set$( 
+			// circuit.set$( 
+			setCommands.push([
 
 				childEl.getAttribute( 'gate-label' ), 
 				momentIndexTarget,
 				[ registerIndexTarget ]
-			)
+			// )
+			])
 		}
 	})
 	
+
+	//  DO IT DO IT DO IT
+
+	setCommands.forEach( function( setCommand ){
+
+		circuit.set$.apply( circuit, setCommand )
+	})
+
 
 	//  Are we capable of making controls? Swaps?
 
