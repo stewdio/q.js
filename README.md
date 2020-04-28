@@ -32,6 +32,8 @@ on social media with the hashtag
 Let’s make quantum computing accesible!
   
   
+
+
 Quantum JavaScript
 ========================================================================
 What does coding a quantum circuit look like? Let’s recreate the above
@@ -43,9 +45,10 @@ registers for 2 moments of time. We’ll place a
 gate at moment 1 on register 1. Then we’ll place a 
 [Controlled-Not](https://quantumjavascript.app/Q-Gate.html#.PAULI_X) 
 gate at moment 2, with its control component on register 1 and its 
-target component on register 2.
+target component on register 2.  
   
-**1—Text as input** 
+
+**1. Text as input**  
 Q’s 
 [text-as-input](https://quantumjavascript.app/Q-Circuit.html#.fromText) 
 feature directly converts your text into a functioning quantum circuit. 
@@ -62,9 +65,10 @@ Q`
     H  X#0
     I  X#1
 `
-```
+```  
 
-**2—Python-inspired** 
+
+**2. Python-inspired**  
 Folks coming to Q from Python-based quantum suites may find this syntax 
 more familiar. Here the [`Q`](https://quantumjavascript.app/Q.html) 
 function expects the number of qubit registers to use, followed by the 
@@ -77,9 +81,10 @@ qubit register indices.
 Q( 2, 2 )
     .h( 1, 1 )
     .x( 2, [ 1, 2 ])
-```
+```  
 
-**3—Verbose for clarity**  
+
+**3. Verbose for clarity**  
 Under the hood, Q is making more verbose declarations. You can also 
 make direct declarations like so. (And 
 [what are those dollar signs about?](https://quantumjavascript.app/contributing.html#Destructive_vs_non-destructive_methods))
@@ -87,18 +92,21 @@ make direct declarations like so. (And
 new Q.Circuit( 2, 2 )
     .set$( Q.Gate.HADAMARD, 1, 1 )
     .set$( Q.Gate.PAULI_X, 2, [ 1, 2 ])
-```
+```  
+
 
 **More variations**  
 There are many ways to build a quantum circuit with Q. What feels right 
 for you? To learn more about 
 [Q’s text syntax](https://quantumjavascript.app/Q-Circuit.html#.fromText)
 and other convenience tricks, see 
-[“Writing quantum circuits.”](https://quantumjavascript.app/Q-Circuit.html#Writing_quantum_circuits)
-
-
+[“Writing quantum circuits.”](https://quantumjavascript.app/Q-Circuit.html#Writing_quantum_circuits)  
+  
+  
+  
+  
 Clear, legible output
-------------------------------------------------------------------------
+========================================================================
 Whether you use Q’s drag-and-drop circuit editor interface,
 [text syntax](https://quantumjavascript.app/Q-Circuit.html#.fromText),
 Python-inspired syntax, or prefer to type out every 
@@ -145,6 +153,8 @@ with these results:
 ```
 
 
+
+
 Import and export
 ========================================================================
 Q plays well with everyone. Export your circuits as 
@@ -157,7 +167,7 @@ Visit the [Q playground](https://quantumjavascript.app/playground.html)
 to experiment with converting circuits between various formats.
 As always, new features are in the works.
 [Join our project on GitHub](https://github.com/stewdio/q.js")
-and help us build bridges to everywhere.
+and help us build bridges to everywhere.  
   
   
   
