@@ -1226,7 +1226,12 @@ table#console-open-commands .na {
 	border-radius: 16px;
 	width:  100%;
 	height: 100%;
-	background-color: var( --Q-color-chalk );
+	background-color: hsl( 
+		
+		var( --Q-color-blue-hue ), 
+		10%, 
+		98%
+	);
 	overflow: hidden;
 }
 .interactive-component {
@@ -1235,12 +1240,7 @@ table#console-open-commands .na {
 	top:  24px;
 	left: 24px;
 	z-index: 40;
-	background-color: hsl( 
-		
-		var( --Q-color-blue-hue ), 
-		10%, 
-		98%
-	);
+
 }
 
 
@@ -1533,21 +1533,36 @@ table#console-open-commands .na {
 #bloch-sphere-qubits, 
 #bloch-sphere-gates {
 
-	display: inline-block;
-	margin: 1rem 0;
-	border-radius: 0.5rem;
-	background-color: var( --Q-color-newsprint );
+	/*display: block;*/
+	width: 100%;
+	margin: 0.5rem 0 1rem 0;
+	border-radius: 0.4rem;
+	background-color: hsl( 
+		
+		var( --Q-color-blue-hue ), 
+		10%, 
+		98%
+	);
 	padding: 0;
 	font-family: var( --Q-font-family-sans );
 	overflow: hidden;
-	box-shadow: 0 0.1rem 0.3rem rgba( 0, 0, 0, 0.3 );	
+	/*box-shadow: 0.1rem 0.1rem 0.2rem rgba( 0, 0, 0, 0.3 );*/
+	color: 	hsl( 
+		
+		var( --Q-color-blue-hue ), 
+		10%, 
+		50%
+	);
 }
 .bloch-sphere-qubit-container, 
 .bloch-sphere-gate-container {
 
 	float: left;
 	width:  5rem; 
-	height: 8rem;
+	height: 9rem;
+
+	width: calc( 100% / 6 );
+
 	padding-top: 0.4rem;
 	text-align: center;
 	overflow: hidden;
@@ -1557,54 +1572,76 @@ table#console-open-commands .na {
 .bloch-sphere-qubit-container:hover,
 .bloch-sphere-gate-container:hover  {
 	
-	background-color: #DDD;
+	background-color: hsl( 
+		
+		var( --Q-color-blue-hue ), 
+		10%, 
+		90%
+	);
 	transition: background-color 0s;
 }
 .bloch-sphere-qubit-container.selected,
 .bloch-sphere-gate-container.selected {
 	
-	background-color: var( --Q-color-charcoal );
-	color: var( --Q-color-white );
+	/*background-color: var( --Q-color-charcoal );*/
+	background-color: hsl( 
+		
+		var( --Q-color-blue-hue ), 
+		10%, 
+		85%
+	);
+	color: black;
 }
 .bloch-sphere-qubit-container p,
 .bloch-sphere-gate-container p {
 
 	font-size:   0.8rem;
-	line-height: 18px;
+	line-height: 1.2rem;
 }
 .bloch-sphere-qubit {
 
 	display: inline-block;
-	margin:  0.3rem 0;
+	margin:  0.5rem 0;
 	width:  3rem;
 	height: 3rem;
 	border-radius: 100%;
-	background-color: var( --Q-color-white );
+	background-color: hsl( 
+		
+		var( --Q-color-blue-hue ), 
+		10%, 
+		35%
+	);
 	text-align: center;
-	font-weight: 900;
-	font-size:   1.5rem;
-	line-height: 3.0rem;
-	color: var( --Q-color-black );
+	font-weight: 400;
+	font-size:   1.2rem;
+	line-height: 2.92rem;
+	color: white;
 }
 
 
 .bloch-sphere-gate-container {
 
-	width:  4.3rem;
-	height: 5rem;
+	width: calc( 100% / 7 );
+	height: 6rem;
 }
 .bloch-sphere-gate {
 
 	display: inline-block;
-	margin:  0.3rem 0;
-	width:  2.2rem;
-	height: 2.2rem;
-	background-color: var( --Q-color-white );
+	margin:  0.5rem 0 0.2rem 0;
+	width:  3rem;
+	height: 3rem;
+	border-radius: 0.2rem;
+	background-color: hsl( 
+		
+		var( --Q-color-blue-hue ), 
+		10%, 
+		35%
+	);
 	text-align: center;
 	font-weight: 900;
 	font-size:   1.5rem;
-	line-height: 2.2rem;
-	color: var( --color-black );
+	line-height: 2.92rem;
+	color: white;
 }
 .interactive-container {
 

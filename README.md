@@ -13,7 +13,7 @@ then tap and drag the pieces around to get a feel for how it works.
 It’s easy to use on both desktop and mobile devices. Made a mistake? 
 Just tap the Undo button.
 
-![Q editor demo](./assets/demos/Q-demo-editor-1.gif)  
+![Q editor demo](./assets/demos/Q-demo-bellstate.gif)  
   
   
 Free and open-source
