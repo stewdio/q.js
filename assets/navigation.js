@@ -75,11 +75,11 @@ document.addEventListener( 'DOMContentLoaded', function(){
 		<p>API documentation</p>
 		<ul>
 			<li><h2><a href="Q.html"><code>Q</code></a></h2></li>
-			<li><h2><a href="Q-ComplexNumber.html"><code>Q.ComplexNumber</code></a></h2></li>
-			<li><h2><a href="Q-Matrix.html"><code>Q.Matrix</code></a></h2></li>
-			<li><h2><a href="Q-Qubit.html"><code>Q.Qubit</code></a></h2></li>
-			<li><h2><a href="Q-Gate.html"><code>Q.Gate</code></a></h2></li>
-			<li><h2><a href="Q-Circuit.html"><code>Q.Circuit</code></a></h2></li>
+			<li><h2><a href="Q-ComplexNumber.html"><code class="q-prefix">ComplexNumber</code></a></h2></li>
+			<li><h2><a href="Q-Matrix.html"><code class="q-prefix">Matrix</code></a></h2></li>
+			<li><h2><a href="Q-Qubit.html"><code class="q-prefix">Qubit</code></a></h2></li>
+			<li><h2><a href="Q-Gate.html"><code class="q-prefix">Gate</code></a></h2></li>
+			<li><h2><a href="Q-Circuit.html"><code class="q-prefix">Circuit</code></a></h2></li>
 		</ul>
 		<div id="veggie-burger">
 			<div id="vb-top-dexter"></div>

@@ -621,6 +621,10 @@ nav p {
 	);
 	/*text-shadow: 1px 1px 0 white;*/
 }
+nav code.q-prefix:before {
+
+	content: "Q.";
+}
 
 
 
