@@ -305,6 +305,8 @@ h3 {
 	font-size:      2.0rem;
 	line-height:    2.5rem;
 	letter-spacing: -0.04rem;
+	font-weight: 500;
+	color: black;
 }
 h4 {
 
@@ -318,7 +320,7 @@ h5  {
 
 	padding-top: 1em;
 	padding-bottom: 0em;
-	font-size: 1em;
+	font-size: 1.2em;
 	letter-spacing: -0.02rem;
 }
 h6 {
@@ -439,7 +441,7 @@ pre {
 		var( --Q-color-background-saturation ),
 		98%
 	);
-	padding: 0  0 1rem 1rem;
+	padding: 0  0 1.5rem 1rem;
 	white-space: pre;
 	word-wrap: normal;/*  iOS, you make me sad.  */
 	tab-size: 4;
@@ -550,25 +552,13 @@ nav {
 }
 header {
 
-	margin: 1rem 4rem 1rem 1rem;
+	margin: 1.2rem 4rem 1.6rem 1.2rem;
 }
-/*header h1 a {
+header img {
 
 	display: block;
-	padding: 1rem 0 1rem 1rem;
-}*/
-header h1 svg {
-
-	display: block;
-	max-width: 8rem;
-	max-height: 8rem;
-	fill: hsl(
-
-		var( --Q-color-blue-hue ),
-		10%,
-		40%
-	);
-	/*fill: white;*/
+	max-width:  7.2rem;
+	max-height: 7.2rem;
 }
 nav ul {
 
@@ -583,13 +573,13 @@ nav li {
 nav li h2 {
 
 	font-size:   1.2rem;
-	line-height: 2.4rem;
+	line-height: 2.2rem;
 	font-weight: 400;
 }
 nav li a {
 
 	display: block;
-	height: 2.5rem;
+	height: 2.4rem;
 	padding: 0 0 0 2rem;	
 	font-family: var( --Q-font-family-sans );
 	/*line-height: 2rem;*/
@@ -612,12 +602,13 @@ nav section {
 }
 nav p {
 
-	padding: 1.5rem 0 0.25rem 2rem;
+	padding: 1.8rem 0 0.2rem 2rem;
+	font-size: 0.9rem;
 	color: hsl(
 
 		var( --Q-color-base-hue ),
 		10%,
-		75%
+		70%
 	);
 	/*text-shadow: 1px 1px 0 white;*/
 }
@@ -1755,10 +1746,39 @@ header h1 svg {
 		height: fit-content;
 		height: -moz-fit-content;
 		min-height: 5rem;
+		max-height: 60vh;
 		margin: 0;
 		background-color: var( --Q-color-white );
 		padding: 0;
 		box-shadow: 0 0 0.5rem rgba( 0, 0, 0, 0.5 );
+	}
+
+
+
+
+	header {
+
+		position: absolute;
+		margin: 1rem 4rem 1.5rem 0.8rem;
+	}
+	header h1 {
+
+		position: absolute;
+	}
+	header img {
+
+		display: block;
+		max-width:  3rem;
+		max-height: 3rem;
+	}
+	
+
+
+
+	nav ul {
+
+		position: relative;
+		top: 1rem;
 	}
 	nav li h2 {
 
@@ -1767,7 +1787,7 @@ header h1 svg {
 	nav li a {
 
 		height: 0;
-		padding-left: 5rem;
+		padding-left: 5.4rem;
 		opacity: 0;
 		transition-duration: 0.2s;
 		transition-property: height, opacity;
@@ -1779,42 +1799,6 @@ header h1 svg {
 		height: 3.2rem;
 		opacity: 1;
 	}
-	header {
-
-		position: relative;
-		margin-left: 1rem;
-	}
-	header h1 {
-
-		position: absolute;
-	}
-	header h1 svg {
-
-		width:  3rem;
-		height: 3rem;
-	}
-
-
-
-
-/*	nav {
-
-		background-color: orange;
-		color: green;
-	}
-	nav ul {
-	
-		background-color: orange;
-	}
-	nav p {
-
-		padding: 0.5rem 0 0 2rem;
-		background-color: orange;
-		font-weight: bold;
-	}
-*/
-
-
 
 
 

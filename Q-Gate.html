@@ -79,58 +79,178 @@
 				<!-- When gates are attached to a <code>Board</code>
 				they are placed in both space and time. -->
 			</p>
+
+
 			<hr>
 			<h3 id="Constructor">Constructor</h3>
 			<p>
 				<span class="constructor">Gate</span>
 				<code class="value-type">Function( params: Object ) => <a href="Q.html">Q</a>.Gate</code>
 				<br>
-				Expects an object containing optional properties, 
-				such as an “operation” <code>Function</code> to be invoked by the <code><a href="#this.applyTo">applyTo</a> method</code>,
-				a single-character “label” <code>String</code>
-				for use in labeling this gate within a circuit diagram,
-				or a “name” <code>String</code> for use in descriptions.
+				Expects a single object whose properties
+				will be applied directly to this gate instance.
+				No particular properties are required
+				and even the object argument itself is optional.
+				The properties <em>not</em> listed as “optional” below
+				are ones that will be assigned defaults
+				upon instantiation by the constructor. 
+				Any remaining properties listed below would be undefined
+				unless supplied as arguments.
+			</p>
+			<p>
+				Here we will create a “fox” gate
+				that borrows its <code><a href="#this.matrix">matrix</a></code> property
+				from the pre-existing <code><a href="Q-Gate.html#.PAULI_X">PAULI_X</a></code> gate
+				<a href="#.constantss">constant</a>.
+				This will allow our fox gate
+				to flip 
+				<a href="Q-Qubit.html">qubits</a> from a 
+				<a href="Q-Qubit.html#.HORIZONTAL">horizontal state</a>, 
+				ie. “off” or <span class="complex-vector ket">0</span>,
+				to a <a href="Q-Qubit.html#.VERTICAL">vertical state</a>, 
+				ie. “on” or <span class="complex-vector ket">1</span>,
+				and back again.
 			</p>
 <pre><code>
 var fox = new <a href="Q.html">Q</a>.Gate({
 
-	name:  'What input?',
-	label: '?',
-	operation: function( qubit ){
-
-		console.log( 'You input this:', qubit )
-		return qubit
-	}
+	<a href="#this.symbol">symbol</a>:  'F',
+	<a href="#this.name">name</a>:    'Fox',
+	<a href="#this.nameCss">nameCss</a>: 'fox',<!--	
+	<a href="#this.description">description</a>: 'This “fox” gate flips qubits.', -->
+	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.Gate.<a href="Q-Gate.html#.PAULI_X">PAULI_X</a>.<a href="#this.matrix">matrix</a>
 })
-</code></pre>			
+</code></pre>
+			<p>
+				We can now test that our new 
+				fox gate 
+				flips qubit states between <span class="complex-vector ket">0</span>
+				and <span class="complex-vector ket">1</span>.
+			</p>
+<pre>
+
+<code><span class="comment">//  Verify a “Horizontal” qubit has a value of |0⟩
+//  and a “Vertical” qubit has a value of |1⟩.</span>
+
+<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a>.<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()</code>
+<samp>"|0⟩"</samp>
+
+<code><a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.VERTICAL">VERTICAL</a>.<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()</code>
+<samp>"|1⟩"</samp>
+
+
+<code><span class="comment">//  Now flip a “Horizontal” |0⟩ to a “Vertical” |1⟩
+//  and flip a “Vertical” |1⟩ to a “Horizontal” |0⟩.</span>
+
+fox.<a href="#.prototype.applyToQubit">applyToQubit</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a> ).<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()</code>
+<samp>"|1⟩"</samp>
+
+<code>fox.<a href="#.prototype.applyToQubit">applyToQubit</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.VERTICAL">VERTICAL</a> ).<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()</code>
+<samp>"|0⟩"</samp></pre>
+			<p>
+				We can similarly use a qubit’s 
+				<code><a href="Q-Qubit.html#.prototype.applyGate">applyGate</a></code> method
+				which internally calls a gate’s 
+				<code><a href="#.prototype.applyToQubit">applyToQubit</a></code> method:
+			</p>
+<pre><code>
+<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a>.<a href="Q-Qubit.html#.prototype.applyGate">applyGate</a>( fox ).<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()</code>
+<samp>"|1⟩"</samp>
+
+<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.VERTICAL">VERTICAL</a>.<a href="Q-Qubit.html#.prototype.applyGate">applyGate</a>( fox ).<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()</code>
+<samp>"|0⟩"</samp></pre>
+
 			<ul class="properties">
 				<li>
-					<dt id="this.label">label</dt>
+					<dt id="this.symbol">symbol</dt>
 					<dd>
 						<code class="value-type">String</code>
-						A single character used as a label in visual representations of this <code>Gate</code> in circuit diagrams.
+						One or two non-numeric characters
+						used as a unique identifier among gates,
+						and as a label in visual representations
+						such as circuit diagrams.
+						Will default to <code>"?"</code> if undefined at creation.
+					</dd>
+				</li>
+				<li>
+					<dt id="this.symbolAmazonBraket">symbolAmazonBraket</dt>
+					<dd>
+						<code class="value-type">String</code>
+						Identifier to be used for this gate
+						when exporting circuit data
+						as <a href="https://aws.amazon.com/braket/" target="_blank">Amazon Braket</a> code.
+						If not supplied to the constructor,
+						<code>Gate</code> will define this value as 
+						<code>this.<a href="#this.symbol">symbol</a>.toLowerCase()</code>.
+					</dd>
+				</li>
+				<li>
+					<dt id="this.symbolSvg">symbolSvg</dt>
+					<dd>
+						<code class="value-type">String [optional]</code>
+						A visual representation of this gate’s symbol 
+						in <a href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics" target="_blank">scalable vector graphic</a> format.
 					</dd>
 				</li>
 				<li>
 					<dt id="this.name">name</dt>
 					<dd>
 						<code class="value-type">String</code>
-						The full name of this <code>Gate</code> to be used as a title or long label in a visual representation.
+						The full name of this gate 
+						to be used as a title or long label 
+						in a visual representations, etc.
+						Will default to <code>"Unknown"</code> if undefined at creation.
 					</dd>
 				</li>
 				<li>
-					<dt id="this.operation">operation</dt>
+					<dt id="this.nameCss">nameCss</dt>
+					<dd>
+						<code class="value-type">String</code>
+						Identifier to be used in constructing a 
+						<a href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets" target="_blank">Cascading Style Sheet</a> class name
+						as defined in <code>Q-Circuit-Editor.css</code>.
+						Will default to <code>"unknown"</code> if undefined at creation.
+					</dd>
+				</li>
+				<!-- li>
+					<dt id="this.description">description</dt>
+					<dd>
+						<code class="value-type">String [optional]</code>
+						Text describing the intended use of this gate.
+					</dd>
+				</li -->
+				<li>
+					<dt id="this.matrix">matrix</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a> [optional]</code>
+						The matrix representation of this gate operation’s logic,
+						if one exists. 
+						(All true quantum gates will have a matrix representation,
+						but some visualization operations—such as
+						the creation of a 
+						<a href="Q-Qubit.html#Bloch_sphere">Bloch sphere</a>—will not.)
+					</dd>
+				</li>
+				<li>
+					<dt id="this.applyToQubit">applyToQubit</dt>
 					<dd>
 						<code class="value-type">Function</code>
-						The supplied <code>operation</code> function.
-						Not intended to be directly called.
-					</dd>
-				</li>
-				<li>
-					<dt id="this.applyTo">applyTo</dt>
-					<dd>
-						<code class="value-type">Function ⇒ Array</code>
-						Calls the supplied <code>operation</code> function and ensures the result is an array.
+						An action to be performed upon an input 
+						<code><a href="Q-Qubit.html">Qubit</a></code> instance.
+						If not supplied to the <code>Gate</code> constructor,
+						<code>Gate</code> will create an operation
+						that multiplies the input qubit by the gate instance’s 
+						<code><a href="#this.matrix">matrix</a></code>.
+						If the gate instance’s 
+						<code><a href="#this.matrix">matrix</a></code> is undefined,
+						<code>Gate</code> will create an operation
+						that simply returns the input qubit untouched.
+						While this is useful 
+						for inspection and debugging a single gate’s functionality, 
+						or building a visualization of a single qubit’s changing state, 
+						it has no practical use for circuit evaluation 
+						as it cannot represent the state of a multiple-qubit system, 
+						let alone entanglement. 
 					</dd>
 				</li>
 				<li>
@@ -146,22 +266,47 @@ var fox = new <a href="Q.html">Q</a>.Gate({
 			<h3>Static properties</h3>
 			<ul class="properties">
 				<li>
-					<dt id=".help">help</dt>
-					<dd>
-						<code class="value-type">Function ⇒ String</code>
-						Calls and returns the value of 
-						<code><a href="Q.html">Q</a>.<a href="#.help">help</a></code>,
-						passing <code><a href="Q.html">Q</a>.Gate</code> as the argument.
-					</dd>
-				</li>
-				<li>
 					<dt id=".index">index</dt>
 					<dd>
 						<code class="value-type">Number</code>
 						The number of instances created so far.
 					</dd>
 				</li>
+				<li>
+					<dt id=".findBy">findBy</dt>
+					<dd>
+						<code class="value-type">Function( key: String, value: * ) ⇒ Q.Gate</code>
+						Returns the first object within
+						<code><a href="Q.html">Q</a>.Gate.<a href="#.constants">constants</a></code>
+						to satisfy the constraint
+						<code>object[ key ] === value</code>.
+					</dd>
+				</li>
+				<li>
+					<dt id=".findBySymbol">findBySymbol</dt>
+					<dd>
+						<code class="value-type">Function( symbol: String ) ⇒ Q.Gate</code>
+						Returns the result of calling
+						the static method <code><a href="#.findBy">findBy</a></code> with 
+						<code>"symbol"</code> as the <code>key</code> argument
+						and <code>symbol</code> as the value argument.
+					</dd>
+				</li>
+				<li>
+					<dt id=".findByName">findByName</dt>
+					<dd>
+						<code class="value-type">Function( name: String ) ⇒ Q.Gate</code>
+						Returns the result of calling
+						the static method <code><a href="#.findBy">findBy</a></code> with 
+						<code>"name"</code> as the <code>key</code> argument
+						and <code>name</code> as the value argument.
+					</dd>
+				</li>			
 			</ul>
+			
+
+
+
 			<h4>Constants and constant creation</h4>
 			<ul class="properties">
 				<li>
@@ -206,7 +351,12 @@ var fox = new <a href="Q.html">Q</a>.Gate({
 					</dd>
 				</li>
 			</ul>
-			<h4>Operations without matrices</h3>
+			<br>
+			
+
+
+
+			<h5>Gates of small consequence</h5>
 			<ul class="properties">
 				<li>
 					<dt id=".IDENTITY">IDENTITY</dt>
@@ -214,12 +364,16 @@ var fox = new <a href="Q.html">Q</a>.Gate({
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
 						An Identity gate has no effect on the value of the qubit it operates on;
 						equivalent to multiplying a value by one.
-						It is used as a placeholder in circuit design.
+						(Generally when a circuit is created from text or another source,
+						any included identity gates are ignored.
+						It is included here for completeness.)
 <pre><code>
 new <a href="Q.html">Q</a>.Gate({
-	
-	name:  'Identity',
-	label: 'I'
+
+	<a href="#this.symbol">symbol</a>:  'I',<!-- <a href="#this.symbolAmazonBraket">symbolAmazonBraket</a>: 'i', -->
+	<a href="#this.name">name</a>:    'Identity',
+	<a href="#this.nameCss">nameCss</a>: 'identity',
+	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>.<a href="Q-Matrix.html#.IDENTITY_2X2">IDENTITY_2X2</a>
 })
 </code></pre>
 						Matrix representation as declared in 
@@ -241,30 +395,52 @@ new <a href="Q.html">Q</a>.Gate({
 					</dd>
 				</li>
 				<li>
-					<dt id=".MEASURE">MEASURE</dt>
+					<dt id=".CURSOR">CURSOR</dt>
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
-						A measurement operation collapses the probability wave of a qubit state
-						to a definite value of either one or zero.
-						The likelyhood of the result being one versus the other
-						depends on the nature of the qubit’s superposition.
-						This operation is <strong>not</strong> reversible
-						and is always used as the final step of a circuit.
+						Mathematically the “identity cursor” is equivalent
+						to the <code><a href="#.IDENTITY">IDENTITY</a></code> gate,
+						however it is used by the visual circuit editor
+						as a placeholder when a user is building 
+						<a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Controlled_(cX_cY_cZ)_gates" target="_blank">controlled gates</a>
+						 or 
+						 <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Swap_(SWAP)_gate" target="_blank">swap gates</a>
+						(which operate on multiple qubits)
+						from individual components.
+						This is a novel Q invention.
 <pre><code>
 new <a href="Q.html">Q</a>.Gate({
-	
-	name:  'Measure',
-	label: 'M', 
-	operation: function( qubit ){
 
-		return qubit.collapse()
-	}
+	<a href="#this.symbol">symbol</a>:  '*',<!-- <a href="#this.symbolAmazonBraket">symbolAmazonBraket</a>: 'i', -->
+	<a href="#this.name">name</a>:    'Identity',
+	<a href="#this.nameCss">nameCss</a>: 'identity',
+	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>.<a href="Q-Matrix.html#.IDENTITY_2X2">IDENTITY_2X2</a>
 })
 </code></pre>
+						Matrix representation as declared in 
+						<code><a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>.<a href="Q-Matrix.html#.IDENTITY_2X2">IDENTITY_2X2</a></code>:
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td>
+									</tr>
+								</table>
+							</div>
+						</div>
 					</dd>
-				</li>
+				</li>			
 			</ul>
-			<h4>Operations with 2 × 2 matrices</h4>
+			
+
+
+
+			<h5>Standard single-qubit gates</h5>
 			<ul class="properties">
 				<li>
 					<dt id=".HADAMARD">HADAMARD</dt>
@@ -274,23 +450,26 @@ new <a href="Q.html">Q</a>.Gate({
 						For the basis qubit states of 
 						<span class="complex-vector ket">0</span> and 
 						<span class="complex-vector ket">1</span> 
-						this has the effect of putting a qubit in to <a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>.  
+						this has the effect of putting a qubit into <a href="https://en.wikipedia.org/wiki/Quantum_superposition" target="_blank">superposition</a>.
+						It represents a rotation on the 
+						<a href="Q-Qubit.html#Bloch_sphere">Bloch sphere</a>
+						around the Z-axis by π radians,
+						followed by a rotation 
+						around the Y-axis by π÷2 radians.
 <pre><code>
 new <a href="Q.html">Q</a>.Gate({
 
-	name:  'Hadamard',
-	label: 'H',
-	matrix: new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
-			
-			[ Math.SQRT1_2,  Math.SQRT1_2 ],
-			[ Math.SQRT1_2, -Math.SQRT1_2 ]
-	),
-	operation: function( qubit ){
+	<a href="#this.symbol">symbol</a>:  'H',<!-- <a href="#this.symbolAmazonBraket">symbolAmazonBraket</a>: 'h', -->
+	<a href="#this.name">name</a>:    'Hadamard',
+	<a href="#this.nameCss">nameCss</a>: 'hadamard',
+	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
 
-		return new <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>( this.matrix.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( qubit ))
-	}
+		[ Math.SQRT1_2,  Math.SQRT1_2 ],
+		[ Math.SQRT1_2, -Math.SQRT1_2 ]
+	)
 })
 </code></pre>
+						Matrix representation:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -316,22 +495,30 @@ new <a href="Q.html">Q</a>.Gate({
 					<dt id=".PAULI_X">PAULI_X</dt>
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						The <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Pauli-X_gate" target="_blank">Pauli X gate</a>
+						represents a rotation on the 
+						<a href="Q-Qubit.html#Bloch_sphere">Bloch sphere</a>
+						around the <strong>X</strong>-axis by π radians.
+						It is the quantum equivalent of
+						the <a href="https://en.wikipedia.org/wiki/Inverter_(logic_gate)" target="_blank">classical NOT gate</a>
+						in that it maps 
+						<span class="complex-vector ket">0</span> to <span class="complex-vector ket">1</span>
+						and
+						<span class="complex-vector ket">1</span> to <span class="complex-vector ket">0</span>.
 <pre><code>
-new <a href="Q.html">Q</a>.Gate({<span class="comment">//  Rπ</span>
+new <a href="Q.html">Q</a>.Gate({
 
-	name:  'Pauli X',
-	label: 'X',
-	matrix: new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
-		
+	<a href="#this.symbol">symbol</a>:  'X',<!-- <a href="#this.symbolAmazonBraket">symbolAmazonBraket</a>: 'x', -->
+	<a href="#this.name">name</a>:    'Pauli X',
+	<a href="#this.nameCss">nameCss</a>: 'pauli-x',
+	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
+
 		[ 0, 1 ],
 		[ 1, 0 ]
-	),
-	operation: function( qubit ){
-
-		return new <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>( this.matrix.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( qubit ))
-	}
+	)
 })
 </code></pre>
+						Matrix representation:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -352,22 +539,28 @@ new <a href="Q.html">Q</a>.Gate({<span class="comment">//  Rπ</span>
 					<dt id=".PAULI_Y">PAULI_Y</dt>
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						The <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Pauli-Y_gate" target="_blank">Pauli Y gate</a>
+						represents a rotation on the 
+						<a href="Q-Qubit.html#Bloch_sphere">Bloch sphere</a>
+						around the <strong>Y</strong>-axis by π radians.
+						It maps 
+						<span class="complex-vector ket">0</span> to <span class="symbol">i</span><span class="complex-vector ket">1</span>
+						and
+						<span class="complex-vector ket">1</span> to -<span class="symbol">i</span><span class="complex-vector ket">0</span>.
 <pre><code>
 new <a href="Q.html">Q</a>.Gate({
 
-	name:  'Pauli Y',
-	label: 'Y',
-	matrix: new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
-		
+	<a href="#this.symbol">symbol</a>:  'Y',<!-- <a href="#this.symbolAmazonBraket">symbolAmazonBraket</a>: 'y', -->
+	<a href="#this.name">name</a>:    'Pauli Y',
+	<a href="#this.nameCss">nameCss</a>: 'pauli-y',
+	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
+
 		[ 0, new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, -1 )],
 		[ new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, 1 ), 0 ]
-	),
-	operation: function( qubit ){
-
-		return new <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>( this.matrix.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( qubit ))
-	}
+	)
 })
 </code></pre>
+						Matrix representation:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -388,22 +581,28 @@ new <a href="Q.html">Q</a>.Gate({
 					<dt id=".PAULI_Z">PAULI_Z</dt>
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						The <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Pauli-Z_gate" target="_blank">Pauli Z gate</a>
+						represents a rotation on the 
+						<a href="Q-Qubit.html#Bloch_sphere">Bloch sphere</a>
+						around the <strong>Z</strong>-axis by π radians.
+						It is a special case of a <a href="#.PHASE">Phase shift gate</a>
+						where ϕ = π, and is therefore sometimes referred to as a “phase-flip” gate.
+						It leaves the basis state <span class="complex-vector ket">0</span> unchanged 
+						and maps <span class="complex-vector ket">1</span>  to -<span class="complex-vector ket">1</span>.
 <pre><code>
 new <a href="Q.html">Q</a>.Gate({
 
-	name:  'Pauli Z',
-	label: 'Z', 
-	matrix: new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
-		
+	<a href="#this.symbol">symbol</a>:  'Z',<!-- <a href="#this.symbolAmazonBraket">symbolAmazonBraket</a>: 'z', -->
+	<a href="#this.name">name</a>:    'Pauli Z',
+	<a href="#this.nameCss">nameCss</a>: 'pauli-z',
+	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
+
 		[ 1,  0 ],
 		[ 0, -1 ]
-	),
-	operation: function( qubit ){
-
-		return new <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>( this.matrix.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( qubit ))
-	}
+	)
 })
 </code></pre>
+						Matrix representation:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -424,22 +623,42 @@ new <a href="Q.html">Q</a>.Gate({
 					<dt id=".PHASE">PHASE</dt>
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						<a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Phase_shift_(%20'%22%60UNIQ--postMath-00000038-QINU%60%22'%20)_gates" target="_blank">Phase gates</a>
+						are a family of quantum gates
+						that employ the variable ϕ (phi) to
+						represent tracing a horizontal arc (a line of latitude)
+						around the 
+						<a href="Q-Qubit.html#Bloch_sphere">Bloch sphere</a>
+						of ϕ radians.
+						They leave the basis state <span class="complex-vector ket">0</span> unchanged
+						and map <span class="complex-vector ket">1</span> to 
+						<span class="symbol">e</span><sup><span class="symbol">i</span>ϕ</sup>
+						<span class="complex-vector ket">1</span>. 
+						The probability of measuring a 
+						<span class="complex-vector ket">0</span>
+						or
+						<span class="complex-vector ket">1</span>
+						is unchanged after applying a phase shift, 
+						however it modifies the phase of the quantum state.
+						This particular form 
+						used for our <code>PHASE</code> constant
+						represents a rotation on the 
+						<a href="Q-Qubit.html#Bloch_sphere">Bloch sphere</a>
+						around the Z-axis of π ÷ 2 radians.
 <pre><code>
 new <a href="Q.html">Q</a>.Gate({
 
-	name:  'Phase',
-	label: 'S',
-	matrix: new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
-		
+	<a href="#this.symbol">symbol</a>:  'P',<!-- <a href="#this.symbolAmazonBraket">symbolAmazonBraket</a>: 'p', -->
+	<a href="#this.name">name</a>:    'Phase',
+	<a href="#this.nameCss">nameCss</a>: 'phase',
+	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
+
 		[ 1, 0 ],
 		[ 0, new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, 1 )]
-	),
-	operation: function( qubit ){
-
-		return new <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>( this.matrix.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( qubit ))
-	}
+	)
 })
 </code></pre>
+						Matrix representation:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -460,22 +679,28 @@ new <a href="Q.html">Q</a>.Gate({
 					<dt id=".PI_8">PI_8</dt>
 					<dd>
 						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						The π ÷ 8 gate 
+						is a special case of a <a href="#.PHASE">Phase shift gate</a>
+						where the ϕ (phi) variable is set to π ÷ 4.
+						(But <a href="https://www.quora.com/Why-is-the-quantum-T-gate-called-pi-8-gate-as-it-only-adds-a-phase-difference-of-pi-4-instead-of-pi-8-to-the-state-vector-1" target="_blank">why is it called “π ÷ 8” when it actually divides π by 4?</a>)
+						Like all phase shift gates, 
+						it represents a rotation on the 
+						<a href="Q-Qubit.html#Bloch_sphere">Bloch sphere</a>
+						around the Z-axis.
 <pre><code>
 new <a href="Q.html">Q</a>.Gate({
 
-	name:  'π ÷ 8',
-	label: 'T',
-	matrix: new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
-		
+	<a href="#this.symbol">symbol</a>:  'T',<!-- <a href="#this.symbolAmazonBraket">symbolAmazonBraket</a>: 't', -->
+	<a href="#this.name">name</a>:    'π ÷ 8',
+	<a href="#this.nameCss">nameCss</a>: 't',
+	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
+
 		[ 1, 0 ],
 		[ 0, <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>.<a href="Q-ComplexNumber.html#.E">E</a>.<a href="Q-ComplexNumber.html#.prototype.power">power</a>( new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, Math.PI / 4 )) ]
-	),
-	operation: function( qubit ){
-
-		return new <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>( this.matrix.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( qubit ))
-	}
+	)
 })
 </code></pre>
+						Matrix representation:
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -493,62 +718,137 @@ new <a href="Q.html">Q</a>.Gate({
 					</dd>
 				</li>
 			</ul>
-			<h4>Operations with 4 × 4 matrices</h4>
-			<ul class="properties">
-				<li>
-					<dt id=".CONTROLLED_NOT">CONTROLLED_NOT</dt>
-					<dd>
-						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
-						Arriving soon.
-					</dd>
-				</li>
-				<li>
-					<dt id=".SWAP">SWAP</dt>
-					<dd>
-						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
-						Arriving soon.
-					</dd>
-				</li>
-				<li>
-					<dt id=".CONTROLLED_Z">CONTROLLED_Z</dt>
-					<dd>
-						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
-						Arriving soon.
-					</dd>
-				</li>
-				<li>
-					<dt id=".CONTROLLED_PHASE">CONTROLLED_PHASE</dt>
-					<dd>
-						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
-						Arriving soon.
-					</dd>
-				</li>
-			</ul>
-			<h4>Operations with 8 × 8 matrices</h4>
-			<ul class="properties">
-				<li>
-					<dt id=".TOFFOLI">TOFFOLI</dt>
-					<dd>
-						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
-						Arriving soon.
-					</dd>
-				</li>
-				<li>
-					<dt id=".CONTROLLED_SWAP">CONTROLLED_SWAP</dt>
-					<dd>
-						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
-						Arriving soon.
-					</dd>
-				</li>
-			</ul>
 			
 
 
 
+			<h5>Multi-qubit gates</h5>
+			<ul class="properties">
+				<li>
+					<dt id=".SWAP">SWAP</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						The <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Swap_(SWAP)_gate" target="_blank">Swap gate</a>
+						swaps the value of two qubits.
+						It is defined here
+						with respect to the bases 
+						<span class="complex-vector ket">00</span>,
+						<span class="complex-vector ket">01</span>,
+						<span class="complex-vector ket">10</span>, and
+						<span class="complex-vector ket">11</span>.
+<pre><code>
+new <a href="Q.html">Q</a>.Gate({
+
+	<a href="#this.symbol">symbol</a>:  'S',<!-- <a href="#this.symbolAmazonBraket">symbolAmazonBraket</a>: 's', -->
+	<a href="#this.name">name</a>:    'Swap',
+	<a href="#this.nameCss">nameCss</a>: 'swap',
+	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
+
+			[ 1, 0, 0, 0 ],
+			[ 0, 0, 1, 0 ],
+			[ 0, 1, 0, 0 ],
+			[ 0, 0, 0, 1 ])
+	)
+})
+</code></pre>
+						Matrix representation:
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>1</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>1</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
+				</li>
+				<li>
+					<dt id=".SWAP1_2">SWAP1_2</dt>
+					<dd>
+						<code class="value-type"><a href="Q.html">Q</a>.Gate</code>
+						The <a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Square_root_of_Swap_gate_(%E2%88%9ASWAP)" target="_blank">√Swap gate</a>
+						performs half of a swap between two qubits.
+						It is not maximally entangling.
+						More than one application of it is required to produce a 
+						<a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">Bell state</a>
+						from its product states.
+						It is defined here
+						with respect to the bases 
+						<span class="complex-vector ket">00</span>,
+						<span class="complex-vector ket">01</span>,
+						<span class="complex-vector ket">10</span>, and
+						<span class="complex-vector ket">11</span>.
+<pre><code>
+new <a href="Q.html">Q</a>.Gate({
+
+	<a href="#this.symbol">symbol</a>:  '√',<!-- 	<a href="#this.symbolAmazonBraket">symbolAmazonBraket</a>: 's', -->
+	<a href="#this.name">name</a>:    '√Swap',
+	<a href="#this.nameCss">nameCss</a>: 'swap1-2',
+	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
+
+			[ 1, 0, 0, 0 ],
+			[ 0, new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0.5,  0.5 ), new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0.5, -0.5 ), 0 ],
+			[ 0, new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0.5, -0.5 ), new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0.5,  0.5 ), 0 ],
+			[ 0, 0, 0, 1 ])
+	)
+})
+</code></pre>
+						Matrix representation:
+						<div class="maths">
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>0</td><td>0</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0.5 + 0.5i</td><td>0.5 - 0.5i</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0.5 - 0.5i</td><td>0.5 + 0.5i</td><td>0</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>1</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</dd>
+				</li>
+			</ul>
 
 
 
 
+			<h5>Implicit gates</h5>
+			<p>
+				<code><a href="Q.html">Q</a>.<a href="Q-Circuit.html">Circuit</a></code> 
+				supports several multi-qubit gates implictly
+				through composition,
+				rather than explicitly with <code>Gate</code> constants.
+				For example,
+				Q does not explictly define a 
+				<a href="https://en.wikipedia.org/wiki/Controlled_NOT_gate" target="_blank">Controlled-Not (CNOT) gate</a>,
+				<a href="https://en.wikipedia.org/wiki/Fredkin_gate" target="_blank">Controlled Swap (Fredkin) gate</a>,
+				<a href="https://en.wikipedia.org/wiki/Toffoli_gate" target="_blank">Toffolli (CCNOT) gate</a>,
+				and so on
+				because they are all easily composed 
+				by adding a control matrix
+				to any existing gate matrix.
+			</p>
 
 
 
@@ -557,27 +857,78 @@ new <a href="Q.html">Q</a>.Gate({
 			<h3 id="Prototype_properties">Prototype properties</h3>
 			<ul class="properties">
 				<li>
-					<dt id=".prototype.toText">toText</dt>
+					<dt id=".prototype.clone">clone</dt>
 					<dd>
-						<code class="value-type">Function ⇒ String</code>
-						Returns a <code>String</code> of text to represent this <code>Gate</code>.
+						<code class="value-type">Function ⇒ <a href="Q.html">Q</a>.Gate</code>
+						Returns a new <code>Gate</code> instance
+						with properties cloned from this instance.
 					</dd>
 				</li>
 				<li>
-					<dt id=".prototype.toHtml">toHtml</dt>
+					<dt id=".prototype.applyToQubits">applyToQubits</dt>
 					<dd>
-						<code class="value-type">Function ⇒ String</code>
-						Returns a <code>String</code> of HTML code to represent this <code>Gate</code>.
-						(In the future should this return a collection of actual DOM elements instead?)
+						<code class="value-type">Function( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>, … ) ⇒ Array</code>
+						Calls the instance method 
+						<code><a href="#this.applyToQubit">applyToQubit</a></code>
+						for each supplied <code><a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a></code> argument
+						and returns an Array of results.
+						For example:
+<pre><code>
+<a href="Q.html">Q</a>.Gate.<a href="#.PAULI_X">PAULI_X</a>.<a href="#.prototype.applyToQubits">applyToQubits</a>( 
+
+	<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a>, 
+	<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.VERTICAL">VERTICAL</a>,
+	… 
+)</code></pre>
+						The above will return:
+<pre><samp>
+[
+	<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.VERTICAL">VERTICAL</a>,
+	<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a>, 
+	… 
+]</samp></pre>
+						While this is useful for inspection and debugging
+						a single gate’s functionality,
+						or building a visualization of a single qubit’s changing state,
+						it has no practical use for circuit evaluation
+						as it cannot represent the state of a multiple-qubit system,
+						let alone entanglement.
+						Will not return a <code><a href="Q.html">Q</a>.Gate</code> instance, 
+						and therefore halts
+						<a href="https://en.wikipedia.org/wiki/Fluent_interface" target="_blank">“Fluent interface” method chaining</a>
+						along this prototype.
+					</dd>
+				</li>
+				<li>
+					<dt id=".prototype.set$">set$</dt>
+					<dd>
+						<code class="value-type">Function( key: String, value: * ) ⇒ <a href="Q.html">Q</a>.Gate</code>
+						Sets a property on this instance 
+						with a key of <code>key</code>
+						and a value of <code>value</code>,
+						then returns the instance.
 					</dd>
 				</li>
 			</ul>
 		</main>
 		<script>
-			
-// console.log( '\n\nQ.Gate\n', Q.Gate.help(), '\n\n' )
 
-// console.log( '\n\nCONSTANTS:\n', Q.Gate.constants, '\n\n' )
+
+
+
+var fox = new Q.Gate({
+
+	symbol: 'F',
+	symbolAmazonBraket: 'f',
+	symbolSvg: '',
+	name:    'Fox',
+	nameCss: 'fox',
+	description: 'This “fox” gate flips qubits.',
+	matrix: Q.Gate.PAULI_X.matrix
+})
+
+
+
 
 		</script>
 	</body>

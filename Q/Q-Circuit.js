@@ -100,7 +100,7 @@ Object.assign( Q.Circuit, {
 					const matches = item.match( /(^\w+)(\.(\w+))*(#(\d+))*/ )
 					return {
 						
-						gateLabel:         matches[ 1 ],
+						gateSymbol:        matches[ 1 ],
 						operationMomentId: matches[ 3 ],
 						mappingIndex:     +matches[ 5 ]
 					}
@@ -108,6 +108,93 @@ Object.assign( Q.Circuit, {
 			})
 		)
 	},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//  Working out a new syntax here... Patience please!
+
+
+	fromText2: function( text ){
+
+
+		text = `
+			H  C  C
+			I  C1 C1
+			I  X1 S1
+			I  X1 S1`
+
+
+		//  This is a quick way to enable `fromText()`
+		//  to return a default new Q.Circuit().
+
+		if( text === undefined ) return new Q.Circuit()
+
+
+		//  Is this a String Template -- as opposed to a regular String?
+		//  If so, let’s convert it to a regular String.
+		//  Yes, this maintains the line breaks.
+
+		if( text.raw !== undefined ) text = ''+text.raw
+
+
+
+		text
+		.trim()
+		.split( /\r?\n/ )
+		.filter( function( item ){ return item.length })
+		.map( function( item, r ){
+
+			return item
+			.trim()
+			.split( /[-+\s+=+]/ )
+			.filter( function( item ){ return item.length })
+			.map( function( item, m ){
+
+				// +++++++++++++++++++++++
+				// need to map LETTER[] optional NUMBER ]
+
+				const matches = item.match( /(^\w+)(\.(\w+))*(#(\d+))*/ )
+
+				//const matches = item.match( /(^\w+)(#(\w+))*(\.(\d+))*/ )
+				// const matches = item.match( /(^\w+)(\.(\w+))*(#(\d+))*/ )
+				// return {
+					
+				// 	gateSymbol:         matches[ 1 ],
+				// 	operationMomentId: matches[ 3 ],
+				// 	mappingIndex:     +matches[ 5 ]
+				// }
+			})
+		})
+
+	},
+
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
+
+
+
+
 	fromTableTransposed: function( table ){
 
 		const
@@ -134,7 +221,7 @@ Object.assign( Q.Circuit, {
 				for( let s = 0; s < r; s ++ ){
 
 					const sibling = table[ s ][ m ]
-					if( operation.gateLabel === sibling.gateLabel &&
+					if( operation.gateSymbol === sibling.gateSymbol &&
 						operation.operationMomentId === sibling.operationMomentId &&
 						Q.isUsefulInteger( operation.mappingIndex ) &&
 						Q.isUsefulInteger( sibling.mappingIndex ) &&
@@ -153,14 +240,14 @@ Object.assign( Q.Circuit, {
 						})
 						// console.log( 'operationsIndex?', operationsIndex )
 						circuit.operations[ operationsIndex ].registerIndices[ operation.mappingIndex ] = registerIndex
-						circuit.operations[ operationsIndex ].isControlled = operation.gateLabel != '*'//  Q.Gate.SWAP.
+						circuit.operations[ operationsIndex ].isControlled = operation.gateSymbol != '*'//  Q.Gate.SWAP.
 						siblingHasBeenFound = true
 					}
 				}
-				if( siblingHasBeenFound === false && operation.gateLabel !== 'I' ){
+				if( siblingHasBeenFound === false && operation.gateSymbol !== 'I' ){
 
 					const 
-					gate = Q.Gate.findByLabel( operation.gateLabel ),
+					gate = Q.Gate.findBySymbol( operation.gateSymbol ),
 					registerIndices = []					
 
 					if( Q.isUsefulInteger( operation.mappingIndex )){
@@ -695,8 +782,8 @@ Object.assign( Q.Circuit.prototype, {
 
 				array[ index ] = {
 
-					label:   'I',
-					labelDisplay: 'I',
+					symbol:   'I',
+					symbolDisplay: 'I',
 					name:    'Identity',
 					nameCss: 'identity',
 					gateInputIndex: 0,
@@ -739,11 +826,11 @@ Object.assign( Q.Circuit.prototype, {
 				table[ momentIndex - 1 ].multiRegisterOperationIndex = multiRegisterOperationIndex
 				multiRegisterOperationIndex ++
 			}
-			if( gateTypesUsedThisMoment[ operation.gate.label ] === undefined ){
+			if( gateTypesUsedThisMoment[ operation.gate.symbol ] === undefined ){
 
-				gateTypesUsedThisMoment[ operation.gate.label ] = 1
+				gateTypesUsedThisMoment[ operation.gate.symbol ] = 1
 			}
-			else gateTypesUsedThisMoment[ operation.gate.label ] ++
+			else gateTypesUsedThisMoment[ operation.gate.symbol ] ++
 
 
 			//  By default, an operation’s CSS name
@@ -773,8 +860,8 @@ Object.assign( Q.Circuit.prototype, {
 				}
 				table[ operation.momentIndex - 1 ][ registerIndex - 1 ] = {
 
-					label:        operation.gate.label,
-					labelDisplay: operation.gate.label,
+					symbol:        operation.gate.symbol,
+					symbolDisplay: operation.gate.symbol,
 					name:         operation.gate.name,
 					nameCss,
 					operationIndex,
@@ -782,7 +869,7 @@ Object.assign( Q.Circuit.prototype, {
 					registerIndex,
 					isMultiRegisterOperation,
 					multiRegisterOperationIndex,
-					gatesOfThisTypeNow: gateTypesUsedThisMoment[ operation.gate.label ],
+					gatesOfThisTypeNow: gateTypesUsedThisMoment[ operation.gate.symbol ],
 					indexAmongSiblings,
 					siblingExistsAbove: Math.min( ...operation.registerIndices ) < registerIndex,
 					siblingExistsBelow: Math.max( ...operation.registerIndices ) > registerIndex
@@ -801,9 +888,9 @@ when we were thinking about CNOT as its own special gate.
 But now that we treat CNOT as just connected X gates,
 we now have situations 
 where a moment can have one “CNOT” but also a stand-alone X gate
-and toTable will label the “CNOT” as X.0 
+and toTable will symbol the “CNOT” as X.0 
 (never X.1, because it’s the only multi-register gate that moment)
-but still uses the label X.0 instead of just X
+but still uses the symbol X.0 instead of just X
 because there’s another stand-alone X there tripping the logic!!!
 
 
@@ -835,11 +922,11 @@ because there’s another stand-alone X there tripping the logic!!!
 
 				if( operation.isMultiRegisterOperation ){
 
-					if( moment.gateTypesUsedThisMoment[ operation.label ] > 1 ){
+					if( moment.gateTypesUsedThisMoment[ operation.symbol ] > 1 ){
 
-						operation.labelDisplay = operation.label +'.'+ ( operation.gatesOfThisTypeNow - 1 )
+						operation.symbolDisplay = operation.symbol +'.'+ ( operation.gatesOfThisTypeNow - 1 )
 					}
-					operation.labelDisplay += '#'+ operation.indexAmongSiblings
+					operation.symbolDisplay += '#'+ operation.indexAmongSiblings
 				}
 			})
 		})
@@ -853,7 +940,7 @@ because there’s another stand-alone X there tripping the logic!!!
 
 			const maximumWidth = moment.reduce( function( maximumWidth, operation ){
 
-				return Math.max( maximumWidth, operation.labelDisplay.length )
+				return Math.max( maximumWidth, operation.symbolDisplay.length )
 			
 			}, 1 )
 			moment.maximumCharacterWidth = maximumWidth
@@ -890,10 +977,10 @@ because there’s another stand-alone X there tripping the logic!!!
 
 			for( let y = 0; y < table.bandwidth; y ++ ){
 
-				let cellString = table[ x ][ y ].labelDisplay.padEnd( table[ x ].maximumCharacterWidth, '-' )
+				let cellString = table[ x ][ y ].symbolDisplay.padEnd( table[ x ].maximumCharacterWidth, '-' )
 				if( makeAllMomentsEqualWidth && x < table.timewidth - 1 ){
 
-					cellString = table[ x ][ y ].labelDisplay.padEnd( table.maximumCharacterWidth, '-' )
+					cellString = table[ x ][ y ].symbolDisplay.padEnd( table.maximumCharacterWidth, '-' )
 				}
 				if( x > 0 ) cellString = '-'+ cellString
 				output[ y ] += cellString
@@ -937,7 +1024,7 @@ because there’s another stand-alone X there tripping the logic!!!
 				second = '',
 				third  = ''
 
-				if( operation.label === 'I' ){
+				if( operation.symbol === 'I' ){
 
 					first  += '  '
 					second += '──'
@@ -967,7 +1054,7 @@ because there’s another stand-alone X there tripping the logic!!!
 					second += '┤ '
 					
 					first  += '─'.padEnd( padToLength, '─' )
-					second += Q.centerText( operation.labelDisplay, padToLength )
+					second += Q.centerText( operation.symbolDisplay, padToLength )
 					third  += '─'.padEnd( padToLength, '─' )
 
 
@@ -1030,9 +1117,9 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 			let awsGate = operation.gate.AmazonBraketName !== undefined ?
 				operation.gate.AmazonBraketName :
-				operation.gate.label.substr( 0, 1 ).toLowerCase()
+				operation.gate.symbol.substr( 0, 1 ).toLowerCase()
 
-			if( operation.gate.label === 'X' && operation.registerIndices.length > 1 ){
+			if( operation.gate.symbol === 'X' && operation.registerIndices.length > 1 ){
 
 				awsGate = 'cnot'
 			}
@@ -1076,18 +1163,18 @@ s3_folder = (“my_bucket”, “my_prefix”)
 			moment.forEach( function( operation, o, operations ){
 
 				let command = 'qw'
-				if( operation.label !== 'I' ){
+				if( operation.symbol !== 'I' ){
 
 					if( operation.isMultiRegisterOperation ){
 
 						if( operation.indexAmongSiblings === 0 ){
 
-							if( operation.label === 'X' ) command = 'targ'
-							else command = operation.label.toLowerCase()
+							if( operation.symbol === 'X' ) command = 'targ'
+							else command = operation.symbol.toLowerCase()
 						}
 						else if( operation.indexAmongSiblings > 0 ) command = 'ctrl{?}'
 					}
-					else command = operation.label.toLowerCase()
+					else command = operation.symbol.toLowerCase()
 				}
 				operations[ o ].latexCommand = command
 			})
@@ -1262,7 +1349,7 @@ s3_folder = (“my_bucket”, “my_prefix”)
 
 		//  Is this a valid gate?
 
-		if( typeof gate === 'string' ) gate = Q.Gate.findByLabel( gate )
+		if( typeof gate === 'string' ) gate = Q.Gate.findBySymbol( gate )
 		if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } that is not a gate:`, gate )
 
 
@@ -1780,8 +1867,8 @@ Object.entries( Q.Gate.constants ).forEach( function( entry ){
 		return this
 	}
 	Q.Circuit.prototype[ gateConstantName ] = set$
-	Q.Circuit.prototype[ gate.label ] = set$
-	Q.Circuit.prototype[ gate.label.toLowerCase() ] = set$
+	Q.Circuit.prototype[ gate.symbol ] = set$
+	Q.Circuit.prototype[ gate.symbol.toLowerCase() ] = set$
 })
 
 
@@ -1801,7 +1888,7 @@ const bells = [
 		.set$( Q.Gate.PAULI_X,  2, [ 1 , 2 ]),
 
 
-	//  Uses Q.Gate.findByLabel() to lookup gates.
+	//  Uses Q.Gate.findBySymbol() to lookup gates.
 
 	new Q.Circuit( 2, 2 )
 		.set$( 'H', 1, [ 1 ])
@@ -1823,7 +1910,7 @@ const bells = [
 		.PAULI_X(  2, [ 1, 2 ]),
 
 
-	//  Convenience gate functions -- uppercase label.
+	//  Convenience gate functions -- uppercase symbol.
 
 	new Q.Circuit( 2, 2 )
 		.H( 1, [ 1 ])
@@ -1834,7 +1921,7 @@ const bells = [
 		.X( 2, [ 1, 2 ]),
 
 
-	//  Convenience gate functions -- lowercase label.
+	//  Convenience gate functions -- lowercase symbol.
 
 	new Q.Circuit( 2, 2 )
 		.h( 1, [ 1 ])
@@ -1857,7 +1944,7 @@ const bells = [
 
 
 	//  Q function -- text block argument
-	//  with operation labels
+	//  with operation symbols
 	//  and operation component IDs.
 
 	Q`
@@ -1867,7 +1954,7 @@ const bells = [
 	
 	//  Q function -- text block argument
 	//  using only component IDs
-	// (ie. no operation labels)
+	// (ie. no operation symbols)
 	//  because the operation that the 
 	//  components should belong to is NOT ambiguous.
 	

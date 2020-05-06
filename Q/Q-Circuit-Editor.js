@@ -249,20 +249,20 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	selectallEl.innerHTML = '&searr;'
 
 
-	//  Add register index labels to left-hand column.
+	//  Add register index symbols to left-hand column.
 	
 	for( let i = 0; i < circuit.bandwidth; i ++ ){
 
 		const 
 		registerIndex = i + 1,
-		registerLabelEl = createDiv()
+		registersymbolEl = createDiv()
 		
-		foregroundEl.appendChild( registerLabelEl )
-		registerLabelEl.classList.add( 'Q-circuit-header', 'Q-circuit-register-label' )
-		registerLabelEl.setAttribute( 'title', 'Register '+ registerIndex +' of '+ circuit.bandwidth )
-		registerLabelEl.setAttribute( 'register-index', registerIndex )
-		registerLabelEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
-		registerLabelEl.innerText = registerIndex
+		foregroundEl.appendChild( registersymbolEl )
+		registersymbolEl.classList.add( 'Q-circuit-header', 'Q-circuit-register-symbol' )
+		registersymbolEl.setAttribute( 'title', 'Register '+ registerIndex +' of '+ circuit.bandwidth )
+		registersymbolEl.setAttribute( 'register-index', registerIndex )
+		registersymbolEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
+		registersymbolEl.innerText = registerIndex
 	}
 
 
@@ -276,20 +276,20 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	addRegisterEl.innerText = '+'
 
 
-	//  Add moment index labels to top row.
+	//  Add moment index symbols to top row.
 
 	for( let i = 0; i < circuit.timewidth; i ++ ){
 
 		const 
 		momentIndex = i + 1,
-		momentLabelEl = createDiv()
+		momentsymbolEl = createDiv()
 
-		foregroundEl.appendChild( momentLabelEl )
-		momentLabelEl.classList.add( 'Q-circuit-header', 'Q-circuit-moment-label' )
-		momentLabelEl.setAttribute( 'title', 'Moment '+ momentIndex +' of '+ circuit.timewidth )
-		momentLabelEl.setAttribute( 'moment-index', momentIndex )
-		momentLabelEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( momentIndex )
-		momentLabelEl.innerText = momentIndex
+		foregroundEl.appendChild( momentsymbolEl )
+		momentsymbolEl.classList.add( 'Q-circuit-header', 'Q-circuit-moment-symbol' )
+		momentsymbolEl.setAttribute( 'title', 'Moment '+ momentIndex +' of '+ circuit.timewidth )
+		momentsymbolEl.setAttribute( 'moment-index', momentIndex )
+		momentsymbolEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( momentIndex )
+		momentsymbolEl.innerText = momentIndex
 	}
 
 
@@ -446,23 +446,23 @@ Object.assign( Q.Circuit.Editor, {
 
 		paletteEl.classList.add( 'Q-circuit-palette' )
 
-		'HXYZST!'
+		'HXYZPT*'
 		.split( '' )
-		.forEach( function( label ){
+		.forEach( function( symbol ){
 
-			const gate = Q.Gate.findByLabel( label )
+			const gate = Q.Gate.findBySymbol( symbol )
 
 			const operationEl = document.createElement( 'div' )
 			paletteEl.appendChild( operationEl )
 			operationEl.classList.add( 'Q-circuit-operation' )
-			operationEl.classList.add( 'Q-circuit-operation-'+ gate.css )
-			operationEl.setAttribute( 'gate-label', label )
+			operationEl.classList.add( 'Q-circuit-operation-'+ gate.nameCss )
+			operationEl.setAttribute( 'gate-symbol', symbol )
 			operationEl.setAttribute( 'title', gate.name )
 
 			const tileEl = document.createElement( 'div' )
 			operationEl.appendChild( tileEl )
 			tileEl.classList.add( 'Q-circuit-operation-tile' )
-			if( label !== '!' ) tileEl.innerText = label
+			if( symbol !== Q.Gate.CURSOR.symbol ) tileEl.innerText = symbol
 
 			;[ 'before', 'after' ].forEach( function( layer ){
 
@@ -551,9 +551,9 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 
 		const operationEl = document.createElement( 'div' )
 		foregroundEl.appendChild( operationEl )
-		operationEl.classList.add( 'Q-circuit-operation', 'Q-circuit-operation-'+ operation.gate.css )
+		operationEl.classList.add( 'Q-circuit-operation', 'Q-circuit-operation-'+ operation.gate.nameCss )
 		// operationEl.setAttribute( 'operation-index', operationIndex )		
-		operationEl.setAttribute( 'gate-label', operation.gate.label )
+		operationEl.setAttribute( 'gate-symbol', operation.gate.symbol )
 		operationEl.setAttribute( 'gate-index', operation.gate.index )//  Used as an application-wide unique ID!
 		operationEl.setAttribute( 'moment-index', operation.momentIndex )
 		operationEl.setAttribute( 'register-index', registerIndex )
@@ -566,7 +566,7 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 		const tileEl = document.createElement( 'div' )
 		operationEl.appendChild( tileEl )
 		tileEl.classList.add( 'Q-circuit-operation-tile' )		
-		if( operation.gate.label !== '!' ) tileEl.innerText = operation.gate.label
+		if( operation.gate.symbol !== Q.Gate.CURSOR.symbol ) tileEl.innerText = operation.gate.symbol
 
 
 		//  Add operation link wires
@@ -722,9 +722,9 @@ Q.Circuit.Editor.isValidControlCandidate = function( circuitEl ){
 
 	const gates = selectedOperations.reduce( function( gates, operationEl ){
 
-		const gateLabel = operationEl.getAttribute( 'gate-label' )
-		if( !Q.isUsefulInteger( gates[ gateLabel ])) gates[ gateLabel ] = 1
-		else gates[ gateLabel ] ++
+		const gateSymbol = operationEl.getAttribute( 'gate-symbol' )
+		if( !Q.isUsefulInteger( gates[ gateSymbol ])) gates[ gateSymbol ] = 1
+		else gates[ gateSymbol ] ++
 		return gates
 
 	}, {} )
@@ -756,7 +756,7 @@ Q.Circuit.Editor.isValidControlCandidate = function( circuitEl ){
 	//  and one or more of a regular single gate
 	//  that is NOT already controlled.
 
-	if( gates[ '!' ] === 1 && 
+	if( gates[ Q.Gate.CURSOR.symbol ] === 1 && 
 		Object.keys( gates ).length === 2 &&
 		totalNotControlled === selectedOperations.length ){
 
@@ -768,7 +768,7 @@ Q.Circuit.Editor.isValidControlCandidate = function( circuitEl ){
 	//  but there is one or more of specific gate type
 	//  and at least one of those is already controlled.
 
-	if( gates[ '!' ] === undefined &&
+	if( gates[ Q.Gate.CURSOR.symbol ] === undefined &&
 		Object.keys( gates ).length === 1 &&
 		totalControlled > 0 &&
 		totalNotControlled > 0 ){
@@ -811,12 +811,12 @@ Q.Circuit.Editor.createControl = function( circuitEl ){
 	control = existingControlEl || selectedOperations
 		.find( function( el ){
 
-			return el.getAttribute( 'gate-label' ) === '!'
+			return el.getAttribute( 'gate-symbol' ) === Q.Gate.CURSOR.symbol
 		}),
 	targets = selectedOperations
 		.reduce( function( targets, el ){
 
-			//if( el.getAttribute( 'gate-label' ) !== '!' ) targets.push( el )
+			//if( el.getAttribute( 'gate-symbol' ) !== '!' ) targets.push( el )
 			if( el !== control ) targets.push( el )
 			return targets
 
@@ -836,7 +836,7 @@ Q.Circuit.Editor.createControl = function( circuitEl ){
 	})
 	circuit.set$(
 
-		targets[ 0 ].getAttribute( 'gate-label' ),
+		targets[ 0 ].getAttribute( 'gate-symbol' ),
 		+control.getAttribute( 'moment-index' ),
 		[ +control.getAttribute( 'register-index' )].concat(
 
@@ -879,7 +879,7 @@ Q.Circuit.Editor.isValidSwapCandidate = function( circuitEl ){
 
 	areBothCursors = selectedOperations.every( function( operationEl ){
 
-		return operationEl.getAttribute( 'gate-label' ) === '!'
+		return operationEl.getAttribute( 'gate-symbol' ) === Q.Gate.CURSOR.symbol
 	})
 	if( areBothCursors ) return true
 
@@ -1351,8 +1351,8 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 
 		const
 		selectallEl     = targetEl.closest( '.Q-circuit-selectall' ),
-		registerLabelEl = targetEl.closest( '.Q-circuit-register-label' ),
-		momentLabelEl   = targetEl.closest( '.Q-circuit-moment-label' ),
+		registersymbolEl = targetEl.closest( '.Q-circuit-register-symbol' ),
+		momentsymbolEl   = targetEl.closest( '.Q-circuit-moment-symbol' ),
 		inputEl         = targetEl.closest( '.Q-circuit-input' ),
 		operationEl     = targetEl.closest( '.Q-circuit-operation' )
 		
@@ -1406,7 +1406,7 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 
 
 		//  Clicking on the “selectAll” button
-		//  or any of the Moment labels / Register labels
+		//  or any of the Moment symbols / Register symbols
 		//  causes a selection toggle.
 		//  In the future we may want to add
 		//  dragging of entire Moment columns / Register rows
@@ -1418,12 +1418,12 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 			toggleSelection( '.Q-circuit-operation' )
 			return
 		}
-		if( momentLabelEl ){
+		if( momentsymbolEl ){
 
 			toggleSelection( `.Q-circuit-operation[moment-index="${ momentIndex }"]` )
 			return
 		}
-		if( registerLabelEl ){
+		if( registersymbolEl ){
 
 			toggleSelection( `.Q-circuit-operation[register-index="${ registerIndex }"]` )
 			return
@@ -1855,7 +1855,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			}),
 
 
-			//  We can’t pick the gate label 
+			//  We can’t pick the gate symbol 
 			//  off the 0th gate in the register indices array
 			//  because that will be an identity / control / null gate.
 			//  We need to look at slot 1.
@@ -1865,12 +1865,12 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				`[moment-index="${ childEl.origin.momentIndex }"]`+
 				`[register-index="${ registerIndices[ 1 ] }"]`
 			),
-			gateLabel = component1 ? 
-				component1.getAttribute( 'gate-label' ) : 
-				childEl.getAttribute( 'gate-label' )
+			gatesymbol = component1 ? 
+				component1.getAttribute( 'gate-symbol' ) : 
+				childEl.getAttribute( 'gate-symbol' )
 
 
-			//  We needed to grab the above gateLabel information
+			//  We needed to grab the above gatesymbol information
 			//  before we sent any clear$ commands
 			//  which would in turn delete those componentEls.
 			//  We’ve just completed that, 
@@ -1897,7 +1897,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				//circuit.set$( 
 				setCommands.push([
 
-					gateLabel,
+					gatesymbol,
 					momentIndexTarget,
 
 
@@ -2008,7 +2008,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				// circuit.set$( 
 				setCommands.push([
 
-					childEl.getAttribute( 'gate-label' ), 
+					childEl.getAttribute( 'gate-symbol' ), 
 					momentIndexTarget,
 					fixedRegistersIndices
 				// )
@@ -2022,7 +2022,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 					setCommands.push([
 
 						+componentEl.getAttribute( 'register-indices-index' ) ? 
-							gateLabel : 
+							gatesymbol : 
 							Q.Gate.NOOP,
 						+componentEl.getAttribute( 'moment-index' ),
 						+componentEl.getAttribute( 'register-index' )
@@ -2040,7 +2040,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 					setCommands.push([
 
 						+componentEl.getAttribute( 'register-indices-index' ) ? 
-							gateLabel : 
+							gatesymbol : 
 							Q.Gate.NOOP,
 						+componentEl.getAttribute( 'moment-index' ) + draggedMomentDelta,
 						+componentEl.getAttribute( 'register-index' ) + draggedRegisterDelta,
@@ -2061,7 +2061,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			while( j < draggedOperations.length ){
 
 				const possibleSibling = draggedOperations[ j ]
-				if( possibleSibling.getAttribute( 'gate-label' ) === gateLabel &&
+				if( possibleSibling.getAttribute( 'gate-symbol' ) === gatesymbol &&
 					possibleSibling.getAttribute( 'register-indices' ) === registerIndicesString ){
 
 					draggedOperations.splice( j, 1 )
@@ -2101,7 +2101,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			// circuit.set$( 
 			setCommands.push([
 
-				childEl.getAttribute( 'gate-label' ), 
+				childEl.getAttribute( 'gate-symbol' ), 
 				momentIndexTarget,
 				[ registerIndexTarget ]
 			// )

@@ -5,79 +5,7 @@
 
 
 Q.Qubit = function( a, b, label, name ){
-
-	`
-	A qubit is represented by Q.Matrix([ 𝒂 ],[ 𝒃 ]) where 𝒂 and 𝒃 are “complex 
-	numbers” such that |𝒂| × |𝒂| + |𝒃| × |𝒃| = 1. If brevity’s your thing, that’s the 
-	same as |𝒂|² + |𝒃|² = 1. https://en.wikipedia.org/wiki/Qubit  
-
-
-	  EXAMPLE  
-
-	  const ourQubit = new Q.Qubit( 0, 1 )  
-
-
-	Our 𝒂 argument represents our qubit’s “control bit” while our 𝒃 argument 
-	represents our quibit’s “target bit”—the part we are ultimately concerned 
-	with. A qubit may be in superposition, ie.  its target bit is neither 0 
-	or 1 and computationally exists as both 0 and 1 at the same time. The 
-	probability that the qubit will “collapse” to 0 is 𝒂², while the 
-	probability that the qubit will “collapse” to 1 is 𝒃². 
-	https://en.wikipedia.org/wiki/Quantum_superposition   
 	
-
-		EXAMPLES  
-	
-	• Qubit( 1, 0 ) has a 100% chance of collapsing to 0.  
-	• Qubit( 0, 1 ) has a 100% chance of collapsing to 1.  
-	• Qubit( 1÷√2, 1÷√2 ) has a 50% chance of collapsing to 0 and a 50% 
-	chance of collapsing to 1.  
-
-
-		BLOCH SPHERE  
-
-	If we plot all of the possible values for 𝒂 and 𝒃 on a standard graph 
-	it will create a circle with a radius of 1 centered at the origin (0, 0); 
-	ie. a unit circle. This is the result of our rule that 𝒂² + 𝒃² = 1. 
-	https://en.wikipedia.org/wiki/Unit_circle).  
-	
-	             
-	               ( 0, 1 )  Vertical   
-	                   │  
-	   ( -1÷√2, 1÷√2 ) │ ( 1÷√2, 1÷√2 )  Diagonal  
-	                ╲  │  ╱  
-	                 ╲ │ ╱  
-	                  ╲│╱   
-	  ( -1, 0 )────────╳────────( 1, 0 )  Horizontal  
-	                  ╱│╲  
-	                 ╱ │ ╲   
-	                ╱  │  ╲  
-	  ( -1÷√2, -1÷√2 ) │ ( 1÷√2, -1÷√2 )  Anti-diagonal  
-	                   │  
-	                   │  
-	               ( 0, -1 )  
-
-
-	If we allow for complex numbers like 𝒊 then our 2D circle becomes a 3D 
-	Bloch sphere. Our unit circle or unit sphere can be used as a state 
-	machine for quantum compuation, though Q.js currently focusses on 
-	matrices for calculation. 
-	https://en.wikipedia.org/wiki/Bloch_sphere  
-	
-
-		CONSTANTS  
-
-	Q.Qubit provides the following built-in Jones vectors. 
-	https://en.wikipedia.org/wiki/Jones_calculus#Jones_vectors  
-	• HORIZONTAL = new Q.Qubit( 1, 0 )  
-	• VERTICAL   = new Q.Qubit( 0, 1 )  
-	• DIAGONAL      = new Q.Qubit( 1÷√2,  1÷√2 )  
-	• ANTI_DIAGONAL = new Q.Qubit( 1÷√2, -1÷√2 )  
-	• RIGHT_HAND_CIRCULAR_POLARIZED = new Q.Qubit( 1÷√2, -1÷√2𝒊 )  
-	• LEFT_HAND_CIRCULAR_POLARIZED  = new Q.Qubit( 1÷√2,  1÷√2𝒊 )  
-	
-	`
-
 
 	//  If we’ve received an instance of Q.Matrix as our first argument
 	//  then we’ll assume there are no further arguments
@@ -186,6 +114,31 @@ Object.assign( Q.Qubit, {
 
 
 
+	findBy: function( key, value ){
+
+		return (
+			
+			Object
+			.values( Q.Qubit.constants )
+			.find( function( item ){
+
+				if( typeof value === 'string' && 
+					typeof item[ key ] === 'string' ){
+
+					return value.toLowerCase() === item[ key ].toLowerCase()
+				}
+				return value === item[ key ]
+			})
+		)
+	},
+	findBySymbol: function( symbol ){
+
+		return Q.Qubit.findBy( 'symbol', symbol )
+	},
+	findByName: function( name ){
+
+		return Q.Qubit.findBy( 'name', name )
+	},
 	findByBeta: function( beta ){
 
 		if( beta instanceof Q.ComplexNumber === false ){
@@ -232,23 +185,22 @@ Object.assign( Q.Qubit, {
 		then it doesn’t matter and we can do this:
 		`
 
-		if( gate instanceof Q.Gate === false ) return Q.error( `Q.Qubit attempted to apply something that was not a gate to this qubit #${qubit.index}.` )
-		
-
-		//  If we’re calling gate.applyTo on a single qubit,
-		//  which in this case we always are,
-		//  then the output will always be a single qubit
-		//  and never an array of them. 
-		//  So just return results[0] instead of the whole thing.
-
-		else return gate.applyTo( qubit )[ 0 ]
+		if( gate instanceof Q.Gate === false ) return Q.error( `Q.Qubit attempted to apply something that was not a gate to this qubit #${ qubit.index }.` )
+		else return gate.applyToQubit( qubit )
 	},
 	toText: function( qubit ){
 
 		//return `|${qubit.beta.toText()}⟩`
 		return qubit.alpha.toText() +'\n'+ qubit.beta.toText()
 	},
+	toStateVectorText: function( qubit ){
 
+		return `|${ qubit.beta.toText() }⟩`
+	},
+	toStateVectorHtml: function( qubit ){
+
+		return `<span class="Q-state-vector ket">${ qubit.beta.toText() }</span>`
+	},
 
 
 
@@ -394,6 +346,14 @@ Object.assign( Q.Qubit.prototype, {
 	toText: function(){
 
 		return Q.Qubit.toText( this )//  Returns a String, breaks function chaining!
+	},
+	toStateVectorText: function(){
+
+		return Q.Qubit.toStateVectorText( this )//  Returns a String, breaks function chaining!
+	},
+	toStateVectorHtml: function(){
+
+		return Q.Qubit.toStateVectorHtml( this )//  Returns a String, breaks function chaining!
 	},
 	toBlochSphere: function(){
 

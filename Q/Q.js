@@ -6,14 +6,6 @@
 
 const Q = function(){
 
-	`
-	Hi. Do you need help with something? 
-	Each Q class has its own description. 
-	For example, try this:  
-
-	Q.Qubit.help()
-	`
-
 
 	//  Did we send arguments of the form
 	//  ( bandwidth, timewidth )?
@@ -75,9 +67,9 @@ Object.assign( Q, {
 
 		function countPrefixTabs( text ){
 		
-			`
-			Is counting tabs “manually” actually more performant than regex?
-			`
+
+			//  Is counting tabs “manually” 
+			//  actually more performant than regex?
 
 			let count = index = 0
 			while( text.charAt( index ++ ) === '\t' ) count ++
@@ -289,7 +281,7 @@ Object.assign( Q, {
 
 Q.createConstants( 
 
-	'REVISION', 18,
+	'REVISION', 19,
 
 
 	//  Yeah... F’ing floating point numbers, Man!
@@ -621,7 +613,8 @@ QQ    QQ
 
 
 
-Q.help() for more information.
+https://quantumjavascript.app
+
 
 
 ` )

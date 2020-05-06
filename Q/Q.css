@@ -145,7 +145,7 @@ svg, :root {
 		 5%,
 		35%
 	);
-	--Q-text-code-comment-color: rgba( 0, 0, 0, 0.25 );
+	--Q-text-code-comment-color: rgba( 0, 0, 0, 0.4 );
 	--Q-text-code-output-color:  rgba( 0, 0, 0, 1 );
 
 	--Q-selection-color: var( --Q-color-black );
@@ -429,31 +429,36 @@ dd .maths {
 
 
 
-
+.Q-state-vector,
 .complex-vector {
 
 	font-family: var( --Q-font-family-mono );
 }
+.Q-state-vector.bra::before,
 .complex-vector.bra::before {
 
 	content: '⟨';
 	color: #BBB;
 }
+.Q-state-vector.bra::after,
 .complex-vector.bra::after {
 
 	content: '|';
 	color: #BBB;
 }
+.Q-state-vector.ket::before,
 .complex-vector.ket::before {
 
 	content: '|';
 	color: #BBB;
 }
+.Q-state-vector.ket::after,
 .complex-vector.ket::after {
 
 	content: '⟩';
 	color: #BBB;
 }
+.Q-state-vector.bra + .Q-state-vector.ket::before,
 .complex-vector.bra + .complex-vector.ket::before {
 
 	content: '';
