@@ -176,7 +176,7 @@ Object.assign( Q.Qubit, {
 		}
 		else return new Q.Qubit( 0, 1 )
 	},
-	applyGate: function( qubit, gate ){
+	applyGate: function( qubit, gate, ...args ){
 
 		`
 		This is means of inverting what comes first:
@@ -186,7 +186,7 @@ Object.assign( Q.Qubit, {
 		`
 
 		if( gate instanceof Q.Gate === false ) return Q.error( `Q.Qubit attempted to apply something that was not a gate to this qubit #${ qubit.index }.` )
-		else return gate.applyToQubit( qubit )
+		else return gate.applyToQubit( qubit, ...args )
 	},
 	toText: function( qubit ){
 
@@ -339,9 +339,9 @@ Object.assign( Q.Qubit.prototype, {
 
 		return Q.Qubit.collapse( this )
 	},
-	applyGate: function( gate ){
+	applyGate: function( gate, ...args ){
 
-		return Q.Qubit.applyGate( this, gate )
+		return Q.Qubit.applyGate( this, gate, ...args )
 	},
 	toText: function(){
 

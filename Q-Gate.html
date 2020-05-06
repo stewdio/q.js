@@ -66,7 +66,7 @@
 				</a>
 			</p>
 			<hr>
-			<h3>Operations, not just matrices</h3>
+			<h3>Gates for qubits to pass through</h3>
 			<p>
 				Mathematically, a 
 				<a href="https://en.wikipedia.org/wiki/Quantum_logic_gate" target="_blank">quantum logic gate</a>
@@ -98,32 +98,33 @@
 				unless supplied as arguments.
 			</p>
 			<p>
-				Here we will create a “fox” gate
+				Here we will create a <a href="https://en.wikipedia.org/wiki/Guppy" target="_blank">“gup”</a> gate
 				that borrows its <code><a href="#this.matrix">matrix</a></code> property
 				from the pre-existing <code><a href="Q-Gate.html#.PAULI_X">PAULI_X</a></code> gate
 				<a href="#.constantss">constant</a>.
-				This will allow our fox gate
+				This will enable our custom gate
 				to flip 
 				<a href="Q-Qubit.html">qubits</a> from a 
 				<a href="Q-Qubit.html#.HORIZONTAL">horizontal state</a>, 
 				ie. “off” or <span class="complex-vector ket">0</span>,
 				to a <a href="Q-Qubit.html#.VERTICAL">vertical state</a>, 
 				ie. “on” or <span class="complex-vector ket">1</span>,
-				and back again.
+				and back again—just like a 
+				<code><a href="Q-Gate.html#.PAULI_X">PAULI_X</a></code> gate.
 			</p>
 <pre><code>
-var fox = new <a href="Q.html">Q</a>.Gate({
+var gup = new <a href="Q.html">Q</a>.Gate({
 
-	<a href="#this.symbol">symbol</a>:  'F',
-	<a href="#this.name">name</a>:    'Fox',
-	<a href="#this.nameCss">nameCss</a>: 'fox',<!--	
-	<a href="#this.description">description</a>: 'This “fox” gate flips qubits.', -->
+	<a href="#this.symbol">symbol</a>:  'G',
+	<a href="#this.name">name</a>:    'Gup',
+	<a href="#this.nameCss">nameCss</a>: 'gup',<!--	
+	<a href="#this.description">description</a>: 'This “gup” gate flips qubits.', -->
 	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.Gate.<a href="Q-Gate.html#.PAULI_X">PAULI_X</a>.<a href="#this.matrix">matrix</a>
 })
 </code></pre>
 			<p>
 				We can now test that our new 
-				fox gate 
+				<code>gup</code> gate 
 				flips qubit states between <span class="complex-vector ket">0</span>
 				and <span class="complex-vector ket">1</span>.
 			</p>
@@ -142,10 +143,12 @@ var fox = new <a href="Q.html">Q</a>.Gate({
 <code><span class="comment">//  Now flip a “Horizontal” |0⟩ to a “Vertical” |1⟩
 //  and flip a “Vertical” |1⟩ to a “Horizontal” |0⟩.</span>
 
-fox.<a href="#.prototype.applyToQubit">applyToQubit</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a> ).<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()</code>
+gup.<a href="#.prototype.applyToQubit">applyToQubit</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a> )
+	.<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()</code>
 <samp>"|1⟩"</samp>
 
-<code>fox.<a href="#.prototype.applyToQubit">applyToQubit</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.VERTICAL">VERTICAL</a> ).<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()</code>
+<code>gup.<a href="#.prototype.applyToQubit">applyToQubit</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.VERTICAL">VERTICAL</a> )
+	.<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()</code>
 <samp>"|0⟩"</samp></pre>
 			<p>
 				We can similarly use a qubit’s 
@@ -154,10 +157,24 @@ fox.<a href="#.prototype.applyToQubit">applyToQubit</a>( <a href="Q.html">Q</a>.
 				<code><a href="#.prototype.applyToQubit">applyToQubit</a></code> method:
 			</p>
 <pre><code>
-<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a>.<a href="Q-Qubit.html#.prototype.applyGate">applyGate</a>( fox ).<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()</code>
+<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a>      <span class="comment">//  Value begins at |0⟩.</span>
+	.<a href="Q-Qubit.html#.prototype.applyGate">applyGate</a>( gup )   <span class="comment">//  Value is now |1⟩.</span>
+	.<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()<span class="comment">//  Output that as text.</span></code>
 <samp>"|1⟩"</samp>
 
-<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.VERTICAL">VERTICAL</a>.<a href="Q-Qubit.html#.prototype.applyGate">applyGate</a>( fox ).<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()</code>
+<code><a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.VERTICAL">VERTICAL</a>        <span class="comment">//  Value begins at |1⟩.</span>
+	.<a href="Q-Qubit.html#.prototype.applyGate">applyGate</a>( gup )   <span class="comment">//  Value is now |0⟩.</span>
+	.<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()<span class="comment">//  Output that as text.</span></code>
+<samp>"|0⟩"</samp></pre>
+
+			<p>
+				We can also do this in one go:
+			</p>
+<pre><code>
+<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a>      <span class="comment">//  Value begins at |0⟩.</span>
+	.<a href="Q-Qubit.html#.prototype.applyGate">applyGate</a>( gup )   <span class="comment">//  Value is now |1⟩.</span>
+	.<a href="Q-Qubit.html#.prototype.applyGate">applyGate</a>( gup )   <span class="comment">//  Value is back to |0⟩.</span>
+	.<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()<span class="comment">//  Output that as text.</span></code>
 <samp>"|0⟩"</samp></pre>
 
 			<ul class="properties">
@@ -627,9 +644,9 @@ new <a href="Q.html">Q</a>.Gate({
 						are a family of quantum gates
 						that employ the variable ϕ (phi) to
 						represent tracing a horizontal arc (a line of latitude)
+						of ϕ radians
 						around the 
-						<a href="Q-Qubit.html#Bloch_sphere">Bloch sphere</a>
-						of ϕ radians.
+						<a href="Q-Qubit.html#Bloch_sphere">Bloch sphere</a>.
 						They leave the basis state <span class="complex-vector ket">0</span> unchanged
 						and map <span class="complex-vector ket">1</span> to 
 						<span class="symbol">e</span><sup><span class="symbol">i</span>ϕ</sup>
@@ -652,13 +669,31 @@ new <a href="Q.html">Q</a>.Gate({
 	<a href="#this.name">name</a>:    'Phase',
 	<a href="#this.nameCss">nameCss</a>: 'phase',
 	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
-
+	
 		[ 1, 0 ],
-		[ 0, new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, 1 )]
-	)
+		[ 0, <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>.<a href="Q-ComplexNumber.html#.E">E</a>.<a href="Q-ComplexNumber.html#.prototype.power">power</a>( new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, 1 ))]
+	),
+	<a href="#this.applyToQubit">applyToQubit</a>: function( qubit, phi ){
+
+		if( <a href="Q.html">Q</a>.<a href="Q.html#.isUsefulNumber">isUsefulNumber</a>( phi ) !== true ) phi = this.phi
+		const matrix = new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
+		
+			[ 1, 0 ],
+			[ 0, <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>.<a href="Q-ComplexNumber.html#.E">E</a>.<a href="Q-ComplexNumber.html#.prototype.power">power</a>( new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, phi ))]
+		)
+		return new <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>( matrix.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( qubit ))
+	},
+	updateMatrix$: function( phi ){
+
+			if( <a href="Q.html">Q</a>.<a href="Q.html#.isUsefulNumber">isUsefulNumber</a>( phi ) === true ) this.phi = phi
+			this.matrix = new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
+				[ 1, 0 ],
+				[ 0, <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>.<a href="Q-ComplexNumber.html#.E">E</a>.<a href="Q-ComplexNumber.html#.prototype.power">power</a>( new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, this.phi ))]
+			return this
+		}
 })
 </code></pre>
-						Matrix representation:
+						Matrix representation (when ϕ = 1):
 						<div class="maths">
 							<div class="matrix">
 								<div class="matrix-bracket-left"></div>
@@ -668,11 +703,66 @@ new <a href="Q.html">Q</a>.Gate({
 										<td>1</td><td>0</td>
 									</tr>
 									<tr>
-										<td>0</td><td class="symbol">i</td>
+										<td>0</td><td class="symbol">e<sup>i</sup></td>
 									</tr>
 								</table>
 							</div>
 						</div>
+						<br>
+						Using varying values for ϕ is easy.
+						We can clone this <a href="QGate.html#.PHASE">PHASE</a> constant, 
+						provide it a new <code><a href="#this.symbol">symbol</a></code>
+						(so it has a unique identifier),
+						and a new value for ϕ.
+						In this example we create a gate called <code>fox</code>
+						with a ϕ value of π.
+<pre><code>
+var fox = <a href="Q.html">Q</a>.<a href="Q-Gate.html">Gate</a>.<a href="Q-Gate.html#.PHASE">PHASE</a>.<a href="Q-Gate.html#.prototype.clone">clone</a>({ symbol: 'F', phi: Math.PI })
+</code></pre>
+						Our value of ϕ is now set equal to π
+						and we can apply this gate to any qubit.
+<pre><code>
+fox.<a href="#this.applyToQubit">applyToQubit</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.DIAGONAL">DIAGONAL</a> ).<a href="Q-Matrix.html#.prototype.toTsv">toTsv</a>()</code>
+<samp>"
+ 0.707
+-0.707"
+</samp></pre>
+						But we can also send a 
+						<em>temporary</em> value for ϕ
+						that will be used only during this function execution;
+						it will not change <code>fox</code>’s set value of ϕ.
+						Let’s try temporarily setting ϕ to π ÷ 4.
+<pre><code>
+fox.<a href="#this.applyToQubit">applyToQubit</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.DIAGONAL">DIAGONAL</a>, Math.PI / 4 ).<a href="Q-Matrix.html#.prototype.toTsv">toTsv</a>()</code>
+<samp>"
+ 0.707
+ 0.5 + 0.5i"
+</samp></pre>
+						Rather than begin our expression 
+						with a gate,
+						we can instead begin with a qubit,
+						and then apply our <code>fox</code> gate to it.
+<pre><code>
+<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.DIAGONAL">DIAGONAL</a>
+	.<a href="Q-Qubit.html#.prototype.applyGate">applyGate</a>( fox )
+	.<a href="Q-Matrix.html#.prototype.toTsv">toTsv</a>()</code>
+<samp>"
+ 0.707
+-0.707"
+</samp></pre>
+						But what’s more clever is that additional arguments
+						will be passed directly to the gate’s 
+						<code><a href="#this.applyToQubit">applyToQubit</a></code> method,
+						so we can still use temporary values for ϕ.
+<pre><code>
+<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.DIAGONAL">DIAGONAL</a>
+	.<a href="Q-Qubit.html#.prototype.applyGate">applyGate</a>( fox, Math.PI / 4 )
+	.<a href="Q-Matrix.html#.prototype.toTsv">toTsv</a>()</code>
+<samp>"
+ 0.707
+ 0.5 + 0.5i"
+</samp></pre>
+
 					</dd>
 				</li>
 				<li>
@@ -812,13 +902,50 @@ new <a href="Q.html">Q</a>.Gate({
 								<div class="matrix-bracket-right"></div>
 								<table>
 									<tr>
-										<td>1</td><td>0</td><td>0</td><td>0</td>
+										<td>1</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
 									</tr>
 									<tr>
-										<td>0</td><td>0.5 + 0.5i</td><td>0.5 - 0.5i</td><td>0</td>
+										<td>0</td>
+										<td>
+											<table class="division">
+												<tr class="dividend"><td>1</td></tr>
+												<tr class="divisor"><td>2</td></tr>
+											</table>
+											×
+											(1 + <span class="symbol">i</span>)
+										</td>
+										<td>
+											<table class="division">
+												<tr class="dividend"><td>1</td></tr>
+												<tr class="divisor"><td>2</td></tr>
+											</table>
+											×
+											(1 - <span class="symbol">i</span>)
+										</td>
+										<td>0</td>
 									</tr>
 									<tr>
-										<td>0</td><td>0.5 - 0.5i</td><td>0.5 + 0.5i</td><td>0</td>
+										<td>0</td>
+										<td>
+											<table class="division">
+												<tr class="dividend"><td>1</td></tr>
+												<tr class="divisor"><td>2</td></tr>
+											</table>
+											×
+											(1 - <span class="symbol">i</span>)
+										</td>
+										<td>
+											<table class="division">
+												<tr class="dividend"><td>1</td></tr>
+												<tr class="divisor"><td>2</td></tr>
+											</table>
+											×
+											(1 + <span class="symbol">i</span>)
+										</td>
+										<td>0</td>
 									</tr>
 									<tr>
 										<td>0</td><td>0</td><td>0</td><td>1</td>
@@ -887,6 +1014,24 @@ new <a href="Q.html">Q</a>.Gate({
 	<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a>, 
 	… 
 ]</samp></pre>
+						Or for even more fun with Arrays of qubits:
+<pre><code>
+<a href="Q.html">Q</a>.Gate.<a href="Q-Gate.html#.IDENTITY">IDENTITY</a>
+	.<a href="#.prototype.applyToQubits">applyToQubits</a>(
+
+		...Object.values( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.constants">constants</a> )
+	)
+	.map( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.prototype.toText">toText</a> )</code>
+<samp>[
+	"1↵0",          <span class="comment">//  <a href="Q-Qubit.html#.HORIZONTAL">Horizontal</a></span>
+	"0↵1",          <span class="comment">//  <a href="Q-Qubit.html#.VERTICAL">Vertical</a></span>
+	"0.707↵0.707",  <span class="comment">//  <a href="Q-Qubit.html#.DIAGONAL">Diagonal</a></span>
+	"0.707↵-0.707", <span class="comment">//  <a href="Q-Qubit.html#.ANTI_DIAGONAL">Anti-Diagonal</a></span>
+	"0.707↵-0.707i",<span class="comment">//  <a href="Q-Qubit.html#.RIGHT_HAND_CIRCULAR_POLARIZED">Right-hand Circular Polarized</a></span>
+	"0.707↵0.707i"  <span class="comment">//  <a href="Q-Qubit.html#.LEFT_HAND_CIRCULAR_POLARIZED">Left-hand Circular Polarized</a></span>
+]</samp></pre>
+
+
 						While this is useful for inspection and debugging
 						a single gate’s functionality,
 						or building a visualization of a single qubit’s changing state,
@@ -916,16 +1061,18 @@ new <a href="Q.html">Q</a>.Gate({
 
 
 
-var fox = new Q.Gate({
+var gup = new Q.Gate({
 
-	symbol: 'F',
-	symbolAmazonBraket: 'f',
-	symbolSvg: '',
-	name:    'Fox',
-	nameCss: 'fox',
-	description: 'This “fox” gate flips qubits.',
+	symbol:  'G',
+	name:    'Gup',
+	nameCss: 'gup',
 	matrix: Q.Gate.PAULI_X.matrix
 })
+
+
+
+
+var fox = Q.Gate.PHASE.clone({ symbol: 'F', phi: Math.PI })
 
 
 

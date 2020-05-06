@@ -87,9 +87,9 @@ Object.assign( Q.Gate, {
 
 Object.assign( Q.Gate.prototype, {
 
-	clone: function(){
+	clone: function( params ){
 
-		return new Q.Gate( this )
+		return new Q.Gate( Object.assign( {}, this, params ))
 	},
 	applyToQubits: function(){
 
@@ -99,6 +99,10 @@ Object.assign( Q.Gate.prototype, {
 
 		this[ key ] = value
 		return this
+	},
+	setSymbol$: function( value ){
+
+		return this.set$( 'symbol', value )
 	}
 })
 
@@ -189,9 +193,26 @@ Q.Gate.createConstants(
 		symbolSvg: '',
 		name:      'Phase',
 		nameCss:   'phase',
+		phi:        1,
 		matrix: new Q.Matrix(
 			[ 1, 0 ],
-			[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, 1 )) ])// '1' here is actually a variable ...
+			[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, 1 ))]),// '1' here is actually a variable ...
+		applyToQubit: function( qubit, phi ){
+
+			if( Q.isUsefulNumber( phi ) !== true ) phi = this.phi
+			const matrix = new Q.Matrix(
+				[ 1, 0 ],
+				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi ))])
+			return new Q.Qubit( matrix.multiply( qubit ))
+		},
+		updateMatrix$: function( phi ){
+
+			if( Q.isUsefulNumber( phi ) === true ) this.phi = phi
+			this.matrix = new Q.Matrix(
+				[ 1, 0 ],
+				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.phi ))])
+			return this
+		}
 	}),
 	'PI_8', new Q.Gate({
 

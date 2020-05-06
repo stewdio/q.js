@@ -468,6 +468,12 @@ samp {
 		20%,
 		50%
 	);
+	color: hsl(
+
+		var( --Q-color-red-hue ),
+		20%,
+		50%
+	);
 }
 pre code, pre samp {
 
@@ -482,7 +488,8 @@ code {
 
 	color: var( --Q-text-code-color );
 }
-code .comment {
+code .comment,
+samp .comment {
 
 	color: var( --Q-text-code-comment-color );
 }
@@ -552,7 +559,7 @@ nav {
 }
 header {
 
-	margin: 1.2rem 4rem 1.6rem 1.2rem;
+	margin: 1.2rem 4rem 1.6rem 1.3rem;
 }
 header img {
 
