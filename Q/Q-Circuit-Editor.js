@@ -258,7 +258,7 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 		registersymbolEl = createDiv()
 		
 		foregroundEl.appendChild( registersymbolEl )
-		registersymbolEl.classList.add( 'Q-circuit-header', 'Q-circuit-register-symbol' )
+		registersymbolEl.classList.add( 'Q-circuit-header', 'Q-circuit-register-label' )
 		registersymbolEl.setAttribute( 'title', 'Register '+ registerIndex +' of '+ circuit.bandwidth )
 		registersymbolEl.setAttribute( 'register-index', registerIndex )
 		registersymbolEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
@@ -285,7 +285,7 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 		momentsymbolEl = createDiv()
 
 		foregroundEl.appendChild( momentsymbolEl )
-		momentsymbolEl.classList.add( 'Q-circuit-header', 'Q-circuit-moment-symbol' )
+		momentsymbolEl.classList.add( 'Q-circuit-header', 'Q-circuit-moment-label' )
 		momentsymbolEl.setAttribute( 'title', 'Moment '+ momentIndex +' of '+ circuit.timewidth )
 		momentsymbolEl.setAttribute( 'moment-index', momentIndex )
 		momentsymbolEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( momentIndex )
@@ -1351,8 +1351,8 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 
 		const
 		selectallEl     = targetEl.closest( '.Q-circuit-selectall' ),
-		registersymbolEl = targetEl.closest( '.Q-circuit-register-symbol' ),
-		momentsymbolEl   = targetEl.closest( '.Q-circuit-moment-symbol' ),
+		registersymbolEl = targetEl.closest( '.Q-circuit-register-label' ),
+		momentsymbolEl   = targetEl.closest( '.Q-circuit-moment-label' ),
 		inputEl         = targetEl.closest( '.Q-circuit-input' ),
 		operationEl     = targetEl.closest( '.Q-circuit-operation' )
 		
