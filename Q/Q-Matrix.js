@@ -285,6 +285,32 @@ Object.assign( Q.Matrix, {
 
 
 
+	//  Export TO a format.
+
+	toXsv: function( matrix, rowSeparator, valueSeparator ){
+		
+		return matrix.rows.reduce( function( xsv, row ){
+
+			return xsv + rowSeparator + row.reduce( function( xsv, cell, c ){
+
+				return xsv + ( c > 0 ? valueSeparator : '' ) + cell.toText()
+			
+			}, '' )
+		
+		}, '' )
+	},
+	toCsv: function( matrix ){
+
+		return Q.Matrix.toXsv( matrix, '\n', ',' )
+	},
+	toTsv: function( matrix ){
+
+		return Q.Matrix.toXsv( matrix, '\n', '\t' )
+	},
+
+
+
+
 	//  Operate NON-destructive.
 
 	add: function( matrix0, matrix1 ){
@@ -479,37 +505,17 @@ Object.assign( Q.Matrix.prototype, {
 	},
 	toXsv: function( rowSeparator, valueSeparator ){
 		
-		return this.rows.reduce( function( xsv, row ){
-
-			return xsv + rowSeparator + row.reduce( function( xsv, cell, c ){
-
-				return xsv + ( c > 0 ? valueSeparator : '' ) + cell.toText()
-			
-			}, '' )
-		
-		}, '' )
+		return Q.Matrix.toXsv( this, rowSeparator, valueSeparator )
 	},
 	toCsv: function(){
 
-		`
-		Creates a comma-separated-values table and returns it as a string.
-		`
-
-		return this.toXsv( '\n', ',' )
+		return Q.Matrix.toXsv( this, '\n', ',' )
 	},
 	toTsv: function(){
 
-		`
-		Creates a tab-separated-values table and returns it as a string.
-		`
-
-		return this.toXsv( '\n', '\t' )
+		return Q.Matrix.toXsv( this, '\n', '\t' )
 	},
 	toHtml: function(){
-
-		`
-		Creates HTML table code and returns it as a string.
-		`
 		
 		return this.rows.reduce( function( html, row ){
 
