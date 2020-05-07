@@ -1006,7 +1006,7 @@ because there’s another stand-alone X there tripping the logic!!!
 
 			const y3 = q * 3
 			output[ y3 + 1 ] += '        '
-			output[ y3 + 2 ] += 'r'+ ( q + 1 ) +'  |'+ qubit.beta.toText() +'⟩─'
+			output[ y3 + 2 ] += 'r'+ ( q + 1 ) +'  |'+ qubit.beta.toText().trim() +'⟩─'
 			output[ y3 + 3 ] += '        '
 		})
 		for( let x = 0; x < table.timewidth; x ++ ){
