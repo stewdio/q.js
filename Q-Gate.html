@@ -668,11 +668,14 @@ new <a href="Q.html">Q</a>.Gate({
 	<a href="#this.symbol">symbol</a>:  'P',<!-- <a href="#this.symbolAmazonBraket">symbolAmazonBraket</a>: 'p', -->
 	<a href="#this.name">name</a>:    'Phase',
 	<a href="#this.nameCss">nameCss</a>: 'phase',
-	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
-	
-		[ 1, 0 ],
-		[ 0, <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>.<a href="Q-ComplexNumber.html#.E">E</a>.<a href="Q-ComplexNumber.html#.prototype.power">power</a>( new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, 1 ))]
-	),
+	updateMatrix$: function( phi ){
+
+		if( <a href="Q.html">Q</a>.<a href="Q.html#.isUsefulNumber">isUsefulNumber</a>( phi ) === true ) this.phi = phi
+		this.matrix = new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
+			[ 1, 0 ],
+			[ 0, <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>.<a href="Q-ComplexNumber.html#.E">E</a>.<a href="Q-ComplexNumber.html#.prototype.power">power</a>( new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, this.phi ))]
+		return this
+	},
 	<a href="#this.applyToQubit">applyToQubit</a>: function( qubit, phi ){
 
 		if( <a href="Q.html">Q</a>.<a href="Q.html#.isUsefulNumber">isUsefulNumber</a>( phi ) !== true ) phi = this.phi
@@ -682,17 +685,13 @@ new <a href="Q.html">Q</a>.Gate({
 			[ 0, <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>.<a href="Q-ComplexNumber.html#.E">E</a>.<a href="Q-ComplexNumber.html#.prototype.power">power</a>( new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, phi ))]
 		)
 		return new <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>( matrix.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( qubit ))
-	},
-	updateMatrix$: function( phi ){
-
-			if( <a href="Q.html">Q</a>.<a href="Q.html#.isUsefulNumber">isUsefulNumber</a>( phi ) === true ) this.phi = phi
-			this.matrix = new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>(
-				[ 1, 0 ],
-				[ 0, <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>.<a href="Q-ComplexNumber.html#.E">E</a>.<a href="Q-ComplexNumber.html#.prototype.power">power</a>( new <a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a>( 0, this.phi ))]
-			return this
-		}
+	}
 })
 </code></pre>
+						Note that there is no explicitly defined <code>matrix</code> property.
+						It will be created upon instantiation 
+						when the <a href="#Constructor">constructor</a>
+						calls the argument object’s <code>updateMatrix$</code> function.
 						Matrix representation (when ϕ = 1):
 						<div class="maths">
 							<div class="matrix">
@@ -717,7 +716,7 @@ new <a href="Q.html">Q</a>.Gate({
 						In this example we create a gate called <code>fox</code>
 						with a ϕ value of π.
 <pre><code>
-var fox = <a href="Q.html">Q</a>.<a href="Q-Gate.html">Gate</a>.<a href="Q-Gate.html#.PHASE">PHASE</a>.<a href="Q-Gate.html#.prototype.clone">clone</a>({ symbol: 'F', phi: Math.PI })
+var fox = <a href="Q.html">Q</a>.Gate.<a href="Q-Gate.html#.PHASE">PHASE</a>.<a href="Q-Gate.html#.prototype.clone">clone</a>({ symbol: 'F', phi: Math.PI })
 </code></pre>
 						Our value of ϕ is now set equal to π
 						and we can apply this gate to any qubit.
@@ -1023,12 +1022,12 @@ new <a href="Q.html">Q</a>.Gate({
 	)
 	.map( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.prototype.toText">toText</a> )</code>
 <samp>[
-	"1↵0",          <span class="comment">//  <a href="Q-Qubit.html#.HORIZONTAL">Horizontal</a></span>
-	"0↵1",          <span class="comment">//  <a href="Q-Qubit.html#.VERTICAL">Vertical</a></span>
-	"0.707↵0.707",  <span class="comment">//  <a href="Q-Qubit.html#.DIAGONAL">Diagonal</a></span>
-	"0.707↵-0.707", <span class="comment">//  <a href="Q-Qubit.html#.ANTI_DIAGONAL">Anti-Diagonal</a></span>
-	"0.707↵-0.707i",<span class="comment">//  <a href="Q-Qubit.html#.RIGHT_HAND_CIRCULAR_POLARIZED">Right-hand Circular Polarized</a></span>
-	"0.707↵0.707i"  <span class="comment">//  <a href="Q-Qubit.html#.LEFT_HAND_CIRCULAR_POLARIZED">Left-hand Circular Polarized</a></span>
+	" 1↵0",          <span class="comment">//  <a href="Q-Qubit.html#.HORIZONTAL">Horizontal</a></span>
+	" 0↵1",          <span class="comment">//  <a href="Q-Qubit.html#.VERTICAL">Vertical</a></span>
+	" 0.707↵ 0.707", <span class="comment">//  <a href="Q-Qubit.html#.DIAGONAL">Diagonal</a></span>
+	" 0.707↵-0.707", <span class="comment">//  <a href="Q-Qubit.html#.ANTI_DIAGONAL">Anti-Diagonal</a></span>
+	" 0.707↵-0.707i",<span class="comment">//  <a href="Q-Qubit.html#.RIGHT_HAND_CIRCULAR_POLARIZED">Right-hand Circular Polarized</a></span>
+	" 0.707↵ 0.707i" <span class="comment">//  <a href="Q-Qubit.html#.LEFT_HAND_CIRCULAR_POLARIZED">Left-hand Circular Polarized</a></span>
 ]</samp></pre>
 
 

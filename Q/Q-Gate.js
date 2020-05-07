@@ -12,6 +12,13 @@ Q.Gate = function( params ){
 	if( typeof this.symbol !== 'string' ) this.symbol = '?'
 	if( typeof this.symbolAmazonBraket !== 'string' ) this.symbolAmazonBraket = this.symbol.toLowerCase()
 	
+	
+	//  We use symbols as unique identifiers
+	//  among gate CONSTANTS
+	//  so if you use the same symbol for a non-constant
+	//  that’s not a deal breaker
+	//  but it is good to know.
+
 	const 
 	scope = this,
 	foundConstant = Object
@@ -29,6 +36,17 @@ Q.Gate = function( params ){
 	if( typeof this.name    !== 'string' ) this.name    = 'Unknown'
 	if( typeof this.nameCss !== 'string' ) this.nameCss = 'unknown'
 
+
+	//  If our gate’s matrix is to be 
+	//  dynamically created or updated
+	//  then we ouoght to do that now.
+
+	if( typeof this.updateMatrix$ === 'function' ) this.updateMatrix$()
+
+
+	//  Every gate must have an applyToQubit method.
+	//  If it doesn’t exist we’ll create one
+	//  based on whether a matrix property exists or not.
 
 	if( typeof this.applyToQubit !== 'function' ){
 
@@ -194,17 +212,6 @@ Q.Gate.createConstants(
 		name:      'Phase',
 		nameCss:   'phase',
 		phi:        1,
-		matrix: new Q.Matrix(
-			[ 1, 0 ],
-			[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, 1 ))]),// '1' here is actually a variable ...
-		applyToQubit: function( qubit, phi ){
-
-			if( Q.isUsefulNumber( phi ) !== true ) phi = this.phi
-			const matrix = new Q.Matrix(
-				[ 1, 0 ],
-				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi ))])
-			return new Q.Qubit( matrix.multiply( qubit ))
-		},
 		updateMatrix$: function( phi ){
 
 			if( Q.isUsefulNumber( phi ) === true ) this.phi = phi
@@ -212,6 +219,14 @@ Q.Gate.createConstants(
 				[ 1, 0 ],
 				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.phi ))])
 			return this
+		},
+		applyToQubit: function( qubit, phi ){
+
+			if( Q.isUsefulNumber( phi ) !== true ) phi = this.phi
+			const matrix = new Q.Matrix(
+				[ 1, 0 ],
+				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi ))])
+			return new Q.Qubit( matrix.multiply( qubit ))
 		}
 	}),
 	'PI_8', new Q.Gate({
