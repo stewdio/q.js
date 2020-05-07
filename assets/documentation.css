@@ -457,17 +457,11 @@ pre, code, samp {
 
 		var( --Q-color-green-hue ),
 		80%,
-		20%
+		25%
 	);
 }
 samp {
 
-	color: hsl(
-
-		var( --Q-color-green-hue ),
-		20%,
-		50%
-	);
 	color: hsl(
 
 		var( --Q-color-red-hue ),
