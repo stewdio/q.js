@@ -586,43 +586,81 @@ Object.assign( Q.ComplexNumber.prototype, {
 	},
 
 
-	toText: function( roundToDecimal ){
+	toText: function( roundToDecimal, padPositive ){
 
-		
-		//  Note: this kills function chaining.
-		
-		//if( typeof roundToDecimal !== 'number' ) roundToDecimal = 16
-		
-		const 
-		reduced = this.reduce(),
-		imaginaryAbsolute = Math.abs( reduced.imaginary )
-		
-		if( Q.ComplexNumber.isNumberLike( reduced )){
-			
-			if( typeof roundToDecimal === 'number' ){
 
-				return ''+ Q.round( reduced, roundToDecimal )
-			}
-			else return reduced.toLocaleString()
+		//  Convert padPositive 
+		//  from a potential Boolean
+		//  to a String.
+		//  If we don’t receive a FALSE
+		//  then we’ll pad the positive numbers.
+
+		padPositive = padPositive === false ? '' : ' '
+
+
+		//  Right. Let’s copy over the actual numbers.
+
+		let
+		rNumber = this.real,
+		iNumber = this.imaginary
+
+
+		//  Should we round these numbers?
+		//  Our default is yes: to 3 digits.
+		//  Otherwise round to specified decimal.
+
+		if( typeof roundToDecimal !== 'number' ) roundToDecimal = 3
+		const factor = Math.pow( 10, roundToDecimal )
+		rNumber = Math.round( rNumber * factor ) / factor
+		iNumber = Math.round( iNumber * factor ) / factor
+
+
+		//  We need the absolute values of each.
+
+		let
+		rAbsolute = Math.abs( rNumber ),
+		iAbsolute = Math.abs( iNumber )
+
+
+		//  And an absolute value string.
+
+		let
+		rText = rAbsolute.toString(),
+		iText = iAbsolute.toString()
+
+
+		//  Is this an IMAGINARY-ONLY number?
+		//  Don’t worry: -0 === 0.
+
+		if( rNumber === 0 ){
+
+			if( iNumber ===  Infinity ) return padPositive +'∞i'
+			if( iNumber === -Infinity ) return '-∞i'
+			if( iNumber ===  0 ) return padPositive +'0'
+			if( iNumber === -1 ) return '-i'
+			if( iNumber ===  1 ) return padPositive +'i'
+			if( iNumber >=   0 ) return padPositive + iText +'i'
+			if( iNumber <    0 ) return '-'+ iText +'i'
+			return iText +'i'//  NaN
 		}
-		if( reduced.real === 0 ){
+		
 
-			if( reduced.imaginary ===  1 ) return  'i'
-			if( reduced.imaginary === -1 ) return '-i'
-			if( typeof roundToDecimal === 'number' ) return reduced.imaginary.toFixed( roundToDecimal ) +'i'
-			return reduced.imaginary.toLocaleString() +'i'
-		}
-		return (
+		//  This number contains a real component
+		//  and may also contain an imaginary one as well.
 
-			( typeof roundToDecimal === 'number' ? reduced.real.toFixed( roundToDecimal ) : reduced.real.toLocaleString() )
-			+' '+ 
-			( reduced.imaginary >= 0 ? '+' : '-' ) +' '+ 
-			( imaginaryAbsolute === 1 ? 'i' :
+		if( rNumber ===  Infinity ) rText = padPositive +'∞'
+		else if( rNumber === -Infinity ) rText = '-∞'
+		else if( rNumber >= 0 ) rText = padPositive + rText
+		else if( rNumber <  0 ) rText = '-'+ rText
 
-				( typeof roundToDecimal === 'number' ? Q.round( imaginaryAbsolute, roundToDecimal ) : imaginaryAbsolute.toLocaleString() )
-				+'i'
-			)
-		)
+		if( iNumber ===  Infinity ) return rText +' + ∞i'
+		if( iNumber === -Infinity ) return rText +' - ∞i'
+		if( iNumber ===  0 ) return rText
+		if( iNumber === -1 ) return rText +' - i'
+		if( iNumber ===  1 ) return rText +' + i'
+		if( iNumber >    0 ) return rText +' + '+ iText +'i'
+		if( iNumber <    0 ) return rText +' - '+ iText +'i'
+		return rText +' + '+ iText +'i'//  NaN
 	},
 
 
