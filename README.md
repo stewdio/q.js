@@ -1,6 +1,6 @@
 
 
-![Q.js](./assets/Q-mark.svg)  
+![Quantum JavaScript (Q.js)](./assets/Q-mark.svg)  
 
 Quantum, made easy
 ========================================================================

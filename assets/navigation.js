@@ -40,11 +40,9 @@ document.addEventListener( 'DOMContentLoaded', function(){
 	home = window.location.protocol === 'file:' ? 'index.html' : '/'
 	
 	nav.innerHTML = `
-		<header>
-			<h1>
-				<img src="assets/Q-mark.png">
-			</h1>
-		</header>
+		<h1>
+			<a href="${ home }"><img src="assets/Q-mark.png" title="Quantum JavaScript (Q.js)" alt="Q.js brand mark"></a>
+		</h1>
 		<ul>
 			<li><h2><a href="${ home }">What is Q?</a></h2></li>
 			<li><h2><a href="playground.html">Playground</a></h2></li>

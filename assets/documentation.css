@@ -551,11 +551,11 @@ nav {
 	font-size:   1rem;
 	line-height: 1.5rem;
 }
-header {
+h1 {
 
 	margin: 1.2rem 4rem 1.6rem 1.3rem;
 }
-header img {
+h1 img {
 
 	display: block;
 	max-width:  7.2rem;
@@ -636,12 +636,16 @@ main {
 	top: 0;
 	left: 16rem;
 	min-height: 100vh;
-	padding: 7.6rem 2rem 12rem 1rem;	
+	padding: 7.6rem 2rem 12rem 1rem;
 	overflow: auto;
 	min-width: 320px;
 	max-width: 620px;
 	font-size:   0.9rem;
 	line-height: 1.5rem;
+}
+main.home {
+
+	padding: 6.35rem 2rem 12rem 1rem;
 }
 main.api {
 
@@ -666,7 +670,7 @@ main p.right {
 
 	text-align: right;
 }
-main img {
+main img.hero {
 
 	margin-top: 0.5rem;
 	margin-left: 0.5rem;
@@ -678,7 +682,34 @@ main img {
 main .full-bleed {
 
 	margin: 0;
-	/*background-color: transparent;*/
+	background-color: transparent;
+}
+
+
+
+
+header {
+
+	position: relative;
+	left: -1rem;
+	width: calc( 100% + 2rem );
+	/*height: 24rem;*/
+	height: 9.5rem;
+	margin: 0 0 0.25rem 0;
+/*	background-image: url( 'headers/mission-control.jpg' );
+	background-image: url( 'headers/shuttle-launch.jpg' );
+	background-image: url( 'headers/shuttle-landing.jpg' );*/
+	background-size: cover;
+	background-position: center;
+	padding: 0;
+	overflow: hidden;
+	/*text-align: center;*/
+	/*opacity: 0.1;*/
+}
+header img {
+
+	margin: 2rem 0 0 0.7rem;
+	height: 6rem;
 }
 
 
