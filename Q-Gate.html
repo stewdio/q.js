@@ -66,19 +66,224 @@
 				</a>
 			</p>
 			<hr>
-			<h3>Gates for qubits to pass through</h3>
+			<h3>Gates to walk through</h3>
 			<p>
-				Mathematically, a 
-				<a href="https://en.wikipedia.org/wiki/Quantum_logic_gate" target="_blank">quantum logic gate</a>
-				is a matrix that can be multiplied against a qubit’s matrix.
-				For our purposes we need a broader definition.
-				Let’s consider a <code>Gate</code> to be an <em>operation</em>.
-				That operation can be the multiplication of a logic gate matrix against a qubit matrix.
-				Or it can be a measurement operation that collapses a qubit.
-				It can also be a visualization operation, such as a Bloch Sphere visualization of a qubit state. 
-				<!-- When gates are attached to a <code>Board</code>
-				they are placed in both space and time. -->
+				A quantum computer is just a collection of 
+				<a href="Q-Qubit.html">qubits</a>.
+				These qubits hold values like 
+				<code>1</code>, <code>0</code>, or some value inbetween.
+				A quantum computer 
+				is able to calculate things
+				by changing the value of its qubits over time.
+				We tell the computer exactly how it should change 
+				the value of a qubit
+				by instructing it to 
+				“walk through” a series of 
+				<a href="https://en.wikipedia.org/wiki/Quantum_logic_gate" target="_blank">quantum gates</a>.
+				As the qubit 
+				<a href="https://en.wikipedia.org/wiki/The_Gates" target="_blank">“walks through” each gate</a>
+				its value is changed based on the type of gate
+				it is passing through.
 			</p>
+			<p>
+				Contrary to what pop-science might tell you,
+				there is nothing random or unpredictable
+				about this process.
+				Mathematically, a
+				<a href="Q-Qubit.html">qubit</a> is just a 
+				<a href="Q-Matrix.html">matrix</a>.
+				Similarly, a quantum gate is also just a <a href="Q-Matrix.html">matrix</a>.
+				To apply a gate to a qubit
+				is to 
+				<a href="Q-Matrix.html#.prototype.multiply">multiply these matrices together</a>.
+				To demonstrate this,
+				let’s begin with a 
+				<a href="Q-Qubit.html#.HORIZONTAL">“Horizontal” 
+				qubit</a>—commonly thought of as 
+				representing “off.”
+				It has the following matrix form:
+			</p>
+			<div class="center">
+				<a href="Q-Qubit.html#.HORIZONTAL">Horizontal qubit</a>
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>1</td></tr>
+						<tr><td>0</td></tr>
+					</table>
+				</div>
+			</div>
+			<p>
+				We would like to flip the value of this qubit
+				from “off” to “on.”
+				The result will be a
+				a <a href="Q-Qubit.html#.VERTICAL">“Vertical” 
+				qubit</a>
+				with the following matrix form:
+			</p>
+			<div class="center">
+				<a href="Q-Qubit.html#.VERTICAL">Vertical qubit</a>
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>0</td></tr>
+						<tr><td>1</td></tr>
+					</table>
+				</div>
+			</div>
+			<p>
+				In order to achieve this
+				we must apply a <a href="#.PAULI_X">Pauli&nbsp;X gate</a>
+				to our  
+				<a href="Q-Qubit.html#.HORIZONTAL">Horizontal qubit</a>.
+				Pauli&nbsp;X gates have the effect of “flipping” the value of a qubit.
+				They are often thought of 
+				as the quantum equivalent of
+				a <a href="https://en.wikipedia.org/wiki/Inverter_(logic_gate)" target="_blank">classical NOT gate</a>.
+				Pauli&nbsp;X gates have the following matrix form:
+			</p>
+			<div class="center">
+				<a href="#.PAULI_X">Pauli X gate</a>
+				<div class="matrix">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr>
+							<td>0</td><td>1</td>
+						</tr>
+						<tr>
+							<td>1</td><td>0</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<p>
+				We can now apply the
+				<a href="#.PAULI_X">Pauli X gate</a>
+				to the
+				<a href="Q-Qubit.html#.HORIZONTAL">Horizontal qubit</a>
+				by multiplying their matrices together.
+			</p>
+			<div class="center">
+				<div class="matrix">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr>
+							<td>0</td><td>1</td>
+						</tr>
+						<tr>
+							<td>1</td><td>0</td>
+						</tr>
+					</table>
+				</div>
+				×
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>1</td></tr>
+						<tr><td>0</td></tr>
+					</table>
+				</div>
+				=
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>0</td></tr>
+						<tr><td>1</td></tr>
+					</table>
+				</div>
+			</div>
+			<p>
+				As anticipated, the resulting product matrix represents a 
+				<a href="Q-Qubit.html#.VERTICAL">Vertical qubit</a>.
+				(<a href="https://en.wiktionary.org/wiki/warm_fuzzy" target="_blank">Warm fuzzies</a> all around.)
+			</p>
+			<p>
+				Note how the gate’s matrix 
+				is the first factor
+				and the qubit’s matrix is the second factor.
+				The order matters because matrix multiplication is <strong>not</strong>
+				<a href="https://en.wikipedia.org/wiki/Commutative_property#Commutative_operations_in_mathematics" target="_blank">commutative</a>. 
+				With plain numbers 
+				the order of the factors 
+				does not change the product outcome.
+				<span class="maths">a × b = b × a</span>.
+				But with matrices the order does matter.
+				<span class="maths">[&nbsp;a&nbsp;] × [&nbsp;b&nbsp;] ≠ [&nbsp;b&nbsp;] × [&nbsp;a&nbsp;]</span>.
+				See <a href="https://en.wikipedia.org/wiki/Matrix_multiplication" target="_blank">matrix multiplication</a>
+				for an in-depth explanation.
+			</p>
+			<h4>Applying gates with code</h4>
+			<p>
+				Let’s look at three different ways
+				to apply a gate to a qubit
+				using Q’s API.
+				In this first example we will access
+				our gate’s matrix directly
+				and multiply it against our qubit—which is itself a matrix.
+				(<code><a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a></code> extends <code><a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a></code>
+				and thereby inherits <code><a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a></code>’s methods.
+				Meanwhile, <code><a href="Q.html">Q</a>.Gate</code> does not extend <code><a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a></code>,
+				as it is sometimes desirable to create gates without matrices.
+				See <a href="#Gates_without_matrices">Gates without matrices</a> below for more details.)
+			</p>
+<pre><code>
+<a href="Q.html">Q</a>.Gate.<a href="#.PAULI_X">PAULI_X</a>
+	.<a href="#this.matrix">matrix</a>
+	.<a href="Q-Matrix.html#.prototype.multiply">multiply</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a> )
+	.<a href="Q-Matrix.html#.prototype.isEqualTo">isEqualTo</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.VERTICAL">VERTICAL</a> )</code>
+<samp>true</samp></pre>
+ 			<p>
+ 				Rather than access our gate’s matrix directly,
+ 				we can instead call the instance method
+ 				<code><a href="#this.applyToQubit">applyToQubit</a></code>.
+ 			</p>
+<pre><code>
+<a href="Q.html">Q</a>.Gate.<a href="#.PAULI_X">PAULI_X</a>
+	.<a href="#this.applyToQubit">applyToQubit</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a> )
+	.<a href="Q-Matrix.html#.prototype.isEqualTo">isEqualTo</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.VERTICAL">VERTICAL</a> )</code>
+<samp>true</samp></pre>
+ 			<p>
+ 				We can also begin with the qubit
+ 				rather than the gate.
+ 			</p>
+<pre><code>
+<a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a>
+	.<a href="Q-Qubit.html#.prototype.applyGate">applyGate</a>( <a href="Q.html">Q</a>.Gate.<a href="#.PAULI_X">PAULI_X</a> )
+	.<a href="Q-Matrix.html#.prototype.isEqualTo">isEqualTo</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.VERTICAL">VERTICAL</a> )</code>
+<samp>true</samp></pre>
+			<h4>Gates without matrices</h4>
+			<p>
+				In quantum computing theory a quantum gate <strong>is</strong> a matrix.
+				But Q expands this notion of a “gate” 
+				to the more abstract notion of an “operation”—any function
+				that is performed upon a qubit.
+				This allows us to build custom “gates” that 
+				perform data visualizations,
+				trigger interface changes,
+				and so on.
+			</p>
+			<h4>The punchline</h4>
+			<p>
+				While applying gates to qubits in the above fashion is useful
+				for some debugging and 
+				for building single-qubit state visualizations,
+				it has no practical use for 
+				full circuit evaluation as 
+				it cannot represent the state of 
+				a multiple-qubit system, let alone 
+				<a href="https://en.wikipedia.org/wiki/Bell_state" target="_blank">quantum entanglement</a>. 
+				For that we will need a proper 
+				<code><a href="Q-Circuit.html">Circuit</a></code> class
+				for simulating multi-qubit states.
+			</p>
+
+
 
 
 			<hr>
@@ -100,7 +305,7 @@
 			<p>
 				Here we will create a <a href="https://en.wikipedia.org/wiki/Guppy" target="_blank">“gup”</a> gate
 				that borrows its <code><a href="#this.matrix">matrix</a></code> property
-				from the pre-existing <code><a href="Q-Gate.html#.PAULI_X">PAULI_X</a></code> gate
+				from the pre-existing <code><a href="#.PAULI_X">PAULI_X</a></code> gate
 				<a href="#.constantss">constant</a>.
 				This will enable our custom gate
 				to flip 
@@ -110,7 +315,7 @@
 				to a <a href="Q-Qubit.html#.VERTICAL">vertical state</a>, 
 				ie. “on” or <span class="complex-vector ket">1</span>,
 				and back again—just like a 
-				<code><a href="Q-Gate.html#.PAULI_X">PAULI_X</a></code> gate.
+				<code><a href="#.PAULI_X">PAULI_X</a></code> gate.
 			</p>
 <pre><code>
 var gup = new <a href="Q.html">Q</a>.Gate({
@@ -119,7 +324,7 @@ var gup = new <a href="Q.html">Q</a>.Gate({
 	<a href="#this.name">name</a>:    'Gup',
 	<a href="#this.nameCss">nameCss</a>: 'gup',<!--	
 	<a href="#this.description">description</a>: 'This “gup” gate flips qubits.', -->
-	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.Gate.<a href="Q-Gate.html#.PAULI_X">PAULI_X</a>.<a href="#this.matrix">matrix</a>
+	<a href="#this.matrix">matrix</a>:   <a href="Q.html">Q</a>.Gate.<a href="#.PAULI_X">PAULI_X</a>.<a href="#this.matrix">matrix</a>
 })
 </code></pre>
 			<p>
@@ -143,18 +348,18 @@ var gup = new <a href="Q.html">Q</a>.Gate({
 <code><span class="comment">//  Now flip a “Horizontal” |0⟩ to a “Vertical” |1⟩
 //  and flip a “Vertical” |1⟩ to a “Horizontal” |0⟩.</span>
 
-gup.<a href="#.prototype.applyToQubit">applyToQubit</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a> )
+gup.<a href="#this.applyToQubit">applyToQubit</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a> )
 	.<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()</code>
 <samp>"|1⟩"</samp>
 
-<code>gup.<a href="#.prototype.applyToQubit">applyToQubit</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.VERTICAL">VERTICAL</a> )
+<code>gup.<a href="#this.applyToQubit">applyToQubit</a>( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.VERTICAL">VERTICAL</a> )
 	.<a href="Q-Qubit.html#this.toStateVectorText">toStateVectorText</a>()</code>
 <samp>"|0⟩"</samp></pre>
 			<p>
 				We can similarly use a qubit’s 
 				<code><a href="Q-Qubit.html#.prototype.applyGate">applyGate</a></code> method
 				which internally calls a gate’s 
-				<code><a href="#.prototype.applyToQubit">applyToQubit</a></code> method:
+				<code><a href="#this.applyToQubit">applyToQubit</a></code> method:
 			</p>
 <pre><code>
 <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.HORIZONTAL">HORIZONTAL</a>      <span class="comment">//  Value begins at |0⟩.</span>
@@ -709,14 +914,14 @@ new <a href="Q.html">Q</a>.Gate({
 						</div>
 						<br>
 						Using varying values for ϕ is easy.
-						We can clone this <a href="QGate.html#.PHASE">PHASE</a> constant, 
+						We can clone this <a href="#.PHASE">PHASE</a> constant, 
 						provide it a new <code><a href="#this.symbol">symbol</a></code>
 						(so it has a unique identifier),
 						and a new value for ϕ.
 						In this example we create a gate called <code>fox</code>
 						with a ϕ value of π.
 <pre><code>
-var fox = <a href="Q.html">Q</a>.Gate.<a href="Q-Gate.html#.PHASE">PHASE</a>.<a href="Q-Gate.html#.prototype.clone">clone</a>({ symbol: 'F', phi: Math.PI })
+var fox = <a href="Q.html">Q</a>.Gate.<a href="#.PHASE">PHASE</a>.<a href="#.prototype.clone">clone</a>({ symbol: 'F', phi: Math.PI })
 </code></pre>
 						Our value of ϕ is now set equal to π
 						and we can apply this gate to any qubit.
@@ -1015,7 +1220,7 @@ new <a href="Q.html">Q</a>.Gate({
 ]</samp></pre>
 						Or for even more fun with Arrays of qubits:
 <pre><code>
-<a href="Q.html">Q</a>.Gate.<a href="Q-Gate.html#.IDENTITY">IDENTITY</a>
+<a href="Q.html">Q</a>.Gate.<a href="#.IDENTITY">IDENTITY</a>
 	.<a href="#.prototype.applyToQubits">applyToQubits</a>(
 
 		...Object.values( <a href="Q.html">Q</a>.<a href="Q-Qubit.html">Qubit</a>.<a href="Q-Qubit.html#.constants">constants</a> )

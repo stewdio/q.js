@@ -6,35 +6,6 @@
 
 Q.Matrix = function(){
 
-	`
-	Creates a matrix of arbitrary dimensions. Expects an argument list of 
-	equal-length arrays where each array represents a row of column values. 
-	Automatically determines matrix dimensions based on the number of 
-	arguments (rows) and length of each row (number of columns). Throws an 
-	error if the row lengths are not equal.  
-
-	Limitation: A matrix cannot change its dimensions after initialization 
-	and cannot contain matrices.  
-	
-
-		EXAMPLES  
-
-	const myMatrix = new Q.Matrix(  
-		
-		[ 1, 0, 0, 0 ],  
-		[ 0, 1, 0, 0 ],  
-		[ 0, 0, 0, 1 ],  
-		[ 0, 0, 1, 0 ]  
-	)  
-
-	
-		SEE ALSO  
-
-	https://en.wikipedia.org/wiki/Matrix_(mathematics)  
-	https://en.wikipedia.org/wiki/Row-_and_column-major_order
-	
-	`
-
 
 	//  We’re keeping track of how many matrices are
 	//  actually being generated. Just curiosity.
@@ -178,6 +149,21 @@ Object.assign( Q.Matrix, {
 			matrix0.rows.length === matrix1.rows.length && 
 			matrix0.columns.length === matrix1.columns.length
 		)
+	},
+	areEqual: function( matrix0, matrix1 ){
+
+		if( matrix0 instanceof Q.Matrix !== true ) return false
+		if( matrix1 instanceof Q.Matrix !== true ) return false
+		if( Q.Matrix.haveEqualDimensions( matrix0, matrix1 ) !== true ) return false
+		return matrix0.rows.reduce( function( state, row, r ){
+
+			return state && row.reduce( function( state, cellValue, c ){
+
+				return state && cellValue.isEqualTo( matrix1.rows[ r ][ c ])
+
+			}, true )
+
+		}, true )
 	},
 
 
@@ -499,6 +485,12 @@ Object.assign( Q.Matrix.prototype, {
 
 		return new Q.Matrix( ...this.rows )
 	},
+	isEqualTo: function( otherMatrix ){
+
+		return Q.Matrix.areEqual( this, otherMatrix )
+	},
+
+
 	toArray: function(){
 
 		return this.rows

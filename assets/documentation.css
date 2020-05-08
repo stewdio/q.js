@@ -675,6 +675,11 @@ main img {
 	height: auto;
 	background-color: var( --Q-color-background );
 }
+main .full-bleed {
+
+	margin: 0;
+	/*background-color: transparent;*/
+}
 
 
 
