@@ -1793,20 +1793,33 @@ header h1 svg {
 
 
 
-	header {
+	h1 {
 
 		position: absolute;
 		margin: 1rem 4rem 1.5rem 0.8rem;
 	}
-	header h1 {
+	h1 {
 
 		position: absolute;
 	}
-	header img {
+	h1 img {
 
 		display: block;
 		max-width:  3rem;
 		max-height: 3rem;
+	}
+
+
+
+	header {
+
+		text-align: center;
+	}
+	header img {
+
+		/*margin: 2rem 0 0 0.7rem;*/
+		margin: 2rem 0 0 0;
+		height: 5rem;
 	}
 	
 
