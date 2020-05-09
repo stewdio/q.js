@@ -5,29 +5,64 @@
 
 
 let hashTarget
-function onHashChange(){
+function onHashChange( freshLoad ){
 
-	if( hashTarget    ) hashTarget.classList.remove( 'hash-target' )
-	if( location.hash ) hashTarget = document.getElementById( location.hash.substr( 1 ))
-	if( hashTarget    ){
+	let title = document.title
+
+
+	//  If a hashTarget exists from a previous call
+	//  then it already has a 'hash-target' class on it
+	//  which we should remove.
+
+	if( hashTarget ) hashTarget.classList.remove( 'hash-target' )
+
+
+	//  If this is a transition TO a hashTarget
+	//  as opposed to a transition to the bare page
+	//  then we need to update our hashTarget variable
+	//  and create an extended “title” for our stats.
+
+	if( location.hash ){
+
+		hashTarget = document.getElementById( location.hash.substr( 1 ))
+		tilte = title +' ⟩ '+ hashTarget.innerText.replace( /\n|\r|#/g, '' )
+	}
+	else hashTarget = null
+
+
+	//  If we have a hash target 
+	//  OR if this is not a frersh page load
+	//  then we should note what the hash is.
+
+	if(( hashTarget || freshLoad !== true ) && 
+		window.ga !== undefined && 
+		typeof window.ga === 'function' ){
+
+		ga( 'send', {
+
+			hitType: 'pageview',
+			page:  location.pathname + location.search + location.hash,
+			title: title
+		})
+	}
+
+
+	//  Finally, if there’s a hash target
+	//  then we should smoothly scroll to it.
+
+	if( hashTarget ){
 
 		hashTarget.classList.add( 'hash-target' )
-		
-		setTimeout( function(){
 
-			const 
-			//nav = document.getElementsByTagName( 'nav' )[ 0 ],
-			//navIsExpanded = nav.classList.contains( 'expand' ),
-			//navHeight = nav.offsetHeight,
-			rootEm  = parseFloat( window.getComputedStyle( document.body ).fontSize ),
-			yBuffer = rootEm * 10,// + ( navIsExpanded === true ? navHeight : 0 )
-			bounds  = hashTarget.getBoundingClientRect(),
-			yTarget = bounds.top - yBuffer + window.scrollY
+		const 
+		rootEm  = parseFloat( window.getComputedStyle( document.body ).fontSize ),
+		yBuffer = rootEm * 10,
+		bounds  = hashTarget.getBoundingClientRect(),
+		yTarget = bounds.top - yBuffer + window.scrollY
 
-			window.scrollTo({ left: 0, top: yTarget, behavior: 'smooth' })
-
-		}, 10 )
+		window.scrollTo({ left: 0, top: yTarget, behavior: 'smooth' })
 	}
+	return false
 }
 
 
@@ -141,7 +176,7 @@ document.addEventListener( 'DOMContentLoaded', function(){
 	})
 
 	
-	onHashChange()
+	onHashChange( true )
 	window.addEventListener( 'hashchange', onHashChange, false )
 
 
