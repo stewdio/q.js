@@ -1188,7 +1188,7 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 
 	if( Q.Circuit.Editor.dragEl !== null ){
 
-		Q.Circuit.Editor.onPressRelease( event )
+		Q.Circuit.Editor.onPointerRelease( event )
 		return
 	}
 
