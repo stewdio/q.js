@@ -54,7 +54,7 @@
 		<script src="Q/Q-History.js"></script>
 		<script src="Q/Q-Circuit.js"></script>
 		<script src="Q/Q-Circuit-Editor.js"></script>
-		<script src="assets/navigation.js"></script>s
+		<script src="assets/navigation.js"></script>
 
 		<script src="assets/Three/three.105.min.js"></script>
 		<script src="assets/Three/OrbitControls.js"></script>
@@ -160,6 +160,9 @@
 				</div>
 			</div>
 			<br>
+
+
+
 			<!--
 			<h4>Vector form</h4>
 			<p>
@@ -180,7 +183,7 @@
 					<div class="matrix-bracket-right"></div>
 					<table>
 						<tr><td>1</td></tr>
-						<tr><td>0</td></tr>
+						<tr><td><strong>0</strong></td></tr>
 					</table>
 				</div>
 			</div>
@@ -193,8 +196,8 @@
 			</p>
 			<br>
 			<div class="center">
-				<span class="complex-vector alpha">1</span>
-				<span class="complex-vector beta">0</span>
+				<span class="complex-vector bra">1</span>
+				<span class="complex-vector ket"><strong>0</strong></span>
 			</div>
 			<br>
 			<p>
@@ -212,9 +215,9 @@
 				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
 				separately without confusion, 
 				writing them as
-				<span class="complex-vector alpha">1</span>
+				<span class="complex-vector bra">1</span>
 				<span>and</span>
-				<span class="complex-vector beta">0</span>
+				<span class="complex-vector ket">0</span>
 				respectively.
 				The position and direction of the angle alphacbetas 
 				let us know immediately which one is the
@@ -229,22 +232,25 @@
 				using only its 
 				<code><a href="Q-Qubit.html#this.beta">beta</a></code>,
 				we can describe a “zero” qubit as
-				<span class="complex-vector beta">0</span>,
+				<span class="complex-vector bra">0</span>,
 				and a “one” qubit as
-				<span class="complex-vector beta">1</span>.
+				<span class="complex-vector ket">1</span>.
 				That’s worth repeating as above:
 			</p>
 			<br>
 			<div class="maths center">
 				“zero” = 
-				<span class="complex-vector beta">0</span>
+				<span class="complex-vector ket">0</span>
 			</div>
 			<div class="center">
 				“one” = 
-				<span class="complex-vector beta">1</span>
+				<span class="complex-vector ket">1</span>
 			</div>
 			<br>
 			-->
+
+
+
 			<h4 id="Predictable_couple">A predictable couple</h4>
 			<p>
 				The thing that makes this pair of numbers special
