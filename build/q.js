@@ -5238,7 +5238,9 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	referenceEl.innerHTML = `
 		This circuit is accessible in your 
 		<a href="https://quantumjavascript.app/#Open_your_JavaScript_console" target="_blank">JavaScript console</a>
-		as <code>$('#${ this.domId }').circuit</code>`
+		as <code>document.getElementById('${ this.domId }').circuit</code>`
+	//document.getElementById('Q-Editor-0').circuit
+	//$('#${ this.domId }')
 
 
 	//  Put a note in the JavaScript console
@@ -7044,17 +7046,13 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 ///////////////////
 
 
-window.addEventListener( 'DOMContentLoaded', function( event ){
+//  These listeners must be applied
+//  to the entire WINDOW (and not just document.body!)
 
-
-	//  These listeners must be applied
-	//  to the entire WINDOW (and not just document.body!)
-
-	window.addEventListener( 'mousemove',  Q.Circuit.Editor.onPointerMove )
-	window.addEventListener( 'touchmove',  Q.Circuit.Editor.onPointerMove )
-	window.addEventListener( 'mouseup',    Q.Circuit.Editor.onPointerRelease )
-	window.addEventListener( 'touchend',   Q.Circuit.Editor.onPointerRelease )
-})
+window.addEventListener( 'mousemove', Q.Circuit.Editor.onPointerMove )
+window.addEventListener( 'touchmove', Q.Circuit.Editor.onPointerMove )
+window.addEventListener( 'mouseup',   Q.Circuit.Editor.onPointerRelease )
+window.addEventListener( 'touchend',  Q.Circuit.Editor.onPointerRelease )
 
 
 
