@@ -5237,7 +5237,7 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	circuitEl.appendChild( referenceEl )
 	referenceEl.innerHTML = `
 		This circuit is accessible in your 
-		<a href="index.html#Open_your_JavaScript_console" target="_blank">JavaScript console</a>
+		<a href="https://quantumjavascript.app/#Open_your_JavaScript_console" target="_blank">JavaScript console</a>
 		as <code>$('#${ this.domId }').circuit</code>`
 
 
@@ -6074,7 +6074,7 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 
 	if( Q.Circuit.Editor.dragEl !== null ){
 
-		Q.Circuit.Editor.onPressRelease( event )
+		Q.Circuit.Editor.onPointerRelease( event )
 		return
 	}
 

@@ -351,8 +351,10 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	circuitEl.appendChild( referenceEl )
 	referenceEl.innerHTML = `
 		This circuit is accessible in your 
-		<a href="index.html#Open_your_JavaScript_console" target="_blank">JavaScript console</a>
-		as <code>$('#${ this.domId }').circuit</code>`
+		<a href="https://quantumjavascript.app/#Open_your_JavaScript_console" target="_blank">JavaScript console</a>
+		as <code>document.getElementById('${ this.domId }').circuit</code>`
+	//document.getElementById('Q-Editor-0').circuit
+	//$('#${ this.domId }')
 
 
 	//  Put a note in the JavaScript console
@@ -997,6 +999,7 @@ Q.Circuit.Editor.unhighlightAll = function( circuitEl ){
 
 Q.Circuit.Editor.onPointerMove = function( event ){
 
+console.log( '' )
 
 	//  We need our cursor coordinates straight away.
 	//  We’ll use that both for dragging (immediately below)

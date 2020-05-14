@@ -1,10 +1,11 @@
 
 
-![Quantum JavaScript (Q.js)](./assets/Q-mark.svg)  
+![Quantum JavaScript (Q.js)](./assets/Q-mark.svg "Quantum JavaScript (Q.js)")  
 
-Quantum, made easy
+Quantum JavaScript (Q.js)
 ========================================================================
 
+**Quantum, made easy.**  
 Q is a quantum circuit simulator, drag-and-drop circuit editor, and 
 powerful JavaScript library that runs right here in your web browser. 
 There’s nothing to install and nothing to configure, so jump right in 
