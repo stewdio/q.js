@@ -2160,17 +2160,13 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 ///////////////////
 
 
-window.addEventListener( 'DOMContentLoaded', function( event ){
+//  These listeners must be applied
+//  to the entire WINDOW (and not just document.body!)
 
-
-	//  These listeners must be applied
-	//  to the entire WINDOW (and not just document.body!)
-
-	window.addEventListener( 'mousemove',  Q.Circuit.Editor.onPointerMove )
-	window.addEventListener( 'touchmove',  Q.Circuit.Editor.onPointerMove )
-	window.addEventListener( 'mouseup',    Q.Circuit.Editor.onPointerRelease )
-	window.addEventListener( 'touchend',   Q.Circuit.Editor.onPointerRelease )
-})
+window.addEventListener( 'mousemove', Q.Circuit.Editor.onPointerMove )
+window.addEventListener( 'touchmove', Q.Circuit.Editor.onPointerMove )
+window.addEventListener( 'mouseup',   Q.Circuit.Editor.onPointerRelease )
+window.addEventListener( 'touchend',  Q.Circuit.Editor.onPointerRelease )
 
 
 
