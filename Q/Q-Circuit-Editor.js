@@ -999,7 +999,6 @@ Q.Circuit.Editor.unhighlightAll = function( circuitEl ){
 
 Q.Circuit.Editor.onPointerMove = function( event ){
 
-console.log( '' )
 
 	//  We need our cursor coordinates straight away.
 	//  We’ll use that both for dragging (immediately below)
