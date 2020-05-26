@@ -167,7 +167,7 @@ and more!
 Visit the [Q playground](https://quantumjavascript.app/playground.html)
 to experiment with converting circuits between various formats.
 As always, new features are in the works.
-[Join our project on GitHub](https://github.com/stewdio/q.js")
+[Join our project on GitHub](https://github.com/stewdio/q.js)
 and help us build bridges to everywhere.  
   
   
