@@ -1100,28 +1100,45 @@ because there’s another stand-alone X there tripping the logic!!!
 	toShader: function(){
 
 	},
+	toGoogleCirq: function(){
+/*
 
 
+cirq.GridQubit(4,5)
+
+https://cirq.readthedocs.io/en/stable/tutorial.html
+
+*/
+		const header = `import cirq`
+
+		return headers
+	},
 	toAmazonBraket: function(){
 
-		const header = `from braket.circuits import Circuit
-from braket.aws import AwsQuantumSimulator
+		const header = `import boto3
+from braket.aws import AwsQuantumSimulator, AwsQuantumSimulatorArns
+from braket.circuits import Circuit
 
-device_arn = “arn:aws:aqx:::quantum-simulator:aqx:qs1”
-device = AwsQuantumSimulator(device_arn)
-s3_folder = (“my_bucket”, “my_prefix”)
+aws_account_id = boto3.client("sts").get_caller_identity()["Account"]
+device = AwsQuantumSimulator(AwsQuantumSimulatorArns.QS1)
+s3_folder = (f"braket-output-{aws_account_id}", "folder-name")
 
 `
 		//`qjs_circuit = Circuit().h(0).cnot(0,1)`
-		const circuit = this.operations.reduce( function( string, operation ){
+		let circuit = this.operations.reduce( function( string, operation ){
 
 			let awsGate = operation.gate.AmazonBraketName !== undefined ?
 				operation.gate.AmazonBraketName :
 				operation.gate.symbol.substr( 0, 1 ).toLowerCase()
 
-			if( operation.gate.symbol === 'X' && operation.registerIndices.length > 1 ){
+			if( operation.gate.symbol === 'X' && 
+				operation.registerIndices.length > 1 ){
 
 				awsGate = 'cnot'
+			}
+			if( operation.gate.symbol === '*' ){
+
+				awsGate = 'i'
 			}
 			
 			return string +'.'+ awsGate +'(' + 
@@ -1132,9 +1149,10 @@ s3_folder = (“my_bucket”, “my_prefix”)
 				}, '' ) + ')'
 
 		}, 'qjs_circuit = Circuit()' )
+		if( this.operations.length === 0 ) circuit +=  '.i(0)'//  Quick fix to avoid an error here!
 
-
-		const footer = `\n\nprint(device.run(qjs_circuit, s3_folder).result().measurement_counts())`
+		const footer = `\n\ntask = device.run(qjs_circuit, s3_folder, shots=100)
+print(task.result().measurement_counts)`
 		return header + circuit + footer
 	},
 	toLatex: function(){

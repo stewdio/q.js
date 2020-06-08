@@ -1,5 +1,9 @@
 
 
+#  From your command line
+#  inside the folder containing this file
+#  type “. build.sh” (without the quotes)
+#  to recompile the .js and .css files.
 
 
  cat \

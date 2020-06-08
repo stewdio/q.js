@@ -126,35 +126,148 @@
 				easier to type and program here.
 				<!-- To illustrate the difference, here’s an example of a 3 × 2 matrix in <strong>column-major</strong> order. -->
 			</p>
-			<div class="maths">				
-				<div class="matrix" id="row-major-3x2">
-					<div class="matrix-bracket-left"></div>
-					<div class="matrix-bracket-right"></div>
-					<table>
-						<tr>
-							<td>1</td><td>2</td><td>3</td>
-						</tr>
-						<tr>
-							<td>4</td><td>5</td><td>6</td>
-						</tr>
-					</table>
-				</div>
-				<a href="https://en.wikipedia.org/wiki/Row-_and_column-major_order" target="_blank"><strong>Row-major</strong> order</a>.
-				<br>
-				<div class="matrix" id="column-major-3x2">
-					<div class="matrix-bracket-left"></div>
-					<div class="matrix-bracket-right"></div>
-					<table>
-						<tr>
-							<td>1</td><td>3</td><td>5</td>
-						</tr>
-						<tr>
-							<td>2</td><td>4</td><td>6</td>
-						</tr>
-					</table>
-				</div>
-				<a href="https://en.wikipedia.org/wiki/Row-_and_column-major_order" target="_blank"><strong>Column-major</strong> order</a>.
+			<br>
+			<div class="maths center">
+				<table>
+					<tr>
+						<td>
+							<div class="matrix" id="row-major-3x2">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>2</td><td>3</td>
+									</tr>
+									<tr>
+										<td>4</td><td>5</td><td>6</td>
+									</tr>
+								</table>
+							</div>
+						</td>
+						<td class="left">
+							<a href="https://en.wikipedia.org/wiki/Row-_and_column-major_order" target="_blank"><strong>Row-major</strong> order</a>.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="matrix" id="column-major-3x2">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr>
+										<td>1</td><td>3</td><td>5</td>
+									</tr>
+									<tr>
+										<td>2</td><td>4</td><td>6</td>
+									</tr>
+								</table>
+							</div>
+						</td>
+						<td class="left">
+							<a href="https://en.wikipedia.org/wiki/Row-_and_column-major_order" target="_blank"><strong>Column-major</strong> order</a>.
+						</td>
+					</tr>
+				</table>
 			</div>
+			
+
+
+
+			<h4 id="Vectors">Vectors are slices</h4>			
+			<p>
+				While a matrix is a two-dimensional <em>grid</em> of numbers,
+				a vector is more like a <em>slice</em> of numbers—such as 
+				a “skinny” matrix that is only one column wide,
+				<!-- (a <em>column vector</em>), -->
+				or a “flat” matrix that is only one row high.
+				<!-- (a <em>row</em> vector). -->
+				Let’s look at some examples of 
+				matrices that are simultaneously vectors.
+			</p>
+			<br>
+			<div class="center">
+				<table>
+					<tr>
+						<td>
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+								</table>
+							</div>
+						</td>
+						<td>
+							<div class="middle">
+								Any “flat” matrix is<br>
+								a <em>row</em> vector.
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr><td>1</td></tr>
+									<tr><td>2</td></tr>
+									<tr><td>3</td></tr>
+									<tr><td>4</td></tr>
+								</table>
+							</div>
+						</td>
+						<td>
+							<div class="middle">
+								Any “skinny” matrix is<br>
+								a <em>column</em> vector.
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="matrix">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr><td>1</td><td>2</td></tr>
+									<tr><td>3</td><td>4</td></tr>
+								</table>
+							</div>
+						</td>
+						<td>
+							<div class="middle">
+								But matrices with<br>
+								more than one column<br>
+								or more than one row<br>
+								are <strong>not</strong> vectors.
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<br>
+			<p>
+				While the above 2 × 2 matrix is not a vector, 
+				you could say that it <em>contains</em> vectors:
+				Two <em>column</em> vectors
+				or two <em>row</em> vectors.
+			</p>
+			<p>
+				Because vectors are just a type of matrix
+				we can 
+				<a href="#.add">add</a> them, 
+				<a href="#.multiply">multiply</a> them,
+				and so on—just like any other matrix.
+				Vectors will play a prominent role in defining 
+				<a href="Q-Qubit.html">qubits</a>
+				and expressing the state of a 
+				<a href="Q-Circuit.html">quantum circuit</a>.
+			</p>
+
+
+
+
 			<h4>Complex numbers</h4>
 			<p>
 				Instead of just storing 
@@ -165,7 +278,7 @@
 				<a href="Q-Qubit.html">qubits</a> are really just a pair of
 				complex numbers
 				that we store in a 1 × 2 matrix.
-				So, yes—the example matrices above are actually <em>more complicated</em> than qubits are!)
+				So, yes—the example matrices above are actually all <em>larger</em> than qubits are!)
 				In general, we don’t even have to think about 
 				the fact that our matrices are storing complex numbers
 				because 
@@ -174,6 +287,10 @@
 				<code><a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html#Constructor">ComplexNumber</a></code>
 				will silently handle the conversion for us.
 			</p>
+
+
+
+
 			<hr>
 			<h3 id="Constructor">Constructor</h3>
 			<p>
