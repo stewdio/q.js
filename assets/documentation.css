@@ -726,18 +726,40 @@ header img {
 }
 
 
+.font-sans {
+
+	font-family: var( --Q-font-family-sans );
+	font-weight: 400;
+}
 
 
 table {
 
-	display: inline-block;
-	margin: 0;
+	position: relative;
+	/*display: inline-block;*/
+	display: table;
+	margin: 0 auto;
 	border-collapse: collapse;
 /*	overflow: hidden;*/
 }
+/*tbody {
+
+	position: relative;
+	width:  100%;
+	height: 100%;
+}*/
 td {
 
 	transition: background-color 0.5s, color 0.5s;
+}
+table.chart {
+
+	display: inline-block;
+	margin: 0 auto;
+}
+table.chart > tbody > tr > td {
+
+	padding: 1em;
 }
 .matrix td:hover {
 	
@@ -753,6 +775,22 @@ td {
 td.no-highlight:hover {
 
 	background-color: inherit;
+}
+
+
+table.equation td:first-child {
+
+	text-align: right;
+}
+table.equation td:last-child {
+
+	padding-left: 0.75em;
+	text-align: left;
+}
+table.equation td:last-child::before {
+
+	content: "=";
+	padding-right: 0.75em;
 }
 
 
@@ -1309,7 +1347,14 @@ table#console-open-commands .na {
 	width: calc( 100% - 4rem );
 	padding-bottom: calc( 100% - 4rem );
 	font-family: var( --Q-font-family-sans );
+	color: hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		70%
+	);
 }
+
 
 
 .unit-circle-outline {
@@ -1321,7 +1366,7 @@ table#console-open-commands .na {
 
 		var( --Q-color-base-hue ),
 		10%,
-		90%
+		93%
 	);
 	border-radius: 100%;
 	width:  100%;
@@ -1329,7 +1374,8 @@ table#console-open-commands .na {
 }
 
 
-.unit-circle-spoke {
+.unit-circle-spoke,
+.unit-circle-spoke-half {
 
 	position: absolute;
 	top:    50%;
@@ -1342,6 +1388,37 @@ table#console-open-commands .na {
 		10%,
 		90%
 	);
+}
+.dashed {
+
+	--size:  16px;
+	--half:  calc( var( --size ) / 2 );
+	--color: hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		90%
+	);
+
+	background-color: transparent;
+	background-image: 
+		linear-gradient(  45deg, var( --color ) 25%, transparent    25% ), 
+		linear-gradient( -45deg, var( --color ) 25%, transparent    25% ), 
+		linear-gradient(  45deg, transparent    75%, var( --color ) 75% ), 
+		linear-gradient( -45deg, transparent    75%, var( --color ) 75% );
+	background-size: var( --size ) var( --size );
+	background-position: 
+		0 0, 
+		0 var( --half ), 
+		var( --half ) calc( var( --half ) * -1 ),
+		calc( var( --half ) * -1 ) 0px;
+}
+
+
+
+.unit-circle-spoke-0 {
+
+	transform: rotate( 0.00turn );
 }
 .unit-circle-spoke-45 {
 
@@ -1358,6 +1435,33 @@ table#console-open-commands .na {
 	/*transform: rotate( 135deg );*/
 	transform: rotate( 0.375turn );
 }
+.unit-circle-spoke-180 {
+
+	transform: rotate( 0.50turn );
+}
+.unit-circle-spoke-270 {
+
+	/*transform: rotate( 270deg );*/
+	transform: rotate( 0.75turn );
+}
+
+
+
+
+.unit-circle-spoke-half {
+
+	width: 50%;
+	left:  0;
+	transform-origin: center right;
+}
+/*.unit-circle-spoke-half.unit-circle-spoke-90 {
+
+	transform: rotate( 0.25turn );
+}
+.unit-circle-spoke-half.unit-circle-spoke-270 {
+
+	transform: rotate( 0.75turn );
+}*/
 
 
 .unit-circle-spoke-label {
@@ -1368,12 +1472,14 @@ table#console-open-commands .na {
 	padding-right: 11%;
 	text-align: right;
 	transform: translate( 0, -50% );
-	color: hsl(
+	/*color: hsl(
 
 		var( --Q-color-base-hue ),
 		10%,
 		50%
-	);
+	);*/
+	/*font-weight: bold;*/
+	color: black;
 }
 .unit-circle-spoke-label-45 {
 
@@ -1407,6 +1513,7 @@ table#console-open-commands .na {
 	animation-iteration-count: infinite;
 	opacity: 0;
 
+	/*font-family: var( --Q-font-family-mono );*/
 
 	/*
 
@@ -1451,7 +1558,11 @@ table#console-open-commands .na {
 
 	--label-angle-delay-factor: 0.1s;
 }
+.no-animation .unit-circle-label {
 
+	animation: none;
+	opacity: 1;
+}
 
 .unit-circle-label-angle-0 {
 
@@ -1552,6 +1663,19 @@ table#console-open-commands .na {
 	animation-delay: calc( var( --label-angle-delay-factor ) * 15 );
 }
 
+
+
+.unit-circle-label-point-0,
+.unit-circle-label-point-45,
+.unit-circle-label-point-90,
+.unit-circle-label-point-315 {
+
+	/*font-weight: bold;*/
+	color: black;
+}
+
+
+
 .unit-circle .division {
 
 	display: inline-block;
@@ -1564,8 +1688,15 @@ table#console-open-commands .na {
 }
 .unit-circle .dividend {
 
-	border-bottom: 1px solid #666;
+	border-bottom-color: hsl(
+
+		var( --Q-color-base-hue ),
+		10%,
+		70%
+	);
 }
+
+
 
 
 

@@ -72,6 +72,10 @@
 				</a>
 			</p>
 			<hr>
+			
+
+
+
 			<h3>Perfect pairs</h3>
 			<p>
 				A <a href="https://en.wikipedia.org/wiki/Qubit" target="_blank">qubit</a>
@@ -80,237 +84,673 @@
 				<a href="https://youtu.be/YYOKMUTTDdA" target="_blank">shiny happy number values,
 				holding hands</a>.
 				Let’s call the first number
-				“<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>” 
-				and the second one
-				“<code><a href="Q-Qubit.html#this.beta">beta</a></code>.”
-				We can couple this
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
+				“<code><a href="#this.alpha">alpha</a></code>” 
+				and the second number
+				“<code><a href="#this.beta">beta</a></code>.”
+				Look at this handsome couple:
+			</p>
+			<br>
+			<div class="center">
+				<code>alpha</code>, <code>beta</code>
+			</div>
+			<br>
+			<p>
+				We can package
+				<code><a href="#this.alpha">alpha</a></code>
 				and
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
+				<code><a href="#this.beta">beta</a></code>
 				together
-				by storing them in a very small matrix
-				that is 1 unit wide
-				and 2 units tall.
-				(See <code><a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a></code> for a refresher on what a matrix is.)
+				by storing them in a very small
+				<a href="Q-Matrix.html">matrix</a>
+				that is only <strong>one</strong> unit wide
+				and <strong>two</strong> units tall—and
+				because this matrix is only one unit wide
+				it is not merely a matrix, it’s also a 
+				<a href="Q-Matrix.html#Vectors">vector</a>.
+				(What’s a <a href="Q-Matrix.html">matrix</a>?
+				What’s a <a href="Q-Matrix.html#Vectors">vector</a>? 
+				See the <a href="Q-Matrix.html"><code>Matrix</code> page</a> 
+				for quick refreshers on both.)
+			</p>
+			<p>
 				So when you think of a qubit you can imagine it as 
 				a 1 × 2 <a href="Q-Matrix.html">matrix</a>
+				<!-- (a <a href="Q-Matrix.html#Vectors"> column vector</a>) -->
 				containing its 
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code> value on the top
+				<code><a href="#this.alpha">alpha</a></code> value on the top
 				and its
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code> value on the bottom,
+				<code><a href="#this.beta">beta</a></code> value on the bottom,
 				like so:
 			</p>
+			<br>
 			<div class="center">
 				<div class="matrix">
 					<div class="matrix-bracket-left"></div>
 					<div class="matrix-bracket-right"></div>
 					<table>
-						<tr><td>alpha</td></tr>
-						<tr><td>beta</td></tr>
+						<tr><td><code>alpha</code></td></tr>
+						<tr><td><code>beta</code></td></tr>
 					</table>
 				</div>
 			</div>
 			<br>
 			<p>
-				Because these two numbers 
-				share a predictable relationship with each 
-				other—which we’ll define in a moment—if 
-				we know the value of one number 
-				then we have a pretty good idea what the other’s value is.
-				That is to say, if we know the 
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
-				then we also know the 
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code>.
-				(Or at least <code><a href="Q-Qubit.html#this.beta">beta</a></code>’s <a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute value</a>.)
-				For this reason, when we discuss the value of a qubit
-				we often only refer to one of these values instead of both.
-				By convention the value we choose to represent a qubit
-				is its 
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code> value.
-				So when we say “this qubit has a value of zero”
-				what we’re really saying is that its 
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code> value is <code>0</code>:
+				Now that we know a qubit is a 
+				<a href="Q-Matrix.html">matrix</a>,
+				we also know that we can
+				<a href="Q-Matrix.html#.add">add</a> qubits,
+				<a href="Q-Matrix.html#.multiply">multiply</a> qubits,
+				and so on—just as one can do with any matrix.
+				(That will become rather important
+				when we eventually introduce the idea of
+				<a href="Q-Gate.html">quantum gates</a>, 
+				which are also matrices.)
 			</p>
-			<div class="center maths">
-				“zero” =
+
+
+
+
+			<h4 id="Predictable_couples">Predictable couples</h4>
+			<p>
+				The thing that makes this pair of numbers special
+				is their relationship to each other,
+				which we can define as follows:
+				<code><a href="#this.alpha">alpha</a></code>
+				multiplied by  
+				<code><a href="#this.alpha">alpha</a></code>, 
+				added to 
+				<code><a href="#this.beta">beta</a></code>
+				multiplied by 
+				<code><a href="#this.beta">beta</a></code>,
+				must always equal one.
+				We can express this as an equation:
+			</p>
+			<br>
+			<div class="maths center">
+				( <code><a href="#this.alpha">alpha</a></code> ×
+				<code><a href="#this.alpha">alpha</a></code> ) + 
+				( <code><a href="#this.beta">beta</a></code> ×
+				<code><a href="#this.beta">beta</a></code> ) = 1
+			</div>
+			<br>
+			<p>
+				The parentheses in the equation above 
+				are not strictly necessary
+				as the 
+				<a href="https://en.wikipedia.org/wiki/Order_of_operations" target="_blank">“order of operations” rules</a>
+				dictate that these multiplications
+				must be carried out prior to 
+				the additions—but emphasis can often be more helpful than brevity when learning something new.
+				And now that we understand this relationship
+				we can express it more compactly
+				using exponents rather than multiplications:
+				<code><a href="#this.alpha">alpha</a></code> squared
+ 				added to 
+				<code><a href="#this.beta">beta</a></code> squared
+				must always equal one.	
+			</p>
+			<br>
+			<div class="maths center">
+				<code><a href="#this.alpha">alpha</a></code><sup>2</sup> + 
+				<code><a href="#this.beta">beta</a></code><sup>2</sup> = 1
+			</div>
+			<br>
+			<p>
+				A bit <a href="#Complex_couple">further below</a> 
+				we’ll add one small wrinkle to this equation,
+				but otherwise this is
+				what defines a qubit.
+				That’s it. It’s that easy.
+			</p>
+
+
+
+
+			<h4 title="Brangelina.">Named couples</h4>
+			<p>
+				Let’s start plugging in values for 
+				<code><a href="#this.alpha">alpha</a></code>
+				and
+				<code><a href="#this.beta">beta</a></code>.
+				Each different value combination makes a different sort of qubit.
+				The most frequently used qubit value combinations
+				have names
+				and belong to a set of named vectors called 
+				<a href="https://en.wikipedia.org/wiki/Jones_calculus#The_Jones_vector" target="_blank">Jones vectors</a>.
+				We’ll begin with the two simplest qubits.
+				This first qubit is named 
+				<a href="#.HORIZONTAL">Horizontal</a>
+				and the second is named
+				<a href="#.VERTICAL">Vertical</a>.
+				Both are composed from a zero and a one
+				and we can see that this
+				satisfies our qubit definition above.
+			</p>
+			<br>
+			<div class="center">
 				<div class="matrix qubit">
 					<div class="matrix-bracket-left"></div>
 					<div class="matrix-bracket-right"></div>
 					<table>
-						<tr><td>alpha: <strong>1</strong></td></tr>
-						<tr><td>beta: <strong>0</strong></td></tr>
+						<tr><td><code>alpha</code> = <strong>1</strong></td></tr>
+						<tr><td><code>beta</code> = <strong>0</strong></td></tr>
 					</table>
+				</div>
+				<div class="center middle">
+					A <a href="#.HORIZONTAL">Horizontal qubit</a> is considered<br>
+					to be “<code>0</code>” or “<code>OFF</code>.”
+					
+				</div>
+				<br>
+				<br>
+				<div class="maths">
+					<table class="equation">
+						<tr>
+							<td>
+								<code><a href="#this.alpha">alpha</a></code><sup>2</sup> + <code><a href="#this.beta">beta</a></code><sup>2</sup>
+							</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>1</strong><sup>2</sup> + <strong>0</strong><sup>2</sup>
+							</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>1</strong> + <strong>0</strong>
+							</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>1</strong>
+							</td>
+							<td>1 ✓</td>
+						</tr>
+					</table>
+				</div>
+				<br>
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td><code>alpha</code> = <strong>0</strong></td></tr>
+						<tr><td><code>beta</code> = <strong>1</strong></td></tr>
+					</table>
+				</div>
+				<div class="center middle">
+					A <a href="#.VERTICAL">Vertical qubit</a> is considered<br>
+					to be “<code>1</code>” or “<code>ON</code>.”
+				</div>
+				<br>
+				<br>
+				<div class="maths">
+					<table class="equation">
+						<tr>
+							<td>
+								<code><a href="#this.alpha">alpha</a></code><sup>2</sup> + <code><a href="#this.beta">beta</a></code><sup>2</sup>
+							</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>0</strong><sup>2</sup> + <strong>1</strong><sup>2</sup>
+							</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>0</strong> + <strong>1</strong>
+							</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>
+								<strong>1</strong>
+							</td>
+							<td>1 ✓</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<br>
+			<br>
+			<p>
+				What does it mean to be named
+				<a href="#.HORIZONTAL">Horizontal</a> or
+				<a href="#.VERTICAL">Vertical</a>?
+				Where do these orientation-based names come from?
+				Are there more orientation-based names?
+				To understand, let’s plot these two qubit vectors on a graph.
+				We’ll use the 
+				<code><a href="#this.alpha">alpha</a></code> value
+				as our <span class="symbol">x</span> coordinate
+				and the  
+				<code><a href="#this.beta">beta</a></code> value
+				as our <span class="symbol">y</span> coordinate:
+			</p>
+			<br>
+			<div class="center">
+				<div class="matrix">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td><code>alpha</code></td></tr>
+						<tr><td><code>beta</code></td></tr>
+					</table>
+				</div>
+				→&nbsp;&nbsp; ( <code>alpha</code>, <code>beta</code> )
+			</div>
+			<br>
+			<p>
+				Plotting  
+				<code><a href="#this.alpha">alpha</a></code>
+				and
+				<code><a href="#this.beta">beta</a></code>
+				as <span class="symbol">x</span> and <span class="symbol">y</span> 
+				yields (1, 0) for a 
+				<a href="#.HORIZONTAL">Horizontal qubit</a>
+				and (0, 1) for a 
+				<a href="#.VERTICAL">Vertical qubit</a>.
+			</p>
+			<br>
+			<div class="unit-circle no-animation">
+				<!-- <div class="unit-circle-outline"></div> -->
+				<div class="unit-circle-spoke-half unit-circle-spoke unit-circle-spoke-0 dashed"></div>
+				<div class="unit-circle-spoke-half unit-circle-spoke unit-circle-spoke-180"></div>
+				<div class="unit-circle-spoke-half unit-circle-spoke unit-circle-spoke-90"></div>
+				<div class="unit-circle-spoke-half unit-circle-spoke unit-circle-spoke-270 dashed"></div>
+				<div class="unit-circle-spoke-label unit-circle-spoke-label-90">Vertical</div>
+				<div class="unit-circle-spoke-label unit-circle-spoke-label-0">Horizontal</div>
+				<!-- <div class="unit-circle-label unit-circle-label-angle-0">0˚</div>
+				<div class="unit-circle-label unit-circle-label-angle-90">90˚</div> -->
+				<div class="unit-circle-label unit-circle-label-point-origin">0, 0</div>
+				<div class="unit-circle-label unit-circle-label-point-0">1, 0</div>
+				<div class="unit-circle-label unit-circle-label-point-90">0, 1</div>
+				<div class="unit-circle-label unit-circle-label-point-180">-1, 0</div>
+				<div class="unit-circle-label unit-circle-label-point-270">0, -1</div>
+			</div>
+			<p>
+				We can see that the values from a 
+				<a href="#.HORIZONTAL">Horizontal qubit</a>, 
+				when plotted as <span class="symbol">x</span> and <span class="symbol">y</span>,
+				form a horizontal line from the origin (0, 0)
+				out to (1, 0).
+				Meanwhile, 
+				when we plot the values of a 
+				<a href="#.VERTICAL">Vertical qubit</a>
+				as <span class="symbol">x</span> and <span class="symbol">y</span>,
+				it forms a vertical line from the origin (0, 0)
+				up to (0, 1).
+				Before we introduce more named 
+				<a href="#Jones_Vectors">Jones vectors</a>
+				let’s take what we’ve learned about qubit values
+				and generalize it for vectors
+				with more than two elements
+				so we can better understand what these qubit values truly mean.
+			</p>
+
+
+
+
+			<h4>State vectors</h4>
+			<p>
+				Did it seem strange to read that 
+				the qubit we refer to as “<code>0</code>” begins with an 
+				<code><a href="#this.alpha">alpha</a></code> value of 1?
+				(Or that the qubit we refer to as “<code>1</code>” begins with an 
+				<code><a href="#this.alpha">alpha</a></code> value of 0?)
+				Does that mean we refer to qubits 
+				by their <code><a href="#this.beta">beta</a></code> values?
+				Is that some sort of quantum computing convention?
+			</p>
+			<br>
+			<div class="center">
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td><code>alpha</code> = <strong>1</strong></td></tr>
+						<tr><td><code>beta</code> = <strong>0</strong></td></tr>
+					</table>
+				</div>
+				<div class="center middle">
+					Recall that a 
+					<a href="#.HORIZONTAL">Horizontal qubit</a><br>
+					is considered
+					“<code>0</code>” or “<code>OFF</code>.”
 				</div>
 			</div>
 			<br>
 			<p>
-				Conversely, when we say “this qubit has a value of one”
-				we’re claiming that its 
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code> value is <code>1</code>:
+				The short answer is “No.”
+				To understand why, 
+				we must recognize that 
+				a qubit is the simplest example of a
+				quantum <em>state vector</em>—a
+				list of all possible states
+				for an quantum system to exist in,
+				with each possible state accompanied by the probability
+				that the system is indeed in that state.
+				When a single qubit is measured 
+				there are only two possible states 
+				for it to be in: 
+				<code><strong>0</strong></code> or <code><strong>1</strong></code>.
+				This is why a qubit is represented by a two-unit vector.
+				On this very short list of possible outcomes,
+				<code><strong>0</strong></code> is the first possible outcome
+				and <code><strong>1</strong></code> is the second possible outcome.
+				When we say that a <a href="#.HORIZONTAL">Horizontal</a> qubit is “<code>0</code>”
+				<a href="https://www.youtube.com/watch?v=DfSL-HeIrxA" target="_blank">we’re not referring to the qubit’s
+				<code>beta</code> value at all</a>.
+				We’re instead highlighting the fact that
+				the <code>1</code> in this (1,&nbsp;0) pair
+				happens to be in the “zeroth” slot—the 
+				<code><a href="#this.alpha">alpha</a></code> slot
+				of this 
+				(<code><a href="#this.alpha">alpha</a></code>,
+				<code><a href="#this.beta">beta</a></code>) pair.
+				We’re saying that 
+				for the possible outcome “<code>0</code>”
+				our qubit is voting 1, or <code>TRUE</code>.
+				At the same time we’re saying that 
+				for the possible outcome “<code>1</code>”,
+				our qubit is voting 0, or <code>FALSE</code>.
 			</p>
-			<div class="center maths">
-				“one” =
+			<br>
+			<div class="center">
 				<div class="matrix qubit">
 					<div class="matrix-bracket-left"></div>
 					<div class="matrix-bracket-right"></div>
-					<table>
-						<tr><td>alpha: <strong>0</strong></td></tr>
-						<tr><td>beta: <strong>1</strong></td></tr>
+					<table class="chart">
+						<tr>
+							<td class="font-sans">
+								Outcome will be <code><strong>0</strong></code>:&nbsp;
+								<code>TRUE</code> (<code>1</code>)&nbsp;&nbsp; 
+							</td>
+						</tr>
+						<tr>
+							<td class="font-sans">
+								Outcome will be <code><strong>1</strong></code>:&nbsp;
+								<code>FALSE</code> (<code>0</code>)
+							</td>
+						</tr>
 					</table>
+				</div>
+				<div class="center middle">
+					<a href="#.HORIZONTAL">Horizontal qubit</a>
 				</div>
 			</div>
 			<br>
+			<p>
+				For good measure
+				let’s look at the converse example.
+			</p>
+			<br>
+			<div class="center">
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table class="chart">
+						<tr>
+							<td class="font-sans">
+								Outcome will be <code><strong>0</strong></code>:&nbsp;
+								<code>FALSE</code> (<code>0</code>)
+							</td>
+						</tr>
+						<tr>
+							<td class="font-sans">
+								Outcome will be <code><strong>1</strong></code>:&nbsp;
+								<code>TRUE</code> (<code>1</code>)&nbsp;&nbsp; 
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="center middle">
+					<a href="#.VERTICAL">Vertical qubit</a>
+				</div>
+			</div>
+			<br>
+			<p>
+				To further clarify—and 
+				to hint at how a <a href="Q-Circuit.html">quantum circuit</a> 
+				functions—let’s look at a state vector 
+				for a quantum system composed of <strong>two</strong> qubits.
+				With one qubit there were two possible outcomes: 
+				<code><strong>0</strong></code> and <code><strong>1</strong></code>.
+				(And because there are only two elements of a qubit vector we named them
+				<code><a href="#this.alpha">alpha</a></code> and
+				<code><a href="#this.beta">beta</a></code> 
+				to make referring to them more convenient.)
+				For two qubits there are four possible outcomes:
+				<code><strong>00</strong></code>,
+				<code><strong>01</strong></code>,
+				<code><strong>10</strong></code>, and
+				<code><strong>11</strong></code>.
+				(We won’t bother to name elements of state vectors larger than two. 
+				It would get unwieldy rather quickly.)
+				Which of those four possible outcomes 
+				might the following state vector represent?
+			</p>
+			<br>
+			<div class="center">
+				<div class="matrix">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>0</td></tr>
+						<tr><td>0</td></tr>
+						<tr><td>1</td></tr>
+						<tr><td>0</td></tr>
+					</table>
+				</div>
+				<div class="center middle">
+					A state vector for<br>
+					<strong>two</strong> qubits.
+				</div>
+			</div>
+			<br>
+			<p>
+				The above vector represents four possible outcomes
+				and we see that 
+				three out of those four possible outcomes
+				are <code>FALSE</code> (<code>0</code>).
+				Meanwhile, the third of those four possible outcomes
+				is <code>TRUE</code> (<code>1</code>).
+				Because the result value of the third possible outcome is
+				<code><strong>10</strong></code>
+				we see that this two qubit vector state
+				is telling us it represents a result of 
+				<code><strong>10</strong></code>.
+				Let’s break this down the same way we did 
+				with 
+				<a href="#.HORIZONTAL">Horizontal</a>
+				and
+				<a href="#.VERTICAL">Vertical</a>
+				qubits.
+			</p>
+			<br>
+			<div class="center">
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table class="chart">
+						<tr>
+							<td class="font-sans">
+								Outcome will be <code><strong>00</strong></code>:&nbsp;
+								<code>FALSE</code> (<code>0</code>)
+							</td>
+						</tr>
+						<tr>
+							<td class="font-sans">
+								Outcome will be <code><strong>01</strong></code>:&nbsp;
+								<code>FALSE</code> (<code>0</code>)
+							</td>
+						</tr>
+						<tr>
+							<td class="font-sans">
+								Outcome will be <code><strong>10</strong></code>:&nbsp;
+								<code>TRUE</code> (<code>1</code>)&nbsp;&nbsp;
+							</td>
+						</tr>
+						<tr>
+							<td class="font-sans">
+								Outcome will be <code><strong>11</strong></code>:&nbsp;
+								<code>FALSE</code> (<code>0</code>)
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="center middle">
+					A state vector for<br>
+					<strong>two</strong> qubits.
+				</div>
+			</div>
+			<br>
+			<p>
+				We’ve learned that 
+				a single qubit is the simplest example of 
+				a quantum state vector.
+				It is a list of the votes per each possible 
+				outcome—and for a single qubit there are only two possible outcomes.
+			</p>
 
 
 
-			<!--
-			<h4>Vector form</h4>
+
+			<h4 id="Braket_notation">Ket notation</h4>
 			<p>
 				<a href="https://en.wikipedia.org/wiki/Paul_Dirac" target="_blank">Paul Dirac</a>’s 
-				With <a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket notation</a>
-				offers us a more compact (and quantum-specific)
-				means of describing qubit states.
-				Let’s look again at the 
-				<a href="Q-Matrix.html">matrix</a> form
-				for a qubit in a “zero” state—again the
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code> value is on top
-				and the
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code> value is on the bottom:
+				<a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">“bra-ket” notation</a>
+				offers us a more compact
+				means of describing <a href="#State_vectors">quantum state vectors</a>—and by extension, qubits.
+				(While “bra-ket” offers us two named elements—“bra” and “ket”—for
+				our purposes we need only focus on the latter.)
+				Kets represent the result value 
+				that our quantum vector state represents.
+				They are expressed as values enclosed between 
+				a vertical bar
+				and a rightward angle bracket.
+				The following is pronounced “ket zero.”
 			</p>
-			<div class="center maths">
+			<br>
+			<div class="center">
+				<span class="Q-state-vector ket">0</span>
+			</div>
+			<br>
+			<p>
+				We <a href="#Named_couples">began</a> 
+				by stating that 
+				a <a href="#.HORIZONTAL">Horizontal qubit</a>
+				represents “<code>0</code>”,
+				and later <a href="#State_vectors">explained</a> why this was so.
+				Kets provide us a convenient way 
+				to refer to this result state directly
+				as in-line text
+				rather than a clunky matrix.
+			</p>
+			<br>
+			<div class="center">
 				<div class="matrix qubit">
 					<div class="matrix-bracket-left"></div>
 					<div class="matrix-bracket-right"></div>
 					<table>
 						<tr><td>1</td></tr>
-						<tr><td><strong>0</strong></td></tr>
+						<tr><td>0</td></tr>
 					</table>
-				</div>
+				</div>=&nbsp;<span class="Q-state-vector ket">0</span>
 			</div>
 			<br>
 			<p>
-				With <a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket notation</a>
-				we can rewrite the 
-				<a href="Q-Matrix.html">matrix</a>
-				in <a href="https://en.wikipedia.org/wiki/Row_and_column_vectors" target="_blank">vector form</a> like so:
+				Similarly, we <a href="#Named_couples">defined</a> a 
+				<a href="#.VERTICAL">Vertical qubit</a>
+				as representing “<code>1</code>”
+				and <a href="#State_vectors">illustrated this</a> as well.
+				We can now also express this column vector as a ket.
 			</p>
 			<br>
 			<div class="center">
-				<span class="complex-vector bra">1</span>
-				<span class="complex-vector ket"><strong>0</strong></span>
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>0</td></tr>
+						<tr><td>1</td></tr>
+					</table>
+				</div>=&nbsp;<span class="Q-state-vector ket">1</span>
 			</div>
 			<br>
 			<p>
-				Notice how the 
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code> value
-				has moved from its position on the top of a matrix
-				to the left-side of a vector.
-				Similarly, the 
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code> value
-				has moved from its position on the bottom of a matrix
-				to the right-side of a vector.
-				We can reference the 
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
-				and
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
-				separately without confusion, 
-				writing them as
-				<span class="complex-vector bra">1</span>
-				<span>and</span>
-				<span class="complex-vector ket">0</span>
-				respectively.
-				The position and direction of the angle alphacbetas 
-				let us know immediately which one is the
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
-				(<em>begins</em> with and angle alphacbeta pointing to the <em>left</em>)
-				and which one is the
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
-				(<em>ends</em> with and angle alphacbeta pointing to the <em>right</em>).
-			</p>
-			<p>
-				Because we often refer to a qubit’s value
-				using only its 
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code>,
-				we can describe a “zero” qubit as
-				<span class="complex-vector bra">0</span>,
-				and a “one” qubit as
-				<span class="complex-vector ket">1</span>.
-				That’s worth repeating as above:
+				The convenience of ket notation
+				becomes more apparent
+				as we represent state vectors
+				that are larger than a single qubit.
+				(For <span class="symbol">n</span> qubits
+				we must use a state vector that has
+				2<sup><span class="symbol">n</span></sup>
+				elements.
+				Meanwhile our ket values are still just 
+				<span class="symbol">n</span> digits long.)
+				Here we express four possible states
+				of a two qubit system 
+				as both state vectors and their 
+				<a href="https://en.wikipedia.org/wiki/Qubit#Standard_representation" target="_blank">equivalent kets</a>.
 			</p>
 			<br>
-			<div class="maths center">
-				“zero” = 
-				<span class="complex-vector ket">0</span>
-			</div>
 			<div class="center">
-				“one” = 
-				<span class="complex-vector ket">1</span>
+				
+				<div class="matrix">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>1</td></tr>
+						<tr><td>0</td></tr>
+						<tr><td>0</td></tr>
+						<tr><td>0</td></tr>
+					</table>
+				</div>=&nbsp;<span class="Q-state-vector ket">00</span>,
+				
+				<div class="matrix">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>0</td></tr>
+						<tr><td>1</td></tr>
+						<tr><td>0</td></tr>
+						<tr><td>0</td></tr>
+					</table>
+				</div>=&nbsp;<span class="Q-state-vector ket">01</span>,
+				
+				<div class="matrix">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>0</td></tr>
+						<tr><td>0</td></tr>
+						<tr><td>1</td></tr>
+						<tr><td>0</td></tr>
+					</table>
+				</div>&nbsp;=&nbsp;<span class="Q-state-vector ket">10</span>,
+				
+				<div class="matrix">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>0</td></tr>
+						<tr><td>0</td></tr>
+						<tr><td>0</td></tr>
+						<tr><td>1</td></tr>
+					</table>
+				</div>&nbsp;=&nbsp;<span class="Q-state-vector ket">11</span>
+
 			</div>
 			<br>
-			-->
 
 
 
-			<h4 id="Predictable_couple">A predictable couple</h4>
-			<p>
-				The thing that makes this pair of numbers special
-				is their relationship to each other.
-				We can express this relationship as
-				|<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>|<sup>2</sup> + 
-				|<code><a href="Q-Qubit.html#this.beta">beta</a></code>|<sup>2</sup> = 1. 
-				That is to the say, 
-				the <a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute value</a> of
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
-				multiplied by the <a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute value</a> of 
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>, 
-				added to the <a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute value</a> of 
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
-				multiplied by the <a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute value</a> of 
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code>,
-				equals one.
-				This is what defines a qubit.
-				If a pair of numbers does <em>not</em> satisfy this equation
-				then it cannot function as a qubit.
-			</p>
-			<p>
-				Keen mathematical minds might be asking
-				why we must take the <a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute value</a> of a number
-				before squaring it.
-				Doesn’t multiplying a number by itself automatically yield an 
-				<a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute value</a>?
-				While that is true of <em>real</em> numbers,
-				it is not true of of <em>complex</em> numbers.
-				(See <code><a href="Q-ComplexNumber.html">ComplexNumber</a></code>
-				for a refresher on this subject.)
-			</p>
-			<h4 id="Complex_couple">A complex couple</h4>
-			<p>
-				So far we’ve described qubits as containing
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
-				and 
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
-				values ranging from <code>0</code> to <code>1</code>,
-				and that remains true—but there’s more to the story.
-				Qubits are actually made of 
-				<a href="Q-ComplexNumber.html">complex number</a> pairs,
-				meaning there is an <em>imaginary component.</em>
-				(See <code><a href="Q-ComplexNumber.html">ComplexNumber</a></code>
-				for a refresher on this subject.)
-				So <em>one</em> qubit is actually made of <em>four</em> parts:
-				The <code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
-				has a ① <code><a href="Q-ComplexNumber.html#this.real">real</a></code>
-				component and an ②
-				<code><a href="Q-ComplexNumber.html#this.imaginary">imaginary</a></code>
-				one.
-				The <code><a href="Q-Qubit.html#this.beta">beta</a></code>
-				also has a ③ <code><a href="Q-ComplexNumber.html#this.real">real</a></code>
-				component and an ④
-				<code><a href="Q-ComplexNumber.html#this.imaginary">imaginary</a></code>
-				one.
-				(See <code><a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a></code> for more details.)
-				This makes 
-				<a href="Q-Qubit.html#Visualizing_qubit_states">visualizing qubit states</a> all the more interesting.
-			</p>
+
 			<h4>Superposition</h4>
 			<p>
 				You’ve probably heard the term 
@@ -318,83 +758,40 @@
 				you’ve likely been spoonfed some measure of mysticism; 
 				<a href="https://youtu.be/CMdHDHEuOUE" target="_blank">pizza-bagels</a> and whatnot.
 				In the real, physical world, superposition is indeed weird magic.
-				But in quantum computing it’s dead simple.
-				Superposition is any qubit state other than
-				<span class="complex-vector ket">0</span>
-				or
-				<span class="complex-vector ket">1</span>.
-				That’s it.
-				That’s all there is to it.
+				But mathematically it’s dead simple:
+				Superposition is any qubit state 
+				where the 
+				<code><a href="#this.alpha">alpha</a></code>
+				and
+				<code><a href="#this.beta">beta</a></code>
+				values are anything other than exactly
+				0
+				or exactly
+				1.
+				Let’s investigate that idea by building on what we’ve already learned.
 			</p>
-			<p>
-				What the 
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
-				and 
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
-				values represent together are the 
-				<a href="https://en.wikipedia.org/wiki/Probability_amplitude" target="_blank">probability amplitude</a> that a qubit,
-				when measured, will be in either a
-				<span class="complex-vector ket">0</span>
-				or a
-				<span class="complex-vector ket">1</span>
-				state.
-				Measurement itself causes a qubit’s
-				<a href="https://en.wikipedia.org/wiki/Wave_function_collapse"  target="_blank">probability wave to collapse</a>,
-				brining an end to its superposition.
-				The probability that upon measurement a qubit’s
-				<a href="https://en.wikipedia.org/wiki/Probability_amplitude" target="_blank">probability amplitude</a>
-				will 
-				<a href="#.prototype.collapse">collapse</a> to 
-				<span class="complex-vector ket">0</span>
-				is |<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>|<sup>2</sup>,
-				while the probability that it will 
-				<a href="#.prototype.collapse">collapse</a> to 
-				<span class="complex-vector ket">1</span>
-				is |<code><a href="Q-Qubit.html#this.beta">beta</a></code>|<sup>2</sup>.
-			</p>
-			<br>
-			<ul>
-				<li>
-					A qubit, <code>{
-						<a href="Q-Qubit.html#this.alpha">alpha</a>: 1,
-						<a href="Q-Qubit.html#this.alpha">beta</a>: 0
-					}</code>, has a 100% chance of collapsing to <span class="complex-vector ket">0</span>.
-				</li>
-				<li>
-					A qubit, <code>{
-						<a href="Q-Qubit.html#this.alpha">alpha</a>: 0,
-						<a href="Q-Qubit.html#this.alpha">beta</a>: 1
-					}</code>, has a 100% chance of collapsing to <span class="complex-vector ket">1</span>.
-				</li>
-				<li>
-					A qubit, <code>{
-						<a href="Q-Qubit.html#this.alpha">alpha</a>: 1÷√2,
-						<a href="Q-Qubit.html#this.alpha">beta</a>: 1÷√2
-					}</code>, 
-					has a 50% chance of collapsing to <span class="complex-vector ket">0</span>
-					and a 50% chance of collapsing to <span class="complex-vector ket">1</span>.
-				</li>
-			</ul>
-			<br>
-			<h3>Visualizing qubit states</h3>
+
 			<p>
 				Given the constraint
-				|<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>|<sup>2</sup> + 
-				|<code><a href="Q-Qubit.html#this.beta">beta</a></code>|<sup>2</sup> = 1, if we plot all of the possible <em>real</em>
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
+				<code><a href="#this.alpha">alpha</a></code><sup>2</sup> + 
+				<code><a href="#this.beta">beta</a></code><sup>2</sup> = 1, if we plot all of the possible
+				<code><a href="#this.alpha">alpha</a></code>
 				and 
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
+				<code><a href="#this.beta">beta</a></code>
 				values on a graph
 				as <span class="symbol">x</span> and <span class="symbol">y</span> respectively,
 				the outcome is a circle with a radius of 1 centered at the origin (0, 0); 
 				ie. a <a href="https://en.wikipedia.org/wiki/Unit_circle)" target="_blank">unit circle</a>.
 				All possible combinations of 
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
+				<code><a href="#this.alpha">alpha</a></code>
 				and
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
+				<code><a href="#this.beta">beta</a></code>
 				lay on the perimeter of this circle.
+				To illustrate this, here’s a plot of named 
+				<a href="#Jones_vectors">Jones vectors</a>
+				as well as their conjugates.
 			</p>
-			<div class="unit-circle">
+			<div class="unit-circle" id="Unit_circle">
 				<div class="unit-circle-outline"></div>
 				<div class="unit-circle-spoke unit-circle-spoke-0"></div>
 				<div class="unit-circle-spoke unit-circle-spoke-45"></div>
@@ -457,12 +854,188 @@
 					</table>
 				</div>
 			</div>
+			<p>
+				What the 
+				<code><a href="#this.alpha">alpha</a></code>
+				and 
+				<code><a href="#this.beta">beta</a></code>
+				values represent together are the 
+				<a href="https://en.wikipedia.org/wiki/Probability_amplitude" target="_blank">probability amplitude</a> that a qubit,
+				when measured, will be in either a
+				<span class="Q-state-vector ket">0</span>
+				or a
+				<span class="Q-state-vector ket">1</span>
+				state.
+				Measurement itself causes a qubit’s
+				<a href="https://en.wikipedia.org/wiki/Wave_function_collapse"  target="_blank">probability wave to collapse</a>,
+				bringing an end to its superposition.
+				The probability that upon measurement a qubit’s
+				<a href="https://en.wikipedia.org/wiki/Probability_amplitude" target="_blank">probability amplitude</a>
+				will 
+				<a href="#.prototype.collapse">collapse</a> to 
+				<span class="Q-state-vector ket">0</span>
+				is <code><a href="#this.alpha">alpha</a></code><sup>2</sup>,
+				while the probability that it will 
+				<a href="#.prototype.collapse">collapse</a> to 
+				<span class="Q-state-vector ket">1</span>
+				is <code><a href="#this.beta">beta</a></code><sup>2</sup>.
+			</p>
+			<br>
+			<div class="center">
+				<table class="chart">
+					<tr>
+						<td class="right">
+							<div class="matrix qubit">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr><td><code>alpha</code> = <strong>1</strong></td></tr>
+									<tr><td><code>beta</code> = <strong>0</strong></td></tr>
+								</table>
+							</div>
+						</td>
+						<td class="left">
+							A <a href="#.HORIZONTAL">Horizontal qubit</a> has a<br>
+							100% chance of collapsing to 
+							<span class="Q-state-vector ket">0</span>.
+						</td>
+					</tr>
+					<tr>
+						<td class="right">
+							<div class="matrix qubit">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr><td><code>alpha</code> = <strong>0</strong></td></tr>
+									<tr><td><code>beta</code> = <strong>1</strong></td></tr>
+								</table>
+							</div>
+						</td>
+						<td class="left">
+							A 
+							<a href="#.VERTICAL">Vertical qubit</a> has a<br>
+							100% chance of collapsing to 
+							<span class="Q-state-vector ket">1</span>.
+						</td>
+					</tr>
+					<tr>
+						<td class="right">
+							<div class="matrix qubit">
+								<div class="matrix-bracket-left"></div>
+								<div class="matrix-bracket-right"></div>
+								<table>
+									<tr><td><code>alpha</code> = <strong>1÷√2</strong></td></tr>
+									<tr><td><code>beta</code> = <strong>1÷√2</strong></td></tr>
+								</table>
+							</div>
+						</td>
+						<td class="left">
+							A 
+							<a href="#.DIAGONAL">Diagonal qubit</a> has a<br>
+							50% chance of collapsing to 
+							<span class="Q-state-vector ket">0</span> and a<br>
+							50% chance of collapsing to 
+							<span class="Q-state-vector ket">1</span>.
+						</td>
+					</tr>
+				</table>
+			</div>
+			<br>
+
+
+
+
+			<h4 id="Complex_couples">Complex couples</h4>
+			<p>
+				We’ve spent the majority of this primer
+				describing qubits as containing 
+				<code><a href="#this.alpha">alpha</a></code>
+				and 
+				<code><a href="#this.beta">beta</a></code>
+				values ranging from 0 up to 1.
+				The <a href="#Unit_circle">unit circle above</a>
+				illustrates that these values can also range from 
+				0 down to -1.
+				While all of this remains true, 
+				the story is slightly more <em>complex</em>.
+			</p>
+			<p>
+				Qubits are actually made of 
+				<a href="Q-ComplexNumber.html">complex number</a> pairs,
+				meaning there is an <em>imaginary component.</em>
+				(See the <a href="Q-ComplexNumber.html"><code>ComplexNumber</code>
+				page</a> for a quick refresher on 
+				<a href="Q-ComplexNumber.html#Real_numbers">real</a>, 
+				<a href="Q-ComplexNumber.html#Imaginary_numbers">imaginary</a>, and 
+				<a href="Q-ComplexNumber.html#Complex_numbers">complex numbers</a>.)
+				This means <em>one</em> qubit is actually made of <em>four</em> parts:
+				The <code><a href="#this.alpha">alpha</a></code> value
+				has a ① <code><a href="Q-ComplexNumber.html#this.real">real</a></code>
+				component and an ②
+				<code><a href="Q-ComplexNumber.html#this.imaginary">imaginary</a></code>
+				one.
+				The <code><a href="#this.beta">beta</a></code> value
+				also has a ③ <code><a href="Q-ComplexNumber.html#this.real">real</a></code>
+				component and an ④
+				<code><a href="Q-ComplexNumber.html#this.imaginary">imaginary</a></code>
+				one.
+			</p>
+			<p>
+				To account for this we must slightly evolve
+				our definition of a qubit;
+				specifically the relationship between its 
+				<code><a href="#this.alpha">alpha</a></code>
+				and
+				<code><a href="#this.beta">beta</a></code>
+				values.
+				Rather than simply adding their squares together,
+				we must instead add the squares of their
+				<a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute values</a>.
+				Our evolved equation, 
+				which indicates absolute values 
+				by enclosing numbers between vertical bars,
+				now looks like this:
+			</p>
+			<br>
+			<div class="maths center">
+				|<code><a href="#this.alpha">alpha</a></code>|<sup>2</sup> + 
+				|<code><a href="#this.beta">beta</a></code>|<sup>2</sup> = 1
+			</div>
+			<br>
+			<p>
+				By taking the <a href="https://en.wikipedia.org/wiki/Absolute_value" target="_blank">absolute values</a>
+				of
+				<code><a href="#this.alpha">alpha</a></code>
+				and
+				<code><a href="#this.beta">beta</a></code>
+				before squaring them,
+				we continue to ensure that our sum of squares
+				will equal exactly 1—a simple,  
+				<a href="Q-ComplexNumber.html#Real_numbers">real number</a>
+				rather than an 
+				<a href="Q-ComplexNumber.html#Imaginary_numbers">imaginary</a> or 
+				<a href="Q-ComplexNumber.html#Complex_numbers">complex</a> number.
+			</p>
+	
+
+
+
+			<!-- <h3>Visualizing qubit states</h3> -->
+			
+
+
+
 			<h4 id="Bloch_sphere">The Bloch sphere</h4>
 			<p>
-				But a qubit isn’t just a pair of <em>real</em> numbers—it’s a pair of <a href="Q-ComplexNumber.html">complex numbers</a> and plotting the relationship of these values requires a third dimension.
-				This transforms our unit circle with a radius of 1 in to a
-				<a href="https://en.wikipedia.org/wiki/Bloch_sphere" target="_blank">Bloch sphere</a>,
-				also with a radius of 1.
+				And that’s really it. 
+				That’s what makes a mathematical qubit.
+				But with that last-minute addition of 
+				<a href="Q-ComplexNumber.html">complex numbers</a> above,
+				we can no longer visualize a qubit 
+				as a two-dimensional <a href="#Unit_circle">unit circle</a>. 
+				Instead we must map our two complex values
+				onto a three dimensional graph known as a  
+				<a href="https://en.wikipedia.org/wiki/Bloch_sphere" target="_blank">Bloch sphere</a>.
 				<!--
 
 				THIS IS A TERRIBLE AND INACCURATE EXPLANATION!
@@ -475,18 +1048,18 @@
 			</p>
 			<br>
 			<p>
-				Select a qubit state:
+				Select a qubit state to begin with:
 			</p>
 			<div id="bloch-sphere-qubits"></div>
 			<p>
-				Select a gate to apply:
+				Select a gate to apply to the qubit:
 			</p>
 			<div id="bloch-sphere-gates"></div>
 			<div class="interactive-container" id="bloch-sphere">
 				<div class="interactive-component" id="bloch-angles">
 					<code>
-						<a href="Q-Qubit.html#this.alpha">alpha</a> = <span id="bloch-alpha">—</span><br>
-						<a href="Q-Qubit.html#this.beta" >beta&nbsp;</a> = <span id="bloch-beta">—</span>
+						<a href="#this.alpha">alpha</a> = <span id="bloch-alpha">—</span><br>
+						<a href="#this.beta" >beta&nbsp;</a> = <span id="bloch-beta">—</span>
 					</code><br>
 					<br>
 					<code><span id="bloch-theta">—</span>˚</code> polar angle θ (theta)<br>
@@ -524,50 +1097,50 @@
 				instances of <code>Number</code> or 
 				<code><a href="Q.html">Q</a>.<a href="Q-ComplexNumber.html">ComplexNumber</a></code>
 				which will will then correspond to the qubit’s 
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
+				<code><a href="#this.alpha">alpha</a></code>
 				and 
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
+				<code><a href="#this.beta">beta</a></code>
 				values.
 				Further, an optional third argument may be supplied for
-				<code><a href="Q-Qubit.html#this.label">label</a></code>—expected 
+				<code><a href="#this.label">label</a></code>—expected 
 				in the form of a single character <code>String</code>—to be
 				used as a tiny label for the qubit when represented in diagram or graphic form. 
 				Even further, an optional fourth argument may be supplied for
-				<code><a href="Q-Qubit.html#this.name">name</a></code>—expected
+				<code><a href="#this.name">name</a></code>—expected
 				as a <code>String</code>—to be
 				used as a more descriptive name for the qubit.
 				If arguments for 
-				<code><a href="Q-Qubit.html#this.label">label</a></code>
+				<code><a href="#this.label">label</a></code>
 				or 
-				<code><a href="Q-Qubit.html#this.name">name</a></code>
+				<code><a href="#this.name">name</a></code>
 				are not supplied then
 				the constructor checks against the list of existing 
 				<code><a href="#.constants">constants</a></code>
 				and if a qubit with matching
-				<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>
+				<code><a href="#this.alpha">alpha</a></code>
 				and 
-				<code><a href="Q-Qubit.html#this.beta">beta</a></code>
+				<code><a href="#this.beta">beta</a></code>
 				values is found then the corresponding
-				<code><a href="Q-Qubit.html#this.label">label</a></code>
+				<code><a href="#this.label">label</a></code>
 				and / or 
-				<code><a href="Q-Qubit.html#this.name">name</a></code>
+				<code><a href="#this.name">name</a></code>
 				will be copied to this new instance.
 			</p>
 			<p>
 				When a new qubit is created it internally invokes the
 				<code><a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a></code> constructor,
 				such that <code>new <a href="Q.html">Q</a>.Qubit( 
-					<a href="Q-Qubit.html#this.alpha">alpha</a>,
-					<a href="Q-Qubit.html#this.beta">beta</a>
+					<a href="#this.alpha">alpha</a>,
+					<a href="#this.beta">beta</a>
 				)</code>
 				is similar to
 				<code>new <a href="Q.html">Q</a>.<a href="Q-Matrix.html">Matrix</a>([ 
-					<a href="Q-Qubit.html#this.alpha">alpha</a> ],
-					[ <a href="Q-Qubit.html#this.beta">beta</a>
+					<a href="#this.alpha">alpha</a> ],
+					[ <a href="#this.beta">beta</a>
 				])</code>.
 				If the two supplied values do not satisfy the assertion that
-				|<code><a href="Q-Qubit.html#this.alpha">alpha</a></code>|<sup>2</sup> + 
-				|<code><a href="Q-Qubit.html#this.beta">beta</a></code>|<sup>2</sup> = 1 
+				|<code><a href="#this.alpha">alpha</a></code>|<sup>2</sup> + 
+				|<code><a href="#this.beta">beta</a></code>|<sup>2</sup> = 1 
 				then an error is thrown.
 			</p>
 <pre><code>
@@ -688,7 +1261,7 @@ var fox = new <a href="Q.html">Q</a>.Qubit( 1, 0 )
 					</dd>
 				</li>
 			</ul>
-			<h4 id="Jones_Vectors">Constants — Jones Vectors</h4>
+			<h4 id="Jones_vectors">Constants — Jones Vectors</h4>
 			<p>
 				<code><a href="Q.html">Q</a>.Qubit</code> provides the following built-in <a href="https://en.wikipedia.org/wiki/Jones_calculus#Jones_vectors" target="_blank">Jones vectors</a>.
 			</p>
