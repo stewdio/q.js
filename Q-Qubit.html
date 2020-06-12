@@ -701,49 +701,61 @@
 			<br>
 			<div class="center">
 				
-				<div class="matrix">
-					<div class="matrix-bracket-left"></div>
-					<div class="matrix-bracket-right"></div>
-					<table>
-						<tr><td>1</td></tr>
-						<tr><td>0</td></tr>
-						<tr><td>0</td></tr>
-						<tr><td>0</td></tr>
-					</table>
-				</div>=&nbsp;<span class="Q-state-vector ket">00</span>,
+				<div class="no-wrap">
+					<div class="matrix">
+						<div class="matrix-bracket-left"></div>
+						<div class="matrix-bracket-right"></div>
+						<table>
+							<tr><td>1</td></tr>
+							<tr><td>0</td></tr>
+							<tr><td>0</td></tr>
+							<tr><td>0</td></tr>
+						</table>
+					</div>
+					= <span class="Q-state-vector ket">00</span>,
+				</div>
 				
-				<div class="matrix">
-					<div class="matrix-bracket-left"></div>
-					<div class="matrix-bracket-right"></div>
-					<table>
-						<tr><td>0</td></tr>
-						<tr><td>1</td></tr>
-						<tr><td>0</td></tr>
-						<tr><td>0</td></tr>
-					</table>
-				</div>=&nbsp;<span class="Q-state-vector ket">01</span>,
+				<div class="no-wrap">
+					<div class="matrix">
+						<div class="matrix-bracket-left"></div>
+						<div class="matrix-bracket-right"></div>
+						<table>
+							<tr><td>0</td></tr>
+							<tr><td>1</td></tr>
+							<tr><td>0</td></tr>
+							<tr><td>0</td></tr>
+						</table>
+					</div>
+					= <span class="Q-state-vector ket">01</span>,
+				</div>
 				
-				<div class="matrix">
-					<div class="matrix-bracket-left"></div>
-					<div class="matrix-bracket-right"></div>
-					<table>
-						<tr><td>0</td></tr>
-						<tr><td>0</td></tr>
-						<tr><td>1</td></tr>
-						<tr><td>0</td></tr>
-					</table>
-				</div>&nbsp;=&nbsp;<span class="Q-state-vector ket">10</span>,
+				<div class="no-wrap">
+					<div class="matrix">
+						<div class="matrix-bracket-left"></div>
+						<div class="matrix-bracket-right"></div>
+						<table>
+							<tr><td>0</td></tr>
+							<tr><td>0</td></tr>
+							<tr><td>1</td></tr>
+							<tr><td>0</td></tr>
+						</table>
+					</div>
+					= <span class="Q-state-vector ket">10</span>,
+				</div>
 				
-				<div class="matrix">
-					<div class="matrix-bracket-left"></div>
-					<div class="matrix-bracket-right"></div>
-					<table>
-						<tr><td>0</td></tr>
-						<tr><td>0</td></tr>
-						<tr><td>0</td></tr>
-						<tr><td>1</td></tr>
-					</table>
-				</div>&nbsp;=&nbsp;<span class="Q-state-vector ket">11</span>
+				<div class="no-wrap">
+					<div class="matrix">
+						<div class="matrix-bracket-left"></div>
+						<div class="matrix-bracket-right"></div>
+						<table>
+							<tr><td>0</td></tr>
+							<tr><td>0</td></tr>
+							<tr><td>0</td></tr>
+							<tr><td>1</td></tr>
+						</table>
+					</div>
+					= <span class="Q-state-vector ket">11</span>
+				</div>
 
 			</div>
 			<br>
@@ -764,10 +776,16 @@
 				<code><a href="#this.alpha">alpha</a></code>
 				and
 				<code><a href="#this.beta">beta</a></code>
-				values are anything other than exactly
-				0
-				or exactly
-				1.
+				values are anything other than
+				exactly 0 or exactly 1.
+				Up until now we’ve thought of 
+				<code><a href="#this.alpha">alpha</a></code>
+				and
+				<code><a href="#this.beta">beta</a></code>
+				values as being either 
+				<code>TRUE</code> (1) or <code>FALSE</code> (0)
+				but each is actually capable of expressing an entire spectrum between
+				<code>TRUE</code> (1) and <code>FALSE</code> (0).
 				Let’s investigate that idea by building on what we’ve already learned.
 			</p>
 
@@ -859,9 +877,10 @@
 				<code><a href="#this.alpha">alpha</a></code>
 				and 
 				<code><a href="#this.beta">beta</a></code>
-				values represent together are the 
-				<a href="https://en.wikipedia.org/wiki/Probability_amplitude" target="_blank">probability amplitude</a> that a qubit,
-				when measured, will be in either a
+				values represent are the individual
+				<a href="https://en.wikipedia.org/wiki/Probability_amplitude" target="_blank">probability amplitudes</a>
+				for each outcome; that a qubit
+				when measured will be in either a
 				<span class="Q-state-vector ket">0</span>
 				or a
 				<span class="Q-state-vector ket">1</span>
@@ -880,67 +899,128 @@
 				<span class="Q-state-vector ket">1</span>
 				is <code><a href="#this.beta">beta</a></code><sup>2</sup>.
 			</p>
+			<p>
+				We already know that a
+				<a href="#.HORIZONTAL">Horizontal qubit</a> 
+				exists in a state of
+				<span class="Q-state-vector ket">0</span>
+				(“ket zero”)
+				and therefore has a 100% chance of being measured as 
+				<span class="Q-state-vector ket">0</span>.
+			</p>
 			<br>
 			<div class="center">
-				<table class="chart">
-					<tr>
-						<td class="right">
-							<div class="matrix qubit">
-								<div class="matrix-bracket-left"></div>
-								<div class="matrix-bracket-right"></div>
-								<table>
-									<tr><td><code>alpha</code> = <strong>1</strong></td></tr>
-									<tr><td><code>beta</code> = <strong>0</strong></td></tr>
-								</table>
-							</div>
-						</td>
-						<td class="left">
-							A <a href="#.HORIZONTAL">Horizontal qubit</a> has a<br>
-							100% chance of collapsing to 
-							<span class="Q-state-vector ket">0</span>.
-						</td>
-					</tr>
-					<tr>
-						<td class="right">
-							<div class="matrix qubit">
-								<div class="matrix-bracket-left"></div>
-								<div class="matrix-bracket-right"></div>
-								<table>
-									<tr><td><code>alpha</code> = <strong>0</strong></td></tr>
-									<tr><td><code>beta</code> = <strong>1</strong></td></tr>
-								</table>
-							</div>
-						</td>
-						<td class="left">
-							A 
-							<a href="#.VERTICAL">Vertical qubit</a> has a<br>
-							100% chance of collapsing to 
-							<span class="Q-state-vector ket">1</span>.
-						</td>
-					</tr>
-					<tr>
-						<td class="right">
-							<div class="matrix qubit">
-								<div class="matrix-bracket-left"></div>
-								<div class="matrix-bracket-right"></div>
-								<table>
-									<tr><td><code>alpha</code> = <strong>1÷√2</strong></td></tr>
-									<tr><td><code>beta</code> = <strong>1÷√2</strong></td></tr>
-								</table>
-							</div>
-						</td>
-						<td class="left">
-							A 
-							<a href="#.DIAGONAL">Diagonal qubit</a> has a<br>
-							50% chance of collapsing to 
-							<span class="Q-state-vector ket">0</span> and a<br>
-							50% chance of collapsing to 
-							<span class="Q-state-vector ket">1</span>.
-						</td>
-					</tr>
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>1</td></tr>
+						<tr><td>0</td></tr>
+					</table>
+				</div>
+			</div>
+			<br>
+			<p>
+				Similarly, we also know that a
+				<a href="#.VERTICAL">Vertical qubit</a>
+				exists in a state of
+				<span class="Q-state-vector ket">1</span>
+				(“ket one”)
+				and therefore has a 100% chance of being measured as 
+				<span class="Q-state-vector ket">1</span>.
+			</p>
+			<br>
+			<div class="center">
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>0</td></tr>
+						<tr><td>1</td></tr>
+					</table>
+				</div>
+			</div>
+			<br>
+			<p>
+				Meanwhile, a 
+				<a href="#.DIAGONAL">Diagonal qubit</a>
+				exists in a state of superposition as
+				<span class="Q-state-vector ket">+</span>
+				(“ket plus”).
+				It is a state which does not have a definite value prior to measurement
+				but it does have a positive direction.
+				(Recall our <a href="#Unit_circle">unit circle</a> diagram above 
+				to see how this value lays in a positive quadrant of the graph.)
+				There is a 50% chance of it being measured as 
+				<span class="Q-state-vector ket">0</span>
+				(“ket zero”)
+				and a 50% chance of it being measured as 
+				<span class="Q-state-vector ket">1</span>
+				(“ket one”).
+			</p>
+			<br>
+			<div class="center maths">
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td>1</td></tr>
+						<tr><td>1</td></tr>
+					</table>
+				</div>
+				×
+				<table class="division">
+					<tr class="dividend"><td>1</td></tr>
+					<tr class="divisor"><td>√ 2</td></tr>
 				</table>
 			</div>
 			<br>
+			<p>
+				And finally, an
+				<a href="#.ANTI_DIAGONAL">Anti-diagonal qubit</a>
+				also exists in a state of superposition,
+				but as 
+				<span class="Q-state-vector ket">-</span>
+				(“ket minus”).
+				Like the
+				<a href="#.DIAGONAL">Diagonal qubit</a>
+				it has a 50% chance of being measured as 
+				<span class="Q-state-vector ket">0</span>
+				(“ket zero”)
+				and a 50% chance of being measured as 
+				<span class="Q-state-vector ket">1</span>
+				(“ket one”).
+
+			</p>
+			<br>
+			<div class="center maths">
+				<div class="matrix qubit">
+					<div class="matrix-bracket-left"></div>
+					<div class="matrix-bracket-right"></div>
+					<table>
+						<tr><td class="right">1</td></tr>
+						<tr><td class="right">-1</td></tr>
+					</table>
+				</div>
+				×
+				<table class="division">
+					<tr class="dividend"><td>1</td></tr>
+					<tr class="divisor"><td>√ 2</td></tr>
+				</table>
+			</div>
+			<br>
+			<p>
+				What does it mean that a
+				<a href="#.DIAGONAL">Diagonal qubit</a> state 
+				and an
+				<a href="#.ANTI_DIAGONAL">Anti-diagonal qubit</a> state
+				collapse with the same probabilies?
+				What about their conjugates which also behave in this same fashion?
+				These questions begin to hint at the quirks of 
+				<a href="Q-Circuit.html">quantum circuits</a>;
+				the aspects of quantum computing
+				that quantum algorithms are engineered to take advantage of.
+			</p>
 
 
 
@@ -1010,7 +1090,7 @@
 				<code><a href="#this.beta">beta</a></code>
 				before squaring them,
 				we continue to ensure that our sum of squares
-				will equal exactly 1—a simple,  
+				will equal exactly 1; that it continues to equal a simple,  
 				<a href="Q-ComplexNumber.html#Real_numbers">real number</a>
 				rather than an 
 				<a href="Q-ComplexNumber.html#Imaginary_numbers">imaginary</a> or 

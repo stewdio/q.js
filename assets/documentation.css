@@ -491,6 +491,11 @@ h5 + pre {
 
 	margin-top: 0.5rem;
 }
+.no-wrap {
+
+	display: inline-block;
+	white-space: nowrap;
+}
 
 
 

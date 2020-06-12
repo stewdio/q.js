@@ -400,7 +400,8 @@ dd .maths {
 	/*font-family: var( --Q-font-family-mono );*/
 	font-weight: 300;
 	line-height: 1em;
-	text-align: right;
+	/*text-align: right;*/
+	text-align: center;
 }
 .matrix td {
 
