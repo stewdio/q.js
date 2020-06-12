@@ -137,9 +137,9 @@
 			<p>
 				Now that we know a qubit is a 
 				<a href="Q-Matrix.html">matrix</a>,
-				we also know that we can
-				<a href="Q-Matrix.html#.add">add</a> qubits,
-				<a href="Q-Matrix.html#.multiply">multiply</a> qubits,
+				we also know that we can perform
+				<a href="Q-Matrix.html#.add">addition</a> with qubits,
+				perform <a href="Q-Matrix.html#.multiply">multiplication</a> with qubits,
 				and so on—just as one can do with any matrix.
 				(That will become rather important
 				when we eventually introduce the idea of
@@ -232,8 +232,8 @@
 					<div class="matrix-bracket-left"></div>
 					<div class="matrix-bracket-right"></div>
 					<table>
-						<tr><td><code>alpha</code> = <strong>1</strong></td></tr>
-						<tr><td><code>beta</code> = <strong>0</strong></td></tr>
+						<tr><td class="right"><code>alpha</code> = <strong>1</strong></td></tr>
+						<tr><td class="right"><code>beta</code> = <strong>0</strong></td></tr>
 					</table>
 				</div>
 				<div class="center middle">
@@ -276,8 +276,8 @@
 					<div class="matrix-bracket-left"></div>
 					<div class="matrix-bracket-right"></div>
 					<table>
-						<tr><td><code>alpha</code> = <strong>0</strong></td></tr>
-						<tr><td><code>beta</code> = <strong>1</strong></td></tr>
+						<tr><td class="right"><code>alpha</code> = <strong>0</strong></td></tr>
+						<tr><td class="right"><code>beta</code> = <strong>1</strong></td></tr>
 					</table>
 				</div>
 				<div class="center middle">
@@ -412,8 +412,8 @@
 					<div class="matrix-bracket-left"></div>
 					<div class="matrix-bracket-right"></div>
 					<table>
-						<tr><td><code>alpha</code> = <strong>1</strong></td></tr>
-						<tr><td><code>beta</code> = <strong>0</strong></td></tr>
+						<tr><td class="right"><code>alpha</code> = <strong>1</strong></td></tr>
+						<tr><td class="right"><code>beta</code> = <strong>0</strong></td></tr>
 					</table>
 				</div>
 				<div class="center middle">
@@ -431,14 +431,15 @@
 				a qubit is the simplest example of a
 				quantum <em>state vector</em>—a
 				list of all possible states
-				for an quantum system to exist in,
+				for a quantum system to exist in,
 				with each possible state accompanied by the probability
 				that the system is indeed in that state.
 				When a single qubit is measured 
 				there are only two possible states 
 				for it to be in: 
 				<code><strong>0</strong></code> or <code><strong>1</strong></code>.
-				This is why a qubit is represented by a two-unit vector.
+				This is why a qubit is represented by a two-element vector;
+				one element per possible outcome.
 				On this very short list of possible outcomes,
 				<code><strong>0</strong></code> is the first possible outcome
 				and <code><strong>1</strong></code> is the second possible outcome.
@@ -615,6 +616,8 @@
 				a quantum state vector.
 				It is a list of the votes per each possible 
 				outcome—and for a single qubit there are only two possible outcomes.
+				We’ve also seen that we can represent the state of a multi-qubit system
+				where there are more than two possible outcomes. 
 			</p>
 
 
@@ -947,8 +950,9 @@
 				exists in a state of superposition as
 				<span class="Q-state-vector ket">+</span>
 				(“ket plus”).
-				It is a state which does not have a definite value prior to measurement
-				but it does have a positive direction.
+				It is a state which does not have a definite result value prior to measurement
+				but it does of course have a definite state vector
+				and that state vector has a positive orientation.
 				(Recall our <a href="#Unit_circle">unit circle</a> diagram above 
 				to see how this value lays in a positive quadrant of the graph.)
 				There is a 50% chance of it being measured as 
