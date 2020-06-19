@@ -56,7 +56,7 @@
 		<script src="Q/Q-Circuit-Editor.js"></script>
 		<script src="assets/navigation.js"></script>
 
-		<script src="assets/Three/three.117.min.js"></script>
+		<script src="assets/Three/three.117.min.js"></script>s
 		<script src="assets/Three/OrbitControls.js"></script>
 		<script src="assets/MeshLine/MeshLine.js"></script>
 		<script src="assets/Tween/tween.min.js"></script>
@@ -2283,12 +2283,11 @@ const blochSphereGates = document.getElementById( 'bloch-sphere-gates' )
 
 
 
-
 const render = function(){
 
 	requestAnimationFrame( render )
 	controls.update()
-	sphere.rotation.y += 0.0009;
+	// sphere.rotation.y += 0.0009;
 	
 	cameraWorldPosition = camera.getWorldPosition( new THREE.Vector3() )
 	xAxisLabel.lookAt( cameraWorldPosition )
@@ -2300,14 +2299,11 @@ const render = function(){
 }
 
 
-
-
-
-
 changeBlochVector()
-sphere.rotation.x = 0.7
-sphere.rotation.z = 0.2
+sphere.rotation.x = Math.PI /  4
+sphere.rotation.y = Math.PI / -4
 render()
+
 
 
 
