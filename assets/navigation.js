@@ -79,8 +79,8 @@ document.addEventListener( 'DOMContentLoaded', function(){
 			<a href="${ home }"><img src="assets/Q-mark.png" title="Quantum JavaScript (Q.js)" alt="Q.js brand mark"></a>
 		</h1>
 		<ul>
-			<li><h2><a href="${ home }">What is Q?</a></h2></li>
-			<li><h2><a href="resources.html">Learning resources</a></h2></li>
+			<li><h2><a href="${ home }">Introducing Q.js</a></h2></li>
+			<li><h2><a href="resources.html">Quantum concepts</a></h2></li>
 			<li><h2><a href="playground.html">Circuit playground</a></h2></li>
 			<li><h2><a href="tutorials.html">Circuit tutorials</a></h2></li>
 			<li><h2><a href="contributing.html">Join our project</a></h2></li>
