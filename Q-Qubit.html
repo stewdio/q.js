@@ -56,8 +56,9 @@
 		<script src="Q/Q-Circuit-Editor.js"></script>
 		<script src="assets/navigation.js"></script>
 
-		<script src="assets/Three/three.105.min.js"></script>
+		<script src="assets/Three/three.117.min.js"></script>
 		<script src="assets/Three/OrbitControls.js"></script>
+		<script src="assets/MeshLine/MeshLine.js"></script>
 		<script src="assets/Tween/tween.min.js"></script>
 		<script src="assets/blochSphere.js"></script>
 		<script src="assets/SurfaceText.js"></script>
@@ -1762,81 +1763,81 @@ var fox = new <a href="Q.html">Q</a>.Qubit( 1, 0 )
 		<script>
 
 
+//  Examples created in the docs:
+
 var fox = new Q.Qubit( 1, 0 )
 
 
-//  First, what do the docs have to say?
-
-// console.log( '\n\nQ.Qubit\n\n', Q.Qubit.help(), '\n\n' )
 
 
 
 
-
-/*
-
-	O M F G
-
-	Please forgive the below hideous code
-	and interaction that goes with it.
-	And the explainer text above that goes with it.
-	This is SUCH A WORK IN PROGRESS RIGHT NOW!
-	Coming back to fix shortly.
-
-*/
+    //////////////////
+   //              //
+  //   Overhead   //
+ //              //
+//////////////////
 
 
-
-
-//  First, what do the docs have to say?
-
-//console.log( '\n\nQ.Qubit\n', Q.Qubit.help(), '\n\n' )
-
-
-
-
-
-
-
-
-
-
-
-
-
-//  Create our Bloch Sphere explorer.
+//  Three.js overhead for creating a scene, etc.
+//  including orbit controls
+//  for our Bloch Sphere explorer.
 
 const
 container = document.getElementById( 'bloch-sphere' ),
-fov    = 45,
-width  =  container.offsetWidth,
-height =  container.offsetHeight,
-aspect =  width / height,
-near   = 0.1,
-far    = 12,
-scene  = new THREE.Scene(),
-camera = new THREE.PerspectiveCamera( fov, aspect, near, far ),
-renderer = new THREE.WebGLRenderer({ 
+fov       = 45,
+width     = container.offsetWidth,
+height    = container.offsetHeight,
+aspect    = width / height,
+near      = 0.1,
+far       = 12,
+scene     = new THREE.Scene(),
+camera    = new THREE.PerspectiveCamera( fov, aspect, near, far ),
+renderer  = new THREE.WebGLRenderer({ 
 
-	// canvas: container,
 	alpha: true,
 	antialias: true
-})
+}),
+controls  = new THREE.OrbitControls( camera, renderer.domElement )
 
 container.appendChild( renderer.domElement )
 camera.position.z = 4
 renderer.setPixelRatio( window.devicePixelRatio )
 renderer.setSize( width, height )
 scene.add( camera )
+controls.enableZoom = false
+controls.enablePan  = false
+
+window.addEventListener( 'resize', function(){
+
+	const
+	width  = container.offsetWidth,
+	height = container.offsetHeight
+	
+	camera.aspect = width / height
+	camera.updateProjectionMatrix()
+	renderer.setSize( width, height )
+
+}, false )
+
+
+
+
+
+
+    /////////////////
+   //             //
+  //   Content   //
+ //             //
+/////////////////
 
 
 //  We’re going to pull a little trick here...
-//  Let’s put our light in the opposite place of where we want it
-//  because we’ll render the back face of the sphere
-//  so light direction will be inverted.
+//  Let’s put our light in the OPPOSITE place of where we want it
+//  because we’ll render the BACK FACE of the sphere
+//  which makes the light direction appear inverted.
 //  We’ll also attach it to the camera
 //  so the light doesn’t appear to move.
-
 
 const light = new THREE.PointLight( 0xFFFFFF, 0.5, 0 )
 light.position.set( -2, 6, 0 )
@@ -1844,60 +1845,56 @@ camera.add( light )
 scene.add( new THREE.AmbientLight( 0xFFFFFF, 0.8 ))
 
 
-//  x
+//  Create the sphere GROUP to attach everything to,
+//  the lines of latitude and longitude,
+//  and the semi-transparent surface.
 
-const sphere = new THREE.Group()
-scene.add( sphere )
+const 
+radius     = 1,
+lineWidth  = 0.01,
+radiusSafe = radius + lineWidth,
+sphere     = new THREE.Group()
+grid       = createQuadSphere({ radiusSafe: 1 }),
+surface    = new THREE.Mesh( 
 
-
-//  Create lines of latitude and longitude.
-
-const grid = createQuadSphere({ radius: 1 })
-sphere.add( grid )
-
-
-//  x
-
-const innards = new THREE.Mesh( 
-
-	new THREE.SphereGeometry( 0.995, 32, 32 ),
+	new THREE.SphereGeometry( radius, 32, 32 ),
 	new THREE.MeshPhongMaterial({
 
 		side: THREE.FrontSide,
 		color: 0xE6E6E6,
 		transparent: true,
-		opacity: 0.8
+		opacity: 0.95
 	}) 
 )
-sphere.add( innards )
+
+scene.add( sphere )
+sphere.add( grid, surface )
 
 
+//  Create the X, Y, and Z axis lines.
 
+const 
+xAxis = new THREE.Mesh(
 
-const yAxis = new THREE.Mesh(
-
-	new THREE.BoxGeometry( 2.5, 0.01, 0.01 ),
-	new THREE.MeshBasicMaterial({ color: 0x59A112 })
-)
-sphere.add( yAxis )
-
-const xAxis = new THREE.Mesh(
-
-	new THREE.BoxGeometry( 0.01, 0.01, 2.5 ),
+	new THREE.BoxGeometry( lineWidth, lineWidth, radius * 2.5 ),
 	new THREE.MeshBasicMaterial({ color: 0xCF1717 })
-)
-sphere.add( xAxis )
+),
+yAxis = new THREE.Mesh(
 
-const zAxis = new THREE.Mesh(
+	new THREE.BoxGeometry( radius * 2.5, lineWidth, lineWidth ),
+	new THREE.MeshBasicMaterial({ color: 0x59A112 })
+),
+zAxis = new THREE.Mesh(
 
-	new THREE.BoxGeometry( 0.01, 2.5, 0.01 ),
+	new THREE.BoxGeometry( lineWidth, radius * 2.5, lineWidth ),
 	new THREE.MeshBasicMaterial({ color: 0x0F66BD })
 )
-sphere.add( zAxis )
+
+sphere.add( xAxis, yAxis, zAxis )
 
 
-
-
+//  Create X, Y, and Z arrow heads,
+//  indicating positive directions for all three.
 
 const 
 arrowLength     = 0.101,//  I know, weird, right?
@@ -1906,7 +1903,7 @@ arrowHeadWidth  = 0.1
 
 sphere.add( new THREE.ArrowHelper( 
 
-	new THREE.Vector3( 0, 1.0, 0 ), 
+	new THREE.Vector3( 0, 1.00, 0 ), 
 	new THREE.Vector3( 0, 1.25, 0 ), 
 	arrowLength, 
 	0x0F66BD, 
@@ -1915,7 +1912,7 @@ sphere.add( new THREE.ArrowHelper(
 ))
 sphere.add( new THREE.ArrowHelper( 
 
-	new THREE.Vector3( 1.0, 0, 0 ), 
+	new THREE.Vector3( 1.00, 0, 0 ), 
 	new THREE.Vector3( 1.25, 0, 0 ), 
 	arrowLength, 
 	0x59A112, 
@@ -1924,7 +1921,7 @@ sphere.add( new THREE.ArrowHelper(
 ))
 sphere.add( new THREE.ArrowHelper( 
 
-	new THREE.Vector3( 0, 0, 1.0 ), 
+	new THREE.Vector3( 0, 0, 1.00 ), 
 	new THREE.Vector3( 0, 0, 1.25 ),
 	arrowLength, 
 	0xCF1717, 
@@ -1933,40 +1930,52 @@ sphere.add( new THREE.ArrowHelper(
 ))
 
 
+//  Create the X, Y, and Z axis labels.
 
+const
+axesLabelStyle = {
 
-
-const axesLabelStyle = {
-
-	width:   128,
-	height:  128,
+	width:  128,
+	height: 128,
 	fillStyle: '#000',
 	font: 'bold italic 64px Georgia, "Times New Roman", serif'
-}
-const xAxisLabel = new SurfaceText( axesLabelStyle )
+},
+xAxisLabel = new SurfaceText( axesLabelStyle ),
+yAxisLabel = new SurfaceText( axesLabelStyle ),
+zAxisLabel = new SurfaceText( axesLabelStyle )
+
 xAxisLabel.print( 'x' )
 xAxisLabel.position.set( 0, 0, 1.45 )
 xAxisLabel.scale.set( 0.002, 0.002, 0.002 )
 xAxis.add( xAxisLabel )
 
-const yAxisLabel = new SurfaceText( axesLabelStyle )
 yAxisLabel.print( 'y' )
 yAxisLabel.position.set( 1.45, 0, 0 )
 yAxisLabel.scale.set( 0.002, 0.002, 0.002 )
 yAxis.add( yAxisLabel )
 
-
-const zAxisLabel = new SurfaceText( axesLabelStyle )
 zAxisLabel.print( 'z' )
 zAxisLabel.position.set( 0, 1.45, 0 )
 zAxisLabel.scale.set( 0.002, 0.002, 0.002 )
 zAxis.add( zAxisLabel )
 
 
+//  Create the line from the sphere’s origin 
+//  out to where the Bloch vector intersects
+//  with the sphere’s surface.
+
+const blochVector = new THREE.Mesh(
+
+	new THREE.BoxGeometry( 0.04, 0.04, 1 ),
+	new THREE.MeshBasicMaterial({ color: 0xF2B90D })
+)
+blochVector.geometry.translate( 0, 0, 0.5 )
+sphere.add( blochVector )
 
 
-
-//  The cone that points to the surface of the sphere.
+//  Create the cone that indicates the Bloch vector
+//  and points to where that vectors
+//  intersects with the surface of the sphere.
 
 const blochPointer = new THREE.Mesh(
 
@@ -1980,66 +1989,58 @@ blochPointer.lookAt( new THREE.Vector3() )
 sphere.add( blochPointer )
 
 
-//  The line from the sphere’s origin to its surface.
-
-const blochVector = new THREE.Mesh(
-
-	new THREE.BoxGeometry( 0.04, 0.04, 1 ),
-	new THREE.MeshBasicMaterial({ color: 0xF2B90D })
-)
-blochVector.geometry.translate( 0, 0, 0.5 )
-sphere.add( blochVector )
-
-
-//  x
+//  Create the Theta ring that will belt the sphere.
 
 const
-radius = 1.005,
-// arcR = radius * Math.sin( bloch.theta ),
-// arcH = radius * Math.cos( bloch.theta ),
-arcR = radius * Math.sin( Math.PI / 2 ),
-arcH = radius * Math.cos( Math.PI / 2 ),
-thetaGeometry = createLatitudeArc( arcR, 64, Math.PI / 2, Math.PI * 2 )
+arcR = radiusSafe * Math.sin( Math.PI / 2 ),
+arcH = radiusSafe * Math.cos( Math.PI / 2 ),
+thetaGeometry = createLatitudeArc( arcR, 64, Math.PI / 2, Math.PI * 2 ),
+thetaLine = new MeshLine(),
+thetaPhiMaterial = new MeshLineMaterial({
+
+	color: 0x505962,
+	lineWidth: lineWidth * 2,
+	sizeAttenuation: true
+})
 
 thetaGeometry.rotateX( Math.PI / 2 )
 thetaGeometry.rotateY( Math.PI / 2 )
 thetaGeometry.translate( 0, arcH, 0 )
-const thetaRing = new THREE.Line( 
+thetaLine.setGeometry( thetaGeometry )
 
-	thetaGeometry,
-	new THREE.LineBasicMaterial({ color: 0x000000 })
+const thetaMesh = new THREE.Mesh( 
+
+	thetaLine.geometry,
+	thetaPhiMaterial
 )
-sphere.add( thetaRing )
+sphere.add( thetaMesh )
 
 
-//  x
+//  Create the Phi arc that will draw from the north pole
+//  down to wherever the Theta arc rests.
 
 const
-//arc = createLongitudeArc( radius, 64, Math.PI / -2, Math.PI ),
-arc = createLongitudeArc( radius, 64, 0, Math.PI * 2 ),
-phiGeometry = arc.clone()
+phiGeometry = createLongitudeArc( radiusSafe, 64, 0, Math.PI * 2 ),
+phiLine     = new MeshLine()
 
-// phiGeometry.rotateY( bloch.phi )
-const phiArc = new THREE.Line( 
+phiLine.setGeometry( phiGeometry )
+const phiMesh = new THREE.Mesh( 
 
-	phiGeometry,
-	new THREE.LineBasicMaterial({ color: 0x000000 })
+	phiLine.geometry,
+	thetaPhiMaterial
 )
-sphere.add( phiArc )
+sphere.add( phiMesh )
 
 
 
 
 
 
-
-
-const controls = new THREE.OrbitControls( camera, renderer.domElement )
-controls.enableZoom = false
-controls.enablePan = false
-
-
-
+    /////////////////
+   //             //
+  //   Updates   //
+ //             //
+/////////////////
 
 
 function changeBlochVector(){
@@ -2053,7 +2054,8 @@ function changeBlochVector(){
 
 		//  Deselect all buttons -- except the one in use!
 
-		Array.from( document.getElementById( 'bloch-sphere-qubits' ).children )
+		Array
+		.from( document.getElementById( 'bloch-sphere-qubits' ).children )
 		.forEach( function( child ){
 
 			if( child.getAttribute( 'data-qubit' ) === qubitTarget.name ){
@@ -2062,7 +2064,8 @@ function changeBlochVector(){
 			}
 			else child.classList.remove( 'selected' )
 		})
-		Array.from( document.getElementById( 'bloch-sphere-gates' ).children )
+		Array
+		.from( document.getElementById( 'bloch-sphere-gates' ).children )
 		.forEach( function( child ){
 
 			if( child.getAttribute( 'data-gate' ) === gateTarget.name ){
@@ -2120,10 +2123,6 @@ function changeBlochVector(){
 
 
 
-
-
-
-
 function updateBlochVector( input ){
 
 
@@ -2136,77 +2135,58 @@ function updateBlochVector( input ){
 		Math.sin( input.theta ) * Math.cos( input.phi )
 	)
 	blochPointer.lookAt( new THREE.Vector3() )
-
-
 	blochVector.lookAt( blochPointer.getWorldPosition( new THREE.Vector3() ))
 
 
 	//  Update our angles labels.
 	
-	document.getElementById( 'bloch-theta' ).innerText = ( input.theta * Q.RADIANS_TO_DEGREES ).toFixed()
-	document.getElementById( 'bloch-phi' ).innerText = ( input.phi * Q.RADIANS_TO_DEGREES ).toFixed()
+	document
+	.getElementById( 'bloch-theta' )
+	.innerText = ( input.theta * Q.RADIANS_TO_DEGREES ).toFixed()
+	
+	document
+	.getElementById( 'bloch-phi' )
+	.innerText = ( input.phi * Q.RADIANS_TO_DEGREES ).toFixed()
 
 
-	const thetaSafe = Math.max( input.theta, 0.01 )
-	thetaRing.scale.set(
+	//  Slide the Theta ring from the north pole
+	//  down as far south as it needs to go
+	//  and scale its radius so it belts the sphere.
 
-		Math.sin( thetaSafe ),
+	const thetaScaleSafe = Math.max( input.theta, 0.01 )
+	thetaMesh.scale.set(
+
+		Math.sin( thetaScaleSafe ),
 		1,
-		Math.sin( thetaSafe )
+		Math.sin( thetaScaleSafe )
 	)
-	thetaRing.position.y = Math.cos( input.theta )
+	thetaMesh.position.y = Math.cos( input.theta )
 
 
-	
-	//phiArc.rotateY( Math.PI - input.phi )
-	phiArc.rotation.y = input.phi - Math.PI / 2
+	//  Redraw the Phi arc to extend from the north pole
+	//  down to only as far as the Theta ring sits.
+	//  Then rotate the whole Phi arc about the poles.
 
+	for( 
 
+		let 
+		i = 0, 
+		limit = phiGeometry.vertices.length; 
 
+		i < limit;
+		i ++ ){
 
-	/*
-	const
-	radius = 1,
-	arcR = radius * Math.sin( bloch.theta ),
-	arcH = radius * Math.cos( bloch.theta ),
-	thetaGeometry = createLatitudeArc( arcR, 64, Math.PI / 2, Math.PI * 2 )
+		const gain = i / ( limit -  1 )
+		phiGeometry.vertices[ i ].set(
 
-	thetaGeometry.rotateX( Math.PI / 2 )
-	thetaGeometry.rotateY( Math.PI / 2 )
-	thetaGeometry.translate( 0, arcH, 0 )
-	sphere.add( new THREE.Line( 
+			Math.sin( input.theta * gain ) * radiusSafe,
+			Math.cos( input.theta * gain ) * radiusSafe,
+			0
+		)
+	}
+	phiLine.setGeometry( phiGeometry )
+	phiMesh.rotation.y = input.phi - Math.PI / 2
 
-		thetaGeometry,
-		new THREE.LineBasicMaterial({ color: 0x000000 })
-	))
-
-
-
-	const
-	arc = createLongitudeArc( radius, 64, Math.PI / -2, Math.PI )
-	phiGeometry = arc.clone()
-	
-	phiGeometry.rotateY( bloch.phi )
-	sphere.add( new THREE.Line( 
-
-		phiGeometry,
-		new THREE.LineBasicMaterial({ color: 0x000000 })
-	))
-	*/
-
-
-	// blochVector.lookAt( blochCorrected )
-
-	// mesh.position.copy( blochCorrected.clone().multiplyScalar( 10.1 + size / 2 ))
-
-	//blochVectorLine.geometry.vertices[ 1 ].copy( blochCorrected.clone().multiplyScalar( 10.1 ))
-	
-	// const a = blochCorrected.clone()//.multiplyScalar( 10.1 )
-	// blochVectorLine.geometry.setPositions([ 
-	
-	// 	0,  0, 0,  
-	// 	a.x, a.y, a.z
-	// ])
 }
 
 
@@ -2214,9 +2194,11 @@ function updateBlochVector( input ){
 
 
 
-
-
-
+    ///////////////////
+   //               //
+  //   Interface   //
+ //               //
+///////////////////
 
 
 //  Create the qubit buttons.
@@ -2252,8 +2234,6 @@ Object.keys( Q.Qubit.constants ).forEach( function( key ){
 	
 	blochSphereQubits.appendChild( qubitContainerElement )
 })
-
-
 
 
 //  Create the gate buttons.
@@ -2304,22 +2284,6 @@ const blochSphereGates = document.getElementById( 'bloch-sphere-gates' )
 
 
 
-
-
-
-
-
-
-changeBlochVector()
-
-
-
-
-sphere.rotation.x = 0.7
-sphere.rotation.z = 0.2
-
-
-
 const render = function(){
 
 	requestAnimationFrame( render )
@@ -2335,18 +2299,14 @@ const render = function(){
 	TWEEN.update()
 }
 
-window.addEventListener( 'resize', function () {
 
-	const
-	width  = container.offsetWidth,
-	height = container.offsetHeight
-	
-	camera.aspect = width / height
-	camera.updateProjectionMatrix()
-	renderer.setSize( width, height )
 
-}, false )
 
+
+
+changeBlochVector()
+sphere.rotation.x = 0.7
+sphere.rotation.z = 0.2
 render()
 
 
