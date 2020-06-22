@@ -53,24 +53,10 @@ const SurfaceText = function( options ){
 	Object.assign( context, options )//  Too promiscuous? 
 	context.translate( translateX, translateY )
 	context.scale( scaleX, scaleY )
-	
-	const texture = new THREE.Texture( canvas )
+
+	const texture = new THREE.CanvasTexture( canvas )
 	texture.needsUpdate = true
 	
-	const mesh = new THREE.Mesh(
-		
-		//new THREE.PlaneGeometry( options.virtual.width, options.virtual.height ),
-		new THREE.PlaneGeometry( canvas.width, canvas.height ),
-		new THREE.MeshBasicMaterial({
-
-			map:         texture,
-			// side:        THREE.FrontSide,
-			side:        THREE.DoubleSide,
-			transparent: true,
-			// blending:    THREE.AdditiveBlending,
-			alphaTest:   0.5
-		})
-	)
 
 
 
@@ -105,8 +91,10 @@ const SurfaceText = function( options ){
 		return lines
 	}
 
+
+
 	
-	mesh.print = function( text, x, y ){
+	texture.print = function( text, x, y ){
 
 		if( !text ) text = options.text
 		else options.text = text
@@ -144,26 +132,10 @@ const SurfaceText = function( options ){
 	}
 	
 	
-	mesh.destroy = function(){
-
-		mesh.parent.remove( mesh )
-		mesh.material.dispose()
-		mesh.geometry.dispose()
-	}
-
 	
-	mesh.print( options.text )
-
 	
-	// return { 
-		
-	// 	options,
-	// 	canvas,
-	// 	texture,
-	// 	print,
-	// 	destroy
-	// }
-	return mesh
+	texture.print( options.text, options.x, options.y )
+	return texture
 }
 
 
