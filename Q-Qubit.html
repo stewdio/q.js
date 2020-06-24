@@ -56,13 +56,13 @@
 		<script src="Q/Q-Circuit-Editor.js"></script>
 		<script src="assets/navigation.js"></script>
 
-		<script src="assets/Three/three.117.min.js"></script>s
+		<script src="assets/Three/three.117.min.js"></script>
 		<script src="assets/Three/OrbitControls.js"></script>
 		<script src="assets/MeshLine/MeshLine.js"></script>
-		<script src="assets/Tween/tween.min.js"></script>
-		<script src="assets/blochSphere.js"></script>
+		<script src="assets/Tween/tween.min.js"></script>		
 		<script src="assets/SurfaceText.js"></script>
-			
+		<script src="Q/Q-BlochSphere.js"></script>
+		
 	</head>
 	<body>
 		<main class="api">
@@ -1192,11 +1192,6 @@
 
 
 
-			<!-- <h3>Visualizing qubit states</h3> -->
-			
-
-
-
 			<h4 id="Bloch_sphere">The Bloch sphere</h4>
 			<p>
 				And that’s really it. 
@@ -1217,30 +1212,175 @@
 				By taking the absolute value of <span class="symbol">a</span> or <span class="symbol">b</span>
 				we effectively cancel out this extra dimension.
 				-->
+				Select one of the following qubit states 
+				to observe its graph on the Bloch sphere.
+				Tap and drag the sphere itself to rotate it.
 			</p>
-			<br>
-			<p>
-				Select a qubit state to begin with:
-			</p>
-			<div id="bloch-sphere-qubits"></div>
-			<p>
-				Select a gate to apply to the qubit:
-			</p>
-			<div id="bloch-sphere-gates"></div>
-			<div class="interactive-container" id="bloch-sphere">
-				<div class="interactive-component" id="bloch-angles">
-					<code>
-						<a href="#this.alpha">alpha</a> = <span id="bloch-alpha">—</span><br>
-						<a href="#this.beta" >beta&nbsp;</a> = <span id="bloch-beta">—</span>
-					</code><br>
-					<br>
-					<code><span id="bloch-theta">—</span>˚</code> polar angle θ (theta)<br>
-					<code><span id="bloch-phi">—</span>˚</code> azimuth angle ϕ (phi)
+			
+			<div class="center" id="bloch-sphere-qubit-selector"></div>
+			<div id="bloch-sphere-qubit-descriptions">
+				<div class="bloch-sphere-qubit-description" 
+					id="bloch-sphere-qubit-description-h">
+					<div class="matrix qubit">
+						<div class="matrix-bracket-left"></div>
+						<div class="matrix-bracket-right"></div>
+						<table>
+							<tr><td>1</td></tr>
+							<tr><td>0</td></tr>
+						</table>
+					</div>
+					&nbsp;
+					<div class="left middle">
+						<a href="#.HORIZONTAL">Horizontal qubit</a>
+						<div class="comment">
+							Imagine the 
+							<a href="https://en.wikipedia.org/wiki/North_Pole" target="_blank">North Pole</a>.
+						</div>
+					</div>
+				</div>
+				<div class="bloch-sphere-qubit-description" 
+					id="bloch-sphere-qubit-description-v">
+					<div class="matrix qubit">
+						<div class="matrix-bracket-left"></div>
+						<div class="matrix-bracket-right"></div>
+						<table>
+							<tr><td>0</td></tr>
+							<tr><td>1</td></tr>
+						</table>
+					</div>
+					&nbsp;
+					<div class="left middle">
+						<a href="#.VERTICAL">Vertical qubit</a>
+						<div class="comment">
+							Imagine the 
+							<a href="https://en.wikipedia.org/wiki/South_Pole" target="_blank">South Pole</a>.
+						</div>
+					</div>
+				</div>
+				<div class="bloch-sphere-qubit-description" 
+					id="bloch-sphere-qubit-description-d">
+					<div class="matrix qubit">
+						<div class="matrix-bracket-left"></div>
+						<div class="matrix-bracket-right"></div>
+						<table>
+							<tr><td>1</td></tr>
+							<tr><td>1</td></tr>
+						</table>
+					</div>
+					×
+					<table class="division">
+						<tr class="dividend"><td>1</td></tr>
+						<tr class="divisor"><td>√ 2</td></tr>
+					</table>
+					&nbsp;
+					<div class="left middle">
+						<a href="#.DIAGONAL">Diagonal qubit</a>
+						<div class="comment">
+							Imagine the 
+							<a href="https://en.wikipedia.org/wiki/Gulf_of_Guinea" target="_blank">Gulf of Guinea</a>.
+							<!-- off of Africa. -->
+						</div>
+					</div>
+				</div>
+				<div class="bloch-sphere-qubit-description" 
+					id="bloch-sphere-qubit-description-a">
+					<div class="matrix qubit">
+						<div class="matrix-bracket-left"></div>
+						<div class="matrix-bracket-right"></div>
+						<table>
+							<tr><td>&nbsp;1</td></tr>
+							<tr><td>-1</td></tr>
+						</table>
+					</div>
+					×
+					<table class="division">
+						<tr class="dividend"><td>1</td></tr>
+						<tr class="divisor"><td>√ 2</td></tr>
+					</table>
+					&nbsp;
+					<div class="left middle">
+						<a href="#.ANTI_DIAGONAL">Anti-diagonal qubit</a>
+						<div class="comment">
+							Imagine 
+							<a href="https://en.wikipedia.org/wiki/Kiribati" target="_blank">Kiribati</a>.
+							<!-- in the Pacific Ocean. -->
+						</div>
+					</div>
+				</div>
+				<div class="bloch-sphere-qubit-description" 
+					id="bloch-sphere-qubit-description-r">
+					<div class="matrix qubit">
+						<div class="matrix-bracket-left"></div>
+						<div class="matrix-bracket-right"></div>
+						<table>
+							<tr><td>1</td></tr>
+							<tr><td>-<span class="symbol">i</span></td></tr>
+						</table>
+					</div>
+					×
+					<table class="division">
+						<tr class="dividend"><td>1</td></tr>
+						<tr class="divisor"><td>√ 2</td></tr>
+					</table>
+					&nbsp;
+					<div class="left middle">
+						<a href="#.RIGHT_HAND_CIRCULAR_POLARIZED">Right-hand circular polarized qubit</a>
+						<div class="comment">
+							Imagine the
+							<a href="https://en.wikipedia.org/wiki/Gal%C3%A1pagos_Islands" target="_blank">Galápagos Islands</a>.
+							<!-- in the Pacific Ocean. -->
+						</div>
+					</div>
+				</div>
+				<div class="bloch-sphere-qubit-description" 
+					id="bloch-sphere-qubit-description-l">
+
+					<div class="matrix qubit">
+						<div class="matrix-bracket-left"></div>
+						<div class="matrix-bracket-right"></div>
+						<table>
+							<tr><td>1</td></tr>
+							<tr><td><span class="symbol">i</span></td></tr>
+						</table>
+					</div>
+					×
+					<table class="division">
+						<tr class="dividend"><td>1</td></tr>
+						<tr class="divisor"><td>√ 2</td></tr>
+					</table>
+					&nbsp;
+					<div class="left middle">
+						<a href="#.LEFT_HAND_CIRCULAR_POLARIZED">Left-hand circular polarized qubit</a>
+						<div class="comment">
+							Imagine
+							<a href="https://en.wikipedia.org/wiki/Sumatra" target="_blank">Sumatra</a>.
+							<!-- in the Indian Ocean. -->
+						</div>
+					</div>
+
 				</div>
 			</div>
-			<p>
-				Click and drag the Bloch Sphere to rotate it.
-			</p>
+			<div class="interactive-container" id="bloch-sphere">
+				<div class="interactive-component" id="bloch-angles">					
+					<code><span id="bloch-theta">—</span>˚</code> 
+					polar angle θ <span class="comment">(theta)</span>
+					<br>
+					<code><span id="bloch-phi">—</span>˚</code> 
+					azimuth angle ϕ <span class="comment">(phi)</span>
+				</div>
+				<div class="bloch-sphere-orbit-controls"></div>
+			</div>
+
+			
+			
+
+
+
+
+
+
+
+
 			<hr>
 			<h3>Constructor</h3>
 			<p>
@@ -1798,7 +1938,8 @@ renderer  = new THREE.WebGLRenderer({
 	alpha: true,
 	antialias: true
 }),
-controls  = new THREE.OrbitControls( camera, renderer.domElement )
+controls = new THREE.OrbitControls( camera, document.querySelector( '.bloch-sphere-orbit-controls' ))
+
 
 container.appendChild( renderer.domElement )
 camera.position.z = 4
@@ -1832,372 +1973,22 @@ window.addEventListener( 'resize', function(){
 /////////////////
 
 
-//  We’re going to pull a little trick here...
-//  Let’s put our light in the OPPOSITE place of where we want it
-//  because we’ll render the BACK FACE of the sphere
-//  which makes the light direction appear inverted.
-//  We’ll also attach it to the camera
-//  so the light doesn’t appear to move.
-
-const light = new THREE.PointLight( 0xFFFFFF, 0.5, 0 )
-light.position.set( -2, 6, 0 )
+const light = new THREE.PointLight( 0xFFFFFF, 0.3, 0 )
+light.position.set( -3, 6, 0 )
 camera.add( light )
-scene.add( new THREE.AmbientLight( 0xFFFFFF, 0.8 ))
+scene.add( new THREE.AmbientLight( 0xFFFFFF, 0.7 ))
 
-
-//  Create the sphere GROUP to attach everything to,
-//  the lines of latitude and longitude,
-//  and the semi-transparent surface.
-
-const 
-radius     = 1,
-lineWidth  = 0.01,
-radiusSafe = radius + lineWidth,
-sphere     = new THREE.Group()
-grid       = createQuadSphere({ radiusSafe: 1 }),
-surface    = new THREE.Mesh( 
-
-	new THREE.SphereGeometry( radius, 32, 32 ),
-	new THREE.MeshPhongMaterial({
-
-		side: THREE.FrontSide,
-		color: 0xE6E6E6,
-		transparent: true,
-		opacity: 0.95
-	}) 
-)
-
-scene.add( sphere )
-sphere.add( grid, surface )
-
-
-//  Create the X, Y, and Z axis lines.
-
-const 
-xAxis = new THREE.Mesh(
-
-	new THREE.BoxGeometry( lineWidth, lineWidth, radius * 2.5 ),
-	new THREE.MeshBasicMaterial({ color: 0xCF1717 })
-),
-yAxis = new THREE.Mesh(
-
-	new THREE.BoxGeometry( radius * 2.5, lineWidth, lineWidth ),
-	new THREE.MeshBasicMaterial({ color: 0x59A112 })
-),
-zAxis = new THREE.Mesh(
-
-	new THREE.BoxGeometry( lineWidth, radius * 2.5, lineWidth ),
-	new THREE.MeshBasicMaterial({ color: 0x0F66BD })
-)
-
-sphere.add( xAxis, yAxis, zAxis )
-
-
-//  Create X, Y, and Z arrow heads,
-//  indicating positive directions for all three.
-
-const 
-arrowLength     = 0.101,//  I know, weird, right?
-arrowHeadLength = 0.1,
-arrowHeadWidth  = 0.1
-
-sphere.add( new THREE.ArrowHelper( 
-
-	new THREE.Vector3( 0, 1.00, 0 ), 
-	new THREE.Vector3( 0, 1.25, 0 ), 
-	arrowLength, 
-	0x0F66BD, 
-	arrowHeadLength, 
-	arrowHeadWidth
-))
-sphere.add( new THREE.ArrowHelper( 
-
-	new THREE.Vector3( 1.00, 0, 0 ), 
-	new THREE.Vector3( 1.25, 0, 0 ), 
-	arrowLength, 
-	0x59A112, 
-	arrowHeadLength, 
-	arrowHeadWidth
-))
-sphere.add( new THREE.ArrowHelper( 
-
-	new THREE.Vector3( 0, 0, 1.00 ), 
-	new THREE.Vector3( 0, 0, 1.25 ),
-	arrowLength, 
-	0xCF1717, 
-	arrowHeadLength, 
-	arrowHeadWidth
-))
-
-
-//  Create the X, Y, and Z axis labels.
-
-const
-axesLabelStyle = {
-
-	width:  128,
-	height: 128,
-	fillStyle: '#000000',
-	font: 'bold italic 64px Georgia, "Times New Roman", serif'
-},
-xAxisLabel = new THREE.Sprite( 
-
-	new THREE.SpriteMaterial({ map: SurfaceText( axesLabelStyle )})
-),
-yAxisLabel = new THREE.Sprite( 
-
-	new THREE.SpriteMaterial({ map: SurfaceText( axesLabelStyle )})
-),
-zAxisLabel = new THREE.Sprite( 
-
-	new THREE.SpriteMaterial({ map: SurfaceText( axesLabelStyle )})
-)
-
-xAxisLabel.material.map.print( 'x' )
-xAxisLabel.position.set( 0, 0, 1.45 )
-xAxisLabel.scale.set( 0.25, 0.25, 0.25 )
-xAxis.add( xAxisLabel )
-
-yAxisLabel.material.map.print( 'y' )
-yAxisLabel.position.set( 1.45, 0, 0 )
-yAxisLabel.scale.set( 0.25, 0.25, 0.25 )
-yAxis.add( yAxisLabel )
-
-zAxisLabel.material.map.print( 'z' )
-zAxisLabel.position.set( 0, 1.45, 0 )
-zAxisLabel.scale.set( 0.25, 0.25, 0.25 )
-zAxis.add( zAxisLabel )
-
-
-
-
-//  Create the line from the sphere’s origin 
-//  out to where the Bloch vector intersects
-//  with the sphere’s surface.
-
-const blochVector = new THREE.Mesh(
-
-	new THREE.BoxGeometry( 0.04, 0.04, 1 ),
-	new THREE.MeshBasicMaterial({ color: 0xF2B90D })
-)
-blochVector.geometry.translate( 0, 0, 0.5 )
-sphere.add( blochVector )
-
-
-//  Create the cone that indicates the Bloch vector
-//  and points to where that vectors
-//  intersects with the surface of the sphere.
-
-const blochPointer = new THREE.Mesh(
-
-	new THREE.CylinderBufferGeometry( 0, 0.5, 1, 32, 1 ),
-	new THREE.MeshPhongMaterial({ color: 0xF2B90D })
-)
-blochPointer.geometry.translate( 0, -0.5, 0 )
-blochPointer.geometry.rotateX( Math.PI / 2 )
-blochPointer.geometry.scale( 0.2, 0.2, 0.2 )
-blochPointer.lookAt( new THREE.Vector3() )
-sphere.add( blochPointer )
-
-
-//  Create the Theta ring that will belt the sphere.
-
-const
-arcR = radiusSafe * Math.sin( Math.PI / 2 ),
-arcH = radiusSafe * Math.cos( Math.PI / 2 ),
-thetaGeometry = createLatitudeArc( arcR, 64, Math.PI / 2, Math.PI * 2 ),
-thetaLine = new MeshLine(),
-thetaPhiMaterial = new MeshLineMaterial({
-
-	color: 0x505962,
-	lineWidth: lineWidth * 2,
-	sizeAttenuation: true
-})
-
-thetaGeometry.rotateX( Math.PI / 2 )
-thetaGeometry.rotateY( Math.PI / 2 )
-thetaGeometry.translate( 0, arcH, 0 )
-thetaLine.setGeometry( thetaGeometry )
-
-const thetaMesh = new THREE.Mesh( 
-
-	thetaLine.geometry,
-	thetaPhiMaterial
-)
-sphere.add( thetaMesh )
-
-
-//  Create the Phi arc that will draw from the north pole
-//  down to wherever the Theta arc rests.
-
-const
-phiGeometry = createLongitudeArc( radiusSafe, 64, 0, Math.PI * 2 ),
-phiLine     = new MeshLine()
-
-phiLine.setGeometry( phiGeometry )
-const phiMesh = new THREE.Mesh( 
-
-	phiLine.geometry,
-	thetaPhiMaterial
-)
-sphere.add( phiMesh )
-
-
-
-
-
-
-    /////////////////
-   //             //
-  //   Updates   //
- //             //
-/////////////////
-
-
-function changeBlochVector(){
-
-
-	//  Are we ready for a change?
-
-	if( qubitCurrent !== qubitTarget ||
-		gateCurrent  !== gateTarget ){
-
-
-		//  Deselect all buttons -- except the one in use!
-
-		Array
-		.from( document.getElementById( 'bloch-sphere-qubits' ).children )
-		.forEach( function( child ){
-
-			if( child.getAttribute( 'data-qubit' ) === qubitTarget.name ){
-
-				child.classList.add( 'selected' )
-			}
-			else child.classList.remove( 'selected' )
-		})
-		Array
-		.from( document.getElementById( 'bloch-sphere-gates' ).children )
-		.forEach( function( child ){
-
-			if( child.getAttribute( 'data-gate' ) === gateTarget.name ){
-
-				child.classList.add( 'selected' )
-			}
-			else child.classList.remove( 'selected' )
-		})
-
-
-		//  x
-
-		if( qubitCurrent === undefined ) qubitCurrent = qubitTarget
-		if( gateCurrent  === undefined ) gateCurrent  = gateTarget
-
-		const 
-		currentState = qubitCurrent.applyGate( gateCurrent ), 
-		currentBloch = currentState.toBlochSphere()
-		targetState  = qubitTarget.applyGate( gateTarget ),
-		targetBloch  = targetState.toBlochSphere()
-
-
-		//  Update our alpha-beta readout.
-
-		document.getElementById( 'bloch-alpha' ).innerText = targetState.alpha.toText( 4 )
-		document.getElementById( 'bloch-beta' ).innerText = targetState.beta.toText( 4 )
-
-
-		//  Tween our indicator to the target state.
-
-		window.tween = new TWEEN.Tween({
-
-				theta: currentBloch.theta,
-				phi:   currentBloch.phi
-			
-			})//  Yes, this will be destructive to the blochState object.
-			.to({
-
-				theta: targetBloch.theta,
-				phi:   targetBloch.phi
-			
-			}, 1000 )
-			.easing( TWEEN.Easing.Quadratic.InOut )
-			.onUpdate( updateBlochVector )
-			.start()
-
-
-		//  Make it ready to go for next time.
-
-		qubitCurrent = qubitTarget
-		gateCurrent  = gateTarget
-	}
-}
-
-
-
-
-function updateBlochVector( input ){
-
-
-	//  Move the big-ass surface pointer.
-
-	blochPointer.position.set(
-		
-		Math.sin( input.theta ) * Math.sin( input.phi ),
-		Math.cos( input.theta ),
-		Math.sin( input.theta ) * Math.cos( input.phi )
-	)
-	blochPointer.lookAt( new THREE.Vector3() )
-	blochVector.lookAt( blochPointer.getWorldPosition( new THREE.Vector3() ))
-
-
-	//  Update our angles labels.
+const blochSphere = new Q.BlochSphere( function(){
 	
 	document
 	.getElementById( 'bloch-theta' )
-	.innerText = ( input.theta * Q.RADIANS_TO_DEGREES ).toFixed()
+	.innerText = ( this.state.theta * Q.RADIANS_TO_DEGREES ).toFixed().padStart( 3, ' ' )
 	
 	document
 	.getElementById( 'bloch-phi' )
-	.innerText = ( input.phi * Q.RADIANS_TO_DEGREES ).toFixed()
-
-
-	//  Slide the Theta ring from the north pole
-	//  down as far south as it needs to go
-	//  and scale its radius so it belts the sphere.
-
-	const thetaScaleSafe = Math.max( input.theta, 0.01 )
-	thetaMesh.scale.set(
-
-		Math.sin( thetaScaleSafe ),
-		1,
-		Math.sin( thetaScaleSafe )
-	)
-	thetaMesh.position.y = Math.cos( input.theta )
-
-
-	//  Redraw the Phi arc to extend from the north pole
-	//  down to only as far as the Theta ring sits.
-	//  Then rotate the whole Phi arc about the poles.
-
-	for( 
-
-		let 
-		i = 0, 
-		limit = phiGeometry.vertices.length; 
-
-		i < limit;
-		i ++ ){
-
-		const gain = i / ( limit -  1 )
-		phiGeometry.vertices[ i ].set(
-
-			Math.sin( input.theta * gain ) * radiusSafe,
-			Math.cos( input.theta * gain ) * radiusSafe,
-			0
-		)
-	}
-	phiLine.setGeometry( phiGeometry )
-	phiMesh.rotation.y = input.phi - Math.PI / 2
-}
+	.innerText = ( this.state.phi * Q.RADIANS_TO_DEGREES ).toFixed().padStart( 3, ' ' )
+})
+scene.add( blochSphere.group )
 
 
 
@@ -2213,82 +2004,75 @@ function updateBlochVector( input ){
 
 //  Create the qubit buttons.
 
-let 
-qubitTarget = Q.Qubit.HORIZONTAL,
-qubitCurrent
+const 
+blochSphereQubits = document.getElementById( 'bloch-sphere-qubit-selector' ),
+selectBlochQubit  = function( qubit ){
 
-const blochSphereQubits = document.getElementById( 'bloch-sphere-qubits' )
+
+	//  Mark the appropriate qubit as selected.
+
+	const qubitEl = document.getElementById( 
+
+		'bloch-sphere-qubit-'+ 
+		 qubit.label.toLowerCase() 
+	)
+	Array
+	.from( document.querySelectorAll( '.bloch-sphere-qubit' ))
+	.forEach( function( el ){
+
+		if( el === qubitEl ) el.classList.add( 'selected' )
+		else el.classList.remove( 'selected' )
+	})
+
+
+	//  Reveal the description for this qubit.
+
+	const descriptionEl = document.getElementById( 
+
+		'bloch-sphere-qubit-description-'+ 
+		 qubit.label.toLowerCase() 
+	)
+	Array
+	.from( document.querySelectorAll( '.bloch-sphere-qubit-description' ))
+	.forEach( function( el ){
+
+		if( el === descriptionEl ){
+
+			el.style.display = 'block'
+			setTimeout( function(){ el.classList.add( 'show' )}, 10 )
+		}
+		else {
+
+			el.classList.remove( 'show' )
+			setTimeout( function(){ el.style.display = 'none' }, 1000 )
+		}
+	})
+
+
+	//  Set a new target for the Bloch sphere.
+
+	blochSphere.setTargetState( qubit.toBlochSphere())
+}
+
 Object.keys( Q.Qubit.constants ).forEach( function( key ){
 
 	const 
 	qubit = Q.Qubit[ key ],
-	qubitContainerElement = document.createElement( 'div' ),
-	qubitElement = document.createElement( 'div' ),
-	qubitNameElement = document.createElement( 'p' )
-	
-	qubitContainerElement.classList.add( 'bloch-sphere-qubit-container' )
-	qubitContainerElement.setAttribute( 'data-qubit', qubit.name )
-	qubitContainerElement.addEventListener( 'click', function(){
-
-		qubitTarget = qubit
-		changeBlochVector()
-	})
+	qubitElement = document.createElement( 'div' )
 	
 	qubitElement.classList.add( 'bloch-sphere-qubit' )
+	qubitElement.setAttribute( 'id', 'bloch-sphere-qubit-'+ qubit.label.toLowerCase() )
 	qubitElement.setAttribute( 'title', qubit.name )
+	qubitElement.setAttribute( 'data-qubit', qubit.name )
 	qubitElement.innerText = qubit.label
-	qubitContainerElement.appendChild( qubitElement )
+	qubitElement.addEventListener( 'click', function(){
 
-	qubitNameElement.innerText = qubit.name
-	qubitContainerElement.appendChild( qubitNameElement )
-	
-	blochSphereQubits.appendChild( qubitContainerElement )
-})
-
-
-//  Create the gate buttons.
-
-let 
-gateTarget = Q.Gate.IDENTITY,
-gateCurrent
-
-const blochSphereGates = document.getElementById( 'bloch-sphere-gates' )
-;[
-	'IDENTITY',
-	'HADAMARD',
-	'PAULI_X',
-	'PAULI_Y',
-	'PAULI_Z',
-	'PHASE',
-	'PI_8'
-
-].forEach( function( gateName ){
-
-	const 
-	gate = Q.Gate[ gateName ],
-	gateContainerElement = document.createElement( 'div' ),
-	gateElement = document.createElement( 'div' ),
-	gateNameElement = document.createElement( 'p' )
-
-	gateContainerElement.classList.add( 'bloch-sphere-gate-container' )
-	gateContainerElement.setAttribute( 'data-gate',  gate.name )
-	gateContainerElement.addEventListener( 'click', function(){
-
-		gateTarget = gate
-		changeBlochVector()
+		selectBlochQubit( qubit )
 	})
-
-	gateElement.classList.add( 'bloch-sphere-gate' )
-
-	gateElement.setAttribute( 'title', gate.name )
-	gateElement.innerText = gate.symbol
-	gateContainerElement.appendChild( gateElement )
-
-	gateNameElement.innerText = gate.name
-	gateContainerElement.appendChild( gateNameElement )
-	
-	blochSphereGates.appendChild( gateContainerElement )
+	blochSphereQubits.appendChild( qubitElement )
 })
+
+
 
 
 
@@ -2297,21 +2081,15 @@ const render = function(){
 
 	requestAnimationFrame( render )
 	controls.update()
-	// sphere.rotation.y += 0.0009;
-	
-	cameraWorldPosition = camera.getWorldPosition( new THREE.Vector3() )
-	xAxisLabel.lookAt( cameraWorldPosition )
-	yAxisLabel.lookAt( cameraWorldPosition )
-	zAxisLabel.lookAt( cameraWorldPosition )
-
-	renderer.render( scene, camera )
+	blochSphere.update()
 	TWEEN.update()
+	renderer.render( scene, camera )
 }
 
 
-changeBlochVector()
-sphere.rotation.x = Math.PI /  4
-sphere.rotation.y = Math.PI / -4
+blochSphere.group.rotation.x = Math.PI /  4
+blochSphere.group.rotation.y = Math.PI / -4
+selectBlochQubit( Q.Qubit.HORIZONTAL )
 render()
 
 

@@ -482,8 +482,7 @@ code {
 
 	color: var( --Q-text-code-color );
 }
-code .comment,
-samp .comment {
+.comment {
 
 	color: var( --Q-text-code-comment-color );
 }
@@ -1302,10 +1301,10 @@ table#console-open-commands .na {
 .interactive-container {
 	
 	position: relative;
-	margin: 12px 0;
+	margin: 1rem 0;
 	width:  100%;
-	height: 240px;	
-	padding-bottom: calc( 100% + 24px );
+	/*height: 240px;	*/
+	padding-bottom: 100%;/*   Forces a square aspect ratio.   */
 	overflow: hidden;
 }
 .interactive-container canvas {
@@ -1313,24 +1312,21 @@ table#console-open-commands .na {
 	position: absolute;
 	top: 0;
 	left: 0;
-	border-radius: 16px;
+	/*border-radius: 16px;*/
 	width:  100%;
 	height: 100%;
-	background-color: hsl( 
+/*	background-color: hsl( 
 		
 		var( --Q-color-blue-hue ), 
 		10%, 
 		98%
-	);
+	);*/
 	overflow: hidden;
 }
 .interactive-component {
 
 	position: absolute;
-	top:  24px;
-	left: 24px;
 	z-index: 40;
-
 }
 
 
@@ -1713,19 +1709,13 @@ table#console-open-commands .na {
 /********************/
 
 
-#bloch-sphere-qubits, 
-#bloch-sphere-gates {
+#bloch-sphere-qubit-selector, 
+#bloch-sphere-gate-selector {
 
 	/*display: block;*/
 	width: 100%;
-	margin: 0.5rem 0 1rem 0;
+	margin: 2rem 0 0 0;
 	border-radius: 0.4rem;
-	background-color: hsl( 
-		
-		var( --Q-color-blue-hue ), 
-		10%, 
-		98%
-	);
 	padding: 0;
 	font-family: var( --Q-font-family-sans );
 	overflow: hidden;
@@ -1737,69 +1727,82 @@ table#console-open-commands .na {
 		50%
 	);
 }
-.bloch-sphere-qubit-container, 
-.bloch-sphere-gate-container {
-
-	float: left;
-	width:  5rem; 
-	height: 9rem;
-
-	width: calc( 100% / 6 );
-
-	padding-top: 0.4rem;
-	text-align: center;
-	overflow: hidden;
-	cursor: pointer;
-	transition: background-color 0.5s;
-}
-.bloch-sphere-qubit-container:hover,
-.bloch-sphere-gate-container:hover  {
-	
-	background-color: hsl( 
-		
-		var( --Q-color-blue-hue ), 
-		10%, 
-		90%
-	);
-	transition: background-color 0s;
-}
-.bloch-sphere-qubit-container.selected,
-.bloch-sphere-gate-container.selected {
-	
-	/*background-color: var( --Q-color-charcoal );*/
-	background-color: hsl( 
-		
-		var( --Q-color-blue-hue ), 
-		10%, 
-		85%
-	);
-	color: black;
-}
-.bloch-sphere-qubit-container p,
-.bloch-sphere-gate-container p {
-
-	font-size:   0.8rem;
-	line-height: 1.2rem;
-}
 .bloch-sphere-qubit {
 
-	display: inline-block;
-	margin:  0.5rem 0;
+	display: inline-block;	
+	margin:  0 0.5rem;
 	width:  3rem;
 	height: 3rem;
 	border-radius: 100%;
-	background-color: hsl( 
-		
-		var( --Q-color-blue-hue ), 
-		10%, 
-		35%
-	);
+	border: 1px solid var( --Q-hyperlink-internal-color );
+	color: var( --Q-hyperlink-internal-color );
 	text-align: center;
 	font-weight: 400;
 	font-size:   1.2rem;
-	line-height: 2.92rem;
+	line-height: 2.8rem;
+	cursor: pointer;
+	transition: background-color 0.5s;
+	   -moz-user-select: none;
+	-webkit-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
+}
+.bloch-sphere-qubit:hover {
+
+	background-color: var( --Q-hyperlink-internal-color );
+	color: white;
+	transition: none;
+}
+.bloch-sphere-qubit.selected,
+.bloch-sphere-qubit.selected:hover {
+
+	border: 1px solid black;
+	background-color: black;
 	color: white;
 }
+
+
+#bloch-sphere-qubit-descriptions {
+
+	position: relative;
+	height: 6rem;
+	width: 100%;
+	overflow: hidden;
+}
+.bloch-sphere-qubit-description {
+
+	position: absolute;
+	top:    0;
+	right:  0;
+	bottom: 0;
+	left:   0;
+	text-align: center;
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+.bloch-sphere-qubit-description.show {
+
+	opacity: 1;
+	transition: opacity 1s 0.5s;
+}
+#bloch-sphere {
+
+	position: relative;
+	margin: 0;
+}
+.bloch-sphere-orbit-controls {
+
+	position: absolute;
+	z-index: 99;
+	top:  calc( 50% - 31% );
+	left: calc( 50% - 31% );
+	width:  62%;
+	height: 62%;
+	border-radius: 100%;
+}
+
+
+
 
 
 .bloch-sphere-gate-container {
@@ -1826,11 +1829,21 @@ table#console-open-commands .na {
 	line-height: 2.92rem;
 	color: white;
 }
-.interactive-container {
 
-	font-family: var( --Q-font-family-sans );
+
+#bloch-angles {
+
+	position: absolute;
+	bottom: 0;
+	right:  2rem;
 }
+#bloch-alpha,
+#bloch-beta,
+#bloch-theta,
+#bloch-phi {
 
+	white-space: pre;
+}
 
 
 
@@ -2090,6 +2103,12 @@ header h1 svg {
 	nav p {
 
 		display: none;
+	}
+
+
+	.bloch-sphere-qubit {
+
+		margin:  0 0.15rem;
 	}
 }
 

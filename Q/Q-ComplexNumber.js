@@ -64,6 +64,83 @@ Object.assign( Q.ComplexNumber, {
 	constants: {},
 	createConstant: Q.createConstant,
 	createConstants: Q.createConstants,
+
+
+
+
+	toText: function( rNumber, iNumber, roundToDecimal, padPositive ){
+
+
+		//  Should we round these numbers?
+		//  Our default is yes: to 3 digits.
+		//  Otherwise round to specified decimal.
+
+		if( typeof roundToDecimal !== 'number' ) roundToDecimal = 3
+		const factor = Math.pow( 10, roundToDecimal )
+		rNumber = Math.round( rNumber * factor ) / factor
+		iNumber = Math.round( iNumber * factor ) / factor
+
+
+		//  Convert padPositive 
+		//  from a potential Boolean
+		//  to a String.
+		//  If we don’t receive a FALSE
+		//  then we’ll pad the positive numbers.
+
+		padPositive = padPositive === false ? '' : ' '
+
+
+		//  We need the absolute values of each.
+
+		let
+		rAbsolute = Math.abs( rNumber ),
+		iAbsolute = Math.abs( iNumber )
+
+
+		//  And an absolute value string.
+
+		let
+		rText = rAbsolute.toString(),
+		iText = iAbsolute.toString()
+
+
+		//  Is this an IMAGINARY-ONLY number?
+		//  Don’t worry: -0 === 0.
+
+		if( rNumber === 0 ){
+
+			if( iNumber ===  Infinity ) return padPositive +'∞i'
+			if( iNumber === -Infinity ) return '-∞i'
+			if( iNumber ===  0 ) return padPositive +'0'
+			if( iNumber === -1 ) return '-i'
+			if( iNumber ===  1 ) return padPositive +'i'
+			if( iNumber >=   0 ) return padPositive + iText +'i'
+			if( iNumber <    0 ) return '-'+ iText +'i'
+			return iText +'i'//  NaN
+		}
+		
+
+		//  This number contains a real component
+		//  and may also contain an imaginary one as well.
+
+		if( rNumber ===  Infinity ) rText = padPositive +'∞'
+		else if( rNumber === -Infinity ) rText = '-∞'
+		else if( rNumber >= 0 ) rText = padPositive + rText
+		else if( rNumber <  0 ) rText = '-'+ rText
+
+		if( iNumber ===  Infinity ) return rText +' + ∞i'
+		if( iNumber === -Infinity ) return rText +' - ∞i'
+		if( iNumber ===  0 ) return rText
+		if( iNumber === -1 ) return rText +' - i'
+		if( iNumber ===  1 ) return rText +' + i'
+		if( iNumber >    0 ) return rText +' + '+ iText +'i'
+		if( iNumber <    0 ) return rText +' - '+ iText +'i'
+		return rText +' + '+ iText +'i'//  NaN
+	},
+
+
+
+
 	isNumberLike: function( n ){
 
 		return isNaN( n ) === false && ( typeof n === 'number' || n instanceof Number )
@@ -120,6 +197,7 @@ Object.assign( Q.ComplexNumber, {
 			}
 		)
 	},
+
 
 
 
@@ -522,6 +600,13 @@ Object.assign( Q.ComplexNumber.prototype, {
 		if( this.imaginary === 0 ) return this.real
 		return this
 	},
+	toText: function( roundToDecimal, padPositive ){
+
+
+		//  Note: this will kill function chaining.
+
+		return Q.ComplexNumber.toText( this.real, this.imaginary, roundToDecimal, padPositive )
+	},
 
 
 	isNaN: function( n ){
@@ -583,84 +668,6 @@ Object.assign( Q.ComplexNumber.prototype, {
 	subtract: function( b ){
 
 		return Q.ComplexNumber.subtract( this, b )
-	},
-
-
-	toText: function( roundToDecimal, padPositive ){
-
-
-		//  Convert padPositive 
-		//  from a potential Boolean
-		//  to a String.
-		//  If we don’t receive a FALSE
-		//  then we’ll pad the positive numbers.
-
-		padPositive = padPositive === false ? '' : ' '
-
-
-		//  Right. Let’s copy over the actual numbers.
-
-		let
-		rNumber = this.real,
-		iNumber = this.imaginary
-
-
-		//  Should we round these numbers?
-		//  Our default is yes: to 3 digits.
-		//  Otherwise round to specified decimal.
-
-		if( typeof roundToDecimal !== 'number' ) roundToDecimal = 3
-		const factor = Math.pow( 10, roundToDecimal )
-		rNumber = Math.round( rNumber * factor ) / factor
-		iNumber = Math.round( iNumber * factor ) / factor
-
-
-		//  We need the absolute values of each.
-
-		let
-		rAbsolute = Math.abs( rNumber ),
-		iAbsolute = Math.abs( iNumber )
-
-
-		//  And an absolute value string.
-
-		let
-		rText = rAbsolute.toString(),
-		iText = iAbsolute.toString()
-
-
-		//  Is this an IMAGINARY-ONLY number?
-		//  Don’t worry: -0 === 0.
-
-		if( rNumber === 0 ){
-
-			if( iNumber ===  Infinity ) return padPositive +'∞i'
-			if( iNumber === -Infinity ) return '-∞i'
-			if( iNumber ===  0 ) return padPositive +'0'
-			if( iNumber === -1 ) return '-i'
-			if( iNumber ===  1 ) return padPositive +'i'
-			if( iNumber >=   0 ) return padPositive + iText +'i'
-			if( iNumber <    0 ) return '-'+ iText +'i'
-			return iText +'i'//  NaN
-		}
-		
-
-		//  This number contains a real component
-		//  and may also contain an imaginary one as well.
-
-		if( rNumber ===  Infinity ) rText = padPositive +'∞'
-		else if( rNumber === -Infinity ) rText = '-∞'
-		else if( rNumber >= 0 ) rText = padPositive + rText
-		else if( rNumber <  0 ) rText = '-'+ rText
-
-		if( iNumber ===  Infinity ) return rText +' + ∞i'
-		if( iNumber === -Infinity ) return rText +' - ∞i'
-		if( iNumber ===  0 ) return rText
-		if( iNumber === -1 ) return rText +' - i'
-		if( iNumber ===  1 ) return rText +' + i'
-		if( iNumber >    0 ) return rText +' + '+ iText +'i'
-		if( iNumber <    0 ) return rText +' - '+ iText +'i'
-		return rText +' + '+ iText +'i'//  NaN
 	},
 
 

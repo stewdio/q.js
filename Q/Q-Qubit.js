@@ -268,10 +268,18 @@ Object.assign( Q.Qubit, {
 		return {
 
 
+			//  Wow does this make tweening easier down the road.
+
+			alphaReal:      qubit.alpha.real,
+			alphaImaginary: qubit.alpha.imaginary,
+			betaReal:       qubit.beta.real,
+			betaImaginary:  qubit.beta.imaginary,
+
+
 			//  Ummm... I’m only returnig the REAL portions. Please forgive me!
 
 			theta: theta.real,
-			phi: phi.real,
+			phi:   phi.real,
 			vector, //  Wonked YZX vector for maths because maths.
 			position//  Un-wonked XYZ for use by actual 3D engines.
 		}

@@ -1281,6 +1281,54 @@ var fox = Q.Gate.PHASE.clone({ symbol: 'F', phi: Math.PI })
 
 
 
+
+//  Create the gate buttons.
+/*
+let 
+gateTarget = Q.Gate.IDENTITY,
+gateCurrent
+
+const blochSphereGates = document.getElementById( 'bloch-sphere-gates' )
+;[
+	'IDENTITY',
+	'HADAMARD',
+	'PAULI_X',
+	'PAULI_Y',
+	'PAULI_Z',
+	'PHASE',
+	'PI_8'
+
+].forEach( function( gateName ){
+
+	const 
+	gate = Q.Gate[ gateName ],
+	gateContainerElement = document.createElement( 'div' ),
+	gateElement = document.createElement( 'div' ),
+	gateNameElement = document.createElement( 'p' )
+
+	gateContainerElement.classList.add( 'bloch-sphere-gate-container' )
+	gateContainerElement.setAttribute( 'data-gate',  gate.name )
+	gateContainerElement.addEventListener( 'click', function(){
+
+		gateTarget = gate
+		changeBlochVector()
+	})
+
+	gateElement.classList.add( 'bloch-sphere-gate' )
+
+	gateElement.setAttribute( 'title', gate.name )
+	gateElement.innerText = gate.symbol
+	gateContainerElement.appendChild( gateElement )
+
+	gateNameElement.innerText = gate.name
+	gateContainerElement.appendChild( gateNameElement )
+	
+	blochSphereGates.appendChild( gateContainerElement )
+})
+*/
+
+
+
 		</script>
 	</body>
 </html>
