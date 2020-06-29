@@ -11,7 +11,8 @@ Q.BlochSphere = function( onValueChange ){
 		isRotating: false,
 		radius:     1,
 		radiusSafe: 1.01,
-		lineWidth:  0.01,
+		axesLineWidth: 0.01,
+		arcLineWidth:  0.015,
 		state:      Q.Qubit.HORIZONTAL.toBlochSphere(),
 		group:      new THREE.Group(),
 		onValueChange
@@ -31,6 +32,7 @@ Q.BlochSphere = function( onValueChange ){
 			opacity: 0.97
 		})
 	)
+	surface.receiveShadow = true
 	this.group.add( surface )
 
 
@@ -41,17 +43,17 @@ Q.BlochSphere = function( onValueChange ){
 	const 
 	xAxis = new THREE.Mesh(
 
-		new THREE.BoxGeometry( this.lineWidth, this.lineWidth, this.radius * 2.5 ),
+		new THREE.BoxGeometry( this.axesLineWidth, this.axesLineWidth, this.radius * 2.5 ),
 		new THREE.MeshBasicMaterial({ color: Q.BlochSphere.xAxisColor })
 	),
 	yAxis = new THREE.Mesh(
 
-		new THREE.BoxGeometry( this.radius * 2.5, this.lineWidth, this.lineWidth ),
+		new THREE.BoxGeometry( this.radius * 2.5, this.axesLineWidth, this.axesLineWidth ),
 		new THREE.MeshBasicMaterial({ color: Q.BlochSphere.yAxisColor })
 	),
 	zAxis = new THREE.Mesh(
 
-		new THREE.BoxGeometry( this.lineWidth, this.radius * 2.5, this.lineWidth ),
+		new THREE.BoxGeometry( this.axesLineWidth, this.radius * 2.5, this.axesLineWidth ),
 		new THREE.MeshBasicMaterial({ color: Q.BlochSphere.zAxisColor })
 	)
 
@@ -102,7 +104,7 @@ Q.BlochSphere = function( onValueChange ){
 
 		width:  128,
 		height: 128,
-		fillStyle: '#505962',
+		fillStyle: Q.BlochSphere.vectorColor,//'#505962',
 		font: 'bold italic 64px Georgia, "Times New Roman", serif'
 	},
 	xAxisLabel = new THREE.Sprite( 
@@ -143,6 +145,7 @@ Q.BlochSphere = function( onValueChange ){
 	zAxis.add( zAxisLabel )
 
 
+	this.blochColor = new THREE.Color()
 
 
 	//  Create the line from the sphere’s origin 
@@ -171,9 +174,9 @@ Q.BlochSphere = function( onValueChange ){
 	this.blochPointer.geometry.rotateX( Math.PI / 2 )
 	this.blochPointer.geometry.scale( 0.2, 0.2, 0.2 )
 	this.blochPointer.lookAt( new THREE.Vector3() )
+	this.blochPointer.receiveShadow = true
+	this.blochPointer.castShadow = true
 	this.group.add( this.blochPointer )
-
-
 
 
 	//  Create the Theta ring that will belt the sphere.
@@ -185,8 +188,8 @@ Q.BlochSphere = function( onValueChange ){
 	thetaLine = new MeshLine(),
 	thetaPhiMaterial = new MeshLineMaterial({
 
-		color: 0x505962,
-		lineWidth: this.lineWidth * 3,
+		color: Q.BlochSphere.thetaPhiColor,//0x505962,
+		lineWidth: this.arcLineWidth * 3,
 		sizeAttenuation: true
 	})
 
@@ -238,11 +241,17 @@ Q.BlochSphere = function( onValueChange ){
 
 Object.assign( Q.BlochSphere, {
 
-	xAxisColor:  0xCF1717,//  Red.
-	yAxisColor:  0x59A112,//  Green.
-	zAxisColor:  0x0F66BD,//  Blue.
-	vectorColor: 0xF2B90D,//  Yellow.
+	// xAxisColor:  0xCF1717,//  Red.
+	// yAxisColor:  0x59A112,//  Green.
+	// zAxisColor:  0x0F66BD,//  Blue.
 
+	xAxisColor:  0x333333,
+	yAxisColor:  0x333333,
+	zAxisColor:  0x333333,
+
+	// vectorColor: 0xF2B90D,//  Yellow.
+	vectorColor: 0xFFFFFF,
+	thetaPhiColor: 0x333333,
 
 	//  It’s important that we build the texture
 	//  right here and now, rather than load an image.
@@ -262,7 +271,42 @@ Object.assign( Q.BlochSphere, {
 		const context = canvas.getContext( '2d' )
 		context.fillStyle = 'hsl( 210, 20%, 100% )'
 		context.fillRect( 0, 0, width, height )
-		context.fillStyle = 'hsl( 210, 20%, 90% )'
+
+
+// The start gradient point is at x=20, y=0
+// The end gradient point is at x=220, y=0
+
+const hueGradient = context.createLinearGradient( 0,height / 2, width, height / 2 )
+for( let i = 0; i <= 36; i ++ ){
+
+	hueGradient.addColorStop( i / 36, 'hsl( '+ (( i - 9 ) * 10 ) +', 100%, 50% )' )
+}
+context.fillStyle = hueGradient
+context.fillRect( 0, 0, width, height )
+
+const whiteGradient = context.createLinearGradient( width / 2, 0, width / 2, height / 2 )
+whiteGradient.addColorStop( 0.000, 'hsla( 0, 0%, 100%, 1 )' )
+whiteGradient.addColorStop( 0.125, 'hsla( 0, 0%, 100%, 1 )' )
+whiteGradient.addColorStop( 0.875, 'hsla( 0, 0%, 100%, 0 )' )
+context.fillStyle = whiteGradient
+context.fillRect( 0, 0, width, height / 2 )
+
+const blackGradient = context.createLinearGradient( width / 2, height / 2, width / 2, height )
+blackGradient.addColorStop( 0.125, 'hsla( 0, 0%, 0%, 0 )' )
+blackGradient.addColorStop( 0.875, 'hsla( 0, 0%, 0%, 1 )' )
+blackGradient.addColorStop( 1.000, 'hsla( 0, 0%, 0%, 1 )' )
+context.fillStyle = blackGradient
+context.fillRect( 0, height / 2, width, height )
+
+
+
+
+
+
+
+
+		// context.fillStyle = 'hsl( 210, 20%, 90% )'
+		context.fillStyle = 'hsla( 0, 0%, 0%, 0.2 )'
 
 		const yStep = height / 16
 		for( let y = 0; y <= height; y += yStep ){
@@ -454,17 +498,31 @@ Object.assign( Q.BlochSphere.prototype, {
 
 			//  Tween our indicator to the target state.
 
-			window.tween = new TWEEN.Tween( this.state )
-				.to( target, 1000 )
-				.easing( TWEEN.Easing.Quadratic.InOut )
-				.onUpdate( this.updateBlochVector.bind( this ) )
-				.start()
 
 
-			//  Make it ready to go for next time.
 
-			// qubitCurrent = qubitTarget	
-		// }
+		//  Always take the shortest path around
+		//  even if it crosses the 0˚ / 360˚ boundary,
+		//  ie. between Anti-Ddiangonal (-90˚) and 
+		//  Right0-and circular polarized (180˚).
+
+		const 
+		rangeHalf = Math.PI,
+		distance  = this.state.phi - target.phi
+
+		if( Math.abs( distance ) > rangeHalf ){
+
+			this.state.phi += Math.sign( distance ) * rangeHalf * -2
+		}
+
+		
+		//  Create the tween.
+
+		window.tween = new TWEEN.Tween( this.state )
+		.to( target, 1000 )
+		.easing( TWEEN.Easing.Quadratic.InOut )
+		.onUpdate( this.updateBlochVector.bind( this ) )
+		.start()
 	},
 	updateBlochVector: function( state ){
 
@@ -479,6 +537,43 @@ Object.assign( Q.BlochSphere.prototype, {
 		)
 		this.blochPointer.lookAt( new THREE.Vector3() )
 		this.blochVector.lookAt( this.blochPointer.getWorldPosition( new THREE.Vector3() ))
+
+
+
+
+		let hue = state.phi * THREE.Math.RAD2DEG
+		if( hue < 0 ) hue = 360 + hue
+
+
+		this.blochColor.setHSL(
+
+			hue / 360,
+			1,
+			1 - ( state.theta / Math.PI )
+		)
+		this.blochPointer.material.color = this.blochColor
+		this.blochVector.material.color  = this.blochColor
+
+
+
+
+	/*	
+
+
+make a single  color and then just setHSL on this loop.
+do i need to do material.needsUpdate = true ????
+
+
+		this.blochPointer.material.color = 
+			new THREE.Color( 'hsl( '+ ( -state.phi ) +', 100%, '+ ( 1 - ( state.theta / Math.PI ) )  +'% ')' ).setHSL( 
+
+			// state.phi - ( Math.PI / 8 ),// dark blue instead of red. 120deg turn?
+			state.phi / -360,// - ( Math.PI / 32 ),
+			1,
+			1 - ( state.theta / Math.PI )
+		)
+*/
+		// console.log( state.theta )
 
 
 		//  Slide the Theta ring from the north pole

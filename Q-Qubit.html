@@ -59,7 +59,7 @@
 		<script src="assets/Three/three.117.min.js"></script>
 		<script src="assets/Three/OrbitControls.js"></script>
 		<script src="assets/MeshLine/MeshLine.js"></script>
-		<script src="assets/Tween/tween.min.js"></script>		
+		<script src="assets/Tween/tween.min.js"></script>
 		<script src="assets/SurfaceText.js"></script>
 		<script src="Q/Q-BlochSphere.js"></script>
 		
@@ -1217,11 +1217,11 @@
 				Tap and drag the sphere itself to rotate it.
 			</p>
 			
-			<div class="center" id="bloch-sphere-qubit-selector"></div>
-			<div id="bloch-sphere-qubit-descriptions">
+			<div class="bloch-sphere-qubit-selector center"></div>
+			<div class="bloch-sphere-qubit-descriptions">
 				<div class="bloch-sphere-qubit-description" 
 					id="bloch-sphere-qubit-description-h">
-					<a href="#.HORIZONTAL"><strong>Horizontal</strong> qubit</a><br>
+					<div class="bloch-sphere-qubit-name"><strong>Horizontal</strong> qubit</div>
 					<div class="matrix qubit">
 						<div class="matrix-bracket-left"></div>
 						<div class="matrix-bracket-right"></div>
@@ -1237,7 +1237,7 @@
 				</div>
 				<div class="bloch-sphere-qubit-description" 
 					id="bloch-sphere-qubit-description-v">
-					<a href="#.VERTICAL"><strong>Vertical</strong> qubit</a><br>
+					<div class="bloch-sphere-qubit-name"><strong>Vertical</strong> qubit</div>
 					<div class="matrix qubit">
 						<div class="matrix-bracket-left"></div>
 						<div class="matrix-bracket-right"></div>
@@ -1253,7 +1253,7 @@
 				</div>
 				<div class="bloch-sphere-qubit-description" 
 					id="bloch-sphere-qubit-description-d">
-					<a href="#.DIAGONAL"><strong>Diagonal</strong> qubit</a><br>
+					<div class="bloch-sphere-qubit-name"><strong>Diagonal</strong> qubit</div>
 					<div class="matrix qubit">
 						<div class="matrix-bracket-left"></div>
 						<div class="matrix-bracket-right"></div>
@@ -1275,7 +1275,7 @@
 				</div>
 				<div class="bloch-sphere-qubit-description" 
 					id="bloch-sphere-qubit-description-a">
-					<a href="#.ANTI_DIAGONAL"><strong>Anti-diagonal</strong> qubit</a><br>
+					<div class="bloch-sphere-qubit-name"><strong>Anti-diagonal</strong> qubit</div>
 					<div class="matrix qubit">
 						<div class="matrix-bracket-left"></div>
 						<div class="matrix-bracket-right"></div>
@@ -1297,7 +1297,7 @@
 				</div>
 				<div class="bloch-sphere-qubit-description" 
 					id="bloch-sphere-qubit-description-r">
-					<a href="#.RIGHT_HAND_CIRCULAR_POLARIZED"><strong>Right-hand circular polarized</strong> qubit</a><br>
+					<div class="bloch-sphere-qubit-name"><strong>Right-hand circular polarized</strong> qubit</div>
 					<div class="matrix qubit">
 						<div class="matrix-bracket-left"></div>
 						<div class="matrix-bracket-right"></div>
@@ -1319,7 +1319,7 @@
 				</div>
 				<div class="bloch-sphere-qubit-description" 
 					id="bloch-sphere-qubit-description-l">
-					<a href="#.LEFT_HAND_CIRCULAR_POLARIZED"><strong>Left-hand circular polarized</strong> qubit</a><br>
+					<div class="bloch-sphere-qubit-name"><strong>Left-hand circular polarized</strong> qubit</div>
 					<div class="matrix qubit">
 						<div class="matrix-bracket-left"></div>
 						<div class="matrix-bracket-right"></div>
@@ -1962,11 +1962,11 @@ const blochSphere = new Q.BlochSphere( function(){
 	
 	document
 	.getElementById( 'bloch-theta' )
-	.innerText = ( this.state.theta * Q.RADIANS_TO_DEGREES ).toFixed().padStart( 3, ' ' )
+	.innerText = ( this.state.theta * Q.RADIANS_TO_DEGREES ).toFixed().padStart( 4, ' ' )
 	
 	document
 	.getElementById( 'bloch-phi' )
-	.innerText = ( this.state.phi * Q.RADIANS_TO_DEGREES ).toFixed().padStart( 3, ' ' )
+	.innerText = ( this.state.phi * Q.RADIANS_TO_DEGREES ).toFixed().padStart( 4, ' ' )
 })
 scene.add( blochSphere.group )
 
@@ -1985,7 +1985,7 @@ scene.add( blochSphere.group )
 //  Create the qubit buttons.
 
 const 
-blochSphereQubits = document.getElementById( 'bloch-sphere-qubit-selector' ),
+blochSphereQubits = document.querySelector( '.bloch-sphere-qubit-selector' ),
 selectBlochQubit  = function( qubit ){
 
 
@@ -1994,7 +1994,7 @@ selectBlochQubit  = function( qubit ){
 	const qubitEl = document.getElementById( 
 
 		'bloch-sphere-qubit-'+ 
-		 qubit.label.toLowerCase() 
+		 qubit.symbol.toLowerCase() 
 	)
 	Array
 	.from( document.querySelectorAll( '.bloch-sphere-qubit' ))
@@ -2010,7 +2010,7 @@ selectBlochQubit  = function( qubit ){
 	const descriptionEl = document.getElementById( 
 
 		'bloch-sphere-qubit-description-'+ 
-		 qubit.label.toLowerCase() 
+		 qubit.symbol.toLowerCase() 
 	)
 	Array
 	.from( document.querySelectorAll( '.bloch-sphere-qubit-description' ))
@@ -2018,13 +2018,11 @@ selectBlochQubit  = function( qubit ){
 
 		if( el === descriptionEl ){
 
-			el.style.display = 'block'
-			setTimeout( function(){ el.classList.add( 'show' )}, 10 )
+			el.classList.add( 'show' )
 		}
 		else {
 
 			el.classList.remove( 'show' )
-			setTimeout( function(){ el.style.display = 'none' }, 1000 )
 		}
 	})
 
@@ -2034,23 +2032,26 @@ selectBlochQubit  = function( qubit ){
 	blochSphere.setTargetState( qubit.toBlochSphere())
 }
 
-Object.keys( Q.Qubit.constants ).forEach( function( key ){
 
-	const 
-	qubit = Q.Qubit[ key ],
+
+
+'HDLARV'.split( '' ).forEach( function( symbol ){
+
+	const
+	qubit = Q.Qubit.findBySymbol( symbol ),
 	qubitElement = document.createElement( 'div' )
-	
+
 	qubitElement.classList.add( 'bloch-sphere-qubit' )
-	qubitElement.setAttribute( 'id', 'bloch-sphere-qubit-'+ qubit.label.toLowerCase() )
-	qubitElement.setAttribute( 'title', qubit.name )
-	qubitElement.setAttribute( 'data-qubit', qubit.name )
-	qubitElement.innerText = qubit.label
+	qubitElement.setAttribute( 'id', 'bloch-sphere-qubit-'+ symbol.toLowerCase() )
+	qubitElement.setAttribute( 'title', qubit.name +' qubit' )
+	qubitElement.innerText = symbol
 	qubitElement.addEventListener( 'click', function(){
 
 		selectBlochQubit( qubit )
 	})
 	blochSphereQubits.appendChild( qubitElement )
 })
+
 
 
 
@@ -2067,7 +2068,7 @@ const render = function(){
 }
 
 
-blochSphere.group.rotation.x = Math.PI /  4
+blochSphere.group.rotation.x = Math.PI *  0.3
 blochSphere.group.rotation.y = Math.PI / -4
 selectBlochQubit( Q.Qubit.HORIZONTAL )
 render()

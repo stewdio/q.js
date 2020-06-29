@@ -56,7 +56,8 @@ function onHashChange( freshLoad ){
 
 		const 
 		rootEm  = parseFloat( window.getComputedStyle( document.body ).fontSize ),
-		yBuffer = rootEm * 10,
+		compact = document.body.offsetWidth < 600,
+		yBuffer = compact ? rootEm * 5 : 0,
 		bounds  = hashTarget.getBoundingClientRect(),
 		yTarget = bounds.top - yBuffer + window.scrollY
 

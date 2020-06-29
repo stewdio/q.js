@@ -4,7 +4,7 @@
 
 
 
-Q.Qubit = function( a, b, label, name ){
+Q.Qubit = function( a, b, symbol, name ){
 	
 
 	//  If we’ve received an instance of Q.Matrix as our first argument
@@ -73,9 +73,9 @@ Q.Qubit = function( a, b, label, name ){
 
 	//  Used for Dirac notation: |?⟩
 
-	if( typeof label === 'string' ) this.label = label
+	if( typeof symbol === 'string' ) this.symbol = symbol
 	if( typeof name  === 'string' ) this.name  = name
-	if( this.label === undefined || this.name === undefined ){
+	if( this.symbol === undefined || this.name === undefined ){
 
 		const found = Object.values( Q.Qubit.constants ).find( function( qubit ){
 
@@ -87,12 +87,12 @@ Q.Qubit = function( a, b, label, name ){
 		})
 		if( found === undefined ){
 
-			this.label = '?'
+			this.symbol = '?'
 			this.name  = 'Unnamed'
 		}
 		else {
 
-			if( this.label === undefined ) this.label = found.label
+			if( this.symbol === undefined ) this.symbol = found.symbol
 			if( this.name  === undefined ) this.name  = found.name
 		}
 	}
