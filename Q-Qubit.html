@@ -1982,8 +1982,6 @@ scene.add( blochSphere.group )
 ///////////////////
 
 
-//  Create the qubit buttons.
-
 const 
 blochSphereQubits = document.querySelector( '.bloch-sphere-qubit-selector' ),
 selectBlochQubit  = function( qubit ){
@@ -2032,14 +2030,12 @@ selectBlochQubit  = function( qubit ){
 	blochSphere.setTargetState( qubit.toBlochSphere())
 }
 
-
-
-
 'HDLARV'.split( '' ).forEach( function( symbol ){
 
 	const
 	qubit = Q.Qubit.findBySymbol( symbol ),
-	qubitElement = document.createElement( 'div' )
+	qubitElement = document.createElement( 'div' ),
+	qubitGutsElement = document.createElement( 'div' )
 
 	qubitElement.classList.add( 'bloch-sphere-qubit' )
 	qubitElement.setAttribute( 'id', 'bloch-sphere-qubit-'+ symbol.toLowerCase() )
@@ -2050,6 +2046,9 @@ selectBlochQubit  = function( qubit ){
 		selectBlochQubit( qubit )
 	})
 	blochSphereQubits.appendChild( qubitElement )
+
+	// qubitGutsElement.innerText = symbol
+	// qubitElement.appendChild( qubitGutsElement )
 })
 
 

@@ -8,13 +8,14 @@ Q.BlochSphere = function( onValueChange ){
 
 	Object.assign( this, {
 
-		isRotating: false,
-		radius:     1,
-		radiusSafe: 1.01,
+		isRotating:    false,
+		radius:        1,
+		radiusSafe:    1.01,
 		axesLineWidth: 0.01,
 		arcLineWidth:  0.015,
-		state:      Q.Qubit.HORIZONTAL.toBlochSphere(),
-		group:      new THREE.Group(),
+		state:         Q.Qubit.LEFT_HAND_CIRCULAR_POLARIZED.toBlochSphere(),
+		target:        Q.Qubit.HORIZONTAL.toBlochSphere(),
+		group:         new THREE.Group(),
 		onValueChange
 	})
 
@@ -241,17 +242,12 @@ Q.BlochSphere = function( onValueChange ){
 
 Object.assign( Q.BlochSphere, {
 
-	// xAxisColor:  0xCF1717,//  Red.
-	// yAxisColor:  0x59A112,//  Green.
-	// zAxisColor:  0x0F66BD,//  Blue.
+	xAxisColor:    0x333333,//  Was 0xCF1717 (red)
+	yAxisColor:    0x333333,//  Was 0x59A112 (green)
+	zAxisColor:    0x333333,//  Was 0x0F66BD (blue)
+	vectorColor:   0xFFFFFF,//  Was 0xF2B90D (yellow)
+	thetaPhiColor: 0x333333,//  Was 0xF2B90D (yellow)
 
-	xAxisColor:  0x333333,
-	yAxisColor:  0x333333,
-	zAxisColor:  0x333333,
-
-	// vectorColor: 0xF2B90D,//  Yellow.
-	vectorColor: 0xFFFFFF,
-	thetaPhiColor: 0x333333,
 
 	//  It’s important that we build the texture
 	//  right here and now, rather than load an image.
@@ -273,52 +269,59 @@ Object.assign( Q.BlochSphere, {
 		context.fillRect( 0, 0, width, height )
 
 
-// The start gradient point is at x=20, y=0
-// The end gradient point is at x=220, y=0
+		//  Create the base hue gradient for our texture.
 
-const hueGradient = context.createLinearGradient( 0,height / 2, width, height / 2 )
-for( let i = 0; i <= 36; i ++ ){
+		const 
+		hueGradient = context.createLinearGradient( 0, height / 2, width, height / 2 ),
+		hueSteps    = 180,
+		huesPerStep = 360 / hueSteps
 
-	hueGradient.addColorStop( i / 36, 'hsl( '+ (( i - 9 ) * 10 ) +', 100%, 50% )' )
-}
-context.fillStyle = hueGradient
-context.fillRect( 0, 0, width, height )
+		for( let i = 0; i <= hueSteps; i ++ ){
 
-const whiteGradient = context.createLinearGradient( width / 2, 0, width / 2, height / 2 )
-whiteGradient.addColorStop( 0.000, 'hsla( 0, 0%, 100%, 1 )' )
-whiteGradient.addColorStop( 0.125, 'hsla( 0, 0%, 100%, 1 )' )
-whiteGradient.addColorStop( 0.875, 'hsla( 0, 0%, 100%, 0 )' )
-context.fillStyle = whiteGradient
-context.fillRect( 0, 0, width, height / 2 )
-
-const blackGradient = context.createLinearGradient( width / 2, height / 2, width / 2, height )
-blackGradient.addColorStop( 0.125, 'hsla( 0, 0%, 0%, 0 )' )
-blackGradient.addColorStop( 0.875, 'hsla( 0, 0%, 0%, 1 )' )
-blackGradient.addColorStop( 1.000, 'hsla( 0, 0%, 0%, 1 )' )
-context.fillStyle = blackGradient
-context.fillRect( 0, height / 2, width, height )
+			hueGradient.addColorStop( i / hueSteps, 'hsl( '+ ( i * huesPerStep - 90 ) +', 100%, 50% )' )
+		}
+		context.fillStyle = hueGradient
+		context.fillRect( 0, 0, width, height )
 
 
+		//  For both the northern gradient (to white)
+		//  and the southern gradient (to black)
+		//  we’ll leave a thin band of full saturation
+		//  near the equator.
+
+		const whiteGradient = context.createLinearGradient( width / 2, 0, width / 2, height / 2 )
+		whiteGradient.addColorStop( 0.000, 'hsla( 0, 0%, 100%, 1 )' )
+		whiteGradient.addColorStop( 0.125, 'hsla( 0, 0%, 100%, 1 )' )
+		whiteGradient.addColorStop( 0.875, 'hsla( 0, 0%, 100%, 0 )' )
+		context.fillStyle = whiteGradient
+		context.fillRect( 0, 0, width, height / 2 )
+
+		const blackGradient = context.createLinearGradient( width / 2, height / 2, width / 2, height )
+		blackGradient.addColorStop( 0.125, 'hsla( 0, 0%, 0%, 0 )' )
+		blackGradient.addColorStop( 0.875, 'hsla( 0, 0%, 0%, 1 )' )
+		blackGradient.addColorStop( 1.000, 'hsla( 0, 0%, 0%, 1 )' )
+		context.fillStyle = blackGradient
+		context.fillRect( 0, height / 2, width, height )
 
 
+		//  Create lines of latitude and longitude.
+		//  Note this is an inverse Mercatur projection ;)
 
-
-
-
-		// context.fillStyle = 'hsl( 210, 20%, 90% )'
 		context.fillStyle = 'hsla( 0, 0%, 0%, 0.2 )'
-
 		const yStep = height / 16
 		for( let y = 0; y <= height; y += yStep ){
 
 			context.fillRect( 0, y, width, 1 )
 		}
-
 		const xStep = width / 16
 		for( let x = 0; x <= width; x += xStep ){
 
 			context.fillRect( x, 0, 1, height )
 		}
+
+
+		//  Prepare the THREE texture and return it
+		//  so we can use it as a material map.
 
 		const texture = new THREE.CanvasTexture( canvas )
 		texture.needsUpdate = true
@@ -333,7 +336,8 @@ context.fillRect( 0, height / 2, width, height )
 		const geometry = new THREE.CircleGeometry( radius, segments, thetaStart, thetaLength )
 		geometry.vertices.shift()
 		
-		//  This is not NORMALLY necessary 
+
+		//  This is NOT NORMALLY necessary 
 		//  because we expect this to only be 
 		//  between PI/2 and PI*2 
 		// (so the length is only Math.PI instead of PI*2).
@@ -459,51 +463,10 @@ Object.assign( Q.BlochSphere.prototype, {
 		
 		if( target === undefined ) target = Q.Qubit.HORIZONTAL.toBlochSphere()
 
-		//  Are we ready for a change?
-
-		// if( qubitCurrent !== qubitTarget ||
-		// 	gateCurrent  !== gateTarget ){
-
-
-			//  Deselect all buttons -- except the one in use!
-
-			// Array
-			// .from( document.getElementById( 'bloch-sphere-qubit-selector' ).children )
-			// .forEach( function( child ){
-
-			// 	if( child.getAttribute( 'data-qubit' ) === qubitTarget.name ){
-
-			// 		child.classList.add( 'selected' )
-			// 	}
-			// 	else child.classList.remove( 'selected' )
-			// })
-
-
-			//  x
-
-			// if( qubitCurrent === undefined ) qubitCurrent = qubitTarget
-
-			// const 
-			// currentState = qubitCurrent,
-			// currentBloch = currentState.toBlochSphere(),
-			// targetState  = qubitTarget,
-			// targetBloch  = targetState.toBlochSphere()
-
-
-			//  Update our alpha-beta readout.
-
-			// document.getElementById( 'bloch-alpha' ).innerText = targetState.alpha.toText( 4 )
-			// document.getElementById( 'bloch-beta'  ).innerText = targetState.beta.toText( 4 )
-
-
-			//  Tween our indicator to the target state.
-
-
-
 
 		//  Always take the shortest path around
 		//  even if it crosses the 0˚ / 360˚ boundary,
-		//  ie. between Anti-Ddiangonal (-90˚) and 
+		//  ie. between Anti-Diagonal (-90˚) and 
 		//  Right0-and circular polarized (180˚).
 
 		const 
@@ -515,13 +478,19 @@ Object.assign( Q.BlochSphere.prototype, {
 			this.state.phi += Math.sign( distance ) * rangeHalf * -2
 		}
 
+
+		//  Cheap hack to test if we need to update values
+		//  from within the updateBlochVector method.
+
+		Object.assign( this.target, target )
+
 		
 		//  Create the tween.
 
 		window.tween = new TWEEN.Tween( this.state )
 		.to( target, 1000 )
 		.easing( TWEEN.Easing.Quadratic.InOut )
-		.onUpdate( this.updateBlochVector.bind( this ) )
+		.onUpdate( this.updateBlochVector.bind( this ))
 		.start()
 	},
 	updateBlochVector: function( state ){
@@ -529,93 +498,79 @@ Object.assign( Q.BlochSphere.prototype, {
 
 		//  Move the big-ass surface pointer.
 
-		this.blochPointer.position.set(
-			
-			Math.sin( state.theta ) * Math.sin( state.phi ),
-			Math.cos( state.theta ),
-			Math.sin( state.theta ) * Math.cos( state.phi )
-		)
-		this.blochPointer.lookAt( new THREE.Vector3() )
-		this.blochVector.lookAt( this.blochPointer.getWorldPosition( new THREE.Vector3() ))
+		if( state.theta !== this.target.theta ||
+			state.phi !== this.target.phi ){
 
-
-
-
-		let hue = state.phi * THREE.Math.RAD2DEG
-		if( hue < 0 ) hue = 360 + hue
-
-
-		this.blochColor.setHSL(
-
-			hue / 360,
-			1,
-			1 - ( state.theta / Math.PI )
-		)
-		this.blochPointer.material.color = this.blochColor
-		this.blochVector.material.color  = this.blochColor
-
-
-
-
-	/*	
-
-
-make a single  color and then just setHSL on this loop.
-do i need to do material.needsUpdate = true ????
-
-
-		this.blochPointer.material.color = 
-			new THREE.Color( 'hsl( '+ ( -state.phi ) +', 100%, '+ ( 1 - ( state.theta / Math.PI ) )  +'% ')' ).setHSL( 
-
-			// state.phi - ( Math.PI / 8 ),// dark blue instead of red. 120deg turn?
-			state.phi / -360,// - ( Math.PI / 32 ),
-			1,
-			1 - ( state.theta / Math.PI )
-		)
-*/
-		// console.log( state.theta )
-
-
-		//  Slide the Theta ring from the north pole
-		//  down as far south as it needs to go
-		//  and scale its radius so it belts the sphere.
-
-		const thetaScaleSafe = Math.max( state.theta, 0.01 )
-		this.thetaMesh.scale.set(
-
-			Math.sin( thetaScaleSafe ),
-			1,
-			Math.sin( thetaScaleSafe )
-		)
-		this.thetaMesh.position.y = Math.cos( state.theta )
-
-
-		//  Redraw the Phi arc to extend from the north pole
-		//  down to only as far as the Theta ring sits.
-		//  Then rotate the whole Phi arc about the poles.
-
-		for( 
-
-			let 
-			i = 0, 
-			limit = this.phiGeometry.vertices.length; 
-
-			i < limit;
-			i ++ ){
-
-			const gain = i / ( limit -  1 )
-			this.phiGeometry.vertices[ i ].set(
-
-				Math.sin( state.theta * gain ) * this.radiusSafe,
-				Math.cos( state.theta * gain ) * this.radiusSafe,
-				0
+			this.blochPointer.position.set(
+				
+				Math.sin( state.theta ) * Math.sin( state.phi ),
+				Math.cos( state.theta ),
+				Math.sin( state.theta ) * Math.cos( state.phi )
 			)
-		}
-		this.phiLine.setGeometry( this.phiGeometry )
-		this.phiMesh.rotation.y = state.phi - Math.PI / 2
+			this.blochPointer.lookAt( new THREE.Vector3() )
+			this.blochVector.lookAt( this.blochPointer.getWorldPosition( new THREE.Vector3() ))
 
 
-		if( typeof this.onValueChange === 'function' ) this.onValueChange.call( this )
+			//  Determine the correct HSL color
+			//  based on Phi and Theta.
+
+			let hue = state.phi * THREE.Math.RAD2DEG
+			if( hue < 0 ) hue = 360 + hue
+			this.blochColor.setHSL(
+
+				hue / 360,
+				1,
+				1 - ( state.theta / Math.PI )
+			)
+			this.blochPointer.material.color = this.blochColor
+			this.blochVector.material.color  = this.blochColor
+			
+			if( state.theta !== this.target.theta ){
+
+
+				//  Slide the Theta ring from the north pole
+				//  down as far south as it needs to go
+				//  and scale its radius so it belts the sphere.
+
+				const thetaScaleSafe = Math.max( state.theta, 0.01 )
+				this.thetaMesh.scale.set(
+
+					Math.sin( thetaScaleSafe ),
+					1,
+					Math.sin( thetaScaleSafe )
+				)
+				this.thetaMesh.position.y = Math.cos( state.theta )
+			
+
+				//  Redraw the Phi arc to extend from the north pole
+				//  down to only as far as the Theta ring sits.
+				//  Then rotate the whole Phi arc about the poles.
+
+				for( 
+
+					let 
+					i = 0, 
+					limit = this.phiGeometry.vertices.length; 
+
+					i < limit;
+					i ++ ){
+
+					const gain = i / ( limit -  1 )
+					this.phiGeometry.vertices[ i ].set(
+
+						Math.sin( state.theta * gain ) * this.radiusSafe,
+						Math.cos( state.theta * gain ) * this.radiusSafe,
+						0
+					)
+				}
+				this.phiLine.setGeometry( this.phiGeometry )
+			}
+			if( state.phi !== this.target.phi ){
+
+				this.phiMesh.rotation.y = state.phi - Math.PI / 2
+			}		
+			if( typeof this.onValueChange === 'function' ) this.onValueChange.call( this )
+		}	
 	}
 })
 
