@@ -286,8 +286,20 @@ Object.assign( Q.Qubit, {
 	},
 	fromBlochVector: function( x, y, z ){
 
+		// converting back to a Qubit (a, b) only maintains the relative phase between a and b
+		// for convenience, I will assume a is real.
 
-		//basically  from a Pauli  Rotation
+		// this neat trick comes from considering the density matrix if a = r and b = s + ti:
+		//  ( r*r     rs-rti  )
+		//  ( rs+rti  s*s+t*t )
+
+		// compare that with the density matrix in https://en.wikipedia.org/wiki/Bloch_sphere
+
+		aReal = ( 0.5 + 0.5 * z ) ** 0.5
+		a = new Q.ComplexNumber( aReal, 0 )
+		b = new Q.ComplexNumber( x / 2 / aReal, y / 2 / aReal )
+
+		return new Q.Qubit( a, b )
 	}
 
 })
