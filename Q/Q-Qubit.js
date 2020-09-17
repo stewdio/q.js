@@ -295,8 +295,9 @@ Object.assign( Q.Qubit, {
 
 		// compare that with the density matrix in https://en.wikipedia.org/wiki/Bloch_sphere
 
-		aReal = ( 0.5 + 0.5 * z ) ** 0.5
-		a = new Q.ComplexNumber( aReal, 0 )
+		const
+		aReal = ( 0.5 + 0.5 * z ) ** 0.5,
+		a = new Q.ComplexNumber( aReal, 0 ),
 		b = new Q.ComplexNumber( x / 2 / aReal, y / 2 / aReal )
 
 		return new Q.Qubit( a, b )
