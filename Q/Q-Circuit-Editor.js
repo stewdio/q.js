@@ -1326,10 +1326,6 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 			// used in playground.html to dynamically
 			// update the text block and circuit at the same time.
 
-			if( text !== playgroundInputText ){
-				playgroundInputText = circuit.toText()
-			}
-
 			if( circuit instanceof Q.Circuit ){
 
 				circuit.name = 'playground'
