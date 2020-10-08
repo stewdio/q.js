@@ -446,7 +446,7 @@
 .Q-circuit-moment-add,
 .Q-circuit-register-add {
 
-	display: none;
+	/* display: none; */
 }
 .Q-circuit-selectall,
 .Q-circuit-moment-label,
@@ -768,7 +768,7 @@
 	bottom: 0;
 	left:   0;
 	display: block;
-	z-index: -10;
+	z-index: 2;
 	box-shadow:
 		0 0 1rem rgba( 0, 0, 0, 0.2 ),
 		0.4rem 0.4rem 0.2rem rgba( 0, 0, 0, 0.2 );

@@ -1319,8 +1319,68 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		}
 		if( controlEl ) Q.Circuit.Editor.createControl( circuitEl )
 		if( swapEl ) Q.Circuit.Editor.createSwap( circuitEl )
-		if( addMomentEl   ) console.log( '→ Add moment' )
-		if( addRegisterEl ) console.log( '→ Add register' )
+
+		function updateCircuitComponents(circuit) {
+
+			// The same block of code which is
+			// used in playground.html to dynamically
+			// update the text block and circuit at the same time.
+
+			if( circuit instanceof Q.Circuit ){
+
+				circuit.name = 'playground'
+				const domEl = document.getElementById( 'playground' )
+				const inputEl = document.getElementById( circuit.name +'-input' )
+				if( domEl ){
+	
+					while( domEl.lastChild ){
+						
+						domEl.removeChild( domEl.lastChild )
+					}
+					circuit.toDom( domEl )				
+				}
+				if( inputEl ){
+					inputEl.value = circuit.toText().trimStart()
+				}
+				circuit.evaluate$()
+			}
+			else {
+	
+				updateCircuitParts( Q`I` )
+				console.log( 'There’s an error in your circuit!!' )
+			}
+		}
+
+		if( addMomentEl ) {
+			
+			// The approach here is to pick up the state of the circuit
+			// using the toText() function and replacing all the line breaks
+			// with -I. Thus increasing the moments for all the registers.
+
+			// Addidtion of "\n" is crucial to get it replaced with '-I' in the nextline			
+			text = document.getElementById('playground').circuit.toText() + "\n" 
+			text = text.trimStart().replaceAll("\n", "-I\n").trimEnd()
+			const circuit = Q(text)
+			updateCircuitComponents(circuit)
+			
+		}
+
+		if( addRegisterEl ) {
+
+			// I took an empty wire and appended with I's equal to timeWidth of the circuit
+			// Need to find a more dynamic approach to this, as this will only work
+			// on the circuits named 'playground'. If someone could help me with this,
+			// it would be just amazing!!
+
+
+			wire = ""
+			timewidth = document.getElementById('playground').circuit.timewidth
+			text = document.getElementById('playground').circuit.toText()
+			for (i = 0; i < timewidth; i++) wire += "I "
+			text += '\n' + wire
+			const circuit = Q(text)
+			updateCircuitComponents(circuit)
+		}
 
 
 		//  We’re done dealing with external buttons.
