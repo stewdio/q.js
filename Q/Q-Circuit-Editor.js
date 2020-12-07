@@ -1365,11 +1365,17 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		//  For now though most quantum code assumes all qubits
 		//  begin with a value of zero so this is mostly ok ;)
 
-		if( inputEl ){
-
-			console.log( '→ Edit input Qubit value at', registerIndex )
-			return
-		}
+		if (inputEl) {
+			console.log('→ Edit input Qubit value at', registerIndex)
+			circuit.startValues[registerIndex - 1] =
+			  (circuit.startValues[registerIndex - 1] + 1) % 2
+			document.querySelector(
+			  ".Q-circuit-header.Q-circuit-input[register-index='" +
+				registerIndex +
+				"']"
+			).innerText = circuit.startValues[registerIndex - 1]
+			return circuit.evaluate$()
+		  }
 
 
 		//  Let’s inspect a group of items via a CSS query.

@@ -32,6 +32,10 @@ Q.Circuit = function( bandwidth, timewidth ){
 	this.qubits = new Array( bandwidth ).fill( Q.Qubit.HORIZONTAL )
 
 
+	// Start values for qbits before first moment.
+	this.startValues = new Array( bandwidth ).fill( 0 )
+
+
 	//  What operations will we perform on our qubits?
 	
 	this.operations = []
@@ -450,8 +454,12 @@ Object.assign( Q.Circuit, {
 		//  └   ┘
 
 		const state = new Q.Matrix( 1, Math.pow( 2, circuit.bandwidth ))
-		state.write$( 0, 0, 1 )
 
+		// Change state to begin calculation with
+		// depending on which qbits are initially set to 1.
+		let index = parseInt(circuit.startValues.join(""), 2)
+		state.write$(0, index, 1)
+	
 
 
 
