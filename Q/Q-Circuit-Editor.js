@@ -1367,13 +1367,19 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 
 		if (inputEl) {
 			console.log('→ Edit input Qubit value at', registerIndex)
-			circuit.startValues[registerIndex - 1] =
-			  (circuit.startValues[registerIndex - 1] + 1) % 2
-			document.querySelector(
-			  ".Q-circuit-header.Q-circuit-input[register-index='" +
-				registerIndex +
-				"']"
-			).innerText = circuit.startValues[registerIndex - 1]
+			circuit.qubits[registerIndex - 1] = 
+				circuit.qubits[registerIndex - 1].applyGate(Q.Gate.PAULI_X)
+			console.log(circuit.qubits[registerIndex - 1])
+			let qbitLabel = document.querySelector(
+				".Q-circuit-header.Q-circuit-input[register-index='" +
+				  registerIndex +
+				  "']"
+			  )
+			// HORIZONTAL Qbits are measured as 0, VERTICAL qbits are measured as 1
+			circuit.qubits[registerIndex - 1].isEqualTo(Q.Qubit.HORIZONTAL) ? 
+				qbitLabel.innerText = 0
+				: qbitLabel.innerText = 1
+
 			return circuit.evaluate$()
 		  }
 
