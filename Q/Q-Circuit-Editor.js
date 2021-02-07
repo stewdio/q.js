@@ -1369,7 +1369,7 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 			console.log('→ Edit input Qubit value at', registerIndex)
 			circuit.qubits[registerIndex - 1] = 
 				circuit.qubits[registerIndex - 1].applyGate(Q.Gate.PAULI_X)
-			let qbitLabel = document.querySelector(
+			let qbitLabel = circuitEl.querySelector(
 				".Q-circuit-header.Q-circuit-input[register-index='" +
 				  registerIndex +
 				  "']"
