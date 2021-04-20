@@ -1365,11 +1365,22 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		//  For now though most quantum code assumes all qubits
 		//  begin with a value of zero so this is mostly ok ;)
 
-		if( inputEl ){
+		if (inputEl) {
+			console.log('→ Edit input Qubit value at', registerIndex)
+			circuit.qubits[registerIndex - 1] = 
+				circuit.qubits[registerIndex - 1].applyGate(Q.Gate.PAULI_X)
+			let qbitLabel = circuitEl.querySelector(
+				".Q-circuit-header.Q-circuit-input[register-index='" +
+				  registerIndex +
+				  "']"
+			  )
+			// HORIZONTAL Qbits are measured as 0, VERTICAL qbits are measured as 1
+			circuit.qubits[registerIndex - 1].isEqualTo(Q.Qubit.HORIZONTAL) ? 
+				qbitLabel.innerText = 0
+				: qbitLabel.innerText = 1
 
-			console.log( '→ Edit input Qubit value at', registerIndex )
-			return
-		}
+			return circuit.evaluate$()
+		  }
 
 
 		//  Let’s inspect a group of items via a CSS query.

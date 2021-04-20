@@ -450,8 +450,16 @@ Object.assign( Q.Circuit, {
 		//  └   ┘
 
 		const state = new Q.Matrix( 1, Math.pow( 2, circuit.bandwidth ))
-		state.write$( 0, 0, 1 )
 
+		// Change state to begin calculation with
+		// depending on which qbits are initially set to 1.
+		let index = parseInt(
+			circuit.qubits
+			  .map((qubit) => (qubit.isEqualTo(Q.Qubit.HORIZONTAL) ? 0 : 1))
+			  .join(""),
+			2
+		  )
+		state.write$(0, index, 1)		  
 
 
 
