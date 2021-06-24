@@ -1,4 +1,3 @@
-
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 
@@ -184,7 +183,6 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	boardContainerEl.classList.add( 'Q-circuit-board-container' )
 	//boardContainerEl.addEventListener( 'touchstart', Q.Circuit.Editor.onPointerPress )
 	boardContainerEl.addEventListener( 'mouseleave', function(){
-
 		Q.Circuit.Editor.unhighlightAll( circuitEl )
 	})
 
@@ -196,7 +194,9 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	boardEl.appendChild( backgroundEl )
 	backgroundEl.classList.add( 'Q-circuit-board-background' )
 
-
+	const parameterEl = createDiv()
+	boardEl.appendChild( parameterEl )
+	parameterEl.classList.add( 'Q-parameters-box' )
 	//  Create background highlight bars 
 	//  for each row.
 
@@ -266,7 +266,7 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	}
 
 
-	//  Add “Add register” button.
+	//  Add “Add register” button.q
 	
 	const addRegisterEl = createDiv()
 	foregroundEl.appendChild( addRegisterEl )
@@ -323,7 +323,6 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	//  Add operations.
 
 	circuit.operations.forEach( function( operation ){
-
 		Q.Circuit.Editor.set( circuitEl, operation )
 	})
 
@@ -445,11 +444,11 @@ Object.assign( Q.Circuit.Editor, {
 			const r = min + Math.random() * ( max - min )
 			return Math.floor( Math.random() * 2 ) ? r : -r
 		}
-
+		
+		//ltnln: added missing Braket operations. 
 		paletteEl.classList.add( 'Q-circuit-palette' )
-
-		'HXYZPT*'
-		.split( '' )
+		'H,X,Y,Z,P,Rx,Ry,Rz,U,V,Vi,S*,Si,T,Ti,00,01,10,XX,XY,YY,ZZ,*'
+		.split( ',' )
 		.forEach( function( symbol ){
 
 			const gate = Q.Gate.findBySymbol( symbol )
@@ -542,7 +541,6 @@ Q.Circuit.Editor.prototype.onExternalSet = function( event ){
 	}
 }
 Q.Circuit.Editor.set = function( circuitEl, operation ){
-
 	const
 	backgroundEl = circuitEl.querySelector( '.Q-circuit-board-background' ),
 	foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' ),
@@ -550,7 +548,6 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 	operationIndex = circuitEl.circuit.operations.indexOf( operation )
 
 	operation.registerIndices.forEach( function( registerIndex, i ){
-
 		const operationEl = document.createElement( 'div' )
 		foregroundEl.appendChild( operationEl )
 		operationEl.classList.add( 'Q-circuit-operation', 'Q-circuit-operation-'+ operation.gate.nameCss )
@@ -564,7 +561,9 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 		operationEl.setAttribute( 'title', operation.gate.name )
 		operationEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( operation.momentIndex )
 		operationEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
-
+		if( operation.gate.has_parameters ) Object.keys(operation.gate.parameters).forEach( element => {
+			operationEl.setAttribute( element, operation.gate.parameters[element] ) //adds a parameter attribute to the operation!
+		})
 		const tileEl = document.createElement( 'div' )
 		operationEl.appendChild( tileEl )
 		tileEl.classList.add( 'Q-circuit-operation-tile' )		
@@ -613,7 +612,6 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 				}
 			})
 			if( operation.isControlled && i === 0 ){
-
 				operationEl.classList.add( 'Q-circuit-operation-control' )
 				operationEl.setAttribute( 'title', 'Control' )
 				tileEl.innerText = ''
@@ -718,12 +716,10 @@ Q.Circuit.Editor.isValidControlCandidate = function( circuitEl ){
 
 	if( allSiblingsPresent !== true ) return false
 
-
 	//  Note the different gate types present
 	//  among the selected operations.
 
 	const gates = selectedOperations.reduce( function( gates, operationEl ){
-
 		const gateSymbol = operationEl.getAttribute( 'gate-symbol' )
 		if( !Q.isUsefulInteger( gates[ gateSymbol ])) gates[ gateSymbol ] = 1
 		else gates[ gateSymbol ] ++
@@ -752,7 +748,6 @@ Q.Circuit.Editor.isValidControlCandidate = function( circuitEl ){
 		totalControlled:    0, 
 		totalNotControlled: 0
 	})
-
 
 	//  This could be ONE “identity cursor” 
 	//  and one or more of a regular single gate
@@ -837,7 +832,6 @@ Q.Circuit.Editor.createControl = function( circuitEl ){
 		)
 	})
 	circuit.set$(
-
 		targets[ 0 ].getAttribute( 'gate-symbol' ),
 		+control.getAttribute( 'moment-index' ),
 		[ +control.getAttribute( 'register-index' )].concat(
@@ -872,7 +866,6 @@ Q.Circuit.Editor.isValidSwapCandidate = function( circuitEl ){
 
 	//  We can only swap between two registers.
 	//  No crazy rotation-swap bullshit. (Yet.)
-
 	if( selectedOperations.length !== 2 ) return false
 
 
@@ -1170,9 +1163,6 @@ Q.Circuit.Editor.onPointerMove = function( event ){
 
 
 
-
-
-
     ///////////////////////
    //                   //
   //   Pointer PRESS   //
@@ -1181,8 +1171,6 @@ Q.Circuit.Editor.onPointerMove = function( event ){
 
 
 Q.Circuit.Editor.onPointerPress = function( event ){
-
-
 	//  This is just a safety net
 	//  in case something terrible has ocurred.
 	// (ex. Did the user click and then their mouse ran
@@ -1193,20 +1181,17 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		Q.Circuit.Editor.onPointerRelease( event )
 		return
 	}
-
-
 	const 
 	targetEl  = event.target,
 	circuitEl = targetEl.closest( '.Q-circuit' ),
 	paletteEl = targetEl.closest( '.Q-circuit-palette' )
-
+	parameterEl = targetEl.closest( '.Q-parameters-box' )
 
 	//  If we can’t find a circuit that’s a really bad sign
 	//  considering this event should be fired when a circuit
 	//  is clicked on. So... bail!
 
 	if( !circuitEl && !paletteEl ) return
-
 
 	//  This is a bit of a gamble.
 	//  There’s a possibility we’re not going to drag anything,
@@ -1222,9 +1207,8 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 	//  Are we dealing with a circuit interface?
 	//  ie. NOT a palette interface.
 
-	if( circuitEl ){
+	if( circuitEl && !parameterEl ){
 	
-
 		//  Shall we toggle the circuit lock?
 
 		const
@@ -1329,7 +1313,6 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 
 		if( !cellEl ) return
 
-
 		//  Once we know what cell we’ve pressed on
 		//  we can get the momentIndex and registerIndex
 		//  from its pre-defined attributes.
@@ -1358,7 +1341,6 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		inputEl         = targetEl.closest( '.Q-circuit-input' ),
 		operationEl     = targetEl.closest( '.Q-circuit-operation' )
 		
-
 		//  +++++++++++++++
 		//  We’ll have to add some input editing capability later...
 		//  Of course you can already do this in code!
@@ -1392,7 +1374,6 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 			if( operationsSelectedLength === operations.length ){
 
 				operations.forEach( function( el ){
-
 					el.classList.remove( 'Q-circuit-cell-selected' )
 				})
 			}
@@ -1437,14 +1418,21 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		//  then GO HOME.
 
 		if( !operationEl ) return
-
+		// If we've doubleclicked on an operation and the operation has parameters, we should be able
+		// to edit those parameters regardless of whether or not the circuit is locked.
+		if( event.detail == 2) {
+			const operation = Q.Gate.findBySymbol(operationEl.getAttribute( 'gate-symbol' ))
+			if( operation.has_parameters ) {
+				Q.Circuit.Editor.onDoubleclick( event, operationEl )
+				return
+			}
+		}
 
 		//  Ok now we know we are dealing with an operation.
 		//  This preserved selection state information
 		//  will be useful for when onPointerRelease is fired.
 
 		if( operationEl.classList.contains( 'Q-circuit-cell-selected' )){
-
 			operationEl.wasSelected = true
 		}
 		else operationEl.wasSelected = false
@@ -1550,7 +1538,6 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		dragEl.registerIndex = registerIndex
 	}
 	else if( paletteEl ){
-
 		const operationEl = targetEl.closest( '.Q-circuit-operation' )
 
 		if( !operationEl ) return
@@ -1563,6 +1550,30 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		dragEl.originEl = paletteEl
 		dragEl.offsetX  = bounds.left - x
 		dragEl.offsetY  = bounds.top  - y
+	}
+	else if( parameterEl ){
+		const exitEl = targetEl.closest( '.Q-parameter-box-exit' )
+		if( !exitEl ) return
+		parameterEl.style.display = 'none'
+		const foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' )
+		operationEl = foregroundEl.querySelector( 	`[moment-index="${ parameterEl.getAttribute( 'operation-moment-index' )}"]` +
+													`[register-index="${ parameterEl.getAttribute( 'operation-register-index' )}"]` )
+		parameters = {}
+		operationSkeleton = Q.Gate.findBySymbol( operationEl.getAttribute( 'gate-symbol' ))
+		Object.keys( operationSkeleton.parameters ).forEach( key => {
+			parameters[ key ] = operationEl.getAttribute( key ) ? operationEl.getAttribute( key ) : operationSkeleton.parameters[ key ]
+		})
+		//upon exiting, we should update the circuit!!!
+		circuitEl.circuit.set$(
+			operationEl.getAttribute( 'gate-symbol' ),
+			+operationEl.getAttribute( 'moment-index' ),
+			operationEl.getAttribute( 'register-indices' ) ? operationEl.getAttribute( 'register-indices' ).split(',').map( i => +i ) :
+			[ +operationEl.getAttribute( 'register-index' )],
+			parameters
+		)
+		//on exiting the parameter-input-box, we should update the circuit!!
+		parameterEl.innerHTML = ""
+		return
 	}
 	dragEl.timestamp = Date.now()
 
@@ -1592,10 +1603,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 
 	//  If there’s no dragEl then bail immediately.
-
 	if( Q.Circuit.Editor.dragEl === null ) return
-	
-
 	//  Looks like we’re moving forward with this plan,
 	//  so we’ll take control of the input now.
 
@@ -1761,7 +1769,6 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 		droppedAtRegisterIndex < 1 ||
 		droppedAtRegisterIndex > circuit.bandwidth
 	){
-
 		returnToOrigin()
 		return
 	}
@@ -1811,7 +1818,6 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 		const registerIndicesString = childEl.getAttribute( 'register-indices' )
 		if( registerIndicesString ){
-
 
 			//  What are ALL of the registerIndices
 			//  associated with this multi-register operation?
@@ -1896,6 +1902,13 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 			if( registerIndices.length === foundComponents.length ){
 
+				const operationSkeleton = Q.Gate.findBySymbol( gatesymbol )
+				parameters = {}
+				if( operationSkeleton.has_parameters ) {
+					Object.keys( operationSkeleton.parameters ).forEach( key => {
+						parameters[ key ] = childEl.getAttribute( key ) ? childEl.getAttribute( key ) : operationSkeleton.parameters[ key ]
+					})
+				}
 				//circuit.set$( 
 				setCommands.push([
 
@@ -1916,7 +1929,8 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 							registerIndexTarget += childEl.origin.registerIndex - Q.Circuit.Editor.dragEl.registerIndex + siblingDelta
 						}
 						return registerIndexTarget
-					})
+					}),
+					parameters
 				// )
 				])
 			}
@@ -1937,7 +1951,6 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				//  can sit at each register index.
 				//  This copies registerIndices, 
 				//  but inverts the key : property relationship.
-
 				const registerMap = registerIndices
 				.reduce( function( registerMap, registerIndex, r ){
 
@@ -1965,7 +1978,6 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				//  Now we can seat it at its new position.
 				//  Note: This may OVERWRITE one of its siblings!
 				//  And that’s ok.
-
 				foundComponents.forEach( function( component ){
 
 					const 
@@ -1975,7 +1987,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 					//  Now put it where it wants to go,
 					//  possibly overwriting a sibling component!
-
+					//ltnln: if a multiqubit operation component that requires a sibling, overwrites its sibling, both/all components should be destroyed
 					registerMap[
 	
 					 	componentRegisterIndex + draggedRegisterDelta
@@ -2000,34 +2012,47 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				//  ie. if a dragged sibling overwrote a seated one.
 
 				.filter( function( entry ){
-				
 					return Q.isUsefulInteger( entry )
 				})
 
-
+				const operationSkeleton = Q.Gate.findBySymbol( childEl.getAttribute( 'gate-symbol' ) )
+				parameters = {}
+				if( operationSkeleton.has_parameters ) {
+					Object.keys( operationSkeleton.parameters ).forEach( key => {
+						parameters[ key ] = childEl.getAttribute( key ) ? childEl.getAttribute( key ) : operationSkeleton.parameters[ key ]
+					})
+				}
 				//  Finally, we’re ready to set.
-
 				// circuit.set$( 
 				setCommands.push([
-
+					//ltnln: if a component of an operation that requires a sibling pair overwrites its sibling, we want it removed entirely. 
+					fixedRegistersIndices.length < 2 && Q.Gate.findBySymbol( childEl.getAttribute( 'gate-symbol' ) ).is_multi_qubit ?
+					Q.Gate.NOOP : 
 					childEl.getAttribute( 'gate-symbol' ), 
 					momentIndexTarget,
-					fixedRegistersIndices
+					fixedRegistersIndices,
+					parameters
 				// )
 				])
 			}
 			else {
-
 				remainingComponents.forEach( function( componentEl, i ){
-
 					//circuit.set$( 
+					const operationSkeleton = Q.Gate.findBySymbol( componentEl.getAttribute( 'gate-symbol' ) )
+					parameters = {}
+					if( operationSkeleton.has_parameters ) {
+						Object.keys( operationSkeleton.parameters ).forEach( key => {
+							parameters[ key ] = +componentEl.getAttribute( key ) ? +componentEl.getAttribute( key ) : operationSkeleton.parameters[ key ]
+						})
+					}
 					setCommands.push([
 
-						+componentEl.getAttribute( 'register-indices-index' ) ? 
+						+componentEl.getAttribute( 'register-indices-index' ) && !Q.Gate.findBySymbol( childEl.getAttribute( 'gate-symbol' ) ).is_multi_qubit ? 
 							gatesymbol : 
 							Q.Gate.NOOP,
 						+componentEl.getAttribute( 'moment-index' ),
-						+componentEl.getAttribute( 'register-index' )
+						+componentEl.getAttribute( 'register-index' ),
+						parameters
 					// )
 					])
 				})
@@ -2037,15 +2062,22 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				//  all the components that were part of the drag.
 
 				foundComponents.forEach( function( componentEl ){
-
-					// circuit.set$( 
+					const operationSkeleton = Q.Gate.findBySymbol( componentEl.getAttribute( 'gate-symbol' ) )
+					parameters = {}
+					if( operationSkeleton.has_parameters ) {
+						Object.keys( operationSkeleton.parameters ).forEach( key => {
+							parameters[ key ] = +componentEl.getAttribute( key ) ? +componentEl.getAttribute( key ) : operationSkeleton.parameters[ key ]
+						})
+					}
 					setCommands.push([
-
-						+componentEl.getAttribute( 'register-indices-index' ) ? 
-							gatesymbol : 
+						//ltnln: temporary fix: certain multiqubit operations should only be represented in pairs of registers. If one is removed (i.e. a single component of the pair)
+						//then the entire operation should be removed. 
+						+componentEl.getAttribute( 'register-indices-index' ) && !Q.Gate.findBySymbol( componentEl.getAttribute( 'gate-symbol' ) ).is_multi_qubit ? 
+							componentEl.getAttribute( 'gate-symbol' ) : 
 							Q.Gate.NOOP,
 						+componentEl.getAttribute( 'moment-index' ) + draggedMomentDelta,
 						+componentEl.getAttribute( 'register-index' ) + draggedRegisterDelta,
+						parameters
 					// )
 					])
 				})
@@ -2079,7 +2111,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 		
 		else {
 			
-
+			
 			//  First, if this operation comes from a circuit
 			// (and not a circuit palette)
 			//  make sure the old positions are cleared away.
@@ -2101,11 +2133,24 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			//  in its new home.
 
 			// circuit.set$( 
+			let registerIndices = [ registerIndexTarget ]
+			//ltnln: By default, multiqubit gates appear in pairs on the circuit rather than
+			//		requiring the user to have to pair them like with Swap/CNot. 
+			const operationSkeleton =  Q.Gate.findBySymbol( childEl.getAttribute( 'gate-symbol' ))
+			if(operationSkeleton.is_multi_qubit ) {
+				registerIndices.push( registerIndexTarget == circuit.bandwidth ? registerIndexTarget - 1 : registerIndexTarget + 1)
+			}
+			let parameters = {}
+			if( operationSkeleton.has_parameters ) {
+				Object.keys( operationSkeleton.parameters ).forEach( key => {
+					parameters[ key ] = childEl.getAttribute( key ) ? childEl.getAttribute( key ) : operationSkeleton.parameters[ key ]
+				})
+			}
 			setCommands.push([
-
 				childEl.getAttribute( 'gate-symbol' ), 
 				momentIndexTarget,
-				[ registerIndexTarget ]
+				registerIndices, 
+				parameters
 			// )
 			])
 		}
@@ -2149,7 +2194,66 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 }
 
 
+	/////////////////////////
+   //                     //
+  // Pointer DOUBLECLICK //
+ //                     //
+/////////////////////////
+//ltnln: my trying out an idea for parameterized gates...
+Q.Circuit.Editor.onDoubleclick = function( event, operationEl ) {
 
+	const operation = Q.Gate.findBySymbol( operationEl.getAttribute( 'gate-symbol' ))
+	const { x, y } = Q.Circuit.Editor.getInteractionCoordinates( event ),
+	foundEls = document.elementsFromPoint( x, y ),
+	boardContainerEl = foundEls.find( function( el ){
+
+		return el.classList.contains( 'Q-circuit-board-container' )
+	})
+	if( !boardContainerEl ) return
+	const parameterEl = boardContainerEl.querySelector('.Q-parameters-box')
+	const exit = document.createElement( 'button' )
+	parameterEl.appendChild( exit )
+	exit.classList.add( 'Q-parameter-box-exit' )
+	exit.appendChild(document.createTextNode( '⬅' ))
+	parameterEl.setAttribute( "operation-moment-index", operationEl.getAttribute( 'moment-index' ))
+	parameterEl.setAttribute( "operation-register-index", operationEl.getAttribute( 'register-index' ))
+
+	//here we generate queries for each parameter that the gate operation takes!
+	const parameters = Object.keys(operation.parameters)
+	parameters.forEach( element => {
+		if( operation.parameters && operation.parameters[element] ) {
+			const input_fields = document.createElement( 'div' )
+			parameterEl.appendChild( input_fields )
+			input_fields.classList.add( 'Q-parameter-box-input-container' )
+
+			const label = document.createElement( "span" )
+			input_fields.appendChild( label )
+			label.classList.add( 'Q-parameter-input-label' )
+			label.appendChild(document.createTextNode( element ))
+
+			const textbox = document.createElement( "input" )
+			input_fields.appendChild( textbox )
+			textbox.classList.add( 'Q-parameter-box-input' )
+			textbox.setAttribute( 'type', 'text' )
+			textbox.setAttribute( 'placeholder', element )
+			textbox.setAttribute( 'value', operationEl.getAttribute(element) ? operationEl.getAttribute(element) : operation.parameters[element] )
+			//set textbox to update the operation instance (cellEl)'s parameters on value change
+			textbox.addEventListener( "change", () => {
+				let parameterList = operationEl.getAttribute( 'parameterList' )
+				if( !parameterList ) {
+					parameterList = {}
+					operationEl.setAttribute( element, textbox.value )
+				}
+				parameterList[ element ] = parseFloat(textbox.value) ? parseFloat(textbox.value) : parameterList[element]
+			})
+
+
+		}
+	})
+	parameterEl.classList.toggle('overlay')
+	parameterEl.style.display = 'block'
+
+}
 
 
 
