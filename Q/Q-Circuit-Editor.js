@@ -447,7 +447,7 @@ Object.assign( Q.Circuit.Editor, {
 		
 		//ltnln: added missing Braket operations. 
 		paletteEl.classList.add( 'Q-circuit-palette' )
-		'H,X,Y,Z,P,Rx,Ry,Rz,U,V,Vi,S*,Si,T,Ti,00,01,10,XX,XY,YY,ZZ,*'
+		'H,X,Y,Z,P,Rx,Ry,Rz,U,V,V†,S*,S†,T,T†,00,01,10,√S,iS,XX,XY,YY,ZZ,*'
 		.split( ',' )
 		.forEach( function( symbol ){
 
@@ -1064,6 +1064,11 @@ Q.Circuit.Editor.onPointerMove = function( event ){
 	//  Let’s prioritize any element that is “sticky”
 	//  which means it can appear OVER another grid cell.
 
+	const exitEl = foundEls.find( function( el ) {
+		return el.classList.contains( 'Q-parameter-box-exit' )
+	})
+
+	if( exitEl ) exitEl.classList.add( 'Q-circuit-cell-highlighted' )
 	const
 	cellEl = foundEls.find( function( el ){
 
@@ -2201,7 +2206,6 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 /////////////////////////
 //ltnln: my trying out an idea for parameterized gates...
 Q.Circuit.Editor.onDoubleclick = function( event, operationEl ) {
-
 	const operation = Q.Gate.findBySymbol( operationEl.getAttribute( 'gate-symbol' ))
 	const { x, y } = Q.Circuit.Editor.getInteractionCoordinates( event ),
 	foundEls = document.elementsFromPoint( x, y ),
@@ -2221,11 +2225,10 @@ Q.Circuit.Editor.onDoubleclick = function( event, operationEl ) {
 	//here we generate queries for each parameter that the gate operation takes!
 	const parameters = Object.keys(operation.parameters)
 	parameters.forEach( element => {
-		if( operation.parameters && operation.parameters[element] ) {
+		if( operation.parameters && operation.parameters[element] !== null ) {
 			const input_fields = document.createElement( 'div' )
 			parameterEl.appendChild( input_fields )
 			input_fields.classList.add( 'Q-parameter-box-input-container' )
-
 			const label = document.createElement( "span" )
 			input_fields.appendChild( label )
 			label.classList.add( 'Q-parameter-input-label' )
@@ -2239,12 +2242,21 @@ Q.Circuit.Editor.onDoubleclick = function( event, operationEl ) {
 			textbox.setAttribute( 'value', operationEl.getAttribute(element) ? operationEl.getAttribute(element) : operation.parameters[element] )
 			//set textbox to update the operation instance (cellEl)'s parameters on value change
 			textbox.addEventListener( "change", () => {
-				let parameterList = operationEl.getAttribute( 'parameterList' )
-				if( !parameterList ) {
-					parameterList = {}
-					operationEl.setAttribute( element, textbox.value )
+				const pi = Math.PI
+				let parameterValue
+				try {
+					parameterValue = eval(textbox.value.toLowerCase())
 				}
-				parameterList[ element ] = parseFloat(textbox.value) ? parseFloat(textbox.value) : parameterList[element]
+				catch( err ) {
+					parameterValue = oldValue
+				}
+				let oldValue = operationEl.getAttribute( element )
+				if( !oldValue ) oldValue = operation.parameters[ element ]
+				if( parameterValue === null ) textbox.value = oldValue.toString()
+				else {
+					operationEl.setAttribute( element, parameterValue )
+					textbox.value = parameterValue
+				}
 			})
 
 
