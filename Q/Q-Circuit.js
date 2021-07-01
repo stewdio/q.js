@@ -373,7 +373,6 @@ Object.assign( Q.Circuit, {
 				if( bitsEqual ){
 
 					// console.log( 'bits ARE equal' )
-					
 					let
 					istar = 0,
 					jstar = 0,
@@ -385,8 +384,6 @@ Object.assign( Q.Circuit, {
 						istar |= (( i & ( 1 << q )) >> q ) << k
 						jstar |= (( j & ( 1 << q )) >> q ) << k
 					}
-
-
 					//console.log( 'U.read( istar, jstar )', U.read( istar, jstar ).toText() )
 
 					// console.log( 'before write$', result.toTsv())
@@ -501,11 +498,15 @@ Object.assign( Q.Circuit, {
 
 			//  Yikes. May need to separate registerIndices in to controls[] and targets[] ??
 			//  Works for now tho..... 
-
-			for( let j = 0; j < operation.registerIndices.length - 1; j ++ ){
-			
-				U = Q.Circuit.controlled( U )
-				// console.log( 'qubitIndex #', j, 'U = Q.Circuit.controlled( U )', U.toTsv() )
+			// Houston we have a problem. Turns out, not every gate with registerIndices.length > 1 is
+			// controlled.
+			// This is a nasty fix, leads to a lot of edge cases. (For instance: hard-coding cswaps...) But just experimenting. 
+			if(!operation.gate.is_multi_qubit || (operation.gate.symbol == 'S' && operation.registerIndices.length > 2) && operation.gate.can_be_controlled) {
+				for( let j = 0; j < operation.registerIndices.length - 1; j ++ ){
+				
+					U = Q.Circuit.controlled( U )
+					//console.log( 'qubitIndex #', j, 'U = Q.Circuit.controlled( U )', U.toTsv() )
+				}
 			}
 
 
@@ -1125,24 +1126,37 @@ device = AwsDevice("arn:aws:braket:::device/quantum-simulator/amazon/SIMULATOR_N
 				operation.gate.symbolAmazonBraket :
 				operation.gate.symbol.substr( 0, 1 ).toLowerCase()
 			if( operation.gate.symbolAmazonBraket === undefined ) is_valid_braket_circuit = false
-			if( operation.gate.symbol === 'X' || operation.gate.symbol === 'S' ) {
+			if( operation.gate.symbol === 'X' ) {
 				if( operation.registerIndices.length === 1 ) awsGate = operation.gate.symbolAmazonBraket
-				else if( operation.registerIndices.length === 2 ) awsGate = 'cnot' 
-				else if( operation.registerIndices.length === 3) awsGate = (operation.gate.symbol === 'X') ? 'ccnot' : 'cswap'
+				else if( operation.registerIndices.length === 2 ) awsGate = 'cnot'
+				else if( operation.registerIndices.length === 3) awsGate = 'ccnot'
 				else is_valid_braket_circuit = false
 			}
 
+			else if( operation.gate.symbol === 'S' ) {
+				if( operation.gate.parameters["phi"] === 0 ) {
+					awsGate = operation.registerIndices.length == 2 ? awsGate : "cswap"
+					return string +'.'+ awsGate +'(' +
+				operation.registerIndices.reduce( function( string, registerIndex, r ){
+
+					return string + (( r > 0 ) ? ',' : '' ) + ( registerIndex - 1 )
+
+					}, '' ) + ')'
+				}
+				awsGate = 'pswap'
+			}
 			//ltnln note: removed the if( operation.gate.symbol == '*') branch as it should be covered by
         	//the inclusion of the CURSOR gate. 
-			if( operation.gate.symbol === 'Y' || operation.gate.symbol === 'Z' || operation.gate.symbol === 'P' ) {
+			else if( operation.gate.symbol === 'Y' || operation.gate.symbol === 'Z' || operation.gate.symbol === 'P' ) {
 				if( operation.registerIndices.length === 1) awsGate = operation.gate.symbolAmazonBraket
 				else if( operation.registerIndices.length === 2 ) awsGate = (operation.gate.symbol === 'Y') ? 'cy' : (operation.gate.symbol === 'Z') ? 'cz' : 'cphaseshift'
 				else is_valid_braket_circuit = false
 			}
 			//for all unitary gates, there must be a line of code to initialize the matrix for use
         //in Braket's .u(matrix=my_unitary, targets[0]) function
-			if( operation.gate.symbol === 'U') {
+			else if( operation.gate.symbol === 'U') {
 				//check that this truly works as a unique id
+				is_valid_braket_circuit &= operation.registerIndices.length === 1
 				const new_matrix = `unitary_` + num_unitaries
 				num_unitaries++
 				const a = Q.ComplexNumber.toText(Math.cos(-(operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2),
@@ -1167,7 +1181,9 @@ device = AwsDevice("arn:aws:braket:::device/quantum-simulator/amazon/SIMULATOR_N
 
 				}, '' ) + ')'
 			}
-
+			// I believe this line should ensure that we don't include any controlled single-qubit gates that aren't allowed in Braket. 
+			// The registerIndices.length > 1 technically shouldn't be necessary, but if changes are made later, it's just for safety. 
+			else is_valid_braket_circuit &= (operation.registerIndices.length === 1) || ( operation.registerIndices.length > 1 && operation.gate.is_multi_qubit )
 			return string +'.'+ awsGate +'(' + 
 				operation.registerIndices.reduce( function( string, registerIndex, r ){
 
@@ -1175,7 +1191,6 @@ device = AwsDevice("arn:aws:braket:::device/quantum-simulator/amazon/SIMULATOR_N
 
 				}, '' ) + ((operation.gate.has_parameters) ?
 				Object.values( operation.gate.parameters ).reduce( function( string, parameter ) {
-					console.log("parameter: ", parameter)
 					return string + "," + parameter
 				}, '') 
 				: '') + ')'

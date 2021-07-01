@@ -124,7 +124,6 @@
 }
 .Q-parameters-box,
 .Q-circuit-board-foreground {
-	
 	line-height: 3.85rem;
 	width: auto;
 }
@@ -265,7 +264,6 @@
 	user-select: none;
 }
 /*.Q-circuit-palette,*/
-.Q-parameters-box,
 .Q-circuit-board-foreground,
 .Q-circuit-board-background,
 .Q-circuit-clipboard {

@@ -2284,7 +2284,7 @@ window.addEventListener( 'touchmove', Q.Circuit.Editor.onPointerMove )
 window.addEventListener( 'mouseup',   Q.Circuit.Editor.onPointerRelease )
 window.addEventListener( 'touchend',  Q.Circuit.Editor.onPointerRelease )
 
-
+module.exports = Q.Circuit.Editor
 
 
 
