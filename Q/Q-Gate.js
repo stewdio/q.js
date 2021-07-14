@@ -1,18 +1,6 @@
-
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 
-
-
-Q.Gate = function( params ){
-
-	Object.assign( this, params )
-	this.in
-	//  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
-	
-	
-	
-	
 	Q.Gate = function( params ){
 	
 		Object.assign( this, params )
