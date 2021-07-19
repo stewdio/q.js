@@ -3,7 +3,6 @@
 
 
 
-
 Q.Circuit = function( bandwidth, timewidth ){
 
 	//  What number Circuit is this
@@ -53,6 +52,8 @@ Q.Circuit = function( bandwidth, timewidth ){
 	//  Undo / Redo history.
 
 	this.history = new Q.History( this )
+
+	
 }
 
 
@@ -293,7 +294,12 @@ Object.assign( Q.Circuit, {
 		}
 		return result
 	},
-	
+
+	isControlledOperation:  function( operation ) {
+		return (!operation.gate.is_multi_qubit) //assumption: we won't allow controlled multi-qubit operations
+		&& (operation.registerIndices.length >= 2) 
+		&& (operation.gate.can_be_controlled)
+	},
 
 
 	//  Return transformation over entire nqubit register that applies U to
@@ -404,8 +410,6 @@ Object.assign( Q.Circuit, {
 	},
 
 
-
-
 	evaluate: function( circuit ){
 
 
@@ -499,7 +503,7 @@ Object.assign( Q.Circuit, {
 			// Houston we have a problem. Turns out, not every gate with registerIndices.length > 1 is
 			// controlled.
 			// This is a nasty fix, leads to a lot of edge cases. (For instance: hard-coding cswaps...) But just experimenting. 
-			if(!operation.gate.is_multi_qubit || (operation.gate.symbol == 'S' && operation.registerIndices.length > 2) && operation.gate.can_be_controlled) {
+			if( Q.Circuit.isControlledOperation(operation) ) {
 				for( let j = 0; j < operation.registerIndices.length - 1; j ++ ){
 				
 					U = Q.Circuit.controlled( U )
@@ -1105,7 +1109,7 @@ https://cirq.readthedocs.io/en/stable/tutorial.html
 		return headers
 	},
 	toAmazonBraket: function(){
-		let is_valid_braket_circuit = true
+		let isValidBraketCircuit = true
 		const header = `import boto3
 from braket.aws import AwsDevice
 from braket.circuits import Circuit
@@ -1124,12 +1128,12 @@ device = LocalSimulator()\n\n`
 			let awsGate = operation.gate.symbolAmazonBraket !== undefined ?
 				operation.gate.symbolAmazonBraket :
 				operation.gate.symbol.substr( 0, 1 ).toLowerCase()
-			if( operation.gate.symbolAmazonBraket === undefined ) is_valid_braket_circuit = false
+			if( operation.gate.symbolAmazonBraket === undefined ) isValidBraketCircuit = false
 			if( operation.gate.symbol === 'X' ) {
 				if( operation.registerIndices.length === 1 ) awsGate = operation.gate.symbolAmazonBraket
 				else if( operation.registerIndices.length === 2 ) awsGate = 'cnot'
 				else if( operation.registerIndices.length === 3) awsGate = 'ccnot'
-				else is_valid_braket_circuit = false
+				else isValidBraketCircuit = false
 			}
 
 			else if( operation.gate.symbol === 'S' ) {
@@ -1149,13 +1153,13 @@ device = LocalSimulator()\n\n`
 			else if( operation.gate.symbol === 'Y' || operation.gate.symbol === 'Z' || operation.gate.symbol === 'P' ) {
 				if( operation.registerIndices.length === 1) awsGate = operation.gate.symbolAmazonBraket
 				else if( operation.registerIndices.length === 2 ) awsGate = (operation.gate.symbol === 'Y') ? 'cy' : (operation.gate.symbol === 'Z') ? 'cz' : 'cphaseshift'
-				else is_valid_braket_circuit = false
+				else isValidBraketCircuit = false
 			}
 			//for all unitary gates, there must be a line of code to initialize the matrix for use
         //in Braket's .u(matrix=my_unitary, targets[0]) function
 			else if( operation.gate.symbol === 'U') {
 				//check that this truly works as a unique id
-				is_valid_braket_circuit &= operation.registerIndices.length === 1
+				isValidBraketCircuit &= operation.registerIndices.length === 1
 				const new_matrix = `unitary_` + num_unitaries
 				num_unitaries++
 				const a = Q.ComplexNumber.toText(Math.cos(-(operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2),
@@ -1182,7 +1186,7 @@ device = LocalSimulator()\n\n`
 			}
 			// I believe this line should ensure that we don't include any controlled single-qubit gates that aren't allowed in Braket. 
 			// The registerIndices.length > 1 technically shouldn't be necessary, but if changes are made later, it's just for safety. 
-			else is_valid_braket_circuit &= (operation.registerIndices.length === 1) || ( operation.registerIndices.length > 1 && operation.gate.is_multi_qubit )
+			else isValidBraketCircuit &= (operation.registerIndices.length === 1) || ( operation.registerIndices.length > 1 && operation.gate.is_multi_qubit )
 			return string +'.'+ awsGate +'(' + 
 				operation.registerIndices.reduce( function( string, registerIndex, r ){
 
@@ -1200,7 +1204,7 @@ device = LocalSimulator()\n\n`
 
 		const footer = `\n\ntask = device.run(qjs_circuit, s3_folder, shots=100)
 print(task.result().measurement_counts)`
-		return is_valid_braket_circuit ? header + variables + circuit + footer : `###This circuit is not representable as a Braket circuit!###`
+		return isValidBraketCircuit ? header + variables + circuit + footer : `###This circuit is not representable as a Braket circuit!###`
 	},
 	toLatex: function(){
 

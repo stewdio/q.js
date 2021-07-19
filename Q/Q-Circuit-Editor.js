@@ -1169,7 +1169,6 @@ Q.Circuit.Editor.onPointerMove = function( event ){
 
 
 Q.Circuit.Editor.onPointerPress = function( event ){
-	console.log( event );
 	//  This is just a safety net
 	//  in case something terrible has ocurred.
 	// (ex. Did the user click and then their mouse ran
