@@ -295,6 +295,7 @@ Object.assign( Q.Circuit, {
 		return result
 	},
 
+	//given an operation, return whether or not it is a valid control operation on the circuit-editor. 
 	isControlledOperation:  function( operation ) {
 		return (!operation.gate.is_multi_qubit) //assumption: we won't allow controlled multi-qubit operations
 		&& (operation.registerIndices.length >= 2) 
@@ -1125,9 +1126,6 @@ device = LocalSimulator()\n\n`
 		//`qjs_circuit = Circuit().h(0).cnot(0,1)`
 		//ltnln change: from gate.AmazonBraketName -> gate.symbolAmazonBraket
 		let circuit = this.operations.reduce( function( string, operation ){
-			let awsGate = operation.gate.symbolAmazonBraket !== undefined ?
-				operation.gate.symbolAmazonBraket :
-				operation.gate.symbol.substr( 0, 1 ).toLowerCase()
 			if( operation.gate.symbolAmazonBraket === undefined ) isValidBraketCircuit = false
 			if( operation.gate.symbol === 'X' ) {
 				if( operation.registerIndices.length === 1 ) awsGate = operation.gate.symbolAmazonBraket
@@ -1150,7 +1148,7 @@ device = LocalSimulator()\n\n`
 			}
 			//ltnln note: removed the if( operation.gate.symbol == '*') branch as it should be covered by
         	//the inclusion of the CURSOR gate. 
-			else if( operation.gate.symbol === 'Y' || operation.gate.symbol === 'Z' || operation.gate.symbol === 'P' ) {
+			else if( ['Y','Z','P'].includes( operation.gate.symbol) ) {
 				if( operation.registerIndices.length === 1) awsGate = operation.gate.symbolAmazonBraket
 				else if( operation.registerIndices.length === 2 ) awsGate = (operation.gate.symbol === 'Y') ? 'cy' : (operation.gate.symbol === 'Z') ? 'cz' : 'cphaseshift'
 				else isValidBraketCircuit = false
@@ -1162,6 +1160,7 @@ device = LocalSimulator()\n\n`
 				isValidBraketCircuit &= operation.registerIndices.length === 1
 				const new_matrix = `unitary_` + num_unitaries
 				num_unitaries++
+				//https://en.wikipedia.org/wiki/Unitary_matrix; source for the unitary matrix values implemented below. 
 				const a = Q.ComplexNumber.toText(Math.cos(-(operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2),
 												Math.sin(-(operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2))
 												.replace('i', 'j')
