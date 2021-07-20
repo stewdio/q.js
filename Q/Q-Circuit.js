@@ -286,7 +286,6 @@ Object.assign( Q.Circuit, {
 		for( let x = 0; x < size; x ++ ){
 			
 			for( let y = 0; y < size; y ++ ){
-				
 				const v = U.read( x, y )
 				// console.log( `value at ${x}, ${y}`, v )
 				result.write$( x + size, y + size, v )
@@ -297,7 +296,8 @@ Object.assign( Q.Circuit, {
 
 	//given an operation, return whether or not it is a valid control operation on the circuit-editor. 
 	isControlledOperation:  function( operation ) {
-		return (!operation.gate.is_multi_qubit) //assumption: we won't allow controlled multi-qubit operations
+		return (!operation.gate.is_multi_qubit || operation.gate.name === 'Swap') //assumption: we won't allow controlled multi-qubit operations
+																				  //..except swap or CNOT
 		&& (operation.registerIndices.length >= 2) 
 		&& (operation.gate.can_be_controlled)
 	},
@@ -310,7 +310,6 @@ Object.assign( Q.Circuit, {
 	//  http://148.206.53.84/tesiuami/S_pdfs/AUTOMATIC%20QUANTUM%20COMPUTER%20PROGRAMMING.pdf
 
 	expandMatrix: function( circuitBandwidth, U, qubitIndices ){
-		
 		// console.log( 'EXPANDING THE MATRIX...' )
 		// console.log( 'this one: U', U.toTsv())
 
@@ -329,7 +328,7 @@ Object.assign( Q.Circuit, {
 		for( let i = 0; i < qubitIndices.length; i ++ ){
 			
 			//qubitIndices[ i ] = ( circuitBandwidth - 1 ) - qubitIndices[ i ]
-			qubitIndices[ i ] = ( circuitBandwidth - 0 ) - qubitIndices[ i ]
+			qubitIndices[ i ] -= 1
 		}
 		// console.log( 'qubits AFTER manipulation', qubitIndices )
 
@@ -471,7 +470,6 @@ Object.assign( Q.Circuit, {
 		let matrix = circuit.operations.reduce( function( state, operation, i ){
 
 
-
 			let U
 			if( operation.registerIndices.length < Infinity ){
 			
@@ -503,12 +501,13 @@ Object.assign( Q.Circuit, {
 			//  Works for now tho..... 
 			// Houston we have a problem. Turns out, not every gate with registerIndices.length > 1 is
 			// controlled.
-			// This is a nasty fix, leads to a lot of edge cases. (For instance: hard-coding cswaps...) But just experimenting. 
+			// This is a nasty fix, leads to a lot of edge cases. But just experimenting. 
 			if( Q.Circuit.isControlledOperation(operation) ) {
-				for( let j = 0; j < operation.registerIndices.length - 1; j ++ ){
+				const scale = operation.registerIndices.length - ( operation.gate.is_multi_qubit ? 2 : 1)
+				for( let j = 0; j < scale; j ++ ){
 				
 					U = Q.Circuit.controlled( U )
-					//console.log( 'qubitIndex #', j, 'U = Q.Circuit.controlled( U )', U.toTsv() )
+					// console.log( 'qubitIndex #', j, 'U = Q.Circuit.controlled( U )', U.toTsv() )
 				}
 			}
 
@@ -526,7 +525,7 @@ Object.assign( Q.Circuit, {
 				registerIndices
 
 			).multiply( state )
-
+			
 
 
 			operationsCompleted ++
@@ -560,7 +559,6 @@ Object.assign( Q.Circuit, {
 		}, state )
 
 
-		// console.log( 'result matrix', matrix.toTsv() )
 	
 
 
@@ -1126,6 +1124,8 @@ device = LocalSimulator()\n\n`
 		//`qjs_circuit = Circuit().h(0).cnot(0,1)`
 		//ltnln change: from gate.AmazonBraketName -> gate.symbolAmazonBraket
 		let circuit = this.operations.reduce( function( string, operation ){
+			let awsGate = operation.gate.symbolAmazonBraket
+			isValidBraketCircuit &= awsGate !== undefined
 			if( operation.gate.symbolAmazonBraket === undefined ) isValidBraketCircuit = false
 			if( operation.gate.symbol === 'X' ) {
 				if( operation.registerIndices.length === 1 ) awsGate = operation.gate.symbolAmazonBraket
