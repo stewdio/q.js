@@ -4,13 +4,13 @@
 
 
 
-Q.Matrix = function(){
+Matrix = function(){
 
 
 	//  We’re keeping track of how many matrices are
 	//  actually being generated. Just curiosity.
 
-	this.index = Q.Matrix.index ++
+	this.index = Matrix.index ++
 
 
 	let matrixWidth = null
@@ -21,7 +21,7 @@ Q.Matrix = function(){
 	//  with dimensions of those values.
 	
 	if( arguments.length == 1 &&
-		Q.ComplexNumber.isNumberLike( arguments[ 0 ])){
+		ComplexNumber.isNumberLike( arguments[ 0 ])){
 
 		matrixWidth = arguments[ 0 ]
 		this.rows = new Array( matrixWidth ).fill( 0 ).map( function(){
@@ -30,8 +30,8 @@ Q.Matrix = function(){
 		})
 	}
 	else if( arguments.length == 2 &&
-		Q.ComplexNumber.isNumberLike( arguments[ 0 ]) &&
-	    Q.ComplexNumber.isNumberLike( arguments[ 1 ])){
+		ComplexNumber.isNumberLike( arguments[ 0 ]) &&
+	    ComplexNumber.isNumberLike( arguments[ 1 ])){
 
 		matrixWidth = arguments[ 0 ]
 		this.rows = new Array( arguments[ 1 ]).fill( 0 ).map( function(){
@@ -56,7 +56,7 @@ Q.Matrix = function(){
 			else if( matrixWidth !== row.length ) matrixWidthIsBroken = true
 		})
 		if( matrixWidthIsBroken )
-			return Q.error( `Q.Matrix found upon initialization that matrix#${this.index} row lengths were not equal. You are going to have a bad time.`, this )
+			return error( `Matrix found upon initialization that matrix#${this.index} row lengths were not equal. You are going to have a bad time.`, this )
 	}
 
 
@@ -82,10 +82,10 @@ Q.Matrix = function(){
 			if( typeof value === 'number' ){
 				
 				// console.log('Created a  complex number!')
-				matrix.rows[ y ][ x ] = new Q.ComplexNumber( value )
+				matrix.rows[ y ][ x ] = new ComplexNumber( value )
 			}
-			else if( value instanceof Q.ComplexNumber === false ){
-				return Q.error( `Q.Matrix found upon initialization that matrix#${this.index} contained non-quantitative values. A+ for creativity, but F for functionality.`, this )
+			else if( value instanceof ComplexNumber === false ){
+				return error( `Matrix found upon initialization that matrix#${this.index} contained non-quantitative values. A+ for creativity, but F for functionality.`, this )
 			}
 
 			// console.log( x, y, matrix.rows[ y ][ x ])
@@ -113,18 +113,18 @@ Q.Matrix = function(){
 ///////////////////////////
 
 
-Object.assign( Q.Matrix, {
+Object.assign( Matrix, {
 
 	index: 0,
-	help: function(){ return Q.help( this )},
+	help: function(){ return help( this )},
 	constants: {},//  Only holds references; an easy way to look up what constants exist.
-	createConstant:  Q.createConstant,
-	createConstants: Q.createConstants,
+	createConstant:  createConstant,
+	createConstants: createConstants,
 
 
 	isMatrixLike: function( obj ){
 
-		//return obj instanceof Q.Matrix || Q.Matrix.prototype.isPrototypeOf( obj )
+		//return obj instanceof Matrix || Matrix.prototype.isPrototypeOf( obj )
 		return obj instanceof this || this.prototype.isPrototypeOf( obj )
 	},
 	isWithinRange: function( n, minimum, maximum ){
@@ -152,9 +152,9 @@ Object.assign( Q.Matrix, {
 	},
 	areEqual: function( matrix0, matrix1 ){
 
-		if( matrix0 instanceof Q.Matrix !== true ) return false
-		if( matrix1 instanceof Q.Matrix !== true ) return false
-		if( Q.Matrix.haveEqualDimensions( matrix0, matrix1 ) !== true ) return false
+		if( matrix0 instanceof Matrix !== true ) return false
+		if( matrix1 instanceof Matrix !== true ) return false
+		if( Matrix.haveEqualDimensions( matrix0, matrix1 ) !== true ) return false
 		return matrix0.rows.reduce( function( state, row, r ){
 
 			return state && row.reduce( function( state, cellValue, c ){
@@ -183,19 +183,19 @@ Object.assign( Q.Matrix, {
 			}
 			data.push( row )
 		}
-		return new Q.Matrix( ...data )
+		return new Matrix( ...data )
 	},
 	createZero: function( size ){
 	
-		return new Q.Matrix.createSquare( size )
+		return new Matrix.createSquare( size )
 	},
 	createOne: function( size ){
 	
-		return new Q.Matrix.createSquare( size, function(){ return 1 })
+		return new Matrix.createSquare( size, function(){ return 1 })
 	},
 	createIdentity: function( size ){
 
-		return new Q.Matrix.createSquare( size, function( x, y ){ return x === y ? 1 : 0 })
+		return new Matrix.createSquare( size, function( x, y ){ return x === y ? 1 : 0 })
 	},
 
 	
@@ -206,15 +206,15 @@ Object.assign( Q.Matrix, {
 	from: function( format ){
 
 		if( typeof format !== 'string' ) format = 'Array'
-		const f = Q.Matrix[ 'from'+ format ]
+		const f = Matrix[ 'from'+ format ]
 		format = format.toLowerCase()
 		if( typeof f !== 'function' )
-			return Q.error( `Q.Matrix could not find an importer for “${format}” data.` )
+			return error( `Matrix could not find an importer for “${format}” data.` )
 		return f
 	},
 	fromArray: function( array ){
 
-		return new Q.Matrix( ...array )
+		return new Matrix( ...array )
 	},
 	fromXsv: function( input, rowSeparator, valueSeparator ){
 
@@ -245,19 +245,19 @@ Object.assign( Q.Matrix, {
 			})
 			outputRows.push( outputRow )
 		})
-		return new Q.Matrix( ...outputRows )
+		return new Matrix( ...outputRows )
 	},
 	fromCsv: function( csv ){
 
-		return Q.Matrix.fromXsv( csv.replace( /\r/g, '\n' ), '\n', ',' )
+		return Matrix.fromXsv( csv.replace( /\r/g, '\n' ), '\n', ',' )
 	},
 	fromTsv: function( tsv ){
 
-		return Q.Matrix.fromXsv( tsv, '\n', '\t' )
+		return Matrix.fromXsv( tsv, '\n', '\t' )
 	},
 	fromHtml: function( html ){
 
-		return Q.Matrix.fromXsv(
+		return Matrix.fromXsv(
 
 			html
 				.replace( /\r?\n|\r|<tr>|<td>/g, '' )
@@ -287,11 +287,11 @@ Object.assign( Q.Matrix, {
 	},
 	toCsv: function( matrix ){
 
-		return Q.Matrix.toXsv( matrix, '\n', ',' )
+		return Matrix.toXsv( matrix, '\n', ',' )
 	},
 	toTsv: function( matrix ){
 
-		return Q.Matrix.toXsv( matrix, '\n', '\t' )
+		return Matrix.toXsv( matrix, '\n', '\t' )
 	},
 
 
@@ -301,15 +301,15 @@ Object.assign( Q.Matrix, {
 
 	add: function( matrix0, matrix1 ){
 
-		if( Q.Matrix.isMatrixLike( matrix0 ) !== true ||
-			Q.Matrix.isMatrixLike( matrix1 ) !== true ){
+		if( Matrix.isMatrixLike( matrix0 ) !== true ||
+			Matrix.isMatrixLike( matrix1 ) !== true ){
 
-			return Q.error( `Q.Matrix attempted to add something that was not a matrix.` )
+			return error( `Matrix attempted to add something that was not a matrix.` )
 		}
-		if( Q.Matrix.haveEqualDimensions( matrix0, matrix1 ) !== true )
-			return Q.error( `Q.Matrix cannot add matrix#${matrix0.index} of dimensions ${matrix0.columns.length}x${matrix0.rows.length} to matrix#${matrix1.index} of dimensions ${matrix1.columns.length}x${matrix1.rows.length}.`)
+		if( Matrix.haveEqualDimensions( matrix0, matrix1 ) !== true )
+			return error( `Matrix cannot add matrix#${matrix0.index} of dimensions ${matrix0.columns.length}x${matrix0.rows.length} to matrix#${matrix1.index} of dimensions ${matrix1.columns.length}x${matrix1.rows.length}.`)
 
-		return new Q.Matrix( ...matrix0.rows.reduce( function( resultMatrixRow, row, r ){
+		return new Matrix( ...matrix0.rows.reduce( function( resultMatrixRow, row, r ){
 
 			resultMatrixRow.push( row.reduce( function( resultMatrixColumn, cellValue, c ){
 
@@ -324,15 +324,15 @@ Object.assign( Q.Matrix, {
 	},
 	multiplyScalar: function( matrix, scalar ){
 
-		if( Q.Matrix.isMatrixLike( matrix ) !== true ){
+		if( Matrix.isMatrixLike( matrix ) !== true ){
 
-			return Q.error( `Q.Matrix attempted to scale something that was not a matrix.` )
+			return error( `Matrix attempted to scale something that was not a matrix.` )
 		}
 		if( typeof scalar !== 'number' ){
 
-			return Q.error( `Q.Matrix attempted to scale this matrix#${matrix.index} by an invalid scalar: ${scalar}.` )
+			return error( `Matrix attempted to scale this matrix#${matrix.index} by an invalid scalar: ${scalar}.` )
 		}
-		return new Q.Matrix( ...matrix.rows.reduce( function( resultMatrixRow, row ){
+		return new Matrix( ...matrix.rows.reduce( function( resultMatrixRow, row ){
 
 			resultMatrixRow.push( row.reduce( function( resultMatrixColumn, cellValue ){
 
@@ -360,14 +360,14 @@ Object.assign( Q.Matrix, {
 		https://en.wikipedia.org/wiki/Matrix_multiplication
 		`
 
-		if( Q.Matrix.isMatrixLike( matrix0 ) !== true ||
-			Q.Matrix.isMatrixLike( matrix1 ) !== true ){
+		if( Matrix.isMatrixLike( matrix0 ) !== true ||
+			Matrix.isMatrixLike( matrix1 ) !== true ){
 
-			return Q.error( `Q.Matrix attempted to multiply something that was not a matrix.` )
+			return error( `Matrix attempted to multiply something that was not a matrix.` )
 		}
 		if( matrix0.columns.length !== matrix1.rows.length ){
 
-			return Q.error( `Q.Matrix attempted to multiply Matrix#${matrix0.index}(cols==${matrix0.columns.length}) by Matrix#${matrix1.index}(rows==${matrix1.rows.length}) but their dimensions were not compatible for this.` )
+			return error( `Matrix attempted to multiply Matrix#${matrix0.index}(cols==${matrix0.columns.length}) by Matrix#${matrix1.index}(rows==${matrix1.rows.length}) but their dimensions were not compatible for this.` )
 		}
 		const resultMatrix = []
 		matrix0.rows.forEach( function( matrix0Row ){//  Each row of THIS matrix
@@ -375,7 +375,7 @@ Object.assign( Q.Matrix, {
 			const resultMatrixRow = []
 			matrix1.columns.forEach( function( matrix1Column ){//  Each column of OTHER matrix
 
-				const sum = new Q.ComplexNumber()
+				const sum = new ComplexNumber()
 				matrix1Column.forEach( function( matrix1CellValue, index ){//  Work down the column of OTHER matrix
 
 					sum.add$( matrix0Row[ index ].multiply( matrix1CellValue ))
@@ -384,7 +384,7 @@ Object.assign( Q.Matrix, {
 			})
 			resultMatrix.push( resultMatrixRow )
 		})
-		//return new Q.Matrix( ...resultMatrix )
+		//return new Matrix( ...resultMatrix )
 		return new this( ...resultMatrix )
 	},
 	multiplyTensor: function( matrix0, matrix1 ){
@@ -394,10 +394,10 @@ Object.assign( Q.Matrix, {
 		https://en.wikipedia.org/wiki/Tensor_product
 		`
 
-		if( Q.Matrix.isMatrixLike( matrix0 ) !== true ||
-			Q.Matrix.isMatrixLike( matrix1 ) !== true ){
+		if( Matrix.isMatrixLike( matrix0 ) !== true ||
+			Matrix.isMatrixLike( matrix1 ) !== true ){
 
-			return Q.error( `Q.Matrix attempted to tensor something that was not a matrix.` )
+			return error( `Matrix attempted to tensor something that was not a matrix.` )
 		}
 
 		const 
@@ -424,7 +424,7 @@ Object.assign( Q.Matrix, {
 			}
 			resultMatrix.push( resultMatrixRow )
 		}
-		return new Q.Matrix( ...resultMatrix )
+		return new Matrix( ...resultMatrix )
 	}
 })
 
@@ -440,15 +440,15 @@ Object.assign( Q.Matrix, {
 //////////////////////////////
 
 
-Object.assign( Q.Matrix.prototype, {
+Object.assign( Matrix.prototype, {
 
 	isValidRow: function( r ){
 
-		return Q.Matrix.isWithinRange( r, 0, this.rows.length - 1 )
+		return Matrix.isWithinRange( r, 0, this.rows.length - 1 )
 	},
 	isValidColumn: function( c ){
 
-		return Q.Matrix.isWithinRange( c, 0, this.columns.length - 1 )
+		return Matrix.isWithinRange( c, 0, this.columns.length - 1 )
 	},
 	isValidAddress: function( x, y ){
 
@@ -456,11 +456,11 @@ Object.assign( Q.Matrix.prototype, {
 	},
 	getWidth: function(){
 
-		return Q.Matrix.getWidth( this )
+		return Matrix.getWidth( this )
 	},
 	getHeight: function(){
 
-		return Q.Matrix.getHeight( this )
+		return Matrix.getHeight( this )
 	},
 
 
@@ -479,15 +479,15 @@ Object.assign( Q.Matrix.prototype, {
 		`
 		
 		if( this.isValidAddress( x, y )) return this.rows[ y ][ x ]
-		return Q.error( `Q.Matrix could not read from cell address (x=${x}, y=${y}) in matrix#${this.index}.`, this )
+		return error( `Matrix could not read from cell address (x=${x}, y=${y}) in matrix#${this.index}.`, this )
 	},
 	clone: function(){
 
-		return new Q.Matrix( ...this.rows )
+		return new Matrix( ...this.rows )
 	},
 	isEqualTo: function( otherMatrix ){
 
-		return Q.Matrix.areEqual( this, otherMatrix )
+		return Matrix.areEqual( this, otherMatrix )
 	},
 
 
@@ -497,15 +497,15 @@ Object.assign( Q.Matrix.prototype, {
 	},
 	toXsv: function( rowSeparator, valueSeparator ){
 		
-		return Q.Matrix.toXsv( this, rowSeparator, valueSeparator )
+		return Matrix.toXsv( this, rowSeparator, valueSeparator )
 	},
 	toCsv: function(){
 
-		return Q.Matrix.toXsv( this, '\n', ',' )
+		return Matrix.toXsv( this, '\n', ',' )
 	},
 	toTsv: function(){
 
-		return Q.Matrix.toXsv( this, '\n', '\t' )
+		return Matrix.toXsv( this, '\n', '\t' )
 	},
 	toHtml: function(){
 		
@@ -537,20 +537,20 @@ Object.assign( Q.Matrix.prototype, {
 
 		if( this.isValidAddress( x, y )){
 
-			if( Q.ComplexNumber.isNumberLike( n )) n = new Q.ComplexNumber( n )
-			if( n instanceof Q.ComplexNumber !== true ) return Q.error( `Attempted to write an invalid value (${n}) to matrix#${this.index} at x=${x}, y=${y}`, this )
+			if( ComplexNumber.isNumberLike( n )) n = new ComplexNumber( n )
+			if( n instanceof ComplexNumber !== true ) return error( `Attempted to write an invalid value (${n}) to matrix#${this.index} at x=${x}, y=${y}`, this )
 			this.rows[ y ][ x ] = n
 			return this
 		}
-		return Q.error( `Invalid cell address for Matrix#${this.index}: x=${x}, y=${y}`, this )
+		return error( `Invalid cell address for Matrix#${this.index}: x=${x}, y=${y}`, this )
 	},
 	copy$: function( matrix ){
 
-		if( Q.Matrix.isMatrixLike( matrix ) !== true )
-			return Q.error( `Q.Matrix attempted to copy something that was not a matrix in to this matrix#${matrix.index}.`, this )
+		if( Matrix.isMatrixLike( matrix ) !== true )
+			return error( `Matrix attempted to copy something that was not a matrix in to this matrix#${matrix.index}.`, this )
 
-		if( Q.Matrix.haveEqualDimensions( matrix, this ) !== true )
-			return Q.error( `Q.Matrix cannot copy matrix#${matrix.index} of dimensions ${matrix.columns.length}x${matrix.rows.length} in to this matrix#${this.index} of dimensions ${this.columns.length}x${this.rows.length} because their dimensions do not match.`, this )
+		if( Matrix.haveEqualDimensions( matrix, this ) !== true )
+			return error( `Matrix cannot copy matrix#${matrix.index} of dimensions ${matrix.columns.length}x${matrix.rows.length} in to this matrix#${this.index} of dimensions ${this.columns.length}x${this.rows.length} because their dimensions do not match.`, this )
 		
 		const that = this
 		matrix.rows.forEach( function( row, r ){
@@ -564,19 +564,19 @@ Object.assign( Q.Matrix.prototype, {
 	},
 	fromArray$: function( array ){
 
-		return this.copy$( Q.Matrix.fromArray( array ))
+		return this.copy$( Matrix.fromArray( array ))
 	},
 	fromCsv$: function( csv ){
 
-		return this.copy$( Q.Matrix.fromCsv( csv ))
+		return this.copy$( Matrix.fromCsv( csv ))
 	},
 	fromTsv$: function( tsv ){
 
-		return this.copy$( Q.Matrix.fromTsv( tsv ))
+		return this.copy$( Matrix.fromTsv( tsv ))
 	},
 	fromHtml$: function( html ){
 
-		return this.copy$( Q.Matrix.fromHtml( html ))
+		return this.copy$( Matrix.fromHtml( html ))
 	},
 
 
@@ -586,19 +586,19 @@ Object.assign( Q.Matrix.prototype, {
 
 	add: function( otherMatrix ){
 
-		return Q.Matrix.add( this, otherMatrix )
+		return Matrix.add( this, otherMatrix )
 	},
 	multiplyScalar: function( scalar ){
 
-		return Q.Matrix.multiplyScalar( this, scalar )
+		return Matrix.multiplyScalar( this, scalar )
 	},
 	multiply: function( otherMatrix ){
 
-		return Q.Matrix.multiply( this, otherMatrix )
+		return Matrix.multiply( this, otherMatrix )
 	},
 	multiplyTensor: function( otherMatrix ){
 
-		return Q.Matrix.multiplyTensor( this, otherMatrix )
+		return Matrix.multiplyTensor( this, otherMatrix )
 	},
 
 
@@ -628,25 +628,25 @@ Object.assign( Q.Matrix.prototype, {
 //////////////////////////
 
 
-Q.Matrix.createConstants(
+Matrix.createConstants(
 
-	'IDENTITY_2X2', Q.Matrix.createIdentity( 2 ),
-	'IDENTITY_3X3', Q.Matrix.createIdentity( 3 ),
-	'IDENTITY_4X4', Q.Matrix.createIdentity( 4 ),
+	'IDENTITY_2X2', Matrix.createIdentity( 2 ),
+	'IDENTITY_3X3', Matrix.createIdentity( 3 ),
+	'IDENTITY_4X4', Matrix.createIdentity( 4 ),
 
-	'CONSTANT0_2X2', new Q.Matrix(
+	'CONSTANT0_2X2', new Matrix(
 		[ 1, 1 ],
 		[ 0, 0 ]),
 
-	'CONSTANT1_2X2', new Q.Matrix(
+	'CONSTANT1_2X2', new Matrix(
 		[ 0, 0 ],
 		[ 1, 1 ]),
 
-	'NEGATION_2X2', new Q.Matrix(
+	'NEGATION_2X2', new Matrix(
 		[ 0, 1 ],
 		[ 1, 0 ]),
 
-	'TEST_MAP_9X9', new Q.Matrix(
+	'TEST_MAP_9X9', new Matrix(
 		[ 11, 21, 31, 41, 51, 61, 71, 81, 91 ],
 		[ 12, 22, 32, 42, 52, 62, 72, 82, 92 ],
 		[ 13, 23, 33, 43, 53, 63, 73, 83, 93 ],
