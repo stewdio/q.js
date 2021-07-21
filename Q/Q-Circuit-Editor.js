@@ -2242,16 +2242,9 @@ Q.Circuit.Editor.onDoubleclick = function( event, operationEl ) {
 			textbox.setAttribute( 'value', operationEl.getAttribute(element) ? operationEl.getAttribute(element) : operation.parameters[element] )
 			//set textbox to update the operation instance (cellEl)'s parameters on value change
 			textbox.addEventListener( "change", () => {
-				let parameterValue
+				let parameterValue = +textbox.value;
 				let oldValue = operationEl.getAttribute( element )
 				if( !oldValue ) oldValue = operation.parameters[ element ]
-				try {
-					parameterValue = math.evaluate(textbox.value.toLowerCase())
-				}
-				catch( err ) {
-					console.log(err)
-					parameterValue = oldValue
-				}
 				if( parameterValue === null || parameterValue === Infinity ) textbox.value = oldValue.toString()
 				else {
 					operationEl.setAttribute( element, parameterValue )
