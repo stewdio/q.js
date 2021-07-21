@@ -21,6 +21,8 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 		return document.createElement( 'div' )
 	}
 
+	
+
 
 
 
@@ -429,6 +431,12 @@ Object.assign( Q.Circuit.Editor, {
 			x: event[ pageOrClient +'X' ],
 			y: event[ pageOrClient +'Y' ]
 		}
+	},
+	createNewElement :function(element_type, element_parent, element_css) {
+		element = document.createElement(element_type)
+		if(element_css) element.classList.add(element_css)
+		if(element_parent) element_parent.appendChild( element )
+		return element
 	},
 	createPalette: function( targetEl ){
 
@@ -2216,9 +2224,7 @@ Q.Circuit.Editor.onDoubleclick = function( event, operationEl ) {
 	})
 	if( !boardContainerEl ) return;
 	const parameterEl = boardContainerEl.querySelector('.Q-parameters-box')
-	const exit = document.createElement( 'button' )
-	parameterEl.appendChild( exit )
-	exit.classList.add( 'Q-parameter-box-exit' )
+	const exit = Q.Circuit.Editor.createNewElement( 'button', parameterEl, 'Q-parameter-box-exit')
 	exit.appendChild(document.createTextNode( '⬅' ))
 	parameterEl.setAttribute( "operation-moment-index", operationEl.getAttribute( 'moment-index' ))
 	parameterEl.setAttribute( "operation-register-index", operationEl.getAttribute( 'register-index' ))
@@ -2230,13 +2236,11 @@ Q.Circuit.Editor.onDoubleclick = function( event, operationEl ) {
 			const input_fields = document.createElement( 'div' )
 			parameterEl.appendChild( input_fields )
 			input_fields.classList.add( 'Q-parameter-box-input-container' )
-			const label = document.createElement( "span" )
-			input_fields.appendChild( label )
-			label.classList.add( 'Q-parameter-input-label' )
+
+			const label = Q.Circuit.Editor.createNewElement( "span", input_fields, 'Q-parameter-input-label' )
 			label.appendChild(document.createTextNode( element ))
-			const textbox = document.createElement( "input" )
-			input_fields.appendChild( textbox )
-			textbox.classList.add( 'Q-parameter-box-input' )
+
+			const textbox = Q.Circuit.Editor.createNewElement( "input", input_fields, 'Q-parameter-box-input')
 			textbox.setAttribute( 'type', 'text' )
 			textbox.setAttribute( 'placeholder', element )
 			textbox.setAttribute( 'value', operationEl.getAttribute(element) ? operationEl.getAttribute(element) : operation.parameters[element] )
