@@ -4,10 +4,10 @@
 
 
 
-Q.Gate = function( params ){
+Gate = function( params ){
 
 	Object.assign( this, params )
-	this.index = Q.Gate.index ++
+	this.index = Gate.index ++
 	
 	if( typeof this.symbol !== 'string' ) this.symbol = '?'
 	if( typeof this.symbolAmazonBraket !== 'string' ) this.symbolAmazonBraket = this.symbol.toLowerCase()
@@ -23,7 +23,7 @@ Q.Gate = function( params ){
 	const 
 	scope = this,
 	foundConstant = Object
-	.values( Q.Gate.constants )
+	.values( Gate.constants )
 	.find( function( gate ){ 
 
 		return gate.symbol === scope.symbol
@@ -31,7 +31,7 @@ Q.Gate = function( params ){
 
 	if( foundConstant ){
 		
-		Q.warn( `Q.Gate is creating a new instance, #${ this.index }, that uses the same symbol as a pre-existing Gate constant:`, foundConstant )
+		warn( `Gate is creating a new instance, #${ this.index }, that uses the same symbol as a pre-existing Gate constant:`, foundConstant )
 	}
 
 	if( typeof this.name    !== 'string' ) this.name    = 'Unknown'
@@ -51,11 +51,11 @@ Q.Gate = function( params ){
 
 	if( typeof this.applyToQubit !== 'function' ){
 
-		if( this.matrix instanceof Q.Matrix === true ){
+		if( this.matrix instanceof Matrix === true ){
 		
 			this.applyToQubit = function( qubit ){ 
 
-				return new Q.Qubit( this.matrix.multiply( qubit ))
+				return new Qubit( this.matrix.multiply( qubit ))
 			}
 		}
 		else {
@@ -67,18 +67,33 @@ Q.Gate = function( params ){
 
 
 
-Object.assign( Q.Gate, {
+Object.assign( Gate, {
 	
 	index: 0,
 	constants: {},
-	createConstant:  Q.createConstant,
-	createConstants: Q.createConstants,
+	createConstant:  function( key, value ){
+
+		this[ key ] = value
+		this.constants[ key ] = this[ key ]
+		Object.freeze( this[ key ])
+	},
+	createConstants: function(){
+
+		if( arguments.length % 2 !== 0 ){
+
+			return error( 'Q attempted to create constants with invalid (KEY, VALUE) pairs.' )
+		}
+		for( let i = 0; i < arguments.length; i += 2 ){
+
+			this.createConstant( arguments[ i ], arguments[ i + 1 ])
+		}
+	},
 	findBy: function( key, value ){
 
 		return (
 			
 			Object
-			.values( Q.Gate.constants )
+			.values( Gate.constants )
 			.find( function( item ){
 
 				if( typeof value === 'string' && 
@@ -92,22 +107,22 @@ Object.assign( Q.Gate, {
 	},
 	findBySymbol: function( symbol ){
 
-		return Q.Gate.findBy( 'symbol', symbol )
+		return Gate.findBy( 'symbol', symbol )
 	},
 	findByName: function( name ){
 
-		return Q.Gate.findBy( 'name', name )
+		return Gate.findBy( 'name', name )
 	}
 })
 
 
 
 
-Object.assign( Q.Gate.prototype, {
+Object.assign( Gate.prototype, {
 
 	clone: function( params ){
 
-		return new Q.Gate( Object.assign( {}, this, params ))
+		return new Gate( Object.assign( {}, this, params ))
 	},
 	applyToQubits: function(){
 
@@ -127,58 +142,58 @@ Object.assign( Q.Gate.prototype, {
 
 
 
-Q.Gate.createConstants (
+Gate.createConstants (
 
 
 	//  Operate on a single qubit.
 
-	'IDENTITY', new Q.Gate({
+	'IDENTITY', new Gate({
 
 		symbol:    'I',
 		symbolAmazonBraket: 'i',
 		symbolSvg: '',
 		name:      'Identity',
 		nameCss:   'identity',
-		matrix: Q.Matrix.IDENTITY_2X2
+		matrix: Matrix.IDENTITY_2X2
 	}),
-	'CURSOR', new Q.Gate({
+	'CURSOR', new Gate({
 
 		symbol:    '*',
 		symbolAmazonBraket: 'i',
 		symbolSvg: '',
 		name:      'Identity',
 		nameCss:   'identity',
-		matrix: Q.Matrix.IDENTITY_2X2
+		matrix: Matrix.IDENTITY_2X2
 	}),
-	'MEASURE', new Q.Gate({
+	'MEASURE', new Gate({
 
 		symbol:    'M',
 		symbolAmazonBraket: 'm',
 		symbolSvg: '',
 		name:      'Measure',
 		nameCss:   'measure',
-		matrix: Q.Matrix.IDENTITY_2X2,
+		matrix: Matrix.IDENTITY_2X2,
 		applyToQubit: function( state ){}
 	}),
-	'HADAMARD', new Q.Gate({
+	'HADAMARD', new Gate({
 
 		symbol:    'H',
 		symbolAmazonBraket: 'h',
 		symbolSvg: '',
 		name:      'Hadamard',
 		nameCss:   'hadamard',
-		matrix: new Q.Matrix(
+		matrix: new Matrix(
 			[ Math.SQRT1_2,  Math.SQRT1_2 ],
 			[ Math.SQRT1_2, -Math.SQRT1_2 ])
 	}),
-	'PAULI_X', new Q.Gate({
+	'PAULI_X', new Gate({
 
 		symbol:    'X',
 		symbolAmazonBraket: 'x',
 		symbolSvg: '',
 		name:      'Pauli X',
 		nameCss:   'pauli-x',
-		matrix: new Q.Matrix(
+		matrix: new Matrix(
 			[ 0, 1 ],
 			[ 1, 0 ]),
 		//ltnln: NOTE! can_be_controlled refers to whether or not the Braket SDK supports a controlled
@@ -187,33 +202,33 @@ Q.Gate.createConstants (
 		can_be_controlled:  true
 		},
 	),
-	'PAULI_Y', new Q.Gate({
+	'PAULI_Y', new Gate({
 
 		symbol:    'Y',
 		symbolAmazonBraket: 'y',
 		symbolSvg: '',
 		name:      'Pauli Y',
 		nameCss:   'pauli-y',
-		matrix: new Q.Matrix(
-			[ 0, new Q.ComplexNumber( 0, -1 )],
-			[ new Q.ComplexNumber( 0, 1 ), 0 ]),
+		matrix: new Matrix(
+			[ 0, new ComplexNumber( 0, -1 )],
+			[ new ComplexNumber( 0, 1 ), 0 ]),
 		can_be_controlled:  true
 		},
 	),
-	'PAULI_Z', new Q.Gate({
+	'PAULI_Z', new Gate({
 
 		symbol:    'Z',
 		symbolAmazonBraket: 'z',
 		symbolSvg: '',
 		name:      'Pauli Z',
 		nameCss:   'pauli-z',
-		matrix: new Q.Matrix(
+		matrix: new Matrix(
 			[ 1,  0 ],
 			[ 0, -1 ]),
 		can_be_controlled:  true
 		},
 		),
-	'PHASE', new Q.Gate({
+	'PHASE', new Gate({
 
 		symbol:    'P',
 		symbolAmazonBraket: 'phaseshift',//  ltnln edit: change from 'p' to 'phaseshift'
@@ -222,35 +237,35 @@ Q.Gate.createConstants (
 		nameCss:   'phase',
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ){
-			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ]  = +phi;
-			this.matrix = new Q.Matrix(
+			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ]  = +phi;
+			this.matrix = new Matrix(
 				[ 1, 0 ],
-				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] ))])
+				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] ))])
 			return this
 		},
 		applyToQubit: function( qubit, phi ){
 
-			if( Q.isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
-			const matrix = new Q.Matrix(
+			if( isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
+			const matrix = new Matrix(
 				[ 1, 0 ],
-				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi ))])
-			return new Q.Qubit( matrix.multiply( qubit ))
+				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, phi ))])
+			return new Qubit( matrix.multiply( qubit ))
 		},
 		can_be_controlled:  true,
 		has_parameters:		true
 	}),
-	'PI_8', new Q.Gate({
+	'PI_8', new Gate({
 
 		symbol:    'T',
 		symbolAmazonBraket: 't',//  !!! Double check this !!!
 		symbolSvg: '',
 		name:      'π ÷ 8',
 		nameCss:   'pi8',
-		matrix: new Q.Matrix(
+		matrix: new Matrix(
 			[ 1, 0 ],
-			[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, Math.PI / 4 )) ])
+			[ 0, ComplexNumber.E.power( new ComplexNumber( 0, Math.PI / 4 )) ])
 	}),
-	'BLOCH', new Q.Gate({
+	'BLOCH', new Gate({
 
 		symbol:    'B',
 		//symbolAmazonBraket: Does not exist.
@@ -262,7 +277,7 @@ Q.Gate.createConstants (
 			//  Create Bloch sphere visualizer instance.
 		}
 	}),
-	'RX', new Q.Gate({
+	'RX', new Gate({
 
 		symbol:		'Rx',
 		symbolAmazonBraket:	'rx', 
@@ -272,23 +287,23 @@ Q.Gate.createConstants (
 		parameters: { "phi" : Math.PI / 2 },
 		updateMatrix$: function( phi ){
 
-			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
-			this.matrix = new Q.Matrix(
-				[ Math.cos( this.parameters[ "phi" ] / 2 ), new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )) ],
-				[ new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 )])
+			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Matrix(
+				[ Math.cos( this.parameters[ "phi" ] / 2 ), new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )) ],
+				[ new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 )])
 			return this
 		},
 		applyToQubit: function( qubit, phi ){
 
-			if( Q.isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
-			const matrix = new Q.Matrix(
-				[ Math.cos( phi / 2 ), new Q.ComplexNumber( 0, -Math.sin( phi / 2 )) ],
-				[ new Q.ComplexNumber( 0, -Math.sin( phi / 2 )), Math.cos( phi / 2 )])
-			return new Q.Qubit( matrix.multiply( qubit ))
+			if( isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
+			const matrix = new Matrix(
+				[ Math.cos( phi / 2 ), new ComplexNumber( 0, -Math.sin( phi / 2 )) ],
+				[ new ComplexNumber( 0, -Math.sin( phi / 2 )), Math.cos( phi / 2 )])
+			return new Qubit( matrix.multiply( qubit ))
 		},
 		has_parameters:		true
 	}),
-	'RY', new Q.Gate({
+	'RY', new Gate({
 
 		symbol:		'Ry',
 		symbolAmazonBraket:	'ry', 
@@ -298,23 +313,23 @@ Q.Gate.createConstants (
 		parameters: { "phi" : Math.PI / 2 },
 		updateMatrix$: function( phi ){
 
-			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
-			this.matrix = new Q.Matrix(
+			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Matrix(
 				[ Math.cos( this.parameters[ "phi" ] / 2 ), -Math.sin( phi / 2 ) ],
 				[ Math.sin( this.parameters[ "phi" ] / 2 ), Math.cos( this.parameters[ "phi" ] / 2 )])
 			return this
 		},
 		applyToQubit: function( qubit, phi ){
 
-			if( Q.isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
-			const matrix = new Q.Matrix(
+			if( isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
+			const matrix = new Matrix(
 				[ Math.cos( phi / 2 ), -Math.sin( phi / 2 ) ],
 				[ Math.sin( phi / 2 ), Math.cos( phi / 2 )])
-			return new Q.Qubit( matrix.multiply( qubit ))
+			return new Qubit( matrix.multiply( qubit ))
 		},
 		has_parameters:		true
 	}),
-	'RZ', new Q.Gate({
+	'RZ', new Gate({
 
 		symbol:		'Rz',
 		symbolAmazonBraket:	'rz', 
@@ -324,23 +339,23 @@ Q.Gate.createConstants (
 		parameters: { "phi" : Math.PI / 2 },
 		updateMatrix$: function( phi ){
 
-			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
-			this.matrix = new Q.Matrix(
-				[ Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -this.parameters[ "phi" ] / 2 )), 0 ],
-				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] / 2 ))])
+			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Matrix(
+				[ ComplexNumber.E.power( new ComplexNumber( 0, -this.parameters[ "phi" ] / 2 )), 0 ],
+				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] / 2 ))])
 			return this
 		},
 		applyToQubit: function( qubit, phi ){
 
-			if( Q.isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
-			const matrix = new Q.Matrix(
-				[ Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -phi / 2 )), 0 ],
-				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi / 2 ))])
-			return new Q.Qubit( matrix.multiply( qubit ))
+			if( isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
+			const matrix = new Matrix(
+				[ ComplexNumber.E.power( new ComplexNumber( 0, -phi / 2 )), 0 ],
+				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, phi / 2 ))])
+			return new Qubit( matrix.multiply( qubit ))
 		},
 		has_parameters:		true
 	}),
-	'UNITARY', new Q.Gate({
+	'UNITARY', new Gate({
 
 		symbol:    'U',
 		symbolAmazonBraket: 'unitary',
@@ -353,102 +368,102 @@ Q.Gate.createConstants (
 					"lambda" : Math.PI / 2 },
 		updateMatrix$: function( phi, theta, lambda ){
 
-			if( (Q.isUsefulNumber( +phi ) === true) && (Q.isUsefulNumber( +theta ) === true) && (Q.isUsefulNumber( +lambda ) === true) ) {
+			if( (isUsefulNumber( +phi ) === true) && (isUsefulNumber( +theta ) === true) && (isUsefulNumber( +lambda ) === true) ) {
 				this.parameters[ "phi" ] = +phi;
 				this.parameters[ "theta" ] = +theta;
 				this.parameters[ "lambda" ] = +lambda;
 			} 
-			const a = Q.ComplexNumber.multiply(
-				Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -( this.parameters[ "phi" ] + this.parameters[ "lambda" ] ) / 2 )),  Math.cos( this.parameters[ "theta" ] / 2 ))
-			const b = Q.ComplexNumber.multiply(
-					Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -( this.parameters[ "phi" ] - this.parameters[ "lambda" ] ) / 2 )), -Math.sin( this.parameters[ "theta" ] / 2 ))
-			const c = Q.ComplexNumber.multiply(
-				Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, ( this.parameters[ "phi" ] - this.parameters[ "lambda" ] ) / 2 )), Math.sin( this.parameters[ "theta" ] / 2 ))
-			const d = Q.ComplexNumber.multiply(
-				Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, ( this.parameters[ "phi" ] + this.parameters[ "lambda" ] ) / 2 )), Math.cos( this.parameters[ "theta" ] / 2 ))
-			this.matrix = new Q.Matrix(
+			const a = ComplexNumber.multiply(
+				ComplexNumber.E.power( new ComplexNumber( 0, -( this.parameters[ "phi" ] + this.parameters[ "lambda" ] ) / 2 )),  Math.cos( this.parameters[ "theta" ] / 2 ))
+			const b = ComplexNumber.multiply(
+					ComplexNumber.E.power( new ComplexNumber( 0, -( this.parameters[ "phi" ] - this.parameters[ "lambda" ] ) / 2 )), -Math.sin( this.parameters[ "theta" ] / 2 ))
+			const c = ComplexNumber.multiply(
+				ComplexNumber.E.power( new ComplexNumber( 0, ( this.parameters[ "phi" ] - this.parameters[ "lambda" ] ) / 2 )), Math.sin( this.parameters[ "theta" ] / 2 ))
+			const d = ComplexNumber.multiply(
+				ComplexNumber.E.power( new ComplexNumber( 0, ( this.parameters[ "phi" ] + this.parameters[ "lambda" ] ) / 2 )), Math.cos( this.parameters[ "theta" ] / 2 ))
+			this.matrix = new Matrix(
 				[ a, b ], 
 				[ c, d ])
 			return this
 		},
 		applyToQubit: function( qubit, phi, theta, lambda ){
-			if( Q.isUsefulNumber( phi ) === true ) phi = this.parameters[ "phi" ]
-			if( Q.isUsefulNumber( theta ) === true ) theta = this.parameters[ "theta" ]
-			if( Q.isUsefulNumber( lambda ) === true ) lambda = this.parameters[ "lambda" ]
-			const a = Q.ComplexNumber.multiply(
-				Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -( phi + lambda ) / 2 )),  Math.cos( theta / 2 ));
-			const b = Q.ComplexNumber.multiply(
-					Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -( phi - lambda ) / 2 )), -Math.sin( theta / 2 ));
-			const c = Q.ComplexNumber.multiply(
-				Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, ( phi - lambda ) / 2 )), Math.sin( theta / 2 ));
-			const d = Q.ComplexNumber.multiply(
-				Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, ( phi + lambda ) / 2 )), Math.cos( theta / 2 ));
-			const matrix = new Q.Matrix(
+			if( isUsefulNumber( phi ) === true ) phi = this.parameters[ "phi" ]
+			if( isUsefulNumber( theta ) === true ) theta = this.parameters[ "theta" ]
+			if( isUsefulNumber( lambda ) === true ) lambda = this.parameters[ "lambda" ]
+			const a = ComplexNumber.multiply(
+				ComplexNumber.E.power( new ComplexNumber( 0, -( phi + lambda ) / 2 )),  Math.cos( theta / 2 ));
+			const b = ComplexNumber.multiply(
+					ComplexNumber.E.power( new ComplexNumber( 0, -( phi - lambda ) / 2 )), -Math.sin( theta / 2 ));
+			const c = ComplexNumber.multiply(
+				ComplexNumber.E.power( new ComplexNumber( 0, ( phi - lambda ) / 2 )), Math.sin( theta / 2 ));
+			const d = ComplexNumber.multiply(
+				ComplexNumber.E.power( new ComplexNumber( 0, ( phi + lambda ) / 2 )), Math.cos( theta / 2 ));
+			const matrix = new Matrix(
 				[ a, b ],
 				[ c, d ])
-			return new Q.Qubit( matrix.multiply( qubit ))
+			return new Qubit( matrix.multiply( qubit ))
 		},
 		has_parameters:		true
 	}),
-	'NOT1_2', new Q.Gate({
+	'NOT1_2', new Gate({
 
 		symbol:    'V',
 		symbolAmazonBraket: 'v',
 		symbolSvg: '',
 		name:      '√Not',
 		nameCss:   'not1-2',
-		matrix: new Q.Matrix(
-			[ new Q.ComplexNumber( 1, 1 ) / 2,  new Q.ComplexNumber( 1, -1 ) / 2 ],
-			[ new Q.ComplexNumber( 1, -1 ) / 2, new Q.ComplexNumber( 1, 1 ) / 2 ])
+		matrix: new Matrix(
+			[ new ComplexNumber( 1, 1 ) / 2,  new ComplexNumber( 1, -1 ) / 2 ],
+			[ new ComplexNumber( 1, -1 ) / 2, new ComplexNumber( 1, 1 ) / 2 ])
 	}),
-	'PI_8_Dagger', new Q.Gate({
+	'PI_8_Dagger', new Gate({
 
 		symbol:    'T†',
 		symbolAmazonBraket: 'ti',
 		symbolSvg: '',
 		name:      'PI_8_Dagger',
 		nameCss:   'pi8-dagger',
-		matrix: new Q.Matrix(
+		matrix: new Matrix(
 			[ 1, 0 ],
-			[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -Math.PI / 4 )) ])
+			[ 0, ComplexNumber.E.power( new ComplexNumber( 0, -Math.PI / 4 )) ])
 	}),
-	'NOT1_2_Dagger', new Q.Gate({
+	'NOT1_2_Dagger', new Gate({
 
 		symbol:    'V†',
 		symbolAmazonBraket: 'vi',
 		symbolSvg: '',
 		name:      '√Not_Dagger',
 		nameCss:   'not1-2-dagger',
-		matrix: new Q.Matrix(
-			[ new Q.ComplexNumber( 1, -1 ) / 2,  new Q.ComplexNumber( 1, 1 ) / 2 ],
-			[ new Q.ComplexNumber( 1, 1 ) / 2, new Q.ComplexNumber( 1, -1 ) / 2 ])
+		matrix: new Matrix(
+			[ new ComplexNumber( 1, -1 ) / 2,  new ComplexNumber( 1, 1 ) / 2 ],
+			[ new ComplexNumber( 1, 1 ) / 2, new ComplexNumber( 1, -1 ) / 2 ])
 	}),
 	//Note that S, S_Dagger, PI_8, and PI_8_Dagger can all be implemented by applying the PHASE gate
 	//using certain values of phi. 
 	//These gates are included for completeness. 
-	'S', new Q.Gate({
+	'S', new Gate({
 		symbol:    'S*', //Gotta think of a better symbol name...
 		symbolAmazonBraket: 's',
 		symbolSvg: '',
 		name:      'π ÷ 4',
 		nameCss:   'pi4',
-		matrix: new Q.Matrix(
+		matrix: new Matrix(
 			[ 1, 0 ],
-			[ 0, new Q.ComplexNumber( 0, 1 ) ])
+			[ 0, new ComplexNumber( 0, 1 ) ])
 	}),
-	'S_Dagger', new Q.Gate({
+	'S_Dagger', new Gate({
 
 		symbol:    'S†',
 		symbolAmazonBraket: 'si',
 		symbolSvg: '',
 		name:      'π ÷ 4 Dagger',
 		nameCss:   'pi4-dagger',
-		matrix: new Q.Matrix(
+		matrix: new Matrix(
 			[ 1, 0 ],
-			[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -1 )) ])
+			[ 0, ComplexNumber.E.power( new ComplexNumber( 0, -1 )) ])
 	}),
 	//  Operate on 2 qubits.
-	'SWAP', new Q.Gate({
+	'SWAP', new Gate({
 
 		symbol:    'S', 
 		symbolAmazonBraket: 'swap',
@@ -458,58 +473,58 @@ Q.Gate.createConstants (
 		parameters: { "phi" : 0.0 },
 		updateMatrix$: function( phi ) {
 			
-			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
-			this.matrix = new Q.Matrix(
+			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Matrix(
 				[ 1, 0, 0, 0 ],
-				[ 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] )), 0 ],
-				[ 0, Q.ComplexNumber.E.power(new Q.ComplexNumber( 0, this.parameters[ "phi" ] )), 0, 0 ],
+				[ 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] )), 0 ],
+				[ 0, ComplexNumber.E.power(new ComplexNumber( 0, this.parameters[ "phi" ] )), 0, 0 ],
 				[ 0, 0, 0, 1 ])
 			return this
 		},
 		applyToQubit: function( qubit, phi ) {
 
-			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Q.Matrix( 
+			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Matrix( 
 				[ 1, 0, 0, 0 ],
-				[ 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi )), 0 ],
-				[ 0, new Q.ComplexNumber( 0, 1 ), 0, 0 ],
+				[ 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, phi )), 0 ],
+				[ 0, new ComplexNumber( 0, 1 ), 0, 0 ],
 				[ 0, 0, 0, 1 ]
 			)
-			return new Q.Qubit( matrix.multiply( qubit ))
+			return new Qubit( matrix.multiply( qubit ))
 		},
 		can_be_controlled:  true,
 		has_parameters: 	true,
 		is_multi_qubit: 	true
 	}),
-	'SWAP1_2', new Q.Gate({
+	'SWAP1_2', new Gate({
 
 		symbol:    '√S',
 		//symbolAmazonBraket: !!! UNKNOWN !!!
 		symbolSvg: '',
 		name:      '√Swap',
 		nameCss:   'swap1-2',
-		matrix: new Q.Matrix(
+		matrix: new Matrix(
 			[ 1, 0, 0, 0 ],
-			[ 0, new Q.ComplexNumber( 0.5,  0.5 ), new Q.ComplexNumber( 0.5, -0.5 ), 0 ],
-			[ 0, new Q.ComplexNumber( 0.5, -0.5 ), new Q.ComplexNumber( 0.5,  0.5 ), 0 ],
+			[ 0, new ComplexNumber( 0.5,  0.5 ), new ComplexNumber( 0.5, -0.5 ), 0 ],
+			[ 0, new ComplexNumber( 0.5, -0.5 ), new ComplexNumber( 0.5,  0.5 ), 0 ],
 			[ 0, 0, 0, 1 ]),
 		is_multi_qubit: 	true
 	}),
-	'ISWAP', new Q.Gate({
+	'ISWAP', new Gate({
 		
 		symbol:    'iS',
 		symbolAmazonBraket: 'iswap',
 		symbolSvg: '',
 		name:      'Imaginary Swap',
 		nameCss:   'iswap',
-		matrix: new Q.Matrix(
+		matrix: new Matrix(
 			[ 1, 0, 0, 0 ],
-			[ 0, 0, new Q.ComplexNumber( 0, 1 ), 0 ],
-			[ 0, new Q.ComplexNumber( 0, 1 ), 0, 0 ],
+			[ 0, 0, new ComplexNumber( 0, 1 ), 0 ],
+			[ 0, new ComplexNumber( 0, 1 ), 0, 0 ],
 			[ 0, 0, 0, 1 ]),
 			is_multi_qubit:	true
 	}),
-	'ISING-XX', new Q.Gate({
+	'ISING-XX', new Gate({
 
 		symbol:    'XX', 
 		symbolAmazonBraket: 'xx', 
@@ -519,28 +534,28 @@ Q.Gate.createConstants (
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ) {
 			
-			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
-			this.matrix = new Q.Matrix(
-				[ Math.cos( this.parameters[ "phi" ] / 2 ), 0, 0, new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )) ],
-				[ 0, Math.cos( this.parameters[ "phi" ] / 2 ), new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0 ],
-				[ 0, new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 ), 0 ],
-				[ new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0, 0, Math.cos( this.parameters[ "phi" ] / 2 ) ])
+			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Matrix(
+				[ Math.cos( this.parameters[ "phi" ] / 2 ), 0, 0, new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )) ],
+				[ 0, Math.cos( this.parameters[ "phi" ] / 2 ), new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0 ],
+				[ 0, new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 ), 0 ],
+				[ new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0, 0, Math.cos( this.parameters[ "phi" ] / 2 ) ])
 			return this
 		},
 		applyToQubit: function( qubit, phi ) {
-			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Q.Matrix( 
-				[ Math.cos( phi / 2 ), 0, 0, new Q.ComplexNumber( 0, -Math.sin( phi / 2 )) ],
-				[ 0, Math.cos( phi / 2 ), new Q.ComplexNumber( 0, -Math.sin( phi / 2 )), 0 ],
-				[ 0, new Q.ComplexNumber( 0, -Math.sin( phi / 2 )), Math.cos( phi / 2 ), 0 ],
-				[ new Q.ComplexNumber( 0, -Math.sin( phi / 2 )), 0, 0, Math.cos( phi / 2 ) ]
+			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Matrix( 
+				[ Math.cos( phi / 2 ), 0, 0, new ComplexNumber( 0, -Math.sin( phi / 2 )) ],
+				[ 0, Math.cos( phi / 2 ), new ComplexNumber( 0, -Math.sin( phi / 2 )), 0 ],
+				[ 0, new ComplexNumber( 0, -Math.sin( phi / 2 )), Math.cos( phi / 2 ), 0 ],
+				[ new ComplexNumber( 0, -Math.sin( phi / 2 )), 0, 0, Math.cos( phi / 2 ) ]
 			)
-			return new Q.Qubit( matrix.multiply( qubit ))
+			return new Qubit( matrix.multiply( qubit ))
 		},
 		is_multi_qubit: true,
 		has_parameters:		true 
 	}), 
-	'ISING-XY', new Q.Gate({
+	'ISING-XY', new Gate({
 
 		symbol:    'XY', 
 		symbolAmazonBraket: 'xy', 
@@ -550,28 +565,28 @@ Q.Gate.createConstants (
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ) {
 			
-			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
-			this.matrix = new Q.Matrix(
+			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Matrix(
 				[ 1, 0, 0, 0 ],
-				[ 0, Math.cos( this.parameters[ "phi" ] / 2 ), new Q.ComplexNumber( 0, Math.sin( this.parameters[ "phi" ] / 2 )), 0 ],
-				[ 0, new Q.ComplexNumber( 0, Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 ), 0 ],
+				[ 0, Math.cos( this.parameters[ "phi" ] / 2 ), new ComplexNumber( 0, Math.sin( this.parameters[ "phi" ] / 2 )), 0 ],
+				[ 0, new ComplexNumber( 0, Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 ), 0 ],
 				[ 0, 0, 0, 1 ])
 			return this
 		},
 		applyToQubit: function( qubit, phi ) {
-			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Q.Matrix( 
+			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Matrix( 
 				[ 1, 0, 0, 0 ],
-				[ 0, Math.cos( phi / 2 ), new Q.ComplexNumber( 0, Math.sin( phi / 2 )), 0 ],
-				[ 0, new Q.ComplexNumber( 0, Math.sin( phi / 2 )), Math.cos( phi / 2 ), 0 ],
+				[ 0, Math.cos( phi / 2 ), new ComplexNumber( 0, Math.sin( phi / 2 )), 0 ],
+				[ 0, new ComplexNumber( 0, Math.sin( phi / 2 )), Math.cos( phi / 2 ), 0 ],
 				[ 0, 0, 0, 1 ]
 			)
-			return new Q.Qubit( matrix.multiply( qubit ))
+			return new Qubit( matrix.multiply( qubit ))
 		},
 		is_multi_qubit: true,
 		has_parameters:		true	 	 
 	}), 
-	'ISING-YY', new Q.Gate({
+	'ISING-YY', new Gate({
 		
 		symbol:    'YY', 
 		symbolAmazonBraket: 'yy', 
@@ -581,28 +596,28 @@ Q.Gate.createConstants (
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ) {
 			
-			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
-			this.matrix = new Q.Matrix(
-				[ Math.cos( this.parameters[ "phi" ] / 2 ), 0, 0, new Q.ComplexNumber( 0, Math.sin( this.parameters[ "phi" ] / 2 )) ],
-				[ 0, Math.cos( this.parameters[ "phi" ] / 2 ), new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0 ],
-				[ 0, new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 ), 0 ],
-				[ new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0, 0, Math.cos( this.parameters[ "phi" ] / 2 ) ])
+			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Matrix(
+				[ Math.cos( this.parameters[ "phi" ] / 2 ), 0, 0, new ComplexNumber( 0, Math.sin( this.parameters[ "phi" ] / 2 )) ],
+				[ 0, Math.cos( this.parameters[ "phi" ] / 2 ), new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0 ],
+				[ 0, new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 ), 0 ],
+				[ new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0, 0, Math.cos( this.parameters[ "phi" ] / 2 ) ])
 			return this
 		},
 		applyToQubit: function( qubit, phi ) {
-			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Q.Matrix( 
-				[ Math.cos( phi / 2 ), 0, 0, new Q.ComplexNumber( 0, -Math.sin( phi / 2 )) ],
-				[ 0, Math.cos( phi / 2 ), new Q.ComplexNumber( 0, -Math.sin( phi / 2 )), 0 ],
-				[ 0, new Q.ComplexNumber( 0, -Math.sin( phi / 2 )), Math.cos( phi / 2 ), 0 ],
-				[ new Q.ComplexNumber( 0, Math.sin( phi / 2 )), 0, 0, Math.cos( phi / 2 ) ]
+			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Matrix( 
+				[ Math.cos( phi / 2 ), 0, 0, new ComplexNumber( 0, -Math.sin( phi / 2 )) ],
+				[ 0, Math.cos( phi / 2 ), new ComplexNumber( 0, -Math.sin( phi / 2 )), 0 ],
+				[ 0, new ComplexNumber( 0, -Math.sin( phi / 2 )), Math.cos( phi / 2 ), 0 ],
+				[ new ComplexNumber( 0, Math.sin( phi / 2 )), 0, 0, Math.cos( phi / 2 ) ]
 			)
-			return new Q.Qubit( matrix.multiply( qubit ))
+			return new Qubit( matrix.multiply( qubit ))
 		},
 		is_multi_qubit: true,
 		has_parameters:		true
 	}), 
-	'ISING-ZZ', new Q.Gate({
+	'ISING-ZZ', new Gate({
 
 		symbol:    'ZZ', 
 		symbolAmazonBraket: 'zz', 
@@ -612,28 +627,28 @@ Q.Gate.createConstants (
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ) {
 			
-			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
-			this.matrix = new Q.Matrix(
-				[ Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] / 2 )), 0, 0, 0 ],
-				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] / 2 )), 0, 0 ],
-				[ 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] / 2 )), 0],
-				[ 0, 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -this.parameters[ "phi" ] / 2 )) ])
+			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Matrix(
+				[ ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] / 2 )), 0, 0, 0 ],
+				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] / 2 )), 0, 0 ],
+				[ 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] / 2 )), 0],
+				[ 0, 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, -this.parameters[ "phi" ] / 2 )) ])
 			return this
 		},
 		applyToQubit: function( qubit, phi ) {
-			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Q.Matrix( 
-				[ Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi / 2 )), 0, 0, 0 ],
-				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi / 2 )), 0, 0 ],
-				[ 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi / 2 )), 0],
-				[ 0, 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -phi / 2 )) ]
+			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Matrix( 
+				[ ComplexNumber.E.power( new ComplexNumber( 0, phi / 2 )), 0, 0, 0 ],
+				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, phi / 2 )), 0, 0 ],
+				[ 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, phi / 2 )), 0],
+				[ 0, 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, -phi / 2 )) ]
 			)
-			return new Q.Qubit( matrix.multiply( qubit ))
+			return new Qubit( matrix.multiply( qubit ))
 		},
 		is_multi_qubit: true,
 		has_parameters:		true	 
 	}), 
-	'CPhase00', new Q.Gate({
+	'CPhase00', new Gate({
 
 		symbol:    '00', //placeholder 
 		symbolAmazonBraket: 'cphaseshift00', 
@@ -643,28 +658,28 @@ Q.Gate.createConstants (
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ) {
 			
-			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
-			this.matrix = new Q.Matrix(
-				[ Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] )), 0, 0, 0 ],
+			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Matrix(
+				[ ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] )), 0, 0, 0 ],
 				[ 0, 1, 0, 0 ],
 				[ 0, 0, 1, 0 ],
 				[ 0, 0, 0, 1 ])
 			return this
 		},
 		applyToQubit: function( qubit, phi ) {
-			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Q.Matrix( 
-				[ Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi )), 0, 0, 0 ],
+			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Matrix( 
+				[ ComplexNumber.E.power( new ComplexNumber( 0, phi )), 0, 0, 0 ],
 				[ 0, 1, 0, 0 ],
 				[ 0, 0, 1, 0 ],
 				[ 0, 0, 0, 1 ]
 			)
-			return new Q.Qubit( matrix.multiply( qubit ))
+			return new Qubit( matrix.multiply( qubit ))
 		},
 		is_multi_qubit: true,
 		has_parameters:		true	 	 
 	}),
-	'CPhase01', new Q.Gate({
+	'CPhase01', new Gate({
 
 		symbol:    '01', //placeholder 
 		symbolAmazonBraket: 'cphaseshift01', 
@@ -674,28 +689,28 @@ Q.Gate.createConstants (
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ) {
 			
-			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
-			this.matrix = new Q.Matrix(
+			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Matrix(
 				[ 1, 0, 0, 0 ],
-				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] )), 0, 0 ],
+				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] )), 0, 0 ],
 				[ 0, 0, 1, 0 ],
 				[ 0, 0, 0, 1 ])
 			return this
 		},
 		applyToQubit: function( qubit, phi ) {
-			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Q.Matrix( 
+			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Matrix( 
 				[ 1, 0, 0, 0 ],
-				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi)), 0, 0 ],
+				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, phi)), 0, 0 ],
 				[ 0, 0, 1, 0 ],
 				[ 0, 0, 0, 1 ]
 			)
-			return new Q.Qubit( matrix.multiply( qubit ))
+			return new Qubit( matrix.multiply( qubit ))
 		},
 		is_multi_qubit: true,
 		has_parameters:		true	 	 
 	}),
-	'CPhase10', new Q.Gate({
+	'CPhase10', new Gate({
 
 		symbol:    '10', //placeholder 
 		symbolAmazonBraket: 'cphaseshift10', 
@@ -705,35 +720,35 @@ Q.Gate.createConstants (
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ) {
 			
-			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
-			this.matrix = new Q.Matrix(
+			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Matrix(
 				[ 1, 0, 0, 0 ],
 				[ 0, 1, 0, 0 ],
-				[ 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] )), 0 ],
+				[ 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] )), 0 ],
 				[ 0, 0, 0, 1 ])
 			return this
 		},
 		applyToQubit: function( qubit, phi ) {
-			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Q.Matrix( 
+			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Matrix( 
 				[ 1, 0, 0, 0 ],
 				[ 0, 1, 0, 0 ],
-				[ 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi)), 0 ],
+				[ 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, phi)), 0 ],
 				[ 0, 0, 0, 1 ]
 			)
-			return new Q.Qubit( matrix.multiply( qubit ))
+			return new Qubit( matrix.multiply( qubit ))
 		},
 		is_multi_qubit: 	true,
 		has_parameters:		true	 
 	}), 
-	'CSWAP', new Q.Gate({
+	'CSWAP', new Gate({
 
 		symbol:    'CSWAP',
 		symbolAmazonBraket: 'cswap', 
 		symbolSvg: '', 
 		name:      'Controlled Swap',
 		nameCss:   'controlled-swap',
-		matrix: new Q.Matrix(
+		matrix: new Matrix(
 			[1, 0, 0, 0, 0, 0, 0, 0],
 			[0, 1, 0, 0, 0, 0, 0, 0],
 			[0, 0, 1, 0, 0, 0, 0, 0],
