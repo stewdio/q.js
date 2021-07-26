@@ -1,8 +1,8 @@
-const {warn, log, error} = require('./Logging');
+const logger = require('./Logging');
 
-COLORS = [];
-ANIMALS = [];
-constants = {};
+const COLORS = [];
+const ANIMALS = [];
+const constants = {};
 
 
 function createConstant(key, value) {
@@ -18,13 +18,13 @@ function createConstant(key, value) {
   // 	value,
   // 	writable: false
   // })
-  this.constants[key] = this[key];
+  constants[key] = this[key];
   Object.freeze(this[key]);
 }
 
 function createConstants() {
   if (arguments.length % 2 !== 0) {
-    return error(
+    return logger.error(
       "Q attempted to create constants with invalid (KEY, VALUE) pairs."
     );
   }
@@ -32,7 +32,7 @@ function createConstants() {
     createConstant(arguments[i], arguments[i + 1]);
   }
 }
-function loop() {}
+// function loop() {}
 
 let namesIndex = 0;
 let shuffledNames = [];
