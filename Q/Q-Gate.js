@@ -1,8 +1,10 @@
 
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
-
-
+const mathf = require('./Math-Functions');
+const logger = require('./Logging');
+const {ComplexNumber} = require('./Q-ComplexNumber');
+const {Matrix} = require('./Q-Matrix');
 
 Gate = function( params ){
 
@@ -31,7 +33,7 @@ Gate = function( params ){
 
 	if( foundConstant ){
 		
-		warn( `Gate is creating a new instance, #${ this.index }, that uses the same symbol as a pre-existing Gate constant:`, foundConstant )
+		logger.warn( `Gate is creating a new instance, #${ this.index }, that uses the same symbol as a pre-existing Gate constant:`, foundConstant )
 	}
 
 	if( typeof this.name    !== 'string' ) this.name    = 'Unknown'
@@ -48,21 +50,8 @@ Gate = function( params ){
 	//  Every gate must have an applyToQubit method.
 	//  If it doesn’t exist we’ll create one
 	//  based on whether a matrix property exists or not.
-
-	if( typeof this.applyToQubit !== 'function' ){
-
-		if( this.matrix instanceof Matrix === true ){
-		
-			this.applyToQubit = function( qubit ){ 
-
-				return new Qubit( this.matrix.multiply( qubit ))
-			}
-		}
-		else {
-
-			this.applyToQubit = function( qubit ){ return qubit }
-		}
-	}
+	
+	//Hi there. LTNLN here. We're just gonna toss the applyToQubit function entirely...Gate from here on is independent of Qubit! :)..
 }
 
 
@@ -72,7 +61,6 @@ Object.assign( Gate, {
 	index: 0,
 	constants: {},
 	createConstant:  function( key, value ){
-
 		this[ key ] = value
 		this.constants[ key ] = this[ key ]
 		Object.freeze( this[ key ])
@@ -81,7 +69,7 @@ Object.assign( Gate, {
 
 		if( arguments.length % 2 !== 0 ){
 
-			return error( 'Q attempted to create constants with invalid (KEY, VALUE) pairs.' )
+			return logger.error( 'Q attempted to create constants with invalid (KEY, VALUE) pairs.' )
 		}
 		for( let i = 0; i < arguments.length; i += 2 ){
 
@@ -123,10 +111,6 @@ Object.assign( Gate.prototype, {
 	clone: function( params ){
 
 		return new Gate( Object.assign( {}, this, params ))
-	},
-	applyToQubits: function(){
-
-		return Array.from( arguments ).map( this.applyToQubit.bind( this ))
 	},
 	set$: function( key, value ){
 
@@ -173,7 +157,6 @@ Gate.createConstants (
 		name:      'Measure',
 		nameCss:   'measure',
 		matrix: Matrix.IDENTITY_2X2,
-		applyToQubit: function( state ){}
 	}),
 	'HADAMARD', new Gate({
 
@@ -237,19 +220,11 @@ Gate.createConstants (
 		nameCss:   'phase',
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ){
-			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ]  = +phi;
+			if( mathf.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ]  = +phi;
 			this.matrix = new Matrix(
 				[ 1, 0 ],
 				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] ))])
 			return this
-		},
-		applyToQubit: function( qubit, phi ){
-
-			if( isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
-			const matrix = new Matrix(
-				[ 1, 0 ],
-				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, phi ))])
-			return new Qubit( matrix.multiply( qubit ))
 		},
 		can_be_controlled:  true,
 		has_parameters:		true
@@ -272,10 +247,10 @@ Gate.createConstants (
 		symbolSvg: '',
 		name:      'Bloch sphere',
 		nameCss:   'bloch',
-		applyToQubit: function( qubit ){
+		// applyToQubit: function( qubit ){
 
-			//  Create Bloch sphere visualizer instance.
-		}
+		// 	//  Create Bloch sphere visualizer instance.
+		// }
 	}),
 	'RX', new Gate({
 
@@ -287,19 +262,11 @@ Gate.createConstants (
 		parameters: { "phi" : Math.PI / 2 },
 		updateMatrix$: function( phi ){
 
-			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			if( mathf.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
 			this.matrix = new Matrix(
 				[ Math.cos( this.parameters[ "phi" ] / 2 ), new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )) ],
 				[ new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 )])
 			return this
-		},
-		applyToQubit: function( qubit, phi ){
-
-			if( isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
-			const matrix = new Matrix(
-				[ Math.cos( phi / 2 ), new ComplexNumber( 0, -Math.sin( phi / 2 )) ],
-				[ new ComplexNumber( 0, -Math.sin( phi / 2 )), Math.cos( phi / 2 )])
-			return new Qubit( matrix.multiply( qubit ))
 		},
 		has_parameters:		true
 	}),
@@ -313,19 +280,11 @@ Gate.createConstants (
 		parameters: { "phi" : Math.PI / 2 },
 		updateMatrix$: function( phi ){
 
-			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			if( mathf.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
 			this.matrix = new Matrix(
 				[ Math.cos( this.parameters[ "phi" ] / 2 ), -Math.sin( phi / 2 ) ],
 				[ Math.sin( this.parameters[ "phi" ] / 2 ), Math.cos( this.parameters[ "phi" ] / 2 )])
 			return this
-		},
-		applyToQubit: function( qubit, phi ){
-
-			if( isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
-			const matrix = new Matrix(
-				[ Math.cos( phi / 2 ), -Math.sin( phi / 2 ) ],
-				[ Math.sin( phi / 2 ), Math.cos( phi / 2 )])
-			return new Qubit( matrix.multiply( qubit ))
 		},
 		has_parameters:		true
 	}),
@@ -339,19 +298,11 @@ Gate.createConstants (
 		parameters: { "phi" : Math.PI / 2 },
 		updateMatrix$: function( phi ){
 
-			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			if( mathf.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
 			this.matrix = new Matrix(
 				[ ComplexNumber.E.power( new ComplexNumber( 0, -this.parameters[ "phi" ] / 2 )), 0 ],
 				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] / 2 ))])
 			return this
-		},
-		applyToQubit: function( qubit, phi ){
-
-			if( isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
-			const matrix = new Matrix(
-				[ ComplexNumber.E.power( new ComplexNumber( 0, -phi / 2 )), 0 ],
-				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, phi / 2 ))])
-			return new Qubit( matrix.multiply( qubit ))
 		},
 		has_parameters:		true
 	}),
@@ -368,7 +319,7 @@ Gate.createConstants (
 					"lambda" : Math.PI / 2 },
 		updateMatrix$: function( phi, theta, lambda ){
 
-			if( (isUsefulNumber( +phi ) === true) && (isUsefulNumber( +theta ) === true) && (isUsefulNumber( +lambda ) === true) ) {
+			if( (mathf.isUsefulNumber( +phi ) === true) && (mathf.isUsefulNumber( +theta ) === true) && (mathf.isUsefulNumber( +lambda ) === true) ) {
 				this.parameters[ "phi" ] = +phi;
 				this.parameters[ "theta" ] = +theta;
 				this.parameters[ "lambda" ] = +lambda;
@@ -385,23 +336,6 @@ Gate.createConstants (
 				[ a, b ], 
 				[ c, d ])
 			return this
-		},
-		applyToQubit: function( qubit, phi, theta, lambda ){
-			if( isUsefulNumber( phi ) === true ) phi = this.parameters[ "phi" ]
-			if( isUsefulNumber( theta ) === true ) theta = this.parameters[ "theta" ]
-			if( isUsefulNumber( lambda ) === true ) lambda = this.parameters[ "lambda" ]
-			const a = ComplexNumber.multiply(
-				ComplexNumber.E.power( new ComplexNumber( 0, -( phi + lambda ) / 2 )),  Math.cos( theta / 2 ));
-			const b = ComplexNumber.multiply(
-					ComplexNumber.E.power( new ComplexNumber( 0, -( phi - lambda ) / 2 )), -Math.sin( theta / 2 ));
-			const c = ComplexNumber.multiply(
-				ComplexNumber.E.power( new ComplexNumber( 0, ( phi - lambda ) / 2 )), Math.sin( theta / 2 ));
-			const d = ComplexNumber.multiply(
-				ComplexNumber.E.power( new ComplexNumber( 0, ( phi + lambda ) / 2 )), Math.cos( theta / 2 ));
-			const matrix = new Matrix(
-				[ a, b ],
-				[ c, d ])
-			return new Qubit( matrix.multiply( qubit ))
 		},
 		has_parameters:		true
 	}),
@@ -473,24 +407,13 @@ Gate.createConstants (
 		parameters: { "phi" : 0.0 },
 		updateMatrix$: function( phi ) {
 			
-			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			if( mathf.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
 			this.matrix = new Matrix(
 				[ 1, 0, 0, 0 ],
 				[ 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] )), 0 ],
 				[ 0, ComplexNumber.E.power(new ComplexNumber( 0, this.parameters[ "phi" ] )), 0, 0 ],
 				[ 0, 0, 0, 1 ])
 			return this
-		},
-		applyToQubit: function( qubit, phi ) {
-
-			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Matrix( 
-				[ 1, 0, 0, 0 ],
-				[ 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, phi )), 0 ],
-				[ 0, new ComplexNumber( 0, 1 ), 0, 0 ],
-				[ 0, 0, 0, 1 ]
-			)
-			return new Qubit( matrix.multiply( qubit ))
 		},
 		can_be_controlled:  true,
 		has_parameters: 	true,
@@ -534,23 +457,13 @@ Gate.createConstants (
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ) {
 			
-			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			if( mathf.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
 			this.matrix = new Matrix(
 				[ Math.cos( this.parameters[ "phi" ] / 2 ), 0, 0, new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )) ],
 				[ 0, Math.cos( this.parameters[ "phi" ] / 2 ), new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0 ],
 				[ 0, new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 ), 0 ],
 				[ new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0, 0, Math.cos( this.parameters[ "phi" ] / 2 ) ])
 			return this
-		},
-		applyToQubit: function( qubit, phi ) {
-			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Matrix( 
-				[ Math.cos( phi / 2 ), 0, 0, new ComplexNumber( 0, -Math.sin( phi / 2 )) ],
-				[ 0, Math.cos( phi / 2 ), new ComplexNumber( 0, -Math.sin( phi / 2 )), 0 ],
-				[ 0, new ComplexNumber( 0, -Math.sin( phi / 2 )), Math.cos( phi / 2 ), 0 ],
-				[ new ComplexNumber( 0, -Math.sin( phi / 2 )), 0, 0, Math.cos( phi / 2 ) ]
-			)
-			return new Qubit( matrix.multiply( qubit ))
 		},
 		is_multi_qubit: true,
 		has_parameters:		true 
@@ -565,23 +478,13 @@ Gate.createConstants (
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ) {
 			
-			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			if( mathf.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
 			this.matrix = new Matrix(
 				[ 1, 0, 0, 0 ],
 				[ 0, Math.cos( this.parameters[ "phi" ] / 2 ), new ComplexNumber( 0, Math.sin( this.parameters[ "phi" ] / 2 )), 0 ],
 				[ 0, new ComplexNumber( 0, Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 ), 0 ],
 				[ 0, 0, 0, 1 ])
 			return this
-		},
-		applyToQubit: function( qubit, phi ) {
-			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Matrix( 
-				[ 1, 0, 0, 0 ],
-				[ 0, Math.cos( phi / 2 ), new ComplexNumber( 0, Math.sin( phi / 2 )), 0 ],
-				[ 0, new ComplexNumber( 0, Math.sin( phi / 2 )), Math.cos( phi / 2 ), 0 ],
-				[ 0, 0, 0, 1 ]
-			)
-			return new Qubit( matrix.multiply( qubit ))
 		},
 		is_multi_qubit: true,
 		has_parameters:		true	 	 
@@ -596,23 +499,13 @@ Gate.createConstants (
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ) {
 			
-			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			if( mathf.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
 			this.matrix = new Matrix(
 				[ Math.cos( this.parameters[ "phi" ] / 2 ), 0, 0, new ComplexNumber( 0, Math.sin( this.parameters[ "phi" ] / 2 )) ],
 				[ 0, Math.cos( this.parameters[ "phi" ] / 2 ), new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0 ],
 				[ 0, new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 ), 0 ],
 				[ new ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0, 0, Math.cos( this.parameters[ "phi" ] / 2 ) ])
 			return this
-		},
-		applyToQubit: function( qubit, phi ) {
-			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Matrix( 
-				[ Math.cos( phi / 2 ), 0, 0, new ComplexNumber( 0, -Math.sin( phi / 2 )) ],
-				[ 0, Math.cos( phi / 2 ), new ComplexNumber( 0, -Math.sin( phi / 2 )), 0 ],
-				[ 0, new ComplexNumber( 0, -Math.sin( phi / 2 )), Math.cos( phi / 2 ), 0 ],
-				[ new ComplexNumber( 0, Math.sin( phi / 2 )), 0, 0, Math.cos( phi / 2 ) ]
-			)
-			return new Qubit( matrix.multiply( qubit ))
 		},
 		is_multi_qubit: true,
 		has_parameters:		true
@@ -627,23 +520,13 @@ Gate.createConstants (
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ) {
 			
-			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			if( mathf.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
 			this.matrix = new Matrix(
 				[ ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] / 2 )), 0, 0, 0 ],
 				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] / 2 )), 0, 0 ],
 				[ 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] / 2 )), 0],
 				[ 0, 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, -this.parameters[ "phi" ] / 2 )) ])
 			return this
-		},
-		applyToQubit: function( qubit, phi ) {
-			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Matrix( 
-				[ ComplexNumber.E.power( new ComplexNumber( 0, phi / 2 )), 0, 0, 0 ],
-				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, phi / 2 )), 0, 0 ],
-				[ 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, phi / 2 )), 0],
-				[ 0, 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, -phi / 2 )) ]
-			)
-			return new Qubit( matrix.multiply( qubit ))
 		},
 		is_multi_qubit: true,
 		has_parameters:		true	 
@@ -658,23 +541,13 @@ Gate.createConstants (
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ) {
 			
-			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			if( mathf.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
 			this.matrix = new Matrix(
 				[ ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] )), 0, 0, 0 ],
 				[ 0, 1, 0, 0 ],
 				[ 0, 0, 1, 0 ],
 				[ 0, 0, 0, 1 ])
 			return this
-		},
-		applyToQubit: function( qubit, phi ) {
-			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Matrix( 
-				[ ComplexNumber.E.power( new ComplexNumber( 0, phi )), 0, 0, 0 ],
-				[ 0, 1, 0, 0 ],
-				[ 0, 0, 1, 0 ],
-				[ 0, 0, 0, 1 ]
-			)
-			return new Qubit( matrix.multiply( qubit ))
 		},
 		is_multi_qubit: true,
 		has_parameters:		true	 	 
@@ -689,23 +562,13 @@ Gate.createConstants (
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ) {
 			
-			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			if( mathf.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
 			this.matrix = new Matrix(
 				[ 1, 0, 0, 0 ],
 				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] )), 0, 0 ],
 				[ 0, 0, 1, 0 ],
 				[ 0, 0, 0, 1 ])
 			return this
-		},
-		applyToQubit: function( qubit, phi ) {
-			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Matrix( 
-				[ 1, 0, 0, 0 ],
-				[ 0, ComplexNumber.E.power( new ComplexNumber( 0, phi)), 0, 0 ],
-				[ 0, 0, 1, 0 ],
-				[ 0, 0, 0, 1 ]
-			)
-			return new Qubit( matrix.multiply( qubit ))
 		},
 		is_multi_qubit: true,
 		has_parameters:		true	 	 
@@ -720,23 +583,13 @@ Gate.createConstants (
 		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ) {
 			
-			if( isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			if( mathf.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
 			this.matrix = new Matrix(
 				[ 1, 0, 0, 0 ],
 				[ 0, 1, 0, 0 ],
 				[ 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, this.parameters[ "phi" ] )), 0 ],
 				[ 0, 0, 0, 1 ])
 			return this
-		},
-		applyToQubit: function( qubit, phi ) {
-			if( isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
-			const matrix = new Matrix( 
-				[ 1, 0, 0, 0 ],
-				[ 0, 1, 0, 0 ],
-				[ 0, 0, ComplexNumber.E.power( new ComplexNumber( 0, phi)), 0 ],
-				[ 0, 0, 0, 1 ]
-			)
-			return new Qubit( matrix.multiply( qubit ))
 		},
 		is_multi_qubit: 	true,
 		has_parameters:		true	 
@@ -774,3 +627,5 @@ Gate.createConstants (
 )
 
 
+
+module.exports = { Gate }

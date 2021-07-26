@@ -1,3 +1,5 @@
+const {warn, log, error} = require('./Logging');
+
 COLORS = [];
 ANIMALS = [];
 constants = {};
@@ -27,13 +29,13 @@ function createConstants() {
     );
   }
   for (let i = 0; i < arguments.length; i += 2) {
-    this.createConstant(arguments[i], arguments[i + 1]);
+    createConstant(arguments[i], arguments[i + 1]);
   }
 }
 function loop() {}
 
-const namesIndex = 0;
-const shuffledNames = [];
+let namesIndex = 0;
+let shuffledNames = [];
 function shuffleNames$() {
   let m = [];
   for (let c = 0; c < COLORS.length; c++) {
@@ -81,6 +83,7 @@ createConstants(
 
   "RADIANS_TO_DEGREES",
   180 / Math.PI,
+
 
   "ANIMALS",
   [

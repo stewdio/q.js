@@ -4,7 +4,7 @@
 
 
 
-Q.History = function( instance ){
+History = function( instance ){
 
 	this.instance = instance
 	this.entries = [[{
@@ -19,7 +19,7 @@ Q.History = function( instance ){
 
 
 
-Object.assign( Q.History.prototype, {
+Object.assign( History.prototype, {
 
 	assess: function(){
 
@@ -28,28 +28,28 @@ Object.assign( Q.History.prototype, {
 
 			window.dispatchEvent( new CustomEvent(
 
-				'Q.History undo is capable', { detail: { instance }}
+				'History undo is capable', { detail: { instance }}
 			))
 		}
 		else {
 
 			window.dispatchEvent( new CustomEvent(
 
-				'Q.History undo is depleted', { detail: { instance }}
+				'History undo is depleted', { detail: { instance }}
 			))
 		}
 		if( this.index + 1 < this.entries.length ){
 
 			window.dispatchEvent( new CustomEvent(
 
-				'Q.History redo is capable', { detail: { instance }}
+				'History redo is capable', { detail: { instance }}
 			))
 		}
 		else {
 
 			window.dispatchEvent( new CustomEvent(
 
-				'Q.History redo is depleted', { detail: { instance }}
+				'History redo is depleted', { detail: { instance }}
 			))
 		}
 		return this
@@ -193,3 +193,4 @@ Object.assign( Q.History.prototype, {
 
 
 
+module.exports = { History }
