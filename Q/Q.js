@@ -1,6 +1,6 @@
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
-const { isUsefulInteger } = require("./Misc");
+const { isUsefulInteger, constants } = require("./Misc");
 const { Circuit } = require("./Q-Circuit");
 const Q = function () {
   //  Did we send arguments of the form
@@ -30,7 +30,7 @@ QQ      QQ
 QQ      QQ
 QQ  QQ  QQ
 QQ    QQ 
-  QQQQ  ${Q.REVISION}    
+  QQQQ  ${constants.REVISION}    
 
 
 
