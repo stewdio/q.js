@@ -423,8 +423,7 @@ Object.assign( Circuit, {
 
 		// console.log( circuit.toDiagram() )
 
-
-		window.dispatchEvent( new CustomEvent( 
+		misc.dispatchEventToGlobal(new CustomEvent( 
 
 			'Circuit.evaluate began', { 
 
@@ -540,7 +539,7 @@ Object.assign( Circuit, {
 			const progress = operationsCompleted / operationsTotal
 
 
-			window.dispatchEvent( new CustomEvent( 'Circuit.evaluate progressed', { detail: {
+			misc.dispatchEventToGlobal(new CustomEvent( 'Circuit.evaluate progressed', { detail: {
 
 				circuit,
 				progress,
@@ -590,7 +589,7 @@ Object.assign( Circuit, {
 
 
 
-		window.dispatchEvent( new CustomEvent( 'Circuit.evaluate completed', { detail: {
+		misc.dispatchEventToGlobal(new CustomEvent( 'Circuit.evaluate completed', { detail: {
 		// circuit.dispatchEvent( new CustomEvent( 'evaluation complete', { detail: {
 
 			circuit,
@@ -1387,7 +1386,7 @@ print(task.result().measurement_counts)`
 
 			foundOperations.forEach( function( operation ){
 
-				window.dispatchEvent( new CustomEvent( 
+				misc.dispatchEventToGlobal(new CustomEvent( 
 
 					'Circuit.clear$', { detail: { 
 
@@ -1544,7 +1543,7 @@ print(task.result().measurement_counts)`
 			//  Emit an event that we have set an operation
 			//  on this circuit.
 
-			window.dispatchEvent( new CustomEvent( 
+			misc.dispatchEventToGlobal(new CustomEvent( 
 
 				'Circuit.set$', { detail: { 
 

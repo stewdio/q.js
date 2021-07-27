@@ -4,6 +4,15 @@ const COLORS = [];
 const ANIMALS = [];
 const constants = {};
 
+function dispatchEventToGlobal(event) {
+  if(typeof window != undefined) {
+    window.dispatchEvent(event);
+  }
+  else {
+   global.dispatchEvent(event);
+   console.log(event);
+  }
+}
 
 function createConstant(key, value) {
   //Object.freeze( value )
@@ -394,5 +403,6 @@ module.exports = {
   getRandomName$: getRandomName$,
   hueToColorName: hueToColorName,
   colorIndexToHue: colorIndexToHue,
+  dispatchEventToGlobal: dispatchEventToGlobal,
   constants: constants,
 };
