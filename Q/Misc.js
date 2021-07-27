@@ -9,6 +9,7 @@ function dispatchEventToGlobal(event) {
     window.dispatchEvent(event);
   }
   else {
+   //if window does exist, global == window is true. So maybe we can just do global.dispatchEvent instead of this wrapper?
    global.dispatchEvent(event);
    console.log(event);
   }
