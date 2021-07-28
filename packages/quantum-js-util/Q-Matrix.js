@@ -1,7 +1,7 @@
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
-import * as logger from './Logging.mjs';
-import { ComplexNumber } from './Q-ComplexNumber.mjs';
+const logger = require('./Logging');
+const {ComplexNumber} = require('./Q-ComplexNumber');
 
 Matrix = function () {
   //  We’re keeping track of how many matrices are
@@ -595,4 +595,4 @@ Matrix.createConstants(
   )
 );
 
-export { Matrix };
+module.exports = { Matrix };

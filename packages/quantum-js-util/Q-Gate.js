@@ -1,10 +1,10 @@
 
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
-import * as mathf from './Math-Functions.mjs';
-import * as logger from './Logging.mjs';
-import { ComplexNumber } from './Q-ComplexNumber.mjs';
-import {Matrix} from './Q-Matrix.mjs';
+const mathf = require('./Math-Functions');
+const logger = require('./Logging');
+const { ComplexNumber } = require('./Q-ComplexNumber');
+const {Matrix} = require('./Q-Matrix');
 Gate = function( params ){
 
 	Object.assign( this, params )
@@ -627,4 +627,4 @@ Gate.createConstants (
 
 
 
-export { Gate };
+module.exports = { Gate };

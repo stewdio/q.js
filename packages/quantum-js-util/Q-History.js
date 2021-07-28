@@ -1,7 +1,7 @@
 
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
-import { dispatchEventToGlobal } from './Misc.mjs';
+const {dispatchEventToGlobal} = require('./Misc');
 
 
 History = function( instance ){
@@ -193,4 +193,4 @@ Object.assign( History.prototype, {
 
 
 
-export { History };
+module.exports = { History };

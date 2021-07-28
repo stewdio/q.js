@@ -1,4 +1,4 @@
-import * as logger from './Logging.mjs';
+const logger = require('./Logging');
 
 const COLORS = [];
 const ANIMALS = [];
@@ -397,4 +397,4 @@ createConstants(
   ]
 );
 
-export { createConstant, createConstants, getRandomName$, hueToColorName, colorIndexToHue, dispatchEventToGlobal, constants };
+module.exports = { createConstant, createConstants, getRandomName$, hueToColorName, colorIndexToHue, dispatchEventToGlobal, constants };

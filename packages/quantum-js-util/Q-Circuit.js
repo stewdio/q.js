@@ -3,14 +3,15 @@
 
 
 //
-import * as logger from "./Logger.mjs";
-import * as misc from "./Misc.mjs";
-import * as mathf from "./Math-Functions.mjs";
-import { ComplexNumber } from "./Q-ComplexNumber.mjs";
-import { Gate } from "./Q-Gate.mjs";
-import { Qubit } from "./Q-Qubit.mjs";
-import { Matrix } from "./Q-Matrix.mjs";
-import { History } from "./Q-History.mjs";
+const logger = require('./Logging');
+const misc = require('./Misc');
+const mathf = require('./Math-Functions');
+const {ComplexNumber} = require('./Q-ComplexNumber');
+const {Gate} = require('./Q-Gate');
+const {Qubit} = require('./Q-Qubit');
+const {Matrix} = require('./Q-Matrix');
+const {History} = require('./Q-History');
+
 
 
 
@@ -2094,5 +2095,5 @@ Circuit.createConstants(
 )
 
 
-export { Circuit };
+module.exports = {Circuit};
 

@@ -1,7 +1,7 @@
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
-import { warn, error } from './Logging.mjs';
-import * as mathf from './Math-Functions.mjs';
+const { warn, error } = require('./Logging');
+const mathf = require('./Math-Functions');
 
 ComplexNumber = function (real, imaginary) {
   `
@@ -582,4 +582,4 @@ Object.assign(ComplexNumber.prototype, {
   },
 });
 
-export { ComplexNumber };
+module.exports = { ComplexNumber };

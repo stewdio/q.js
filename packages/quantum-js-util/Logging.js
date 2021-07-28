@@ -86,4 +86,4 @@ function centerText(text, length, filler) {
   } else return text;
 }
 
-export { log, error, help, warn, toTitleCase, centerText };
+module.exports = { log, error, help, warn, toTitleCase, centerText };

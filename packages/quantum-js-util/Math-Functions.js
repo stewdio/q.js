@@ -53,4 +53,4 @@ function isUsefulInteger(n) {
 }
 
 
-export { isUsefulNumber, isUsefulInteger, hypotenuse, logHypotenuse, hyperbolicCosine, hyperbolicSine, round };
+module.exports = { isUsefulNumber, isUsefulInteger, hypotenuse, logHypotenuse, hyperbolicCosine, hyperbolicSine, round };

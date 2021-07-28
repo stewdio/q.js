@@ -1,9 +1,9 @@
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
-import { Matrix } from "./Q-Matrix.mjs";
-import { Gate } from "./Q-Gate.mjs";
-import { ComplexNumber } from "./Q-ComplexNumber.mjs";
-import * as misc from "./Misc.mjs"
-const logger = require("./Logging.mjs");
+const { Matrix } = require("./Q-Matrix");
+const { Gate } = require("./Q-Gate");
+const { ComplexNumber } = require("./Q-ComplexNumber");
+const misc = require("./Misc");
+const logger = require("./Logging");
 
 Qubit = function (a, b, symbol, name) {
   //  If we’ve received an instance of Matrix as our first argument
@@ -346,4 +346,4 @@ Object.assign(Qubit.prototype, {
   },
 });
 
-export { Qubit };
+module.exports = { Qubit };

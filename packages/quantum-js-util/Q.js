@@ -1,8 +1,14 @@
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
-
-import Circuit from "./Q-Circuit.mjs";
-
+const logger = require('./Logging');
+const misc = require('./Misc');
+const mathf = require('./Math-Functions');
+const {ComplexNumber} = require('./Q-ComplexNumber');
+const {Gate} = require('./Q-Gate');
+const {Qubit} = require('./Q-Qubit');
+const {Matrix} = require('./Q-Matrix');
+const {History} = require('./Q-History');
+const {Circuit} = require('./Q-ComplexNumber');
 
 
 
@@ -45,13 +51,5 @@ https://quantumjavascript.app
 
 `);
 
+module.exports = {logger, misc, mathf, ComplexNumber, Matrix, Gate, Qubit, History, Circuit, Q};
 
-export { Q };
-export { Gate } from "./Q-Gate.mjs";
-export { Matrix } from "./Q-Matrix.mjs";
-export { Qubit } from "./Q-Qubit.mjs";
-export { History } from "./Q-History.mjs";
-export { ComplexNumber } from "./Q-ComplexNumber.mjs";
-export * as logger from "./Logging.mjs";
-export * as misc from "./Misc.mjs";
-export { Circuit } from "./Q-Circuit.mjs";
