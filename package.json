@@ -1,0 +1,30 @@
+{
+  "name": "quantum-js",
+  "version": "1.0.0",
+  "description": "![Quantum JavaScript (Q.js)](./assets/Q-mark.svg \"Quantum JavaScript (Q.js)\")",
+  "main": "Q/Q.js",
+  "scripts": {
+    "test": "npm run test -ws && exit 0",
+    "lint": "eslint",
+    "prettier": "prettier --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.aws.dev/ltnln/q-js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.31.0",
+    "jest": "^27.0.6",
+    "jsdom": "^16.6.0",
+    "lerna": "^4.0.0",
+    "n": "^7.3.1",
+    "prettier": "2.3.2"
+  },
+  "dependencies": {},
+  "workspaces": [
+    "./packages/*"
+  ]
+}

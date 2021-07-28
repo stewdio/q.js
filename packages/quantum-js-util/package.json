@@ -1,0 +1,21 @@
+{
+  "name": "quantum-js-util",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "eslint": "^7.31.0",
+    "jest": "^27.0.6",
+    "jsdom": "^16.6.0",
+    "prettier": "2.3.2"
+  },
+  "dependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
