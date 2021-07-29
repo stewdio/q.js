@@ -1,1 +1,0 @@
-const {Q} = require('./Q');
