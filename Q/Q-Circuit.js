@@ -76,6 +76,7 @@ Object.assign( Q.Circuit, {
 
 		if( text === undefined ) return new Q.Circuit()
 
+
 		//  Is this a String Template -- as opposed to a regular String?
 		//  If so, let’s convert it to a regular String.
 		//  Yes, this maintains the line breaks.
@@ -195,6 +196,7 @@ Object.assign( Q.Circuit, {
 
 
 	fromTableTransposed: function( table ){
+
 		const
 		bandwidth = table.length,
 		timewidth = table.reduce( function( max, moments ){
@@ -214,6 +216,7 @@ Object.assign( Q.Circuit, {
 				const 
 				momentIndex = m + 1,
 				operation = table[ r ][ m ]
+
 				let siblingHasBeenFound = false
 				for( let s = 0; s < r; s ++ ){
 
@@ -226,6 +229,7 @@ Object.assign( Q.Circuit, {
 
 
 						//  We’ve found a sibling !
+
 						const operationsIndex = circuit.operations.findIndex( function( operation ){
 
 							return (
@@ -373,6 +377,7 @@ Object.assign( Q.Circuit, {
 				if( bitsEqual ){
 
 					// console.log( 'bits ARE equal' )
+					
 					let
 					istar = 0,
 					jstar = 0,
@@ -384,6 +389,8 @@ Object.assign( Q.Circuit, {
 						istar |= (( i & ( 1 << q )) >> q ) << k
 						jstar |= (( j & ( 1 << q )) >> q ) << k
 					}
+
+
 					//console.log( 'U.read( istar, jstar )', U.read( istar, jstar ).toText() )
 
 					// console.log( 'before write$', result.toTsv())
@@ -498,15 +505,11 @@ Object.assign( Q.Circuit, {
 
 			//  Yikes. May need to separate registerIndices in to controls[] and targets[] ??
 			//  Works for now tho..... 
-			// Houston we have a problem. Turns out, not every gate with registerIndices.length > 1 is
-			// controlled.
-			// This is a nasty fix, leads to a lot of edge cases. (For instance: hard-coding cswaps...) But just experimenting. 
-			if(!operation.gate.is_multi_qubit || (operation.gate.symbol == 'S' && operation.registerIndices.length > 2) && operation.gate.can_be_controlled) {
-				for( let j = 0; j < operation.registerIndices.length - 1; j ++ ){
-				
-					U = Q.Circuit.controlled( U )
-					//console.log( 'qubitIndex #', j, 'U = Q.Circuit.controlled( U )', U.toTsv() )
-				}
+
+			for( let j = 0; j < operation.registerIndices.length - 1; j ++ ){
+			
+				U = Q.Circuit.controlled( U )
+				// console.log( 'qubitIndex #', j, 'U = Q.Circuit.controlled( U )', U.toTsv() )
 			}
 
 
@@ -516,6 +519,8 @@ Object.assign( Q.Circuit, {
 			//  and wow -- tracking down that bug was painful!
 
 			const registerIndices = operation.registerIndices.slice()
+
+
 			state = Q.Circuit.expandMatrix( 
 
 				circuit.bandwidth, 
@@ -523,6 +528,7 @@ Object.assign( Q.Circuit, {
 				registerIndices
 
 			).multiply( state )
+
 
 
 
@@ -591,6 +597,7 @@ Object.assign( Q.Circuit, {
 
 
 
+		
 
 		return matrix
 	}
@@ -1107,101 +1114,46 @@ https://cirq.readthedocs.io/en/stable/tutorial.html
 		return headers
 	},
 	toAmazonBraket: function(){
-		let is_valid_braket_circuit = true
+
 		const header = `import boto3
-from braket.aws import AwsDevice
+from braket.aws import AwsQuantumSimulator, AwsQuantumSimulatorArns
 from braket.circuits import Circuit
 
 aws_account_id = boto3.client("sts").get_caller_identity()["Account"]
-device = AwsDevice("arn:aws:braket:::device/quantum-simulator/amazon/SIMULATOR_NAME)`
-//TODO (ltnln): Syntax is different for simulators and actual quantum computers. Should there be a default? Should there be a way to change?
-//vs an actual quantum computer? May not be necessary. 
-+ `\ns3_folder = (f"braket-output-{aws_account_id}", "folder-name")\n\n`
-		let variables = ''
-		let num_unitaries = 0
+device = AwsQuantumSimulator(AwsQuantumSimulatorArns.QS1)
+s3_folder = (f"braket-output-{aws_account_id}", "folder-name")
+
+`
 		//`qjs_circuit = Circuit().h(0).cnot(0,1)`
-		//ltnln change: from gate.AmazonBraketName -> gate.symbolAmazonBraket
 		let circuit = this.operations.reduce( function( string, operation ){
-			let awsGate = operation.gate.symbolAmazonBraket !== undefined ?
-				operation.gate.symbolAmazonBraket :
+
+			let awsGate = operation.gate.AmazonBraketName !== undefined ?
+				operation.gate.AmazonBraketName :
 				operation.gate.symbol.substr( 0, 1 ).toLowerCase()
-			if( operation.gate.symbolAmazonBraket === undefined ) is_valid_braket_circuit = false
-			if( operation.gate.symbol === 'X' ) {
-				if( operation.registerIndices.length === 1 ) awsGate = operation.gate.symbolAmazonBraket
-				else if( operation.registerIndices.length === 2 ) awsGate = 'cnot'
-				else if( operation.registerIndices.length === 3) awsGate = 'ccnot'
-				else is_valid_braket_circuit = false
+
+			if( operation.gate.symbol === 'X' && 
+				operation.registerIndices.length > 1 ){
+
+				awsGate = 'cnot'
 			}
+			if( operation.gate.symbol === '*' ){
 
-			else if( operation.gate.symbol === 'S' ) {
-				if( operation.gate.parameters["phi"] === 0 ) {
-					awsGate = operation.registerIndices.length == 2 ? awsGate : "cswap"
-					return string +'.'+ awsGate +'(' +
-				operation.registerIndices.reduce( function( string, registerIndex, r ){
-
-					return string + (( r > 0 ) ? ',' : '' ) + ( registerIndex - 1 )
-
-					}, '' ) + ')'
-				}
-				awsGate = 'pswap'
+				awsGate = 'i'
 			}
-			//ltnln note: removed the if( operation.gate.symbol == '*') branch as it should be covered by
-        	//the inclusion of the CURSOR gate. 
-			else if( operation.gate.symbol === 'Y' || operation.gate.symbol === 'Z' || operation.gate.symbol === 'P' ) {
-				if( operation.registerIndices.length === 1) awsGate = operation.gate.symbolAmazonBraket
-				else if( operation.registerIndices.length === 2 ) awsGate = (operation.gate.symbol === 'Y') ? 'cy' : (operation.gate.symbol === 'Z') ? 'cz' : 'cphaseshift'
-				else is_valid_braket_circuit = false
-			}
-			//for all unitary gates, there must be a line of code to initialize the matrix for use
-        //in Braket's .u(matrix=my_unitary, targets[0]) function
-			else if( operation.gate.symbol === 'U') {
-				//check that this truly works as a unique id
-				is_valid_braket_circuit &= operation.registerIndices.length === 1
-				const new_matrix = `unitary_` + num_unitaries
-				num_unitaries++
-				const a = Q.ComplexNumber.toText(Math.cos(-(operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2),
-												Math.sin(-(operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2))
-												.replace('i', 'j')
-				const b = Q.ComplexNumber.toText(-Math.cos(-(operation.gate.parameters[ "phi" ] - operation.gate.parameters[ "lambda" ])*Math.sin(operation.gate.parameters[ "theta" ] / 2) / 2),
-												-Math.sin(-(operation.gate.parameters[ "phi" ] - operation.gate.parameters[ "lambda" ])*Math.sin(operation.gate.parameters[ "theta" ] / 2)) / 2)
-												.replace('i', 'j')
-				const c = Q.ComplexNumber.toText(Math.cos((operation.gate.parameters[ "phi" ] - operation.gate.parameters[ "lambda" ])*Math.sin(operation.gate.parameters[ "theta" ] / 2) / 2),
-												-Math.sin((operation.gate.parameters[ "phi" ] - operation.gate.parameters[ "lambda" ])*Math.sin(operation.gate.parameters[ "theta" ] / 2)) / 2)
-												.replace('i', 'j')
-				const d = Q.ComplexNumber.toText(Math.cos((operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2),
-												Math.sin((operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2)) / 2)
-												.replace('i', 'j')  
-				variables += new_matrix + ` = np.array(` + 
-							`[[` + a + ', ' + b + `],`+
-							`[` + c + ', ' + d + `]])\n`
-				return string +'.'+ awsGate +'(' + new_matrix +','+
-				operation.registerIndices.reduce( function( string, registerIndex, r ){
-
-					return string + (( r > 0 ) ? ',' : '' ) + ( registerIndex - 1 )
-
-				}, '' ) + ')'
-			}
-			// I believe this line should ensure that we don't include any controlled single-qubit gates that aren't allowed in Braket. 
-			// The registerIndices.length > 1 technically shouldn't be necessary, but if changes are made later, it's just for safety. 
-			else is_valid_braket_circuit &= (operation.registerIndices.length === 1) || ( operation.registerIndices.length > 1 && operation.gate.is_multi_qubit )
+			
 			return string +'.'+ awsGate +'(' + 
 				operation.registerIndices.reduce( function( string, registerIndex, r ){
 
 					return string + (( r > 0 ) ? ',' : '' ) + ( registerIndex - 1 )
 
-				}, '' ) + ((operation.gate.has_parameters) ?
-				Object.values( operation.gate.parameters ).reduce( function( string, parameter ) {
-					return string + "," + parameter
-				}, '') 
-				: '') + ')'
+				}, '' ) + ')'
 
 		}, 'qjs_circuit = Circuit()' )
-		variables += '\n'
 		if( this.operations.length === 0 ) circuit +=  '.i(0)'//  Quick fix to avoid an error here!
 
 		const footer = `\n\ntask = device.run(qjs_circuit, s3_folder, shots=100)
 print(task.result().measurement_counts)`
-		return is_valid_braket_circuit ? header + variables + circuit + footer : `###This circuit is not representable as a Braket circuit!###`
+		return header + circuit + footer
 	},
 	toLatex: function(){
 
@@ -1408,14 +1360,15 @@ print(task.result().measurement_counts)`
 	},
 
 
-	set$: function( gate, momentIndex, registerIndices, parameters = {} ){
+	set$: function( gate, momentIndex, registerIndices ){
 
 		const circuit = this
 
+
 		//  Is this a valid gate?
-		// 	We clone the gate rather than using the constant; this way, if we change it's parameters, we don't change the constant. 
-		if( typeof gate === 'string' ) gate = Q.Gate.prototype.clone( Q.Gate.findBySymbol( gate ) )
-		if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to add a gate (${ gate }) to circuit #${ this.index } at moment #${ momentIndex } that is not a gate:`, gate )
+
+		if( typeof gate === 'string' ) gate = Q.Gate.findBySymbol( gate )
+		if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } that is not a gate:`, gate )
 
 
 		//  Is this a valid moment index?
@@ -1486,11 +1439,7 @@ print(task.result().measurement_counts)`
 			//  Aren’t you glad we handle all this for you?
 
 			const 
-			//TODO: For ltnln (have to fix)
-			//		a) allow users to control whatever they want! Just because it's not allowed in Braket 
-			//		doesn't mean they shouldn't be allowed to do it in Q! (Probably fixable by adjusting toAmazonBraket)
-			//		b) Controlling a multi_qubit gate will not treat the control icon like a control gate!
-			isControlled = registerIndices.length > 1 && gate !== Q.Gate.SWAP && gate.can_be_controlled !== undefined
+			isControlled = registerIndices.length > 1 && gate !== Q.Gate.SWAP,
 			operation = {
 
 				gate,
@@ -1498,8 +1447,6 @@ print(task.result().measurement_counts)`
 				registerIndices,
 				isControlled
 			}
-			//perform parameter update here!!! 
-			if(gate.has_parameters) gate.updateMatrix$.apply( gate, Object.values(parameters) )
 			this.operations.push( operation )
 
 			
@@ -1512,15 +1459,14 @@ print(task.result().measurement_counts)`
 
 
 			//  Let’s make history.
-			const redo_args = Array.from( arguments )
-			Object.assign( redo_args[ redo_args.length - 1 ], parameters )
+
 			this.history.record$({
 
 				redo: {
 					
 					name: 'set$',
 					func: circuit.set$,
-					args: redo_args
+					args: Array.from( arguments )
 				},
 				undo: [{
 
@@ -2083,7 +2029,6 @@ Q.Circuit.createConstants(
 	// 	I-C1-I-I-X-Z-
 	// `)
 )
-
 
 
 
