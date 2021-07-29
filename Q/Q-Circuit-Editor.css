@@ -94,6 +94,7 @@
 
 
 
+
 .Q-circuit,
 .Q-circuit-palette {
 
@@ -122,8 +123,8 @@
 	margin: 1rem 0 2rem 0;
 	/*border-top: 2px solid hsl( 0, 0%, 50% );*/
 }
-.Q-parameters-box,
 .Q-circuit-board-foreground {
+	
 	line-height: 3.85rem;
 	width: auto;
 }
@@ -274,19 +275,6 @@
 	grid-auto-columns: 4rem;
 	grid-auto-flow: column;
 }
-
-.Q-parameters-box {
-	
-	position: absolute;
-	display: none; 
-	z-index: 100;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: whitesmoke;
-}
-
 /*.Q-circuit-palette,*/
 .Q-circuit-board-foreground,
 .Q-circuit-board-background {
@@ -376,16 +364,8 @@
 	);
 }
 
-.Q-parameter-box-exit {
-	position: relative;
-	right: 0;
-	left: 0;
-	width: 5rem;
-	height: 2.5rem;
-	background-color: whitesmoke;
-}
 
-.Q-parameters-box > div,
+
 .Q-circuit-palette > div,
 .Q-circuit-clipboard > div,
 .Q-circuit-board-foreground > div {
@@ -561,6 +541,7 @@
  /*                */
 /******************/
 
+
 .Q-circuit-operation {
 	
 	position: relative;
@@ -626,7 +607,7 @@
 			rgba( 0, 0, 0, 0.05 )
 		)*/;
 }
-.Q-parameter-box-exit .Q-circuit-palette .Q-circuit-operation:hover {
+.Q-circuit-palette .Q-circuit-operation:hover {
 
 	/*background-color: rgba( 255, 255, 255, 0.6 );*/
 	background-color: white;
@@ -738,25 +719,7 @@
 	font-size: 0;
 }
 
-.Q-parameter-box-input-container {
-	position: relative;
-	text-align: center;
-	grid-auto-columns: 4rem;
-	grid-auto-flow: column;
-}
 
-.Q-parameter-box-input {
-	position: relative;
-	border-radius: .2rem;
-	margin-left: 10px;
-	font-family: var( --Q-font-family-mono );
-}
-
-.Q-parameter-input-label {
-	position: relative;
-	color: var( --Q-color-blue );
-	font-family: var( --Q-font-family-mono );
-}
 
 
 
@@ -848,8 +811,6 @@
 
 
 
-
-
     /***************/
    /*             */
   /*   Buttons   */
@@ -894,6 +855,5 @@
 		66%
 	);
 }
-
 
 
