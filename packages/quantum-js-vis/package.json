@@ -2,11 +2,14 @@
   "name": "quantum-js-vis",
   "version": "1.0.0",
   "description": "Visualization Components for Q.js",
-  "main": "index.mjs",
+  "main": "index.js",
   "scripts": {
-    "test": "echo 'vis hello world' && exit 0"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^2.3.2"
+  }
 }

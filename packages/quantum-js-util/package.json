@@ -2,9 +2,9 @@
   "name": "quantum-js-util",
   "version": "1.0.0",
   "description": "",
-  "main": "index.mjs",
+  "main": "Q.js",
   "scripts": {
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "echo 'hello from util!'"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

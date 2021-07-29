@@ -8,7 +8,7 @@ const {Gate} = require('./Q-Gate');
 const {Qubit} = require('./Q-Qubit');
 const {Matrix} = require('./Q-Matrix');
 const {History} = require('./Q-History');
-const {Circuit} = require('./Q-ComplexNumber');
+const {Circuit} = require('./Q-Circuit');
 
 
 

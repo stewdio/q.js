@@ -1,7 +1,6 @@
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 const {Q, Circuit, Gate, logger, misc } = require('quantum-js-util');
 
-
 Editor = function( circuit, targetEl ){
 
 
@@ -955,7 +954,7 @@ Editor.onSelectionChanged = function( circuitEl ){
 Editor.onCircuitChanged = function( circuitEl ){
 
 	const circuit = circuitEl.circuit
-	window.dispatchEvent( new CustomEvent( 
+	misc.dispatchEvent( new CustomEvent( 
 
 		'Q gui altered circuit', 
 		{ detail: { circuit: circuit }}
