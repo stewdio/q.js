@@ -2,6 +2,8 @@
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 
+
+
 const Q = function(){
 
 
@@ -618,4 +620,3 @@ https://quantumjavascript.app
 ` )
 
 
-module.exports = Q
