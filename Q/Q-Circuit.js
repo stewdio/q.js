@@ -2,42 +2,34 @@
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 
-//
-const logger = require('./Logging');
-const misc = require('./Misc');
-const mathf = require('./Math-Functions');
-const {ComplexNumber} = require('./Q-ComplexNumber');
-const {Gate} = require('./Q-Gate');
-const {Qubit} = require('./Q-Qubit');
-const {Matrix} = require('./Q-Matrix');
-const {History} = require('./Q-History');
 
 
-Circuit = function( bandwidth, timewidth ){
+Q.Circuit = function( bandwidth, timewidth ){
+
 
 	//  What number Circuit is this
 	//  that we’re attempting to make here?
 	
-	this.index = Circuit.index ++
+	this.index = Q.Circuit.index ++
 
 
 	//  How many qubits (registers) shall we use?
 
-	if( !mathf.isUsefulInteger( bandwidth )) bandwidth = 3
+	if( !Q.isUsefulInteger( bandwidth )) bandwidth = 3
 	this.bandwidth = bandwidth
 
 
 	//  How many operations can we perform on each qubit?
 	//  Each operation counts as one moment; one clock tick.
 
-	if( !mathf.isUsefulInteger( timewidth )) timewidth = 5
+	if( !Q.isUsefulInteger( timewidth )) timewidth = 5
 	this.timewidth = timewidth
 
 
 	//  We’ll start with Horizontal qubits (zeros) as inputs
 	//  but we can of course modify this after initialization.
 
-	this.qubits = new Array( bandwidth ).fill( Qubit.HORIZONTAL )
+	this.qubits = new Array( bandwidth ).fill( Q.Qubit.HORIZONTAL )
 
 
 	//  What operations will we perform on our qubits?
@@ -60,35 +52,36 @@ Circuit = function( bandwidth, timewidth ){
 
 
 	//  Undo / Redo history.
-	this.history = new History( this )
 
+	this.history = new Q.History( this )
 }
 
 
 
 
-Object.assign( Circuit, {
+Object.assign( Q.Circuit, {
+
 	index: 0,
-	help: function(){ return logger.help( this )},
+	help: function(){ return Q.help( this )},
 	constants: {},
-	createConstant:  misc.createConstant,
-	createConstants: misc.createConstants,
+	createConstant:  Q.createConstant,
+	createConstants: Q.createConstants,
 
 
 	fromText: function( text ){
 
 
 		//  This is a quick way to enable `fromText()`
-		//  to return a default new Circuit().
+		//  to return a default new Q.Circuit().
 
-		if( text === undefined ) return new Circuit()
+		if( text === undefined ) return new Q.Circuit()
 
 		//  Is this a String Template -- as opposed to a regular String?
 		//  If so, let’s convert it to a regular String.
 		//  Yes, this maintains the line breaks.
 
 		if( text.raw !== undefined ) text = ''+text.raw		
-		return Circuit.fromTableTransposed( 
+		return Q.Circuit.fromTableTransposed( 
 
 			text
 			.trim()
@@ -144,9 +137,9 @@ Object.assign( Circuit, {
 
 
 		//  This is a quick way to enable `fromText()`
-		//  to return a default new Circuit().
+		//  to return a default new Q.Circuit().
 
-		if( text === undefined ) return new Circuit()
+		if( text === undefined ) return new Q.Circuit()
 
 
 		//  Is this a String Template -- as opposed to a regular String?
@@ -209,7 +202,7 @@ Object.assign( Circuit, {
 			return Math.max( max, moments.length )
 		
 		}, 0 ),
-		circuit = new Circuit( bandwidth, timewidth )
+		circuit = new Q.Circuit( bandwidth, timewidth )
 		
 		circuit.bandwidth = bandwidth
 		circuit.timewidth = timewidth
@@ -227,8 +220,8 @@ Object.assign( Circuit, {
 					const sibling = table[ s ][ m ]
 					if( operation.gateSymbol === sibling.gateSymbol &&
 						operation.operationMomentId === sibling.operationMomentId &&
-						mathf.isUsefulInteger( operation.mappingIndex ) &&
-						mathf.isUsefulInteger( sibling.mappingIndex ) &&
+						Q.isUsefulInteger( operation.mappingIndex ) &&
+						Q.isUsefulInteger( sibling.mappingIndex ) &&
 						operation.mappingIndex !== sibling.mappingIndex ){
 
 
@@ -250,10 +243,10 @@ Object.assign( Circuit, {
 				if( siblingHasBeenFound === false && operation.gateSymbol !== 'I' ){
 
 					const 
-					gate = Gate.findBySymbol( operation.gateSymbol ),
+					gate = Q.Gate.findBySymbol( operation.gateSymbol ),
 					registerIndices = []					
 
-					if( mathf.isUsefulInteger( operation.mappingIndex )){
+					if( Q.isUsefulInteger( operation.mappingIndex )){
 					
 						registerIndices[ operation.mappingIndex ] = registerIndex
 					}
@@ -285,7 +278,7 @@ Object.assign( Circuit, {
 
 		const 
 		size   = U.getWidth(),
-		result = Matrix.createIdentity( size * 2 )
+		result = Q.Matrix.createIdentity( size * 2 )
 
 		// console.log( 'U', U.toTsv() )
 		// console.log( 'size', size )
@@ -294,6 +287,7 @@ Object.assign( Circuit, {
 		for( let x = 0; x < size; x ++ ){
 			
 			for( let y = 0; y < size; y ++ ){
+				
 				const v = U.read( x, y )
 				// console.log( `value at ${x}, ${y}`, v )
 				result.write$( x + size, y + size, v )
@@ -301,14 +295,7 @@ Object.assign( Circuit, {
 		}
 		return result
 	},
-
-	//given an operation, return whether or not it is a valid control operation on the circuit-editor. 
-	isControlledOperation:  function( operation ) {
-		return (!operation.gate.is_multi_qubit || operation.gate.name === 'Swap') //assumption: we won't allow controlled multi-qubit operations
-																				  //..except swap or CNOT
-		&& (operation.registerIndices.length >= 2) 
-		&& (operation.gate.can_be_controlled)
-	},
+	
 
 
 	//  Return transformation over entire nqubit register that applies U to
@@ -318,6 +305,7 @@ Object.assign( Circuit, {
 	//  http://148.206.53.84/tesiuami/S_pdfs/AUTOMATIC%20QUANTUM%20COMPUTER%20PROGRAMMING.pdf
 
 	expandMatrix: function( circuitBandwidth, U, qubitIndices ){
+		
 		// console.log( 'EXPANDING THE MATRIX...' )
 		// console.log( 'this one: U', U.toTsv())
 
@@ -336,7 +324,7 @@ Object.assign( Circuit, {
 		for( let i = 0; i < qubitIndices.length; i ++ ){
 			
 			//qubitIndices[ i ] = ( circuitBandwidth - 1 ) - qubitIndices[ i ]
-			qubitIndices[ i ] -= 1
+			qubitIndices[ i ] = ( circuitBandwidth - 0 ) - qubitIndices[ i ]
 		}
 		// console.log( 'qubits AFTER manipulation', qubitIndices )
 
@@ -357,7 +345,7 @@ Object.assign( Circuit, {
 		
 
 
-		const result = new Matrix.createZero( n )
+		const result = new Q.Matrix.createZero( n )
 
 
 		// const X = numeric.rep([n, n], 0);
@@ -418,14 +406,17 @@ Object.assign( Circuit, {
 	},
 
 
+
+
 	evaluate: function( circuit ){
 
 
 		// console.log( circuit.toDiagram() )
 
-		misc.dispatchEventToGlobal(new CustomEvent( 
 
-			'Circuit.evaluate began', { 
+		window.dispatchEvent( new CustomEvent( 
+
+			'Q.Circuit.evaluate began', { 
 
 				detail: { circuit }
 			}
@@ -451,7 +442,7 @@ Object.assign( Circuit, {
 		//  │ . │
 		//  └   ┘
 
-		const state = new Matrix( 1, Math.pow( 2, circuit.bandwidth ))
+		const state = new Q.Matrix( 1, Math.pow( 2, circuit.bandwidth ))
 		state.write$( 0, 0, 1 )
 
 
@@ -475,6 +466,7 @@ Object.assign( Circuit, {
 		const operationsTotal = circuit.operations.length
 		let operationsCompleted = 0
 		let matrix = circuit.operations.reduce( function( state, operation, i ){
+
 
 
 			let U
@@ -508,13 +500,12 @@ Object.assign( Circuit, {
 			//  Works for now tho..... 
 			// Houston we have a problem. Turns out, not every gate with registerIndices.length > 1 is
 			// controlled.
-			// This is a nasty fix, leads to a lot of edge cases. But just experimenting. 
-			if( Circuit.isControlledOperation(operation) ) {
-				const scale = operation.registerIndices.length - ( operation.gate.is_multi_qubit ? 2 : 1)
-				for( let j = 0; j < scale; j ++ ){
+			// This is a nasty fix, leads to a lot of edge cases. (For instance: hard-coding cswaps...) But just experimenting. 
+			if(!operation.gate.is_multi_qubit || (operation.gate.symbol == 'S' && operation.registerIndices.length > 2) && operation.gate.can_be_controlled) {
+				for( let j = 0; j < operation.registerIndices.length - 1; j ++ ){
 				
-					U = Circuit.controlled( U )
-					// console.log( 'qubitIndex #', j, 'U = Circuit.controlled( U )', U.toTsv() )
+					U = Q.Circuit.controlled( U )
+					//console.log( 'qubitIndex #', j, 'U = Q.Circuit.controlled( U )', U.toTsv() )
 				}
 			}
 
@@ -525,21 +516,21 @@ Object.assign( Circuit, {
 			//  and wow -- tracking down that bug was painful!
 
 			const registerIndices = operation.registerIndices.slice()
-			state = Circuit.expandMatrix( 
+			state = Q.Circuit.expandMatrix( 
 
 				circuit.bandwidth, 
 				U, 
 				registerIndices
 
 			).multiply( state )
-			
+
 
 
 			operationsCompleted ++
 			const progress = operationsCompleted / operationsTotal
 
 
-			misc.dispatchEventToGlobal(new CustomEvent( 'Circuit.evaluate progressed', { detail: {
+			window.dispatchEvent( new CustomEvent( 'Q.Circuit.evaluate progressed', { detail: {
 
 				circuit,
 				progress,
@@ -566,6 +557,7 @@ Object.assign( Circuit, {
 		}, state )
 
 
+		// console.log( 'result matrix', matrix.toTsv() )
 	
 
 
@@ -589,7 +581,7 @@ Object.assign( Circuit, {
 
 
 
-		misc.dispatchEventToGlobal(new CustomEvent( 'Circuit.evaluate completed', { detail: {
+		window.dispatchEvent( new CustomEvent( 'Q.Circuit.evaluate completed', { detail: {
 		// circuit.dispatchEvent( new CustomEvent( 'evaluation complete', { detail: {
 
 			circuit,
@@ -610,7 +602,7 @@ Object.assign( Circuit, {
 
 
 
-Object.assign( Circuit.prototype, {
+Object.assign( Q.Circuit.prototype, {
 
 	clone: function(){
 
@@ -626,13 +618,13 @@ Object.assign( Circuit.prototype, {
 	},
 	evaluate$: function(){
 
-		Circuit.evaluate( this )
+		Q.Circuit.evaluate( this )
 		return this
 	},
 	report$: function( length ){
 
 		if( this.needsEvaluation ) this.evaluate$()
-		if( !mathf.isUsefulInteger( length )) length = 20
+		if( !Q.isUsefulInteger( length )) length = 20
 		
 		const 
 		circuit = this,
@@ -647,7 +639,7 @@ Object.assign( Circuit.prototype, {
 				+ outcome.state +'  '
 				+ ''.padStart( probabilityPositive, '█' )
 				+ ''.padStart( probabilityNegative, '░' )
-				+ mathf.round( Math.round( 100 * outcome.probability ), 8 ).toString().padStart( 4, ' ' ) +'% chance'
+				+ Q.round( Math.round( 100 * outcome.probability ), 8 ).toString().padStart( 4, ' ' ) +'% chance'
 
 		}, '' ) + '\n'
 		return text
@@ -1016,7 +1008,7 @@ because there’s another stand-alone X there tripping the logic!!!
 				? table.maximumCharacterWidth
 				: table[ x ].maximumCharacterWidth
 
-			output[ 0 ] += logger.centerText( 'm'+ ( x + 1 ), padToLength + 4 )
+			output[ 0 ] += Q.centerText( 'm'+ ( x + 1 ), padToLength + 4 )
 			for( let y = 0; y < table.bandwidth; y ++ ){
 
 				let 
@@ -1032,7 +1024,7 @@ because there’s another stand-alone X there tripping the logic!!!
 					third  += '  '
 					
 					first  += ' '.padEnd( padToLength )
-					second += logger.centerText( '○', padToLength, '─' )
+					second += Q.centerText( '○', padToLength, '─' )
 					third  += ' '.padEnd( padToLength )
 
 					first  += '  '
@@ -1055,7 +1047,7 @@ because there’s another stand-alone X there tripping the logic!!!
 					second += '┤ '
 					
 					first  += '─'.padEnd( padToLength, '─' )
-					second += logger.centerText( operation.symbolDisplay, padToLength )
+					second += Q.centerText( operation.symbolDisplay, padToLength )
 					third  += '─'.padEnd( padToLength, '─' )
 
 
@@ -1115,30 +1107,30 @@ https://cirq.readthedocs.io/en/stable/tutorial.html
 		return headers
 	},
 	toAmazonBraket: function(){
-		let isValidBraketCircuit = true
+		let is_valid_braket_circuit = true
 		const header = `import boto3
 from braket.aws import AwsDevice
 from braket.circuits import Circuit
 
-my_bucket = f"amazon-braket-Your-Bucket-Name" # the name of the bucket
-my_prefix = "Your-Folder-Name" # the name of the folder in the bucket
-s3_folder = (my_bucket, my_prefix)\n
-device = LocalSimulator()\n\n`
+aws_account_id = boto3.client("sts").get_caller_identity()["Account"]
+device = AwsDevice("arn:aws:braket:::device/quantum-simulator/amazon/SIMULATOR_NAME)`
 //TODO (ltnln): Syntax is different for simulators and actual quantum computers. Should there be a default? Should there be a way to change?
 //vs an actual quantum computer? May not be necessary. 
++ `\ns3_folder = (f"braket-output-{aws_account_id}", "folder-name")\n\n`
 		let variables = ''
 		let num_unitaries = 0
 		//`qjs_circuit = Circuit().h(0).cnot(0,1)`
 		//ltnln change: from gate.AmazonBraketName -> gate.symbolAmazonBraket
 		let circuit = this.operations.reduce( function( string, operation ){
-			let awsGate = operation.gate.symbolAmazonBraket
-			isValidBraketCircuit &= awsGate !== undefined
-			if( operation.gate.symbolAmazonBraket === undefined ) isValidBraketCircuit = false
+			let awsGate = operation.gate.symbolAmazonBraket !== undefined ?
+				operation.gate.symbolAmazonBraket :
+				operation.gate.symbol.substr( 0, 1 ).toLowerCase()
+			if( operation.gate.symbolAmazonBraket === undefined ) is_valid_braket_circuit = false
 			if( operation.gate.symbol === 'X' ) {
 				if( operation.registerIndices.length === 1 ) awsGate = operation.gate.symbolAmazonBraket
 				else if( operation.registerIndices.length === 2 ) awsGate = 'cnot'
 				else if( operation.registerIndices.length === 3) awsGate = 'ccnot'
-				else isValidBraketCircuit = false
+				else is_valid_braket_circuit = false
 			}
 
 			else if( operation.gate.symbol === 'S' ) {
@@ -1155,29 +1147,28 @@ device = LocalSimulator()\n\n`
 			}
 			//ltnln note: removed the if( operation.gate.symbol == '*') branch as it should be covered by
         	//the inclusion of the CURSOR gate. 
-			else if( ['Y','Z','P'].includes( operation.gate.symbol) ) {
+			else if( operation.gate.symbol === 'Y' || operation.gate.symbol === 'Z' || operation.gate.symbol === 'P' ) {
 				if( operation.registerIndices.length === 1) awsGate = operation.gate.symbolAmazonBraket
 				else if( operation.registerIndices.length === 2 ) awsGate = (operation.gate.symbol === 'Y') ? 'cy' : (operation.gate.symbol === 'Z') ? 'cz' : 'cphaseshift'
-				else isValidBraketCircuit = false
+				else is_valid_braket_circuit = false
 			}
 			//for all unitary gates, there must be a line of code to initialize the matrix for use
-        	//in Braket's .u(matrix=my_unitary, targets[0]) function
+        //in Braket's .u(matrix=my_unitary, targets[0]) function
 			else if( operation.gate.symbol === 'U') {
 				//check that this truly works as a unique id
-				isValidBraketCircuit &= operation.registerIndices.length === 1
+				is_valid_braket_circuit &= operation.registerIndices.length === 1
 				const new_matrix = `unitary_` + num_unitaries
 				num_unitaries++
-				//https://en.wikipedia.org/wiki/Unitary_matrix; source for the unitary matrix values implemented below. 
-				const a = ComplexNumber.toText(Math.cos(-(operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2),
+				const a = Q.ComplexNumber.toText(Math.cos(-(operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2),
 												Math.sin(-(operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2))
 												.replace('i', 'j')
-				const b = ComplexNumber.toText(-Math.cos(-(operation.gate.parameters[ "phi" ] - operation.gate.parameters[ "lambda" ])*Math.sin(operation.gate.parameters[ "theta" ] / 2) / 2),
+				const b = Q.ComplexNumber.toText(-Math.cos(-(operation.gate.parameters[ "phi" ] - operation.gate.parameters[ "lambda" ])*Math.sin(operation.gate.parameters[ "theta" ] / 2) / 2),
 												-Math.sin(-(operation.gate.parameters[ "phi" ] - operation.gate.parameters[ "lambda" ])*Math.sin(operation.gate.parameters[ "theta" ] / 2)) / 2)
 												.replace('i', 'j')
-				const c = ComplexNumber.toText(Math.cos((operation.gate.parameters[ "phi" ] - operation.gate.parameters[ "lambda" ])*Math.sin(operation.gate.parameters[ "theta" ] / 2) / 2),
+				const c = Q.ComplexNumber.toText(Math.cos((operation.gate.parameters[ "phi" ] - operation.gate.parameters[ "lambda" ])*Math.sin(operation.gate.parameters[ "theta" ] / 2) / 2),
 												-Math.sin((operation.gate.parameters[ "phi" ] - operation.gate.parameters[ "lambda" ])*Math.sin(operation.gate.parameters[ "theta" ] / 2)) / 2)
 												.replace('i', 'j')
-				const d = ComplexNumber.toText(Math.cos((operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2),
+				const d = Q.ComplexNumber.toText(Math.cos((operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2),
 												Math.sin((operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2)) / 2)
 												.replace('i', 'j')  
 				variables += new_matrix + ` = np.array(` + 
@@ -1192,7 +1183,7 @@ device = LocalSimulator()\n\n`
 			}
 			// I believe this line should ensure that we don't include any controlled single-qubit gates that aren't allowed in Braket. 
 			// The registerIndices.length > 1 technically shouldn't be necessary, but if changes are made later, it's just for safety. 
-			else isValidBraketCircuit &= (operation.registerIndices.length === 1) || ( operation.registerIndices.length > 1 && operation.gate.is_multi_qubit )
+			else is_valid_braket_circuit &= (operation.registerIndices.length === 1) || ( operation.registerIndices.length > 1 && operation.gate.is_multi_qubit )
 			return string +'.'+ awsGate +'(' + 
 				operation.registerIndices.reduce( function( string, registerIndex, r ){
 
@@ -1210,7 +1201,7 @@ device = LocalSimulator()\n\n`
 
 		const footer = `\n\ntask = device.run(qjs_circuit, s3_folder, shots=100)
 print(task.result().measurement_counts)`
-		return isValidBraketCircuit ? header + variables + circuit + footer : `###This circuit is not representable as a Braket circuit!###`
+		return is_valid_braket_circuit ? header + variables + circuit + footer : `###This circuit is not representable as a Braket circuit!###`
 	},
 	toLatex: function(){
 
@@ -1297,12 +1288,12 @@ print(task.result().measurement_counts)`
 		//  Validate our arguments.
 		
 		if( arguments.length !== 2 ) 
-			logger.warn( `Circuit.clear$ expected 2 arguments but received ${ arguments.length }.` )
-		if( mathf.isUsefulInteger( momentIndex ) !== true )
-			return logger.error( `Circuit attempted to clear an input on Circuit #${ circuit.index } using an invalid moment index:`, momentIndex )
-		if( mathf.isUsefulInteger( registerIndices )) registerIndices = [ registerIndices ]
+			Q.warn( `Q.Circuit.clear$ expected 2 arguments but received ${ arguments.length }.` )
+		if( Q.isUsefulInteger( momentIndex ) !== true )
+			return Q.error( `Q.Circuit attempted to clear an input on Circuit #${ circuit.index } using an invalid moment index:`, momentIndex )
+		if( Q.isUsefulInteger( registerIndices )) registerIndices = [ registerIndices ]
 		if( registerIndices instanceof Array !== true )
-			return logger.error( `Circuit attempted to clear an input on Circuit #${ circuit.index } using an invalid register indices array:`, registerIndices )
+			return Q.error( `Q.Circuit attempted to clear an input on Circuit #${ circuit.index } using an invalid register indices array:`, registerIndices )
 
 
 		//  Let’s find any operations 
@@ -1386,9 +1377,9 @@ print(task.result().measurement_counts)`
 
 			foundOperations.forEach( function( operation ){
 
-				misc.dispatchEventToGlobal(new CustomEvent( 
+				window.dispatchEvent( new CustomEvent( 
 
-					'Circuit.clear$', { detail: { 
+					'Q.Circuit.clear$', { detail: { 
 
 						circuit,
 						momentIndex,
@@ -1423,25 +1414,25 @@ print(task.result().measurement_counts)`
 
 		//  Is this a valid gate?
 		// 	We clone the gate rather than using the constant; this way, if we change it's parameters, we don't change the constant. 
-		if( typeof gate === 'string' ) gate = Gate.prototype.clone( Gate.findBySymbol( gate ) )
-		if( gate instanceof Gate !== true ) return logger.error( `Circuit attempted to add a gate (${ gate }) to circuit #${ this.index } at moment #${ momentIndex } that is not a gate:`, gate )
+		if( typeof gate === 'string' ) gate = Q.Gate.prototype.clone( Q.Gate.findBySymbol( gate ) )
+		if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to add a gate (${ gate }) to circuit #${ this.index } at moment #${ momentIndex } that is not a gate:`, gate )
 
 
 		//  Is this a valid moment index?
 		
-		if( mathf.isUsefulNumber( momentIndex ) !== true ||
+		if( Q.isUsefulNumber( momentIndex ) !== true ||
 			Number.isInteger( momentIndex ) !== true ||
 			momentIndex < 1 || momentIndex > this.timewidth ){
 
-			return logger.error( `Circuit attempted to add a gate to circuit #${ this.index } at a moment index that is not valid:`, momentIndex )
+			return Q.error( `Q.Circuit attempted to add a gate to circuit #${ this.index } at a moment index that is not valid:`, momentIndex )
 		}
 
 
 		//  Are these valid register indices?
 
 		if( typeof registerIndices === 'number' ) registerIndices = [ registerIndices ]
-		if( registerIndices instanceof Array !== true ) return logger.error( `Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } with an invalid register indices array:`, registerIndices )
-		if( registerIndices.length === 0 ) return logger.error( `Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } with an empty register indices array:`, registerIndices )
+		if( registerIndices instanceof Array !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } with an invalid register indices array:`, registerIndices )
+		if( registerIndices.length === 0 ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } with an empty register indices array:`, registerIndices )
 		if( registerIndices.reduce( function( accumulator, registerIndex ){
 
 			// console.log(accumulator && 
@@ -1456,7 +1447,7 @@ print(task.result().measurement_counts)`
 
 		}, false )){
 
-			return logger.warn( `Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } with some out of range qubit indices:`, registerIndices )
+			return Q.warn( `Q.Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } with some out of range qubit indices:`, registerIndices )
 		}
 
 
@@ -1499,7 +1490,7 @@ print(task.result().measurement_counts)`
 			//		a) allow users to control whatever they want! Just because it's not allowed in Braket 
 			//		doesn't mean they shouldn't be allowed to do it in Q! (Probably fixable by adjusting toAmazonBraket)
 			//		b) Controlling a multi_qubit gate will not treat the control icon like a control gate!
-			isControlled = registerIndices.length > 1 && gate !== Gate.SWAP && gate.can_be_controlled !== undefined
+			isControlled = registerIndices.length > 1 && gate !== Q.Gate.SWAP && gate.can_be_controlled !== undefined
 			operation = {
 
 				gate,
@@ -1543,9 +1534,9 @@ print(task.result().measurement_counts)`
 			//  Emit an event that we have set an operation
 			//  on this circuit.
 
-			misc.dispatchEventToGlobal(new CustomEvent( 
+			window.dispatchEvent( new CustomEvent( 
 
-				'Circuit.set$', { detail: { 
+				'Q.Circuit.set$', { detail: { 
 
 					circuit,
 					operation
@@ -1576,17 +1567,17 @@ print(task.result().measurement_counts)`
 		if( typeof qubitLastIndex  !== 'number' && typeof qubitRange !== 'number' ) qubitLastIndex = this.bandwidth
 		if( typeof qubitLastIndex  !== 'number' && typeof qubitRange === 'number' ) qubitLastIndex = qubitFirstIndex + qubitRange
 		else if( typeof qubitLastIndex === 'number' && typeof qubitRange !== 'number' ) qubitRange = qubitLastIndex - qubitFirstIndex
-		else return logger.error( `Circuit attempted to copy a circuit but could not understand what qubits to copy.` )
+		else return Q.error( `Q.Circuit attempted to copy a circuit but could not understand what qubits to copy.` )
 
 		if( typeof momentFirstIndex !== 'number' ) momentFirstIndex = 0
 		if( typeof momentLastIndex  !== 'number' && typeof momentRange !== 'number' ) momentLastIndex = this.timewidth
 		if( typeof momentLastIndex  !== 'number' && typeof momentRange === 'number' ) momentLastIndex = momentFirstIndex + momentRange
 		else if( typeof momentLastIndex === 'number' && typeof momentRange !== 'number' ) momentRange = momentLastIndex - momentFirstIndex
-		else return logger.error( `Circuit attempted to copy a circuit but could not understand what moments to copy.` )
+		else return Q.error( `Q.Circuit attempted to copy a circuit but could not understand what moments to copy.` )
 
-		logger.log( 0.8, 
+		Q.log( 0.8, 
 		
-			'\nCircuit copy operation:',
+			'\nQ.Circuit copy operation:',
 			'\n\n  qubitFirstIndex', qubitFirstIndex,
 			'\n  qubitLastIndex ', qubitLastIndex,
 			'\n  qubitRange     ', qubitRange,
@@ -1622,7 +1613,7 @@ print(task.result().measurement_counts)`
 
 		} = this.determineRanges( options )
 
-		const copy = new Circuit( registerRange, momentRange )
+		const copy = new Q.Circuit( registerRange, momentRange )
 
 		original.operations
 		.filter( function( operation ){
@@ -1731,7 +1722,7 @@ print(task.result().measurement_counts)`
 		if( qubitRange  !== this.bandwidth &&
 			momentRange !== this.timewidth ){
 
-			return logger.error( `Circuit attempted to splice circuit #${this.index} by an area that did not include all qubits _or_ all moments.` )
+			return Q.error( `Q.Circuit attempted to splice circuit #${this.index} by an area that did not include all qubits _or_ all moments.` )
 		}
 
 
@@ -1855,7 +1846,7 @@ print(task.result().measurement_counts)`
 	pasteInsert$: function( other, atMoment, atQubit ){
 
 		// if( other.alphandwidth !== this.bandwidth && 
-		// 	other.timewidth !== this.timewidth ) return error( 'Circuit attempted to pasteInsert Circuit A', other, 'in to circuit B', this, 'but neither their bandwidth or timewidth matches.' )
+		// 	other.timewidth !== this.timewidth ) return Q.error( 'Q.Circuit attempted to pasteInsert Circuit A', other, 'in to circuit B', this, 'but neither their bandwidth or timewidth matches.' )
 
 		
 
@@ -1936,7 +1927,8 @@ print(task.result().measurement_counts)`
 //  I offer you super short convenience methods
 //  that do NOT use the $ suffix to delcare they are destructive.
 //  Don’t shoot your foot off.
-Object.entries( Gate.constants ).forEach( function( entry ){
+
+Object.entries( Q.Gate.constants ).forEach( function( entry ){
 
 	const 
 	gateConstantName = entry[ 0 ],
@@ -1946,9 +1938,9 @@ Object.entries( Gate.constants ).forEach( function( entry ){
 		this.set$( gate, momentIndex, registerIndexOrIndices )
 		return this
 	}
-	Circuit.prototype[ gateConstantName ] = set$
-	Circuit.prototype[ gate.symbol ] = set$
-	Circuit.prototype[ gate.symbol.toLowerCase() ] = set$
+	Q.Circuit.prototype[ gateConstantName ] = set$
+	Q.Circuit.prototype[ gate.symbol ] = set$
+	Q.Circuit.prototype[ gate.symbol.toLowerCase() ] = set$
 })
 
 
@@ -1959,55 +1951,55 @@ const bells = [
 
 	//  Verbose without shortcuts.
 
-	new Circuit( 2, 2 )
+	new Q.Circuit( 2, 2 )
 		.set$( Q.Gate.HADAMARD, 1, [ 1 ])
 		.set$( Q.Gate.PAULI_X,  2, [ 1 , 2 ]),
 
-	new Circuit( 2, 2 )
+	new Q.Circuit( 2, 2 )
 		.set$( Q.Gate.HADAMARD, 1, 1 )
 		.set$( Q.Gate.PAULI_X,  2, [ 1 , 2 ]),
 
 
 	//  Uses Q.Gate.findBySymbol() to lookup gates.
 
-	new Circuit( 2, 2 )
+	new Q.Circuit( 2, 2 )
 		.set$( 'H', 1, [ 1 ])
 		.set$( 'X', 2, [ 1 , 2 ]),
 
-	new Circuit( 2, 2 )
+	new Q.Circuit( 2, 2 )
 		.set$( 'H', 1, 1 )
 		.set$( 'X', 2, [ 1 , 2 ]),
 
 
 	//  Convenience gate functions -- constant name.
 
-	new Circuit( 2, 2 )
+	new Q.Circuit( 2, 2 )
 		.HADAMARD( 1, [ 1 ])
 		.PAULI_X(  2, [ 1, 2 ]),
 
-	new Circuit( 2, 2 )
+	new Q.Circuit( 2, 2 )
 		.HADAMARD( 1, 1 )
 		.PAULI_X(  2, [ 1, 2 ]),
 
 
 	//  Convenience gate functions -- uppercase symbol.
 
-	new Circuit( 2, 2 )
+	new Q.Circuit( 2, 2 )
 		.H( 1, [ 1 ])
 		.X( 2, [ 1, 2 ]),
 
-	new Circuit( 2, 2 )
+	new Q.Circuit( 2, 2 )
 		.H( 1, 1 )
 		.X( 2, [ 1, 2 ]),
 
 
 	//  Convenience gate functions -- lowercase symbol.
 
-	new Circuit( 2, 2 )
+	new Q.Circuit( 2, 2 )
 		.h( 1, [ 1 ])
 		.x( 2, [ 1, 2 ]),
 
-	new Circuit( 2, 2 )//  Perhaps the closest to Braket style.
+	new Q.Circuit( 2, 2 )//  Perhaps the closest to Braket style.
 		.h( 1, 1 )
 		.x( 2, [ 1, 2 ]),
 
@@ -2068,13 +2060,13 @@ if( bellsAreEqual ){
 
 
 
-Circuit.createConstants(
+Q.Circuit.createConstants(
 
-	'BELL', new  Circuit.fromText(`
+	'BELL', Q`
 
 		H  X#0
 		I  X#1
-	`),	
+	`,	
 	// 'GROVER', Q`
 
 	// 	H  X  *#0  X#0  I    X#0  I    I    I    X#0  I    I    I    X#0  I  X    H  X  I  *#0
@@ -2093,5 +2085,5 @@ Circuit.createConstants(
 )
 
 
-module.exports = { Circuit }
+
 
