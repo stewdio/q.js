@@ -4,7 +4,8 @@
   "description": "",
   "main": "Q.js",
   "scripts": {
-    "test": "echo 'hello from util!'"
+    "test": "jest",
+    "prettier": "echo 'I am a prettier util!' && exit 0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

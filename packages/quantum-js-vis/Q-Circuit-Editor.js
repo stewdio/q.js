@@ -1,9 +1,8 @@
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 const {Q, Circuit, Gate, logger, misc } = require('quantum-js-util');
-
+const Window = require('window');
+if(window == undefined) var window = new Window();
 Editor = function( circuit, targetEl ){
-
-
 	//  First order of business,
 	//  we require a valid circuit.
 

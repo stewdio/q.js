@@ -4,12 +4,15 @@
   "description": "Visualization Components for Q.js",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "prettier": "echo 'I am a prettier vis!'" 
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "window": "^4.2.7"
+
   }
 }

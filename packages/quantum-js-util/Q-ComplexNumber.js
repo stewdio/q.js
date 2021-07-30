@@ -1,8 +1,9 @@
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
-const { warn, error } = require('./Logging');
+const { warn, error, help } = require('./Logging');
 const mathf = require('./Math-Functions');
-
+const misc = require('./Misc');
+const EPSILON = misc.constants.EPSILON;
 ComplexNumber = function (real, imaginary) {
   `
 	The set of “real numbers” (ℝ) contains any number that can be expressed 
