@@ -1,0 +1,21 @@
+{
+  "name": "quantum-js-util",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Q.js",
+  "scripts": {
+    "test": "jest",
+    "prettier": "echo 'I am a prettier util!' && exit 0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "eslint": "^7.31.0",
+    "jest": "^27.0.6",
+    "jsdom": "^16.6.0",
+    "prettier": "2.3.2"
+  },
+  "dependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
