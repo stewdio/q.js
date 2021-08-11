@@ -3454,7 +3454,6 @@ Gate = function( params ){
 	this.index = Gate.index ++
 	
 	if( typeof this.symbol !== 'string' ) this.symbol = '?'
-	if( typeof this.symbolAmazonBraket !== 'string' ) this.symbolAmazonBraket = this.symbol.toLowerCase()
 	const parameters = Object.assign( {}, params.parameters )
 	this.parameters = parameters
 	
