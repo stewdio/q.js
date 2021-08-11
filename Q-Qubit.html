@@ -40,20 +40,13 @@
 		<link href="assets/Q-favicon-064.png" rel="icon" type="image/png">
 		<link href="assets/Q-favicon-144.png" rel="apple-touch-icon">
 		
-		<link rel="stylesheet" href="Q/Q.css">
-		<link rel="stylesheet" href="Q/Q-Circuit-Editor.css">
+		<link rel="stylesheet" href="packages/quantum-js-vis/Q.css">
+		<link rel="stylesheet" href="packages/quantum-js-vis/Q-Circuit-Editor.css">
 		<link rel="stylesheet" href="assets/documentation.css">
 
 		<script src="https://www.googletagmanager.com/gtag/js" async></script>
 		<script src="assets/ga.js"></script>
-		<script src="Q/Q.js"></script>
-		<script src="Q/Q-ComplexNumber.js"></script>
-		<script src="Q/Q-Matrix.js"></script>
-		<script src="Q/Q-Qubit.js"></script>
-		<script src="Q/Q-Gate.js"></script>
-		<script src="Q/Q-History.js"></script>
-		<script src="Q/Q-Circuit.js"></script>
-		<script src="Q/Q-Circuit-Editor.js"></script>
+		<script src="build/bundle.js"></script>
 		<script src="assets/navigation.js"></script>
 
 		<script src="assets/Three/three.117.min.js"></script>
@@ -61,7 +54,6 @@
 		<script src="assets/MeshLine/MeshLine.js"></script>
 		<script src="assets/Tween/tween.min.js"></script>
 		<script src="assets/SurfaceText.js"></script>
-		<script src="Q/Q-BlochSphere.js"></script>
 		
 	</head>
 	<body>
@@ -1885,7 +1877,7 @@ var fox = new <a href="Q.html">Q</a>.Qubit( 1, 0 )
 
 //  Examples created in the docs:
 
-var fox = new Q.Qubit( 1, 0 )
+var fox = new Qubit( 1, 0 )
 
 
 
@@ -1958,7 +1950,7 @@ light.position.set( -3, 6, 0 )
 camera.add( light )
 scene.add( new THREE.AmbientLight( 0xFFFFFF, 0.7 ))
 
-const blochSphere = new Q.BlochSphere( function(){
+const blochSphere = new BlochSphere( function(){
 	
 	document
 	.getElementById( 'bloch-theta' )
@@ -2033,7 +2025,7 @@ selectBlochQubit  = function( qubit ){
 'HDLARV'.split( '' ).forEach( function( symbol ){
 
 	const
-	qubit = Q.Qubit.findBySymbol( symbol ),
+	qubit = Qubit.findBySymbol( symbol ),
 	qubitElement = document.createElement( 'div' ),
 	qubitGutsElement = document.createElement( 'div' )
 
@@ -2069,7 +2061,7 @@ const render = function(){
 
 blochSphere.group.rotation.x = Math.PI *  0.3
 blochSphere.group.rotation.y = Math.PI / -4
-selectBlochQubit( Q.Qubit.HORIZONTAL )
+selectBlochQubit( Qubit.HORIZONTAL )
 render()
 
 

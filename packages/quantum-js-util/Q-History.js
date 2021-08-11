@@ -1,10 +1,10 @@
 
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
+const {dispatchCustomEventToGlobal} = require('./Misc');
 
 
-
-Q.History = function( instance ){
+History = function( instance ){
 
 	this.instance = instance
 	this.entries = [[{
@@ -19,38 +19,34 @@ Q.History = function( instance ){
 
 
 
-Object.assign( Q.History.prototype, {
+Object.assign( History.prototype, {
 
 	assess: function(){
 
 		const instance = this.instance
 		if( this.index > 0 ){
 
-			window.dispatchEvent( new CustomEvent(
-
-				'Q.History undo is capable', { detail: { instance }}
-			))
+			dispatchCustomEventToGlobal(
+				'History undo is capable', { detail: { instance }}
+			);
 		}
 		else {
 
-			window.dispatchEvent( new CustomEvent(
-
-				'Q.History undo is depleted', { detail: { instance }}
-			))
+			dispatchCustomEventToGlobal(
+				'History undo is depleted', { detail: { instance }}
+			)
 		}
 		if( this.index + 1 < this.entries.length ){
 
-			window.dispatchEvent( new CustomEvent(
-
-				'Q.History redo is capable', { detail: { instance }}
-			))
+			dispatchCustomEventToGlobal(
+				'History redo is capable', { detail: { instance }}
+			)
 		}
 		else {
 
-			window.dispatchEvent( new CustomEvent(
-
-				'Q.History redo is depleted', { detail: { instance }}
-			))
+			dispatchCustomEventToGlobal(
+				'History redo is depleted', { detail: { instance }}
+			)
 		}
 		return this
 	},
@@ -192,3 +188,5 @@ Object.assign( Q.History.prototype, {
 })
 
 
+
+module.exports = { History };

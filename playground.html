@@ -40,20 +40,13 @@
 		<link href="assets/Q-favicon-064.png" rel="icon" type="image/png">
 		<link href="assets/Q-favicon-144.png" rel="apple-touch-icon">
 		
-		<link rel="stylesheet" href="Q/Q.css">
-		<link rel="stylesheet" href="Q/Q-Circuit-Editor.css">
+		<link rel="stylesheet" href="packages/quantum-js-vis/Q.css">
+		<link rel="stylesheet" href="packages/quantum-js-vis/Q-Circuit-Editor.css">
 		<link rel="stylesheet" href="assets/documentation.css">
 
 		<script src="https://www.googletagmanager.com/gtag/js" async></script>
 		<script src="assets/ga.js"></script>
-		<script src="Q/Q.js"></script>
-		<script src="Q/Q-ComplexNumber.js"></script>
-		<script src="Q/Q-Matrix.js"></script>
-		<script src="Q/Q-Qubit.js"></script>
-		<script src="Q/Q-Gate.js"></script>
-		<script src="Q/Q-History.js"></script>
-		<script src="Q/Q-Circuit.js"></script>
-		<script src="Q/Q-Circuit-Editor.js"></script>
+		<script src="build/bundle.js"></script>
 		<script src="assets/navigation.js"></script>
 
 	</head>
@@ -246,7 +239,7 @@ Array
 .from( document.querySelectorAll( '.Q-circuit-palette' ))
 .forEach( function( el ){
 
-	Q.Circuit.Editor.createPalette( el )
+	Editor.createPalette( el )
 })
 
 
@@ -291,7 +284,7 @@ function updatePlaygroundFromText(){
 		document.getElementById( 'playground-apply-button' ).setAttribute( 'disabled', 'disabled' )
 	
 		const circuit = Q( text )
-		if( circuit instanceof Q.Circuit ){//+++++  This validation appears broken!
+		if( circuit instanceof Circuit ){//+++++  This validation appears broken!
 
 			circuit.name = 'playground'
 			const domEl = document.getElementById( 'playground' )
@@ -371,7 +364,7 @@ window.addEventListener( 'DOMContentLoaded', function(){
 
 //  EVALUATION.
 
-window.addEventListener( 'Q.Circuit.evaluate began', function( event ){
+window.addEventListener( 'Circuit.evaluate began', function( event ){
 
 	console.log( 
 
@@ -379,7 +372,7 @@ window.addEventListener( 'Q.Circuit.evaluate began', function( event ){
 		event.detail.circuit.toDiagram() +'\n\n'
 	)
 })
-window.addEventListener( 'Q.Circuit.evaluate progressed', function( event ){
+window.addEventListener( 'Circuit.evaluate progressed', function( event ){
 
 	const 
 	length       = 20,
@@ -408,7 +401,7 @@ window.addEventListener( 'Q.Circuit.evaluate progressed', function( event ){
 	// console.log( 'state width', state.getWidth(), 'state height', state.getHeight() )
 	// console.log( 'state', state.toTsv() )
 })
-window.addEventListener( 'Q.Circuit.evaluate completed', function( event ){
+window.addEventListener( 'Circuit.evaluate completed', function( event ){
 
 	console.log( 
 

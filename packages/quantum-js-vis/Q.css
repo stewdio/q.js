@@ -1,6 +1,6 @@
 /*
 
-	Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
+	Copyright Â© 2019â€“2020, Stewart Smith. See LICENSE for details.
 
 */
 @charset "utf-8";
@@ -11,8 +11,8 @@
 /*
 
 	This file is in the process of being separated
-	in to “essential global Q.js styles” which will
-	remain here in Q.css, and “documentation-specific”
+	in to â€œessential global Q.js stylesâ€ which will
+	remain here in Q.css, and â€œdocumentation-specificâ€
 	styles which will be removed from here and placed
 	within the /other/documentation.css file instead.
 
@@ -319,7 +319,7 @@ svg, :root {
 
 /*
 
-	The below still need to be prefaced with “Q-”
+	The below still need to be prefaced with â€œQ-â€
 	and for the HTML pages to be updated accordingly.
 
 */
@@ -440,7 +440,7 @@ dd .maths {
 .Q-state-vector.bra::before,
 .complex-vector.bra::before {
 
-	content: '⟨';
+	content: 'âŸ¨';
 	color: #BBB;
 }
 .Q-state-vector.bra::after,
@@ -458,7 +458,7 @@ dd .maths {
 .Q-state-vector.ket::after,
 .complex-vector.ket::after {
 
-	content: '⟩';
+	content: 'âŸ©';
 	color: #BBB;
 }
 .Q-state-vector.bra + .Q-state-vector.ket::before,
@@ -466,7 +466,6 @@ dd .maths {
 
 	content: '';
 }
-
 
 
 

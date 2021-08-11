@@ -1,0 +1,21 @@
+{
+  "name": "quantum-js-vis",
+  "version": "1.0.0",
+  "description": "Visualization Components for Q.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "prettier": "echo 'I am a prettier vis!'" 
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^2.3.2",
+    "window": "^4.2.7"
+
+  },
+  "dependencies": {
+    "requirejs": "^2.3.6"
+  }
+}

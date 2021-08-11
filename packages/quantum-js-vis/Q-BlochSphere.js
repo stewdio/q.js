@@ -3,8 +3,8 @@
 
 
 
-
-Q.BlochSphere = function( onValueChange ){
+const {Qubit} = require('quantum-js-util');
+BlochSphere = function( onValueChange ){
 
 	Object.assign( this, {
 
@@ -13,8 +13,8 @@ Q.BlochSphere = function( onValueChange ){
 		radiusSafe:    1.01,
 		axesLineWidth: 0.01,
 		arcLineWidth:  0.015,
-		state:         Q.Qubit.LEFT_HAND_CIRCULAR_POLARIZED.toBlochSphere(),
-		target:        Q.Qubit.HORIZONTAL.toBlochSphere(),
+		state:         Qubit.LEFT_HAND_CIRCULAR_POLARIZED.toBlochSphere(),
+		target:        Qubit.HORIZONTAL.toBlochSphere(),
 		group:         new THREE.Group(),
 		onValueChange
 	})
@@ -28,7 +28,7 @@ Q.BlochSphere = function( onValueChange ){
 		new THREE.MeshPhongMaterial({
 
 			side: THREE.FrontSide,
-			map: Q.BlochSphere.makeSurface(),
+			map: BlochSphere.makeSurface(),
 			transparent: true,
 			opacity: 0.97
 		})
@@ -45,17 +45,17 @@ Q.BlochSphere = function( onValueChange ){
 	xAxis = new THREE.Mesh(
 
 		new THREE.BoxGeometry( this.axesLineWidth, this.axesLineWidth, this.radius * 2.5 ),
-		new THREE.MeshBasicMaterial({ color: Q.BlochSphere.xAxisColor })
+		new THREE.MeshBasicMaterial({ color: BlochSphere.xAxisColor })
 	),
 	yAxis = new THREE.Mesh(
 
 		new THREE.BoxGeometry( this.radius * 2.5, this.axesLineWidth, this.axesLineWidth ),
-		new THREE.MeshBasicMaterial({ color: Q.BlochSphere.yAxisColor })
+		new THREE.MeshBasicMaterial({ color: BlochSphere.yAxisColor })
 	),
 	zAxis = new THREE.Mesh(
 
 		new THREE.BoxGeometry( this.axesLineWidth, this.radius * 2.5, this.axesLineWidth ),
-		new THREE.MeshBasicMaterial({ color: Q.BlochSphere.zAxisColor })
+		new THREE.MeshBasicMaterial({ color: BlochSphere.zAxisColor })
 	)
 
 	this.group.add( xAxis, yAxis, zAxis )
@@ -74,7 +74,7 @@ Q.BlochSphere = function( onValueChange ){
 		new THREE.Vector3( 0, 0, 1.00 ), 
 		new THREE.Vector3( 0, 0, 1.25 ),
 		arrowLength, 
-		Q.BlochSphere.xAxisColor,//  Red
+		BlochSphere.xAxisColor,//  Red
 		arrowHeadLength, 
 		arrowHeadWidth
 	))
@@ -83,7 +83,7 @@ Q.BlochSphere = function( onValueChange ){
 		new THREE.Vector3( 1.00, 0, 0 ), 
 		new THREE.Vector3( 1.25, 0, 0 ), 
 		arrowLength, 
-		Q.BlochSphere.yAxisColor,//  Green
+		BlochSphere.yAxisColor,//  Green
 		arrowHeadLength, 
 		arrowHeadWidth
 	))
@@ -92,7 +92,7 @@ Q.BlochSphere = function( onValueChange ){
 		new THREE.Vector3( 0, 1.00, 0 ), 
 		new THREE.Vector3( 0, 1.25, 0 ), 
 		arrowLength, 
-		Q.BlochSphere.zAxisColor,//  Blue
+		BlochSphere.zAxisColor,//  Blue
 		arrowHeadLength, 
 		arrowHeadWidth
 	))
@@ -105,7 +105,7 @@ Q.BlochSphere = function( onValueChange ){
 
 		width:  128,
 		height: 128,
-		fillStyle: Q.BlochSphere.vectorColor,//'#505962',
+		fillStyle: BlochSphere.vectorColor,//'#505962',
 		font: 'bold italic 64px Georgia, "Times New Roman", serif'
 	},
 	xAxisLabel = new THREE.Sprite( 
@@ -156,7 +156,7 @@ Q.BlochSphere = function( onValueChange ){
 	this.blochVector = new THREE.Mesh(
 
 		new THREE.BoxGeometry( 0.04, 0.04, this.radius ),
-		new THREE.MeshBasicMaterial({ color: Q.BlochSphere.vectorColor })
+		new THREE.MeshBasicMaterial({ color: BlochSphere.vectorColor })
 	)
 	this.blochVector.geometry.translate( 0, 0, 0.5 )
 	this.group.add( this.blochVector )
@@ -169,7 +169,7 @@ Q.BlochSphere = function( onValueChange ){
 	this.blochPointer = new THREE.Mesh(
 
 		new THREE.CylinderBufferGeometry( 0, 0.5, 1, 32, 1 ),
-		new THREE.MeshPhongMaterial({ color: Q.BlochSphere.vectorColor })
+		new THREE.MeshPhongMaterial({ color: BlochSphere.vectorColor })
 	)
 	this.blochPointer.geometry.translate( 0, -0.5, 0 )
 	this.blochPointer.geometry.rotateX( Math.PI / 2 )
@@ -185,11 +185,11 @@ Q.BlochSphere = function( onValueChange ){
 	const
 	arcR = this.radiusSafe * Math.sin( Math.PI / 2 ),
 	arcH = this.radiusSafe * Math.cos( Math.PI / 2 ),
-	thetaGeometry = Q.BlochSphere.createLatitudeArc( arcR, 128, Math.PI / 2, Math.PI * 2 ),
+	thetaGeometry = BlochSphere.createLatitudeArc( arcR, 128, Math.PI / 2, Math.PI * 2 ),
 	thetaLine = new MeshLine(),
 	thetaPhiMaterial = new MeshLineMaterial({
 
-		color: Q.BlochSphere.thetaPhiColor,//0x505962,
+		color: BlochSphere.thetaPhiColor,//0x505962,
 		lineWidth: this.arcLineWidth * 3,
 		sizeAttenuation: true
 	})
@@ -210,7 +210,7 @@ Q.BlochSphere = function( onValueChange ){
 	//  Create the Phi arc that will draw from the north pole
 	//  down to wherever the Theta arc rests.
 
-	this.phiGeometry = Q.BlochSphere.createLongitudeArc( this.radiusSafe, 64, 0, Math.PI * 2 ),
+	this.phiGeometry = BlochSphere.createLongitudeArc( this.radiusSafe, 64, 0, Math.PI * 2 ),
 	this.phiLine = new MeshLine()
 	this.phiLine.setGeometry( this.phiGeometry )
 	this.phiMesh = new THREE.Mesh( 
@@ -225,7 +225,7 @@ Q.BlochSphere = function( onValueChange ){
 
 	//  Time to put plans to action.
 
-	Q.BlochSphere.prototype.setTargetState.call( this )
+	BlochSphere.prototype.setTargetState.call( this )
 }
 
 
@@ -240,7 +240,7 @@ Q.BlochSphere = function( onValueChange ){
 ////////////////
 
 
-Object.assign( Q.BlochSphere, {
+Object.assign( BlochSphere, {
 
 	xAxisColor:    0x333333,//  Was 0xCF1717 (red)
 	yAxisColor:    0x333333,//  Was 0x59A112 (green)
@@ -402,7 +402,7 @@ Object.assign( Q.BlochSphere, {
 			let 
 			phiDelta = phiLength / longitudeLinesTotal, 
 			phi = phiStart, 
-			arc = Q.BlochSphere.createLongitudeArc( radius, longitudeLineSegments, thetaStart + Math.PI / 2, thetaLength ); 
+			arc = BlochSphere.createLongitudeArc( radius, longitudeLineSegments, thetaStart + Math.PI / 2, thetaLength ); 
 			phi < phiStart + phiLength + phiDelta; 
 			phi += phiDelta ){
 		
@@ -428,7 +428,7 @@ Object.assign( Q.BlochSphere, {
 			const
 			arcR = radius * Math.sin( theta ),
 			arcH = radius * Math.cos( theta ),
-			geometry = Q.BlochSphere.createLatitudeArc( arcR, latitudeLineSegments, phiStart, phiLength )
+			geometry = BlochSphere.createLatitudeArc( arcR, latitudeLineSegments, phiStart, phiLength )
 		
 			geometry.rotateX( Math.PI / 2 )
 			geometry.rotateY( Math.PI / 2 )
@@ -453,7 +453,7 @@ Object.assign( Q.BlochSphere, {
 ///////////////
 
 
-Object.assign( Q.BlochSphere.prototype, {
+Object.assign( BlochSphere.prototype, {
 
 	update: function(){
 
@@ -461,7 +461,7 @@ Object.assign( Q.BlochSphere.prototype, {
 	},
 	setTargetState: function( target ){
 		
-		if( target === undefined ) target = Q.Qubit.HORIZONTAL.toBlochSphere()
+		if( target === undefined ) target = Qubit.HORIZONTAL.toBlochSphere()
 
 
 		//  Always take the shortest path around
@@ -576,7 +576,7 @@ Object.assign( Q.BlochSphere.prototype, {
 
 
 
-
+module.exports = {BlochSphere}
 
 
 

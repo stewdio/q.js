@@ -40,20 +40,13 @@
 		<link href="assets/Q-favicon-064.png" rel="icon" type="image/png">
 		<link href="assets/Q-favicon-144.png" rel="apple-touch-icon">
 		
-		<link rel="stylesheet" href="Q/Q.css">
-		<link rel="stylesheet" href="Q/Q-Circuit-Editor.css">
+		<link rel="stylesheet" href="packages/quantum-js-vis/Q.css">
+		<link rel="stylesheet" href="packages/quantum-js-vis/Q-Circuit-Editor.css">
 		<link rel="stylesheet" href="assets/documentation.css">
 
 		<script src="https://www.googletagmanager.com/gtag/js" async></script>
 		<script src="assets/ga.js"></script>
-		<script src="Q/Q.js"></script>
-		<script src="Q/Q-ComplexNumber.js"></script>
-		<script src="Q/Q-Matrix.js"></script>
-		<script src="Q/Q-Qubit.js"></script>
-		<script src="Q/Q-Gate.js"></script>
-		<script src="Q/Q-History.js"></script>
-		<script src="Q/Q-Circuit.js"></script>
-		<script src="Q/Q-Circuit-Editor.js"></script>
+		<script src="build/bundle.js"></script>
 		<script src="assets/navigation.js"></script>
 		
 	</head>
@@ -1250,7 +1243,7 @@ new <a href="Q.html">Q</a>.Matrix(
 
 //  First, what do the docs have to say?
 
-// console.log( '\n\nQ.Matrix\n\n', Q.Matrix.help(), '\n\n' )
+// console.log( '\n\nMatrix\n\n', Matrix.help(), '\n\n' )
 
 
 //  We’re going to use `var` here instead of `let` or `const`
@@ -1258,7 +1251,7 @@ new <a href="Q.html">Q</a>.Matrix(
 
 
 
-var a = new Q.Matrix(  
+var a = new Matrix(  
 
 	[ 1, 2, 3 ],  
 	[ 4, 5, 6 ]
@@ -1283,22 +1276,22 @@ console.log( 'Matrix A ⊗ Matrix B =', matrixA.multiplyTensor( matrixB ).toTsv(
 
 
 /*
-console.log( '\n\nQ.Matrix\n', Q.extractDocumentation( Q.Matrix ), '\n\n' )
-console.log( '\n\nQ.Matrix.prototype.multiply\n', Q.extractDocumentation( Q.Matrix.prototype.multiply ), '\n\n' )
+console.log( '\n\nMatrix\n', Q.extractDocumentation( Matrix ), '\n\n' )
+console.log( '\n\nMatrix.prototype.multiply\n', Q.extractDocumentation( Matrix.prototype.multiply ), '\n\n' )
 
 
-console.log( 'Q.Matrix.IDENTITY_2X2', Q.Matrix.IDENTITY_2X2 )
-console.log( 'Q.Matrix.IDENTITY_3X3', Q.Matrix.IDENTITY_3X3 )
-console.log( 'Q.Matrix.IDENTITY_4X4', Q.Matrix.IDENTITY_4X4 )
+console.log( 'Matrix.IDENTITY_2X2', Matrix.IDENTITY_2X2 )
+console.log( 'Matrix.IDENTITY_3X3', Matrix.IDENTITY_3X3 )
+console.log( 'Matrix.IDENTITY_4X4', Matrix.IDENTITY_4X4 )
 
 
-console.log( 'Q.Matrix.CNOT', Q.Matrix.CNOT )
-console.log( '\nQ.Matrix.CNOT.toHtml()', Q.Matrix.CNOT.toHTML(), '\n\n' )
-console.log( '\nQ.Matrix.TEST_MAP_9X9.toCSV()', Q.Matrix.TEST_MAP_9X9.toCSV(), '\n\n' )
-console.log( '\nQ.Matrix.TEST_MAP_9X9.toTsv()', Q.Matrix.TEST_MAP_9X9.toTsv(), '\n\n' )
+console.log( 'Matrix.CNOT', Matrix.CNOT )
+console.log( '\nMatrix.CNOT.toHtml()', Matrix.CNOT.toHTML(), '\n\n' )
+console.log( '\nMatrix.TEST_MAP_9X9.toCSV()', Matrix.TEST_MAP_9X9.toCSV(), '\n\n' )
+console.log( '\nMatrix.TEST_MAP_9X9.toTsv()', Matrix.TEST_MAP_9X9.toTsv(), '\n\n' )
 
 
-console.log( 'How many matrices have we created?', Q.Matrix.index )
+console.log( 'How many matrices have we created?', Matrix.index )
 */
 
 
@@ -1357,8 +1350,8 @@ var threes = new <a href="Q.html">Q</a>.Matrix(
 	[ 3, 3, 3 ])
 
 
-console.log( 'Q.Matrix.IDENTITY_2X2.multiply( e ).toTsv()', Q.Matrix.IDENTITY_2X2.multiply( e ))
-console.log( 'Q.Matrix.IDENTITY_3X3.multiply( c ).toTsv()', Q.Matrix.IDENTITY_3X3.multiply( c ))
+console.log( 'Matrix.IDENTITY_2X2.multiply( e ).toTsv()', Matrix.IDENTITY_2X2.multiply( e ))
+console.log( 'Matrix.IDENTITY_3X3.multiply( c ).toTsv()', Matrix.IDENTITY_3X3.multiply( c ))
 */
 
 
@@ -1383,14 +1376,14 @@ var b = new <a href="Q.html">Q</a>.Matrix(
 
 //  Import and export formats.
 
-var csv = Q.Matrix.fromCsv(`
+var csv = Matrix.fromCsv(`
 	1, 2, 3
 	4, 5, 6
 	7, 8, 9`)
 // console.log( 'Matrix from CSV', csv.toTsv(), '\n\n' )
 
 
-var tsv = Q.Matrix.fromTsv(`1	2	3
+var tsv = Matrix.fromTsv(`1	2	3
 4	5	6
 7	8	9`)
 // console.log( 'Matrix from TSV', tsv.toTsv(), '\n\n' )
@@ -1415,7 +1408,7 @@ var html = `
 	</tr>
 </table> `
 
-// console.log( 'Matrix from HTML', Q.Matrix.fromHtml( html ).toTsv(), '\n\n' )
+// console.log( 'Matrix from HTML', Matrix.fromHtml( html ).toTsv(), '\n\n' )
 
 
 
