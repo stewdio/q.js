@@ -8170,10 +8170,12 @@ braket = function(){
 		circuit = new Q( args[0], args[1] )
 	}
 	container = document.createElement( 'div' )
-	container.appendChild( Editor.createPalette() )
+	let paletteEl = Editor.createPalette();
+	paletteEl.style.width = "50%";
+	container.appendChild( paletteEl );
 	container.appendChild( circuit.toDom() )
 	element.html( container )
-	document.querySelectorAll('.Q-circuit-palette').forEach( paletteEl => paletteEl.style.width = "50%") 
+
 
 	//  Weâ€™re going to take this SLOOOOOOOOWLY
 	//  because there are many potential things to debug.
