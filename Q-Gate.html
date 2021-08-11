@@ -40,20 +40,13 @@
 		<link href="assets/Q-favicon-064.png" rel="icon" type="image/png">
 		<link href="assets/Q-favicon-144.png" rel="apple-touch-icon">
 		
-		<link rel="stylesheet" href="Q/Q.css">
-		<link rel="stylesheet" href="Q/Q-Circuit-Editor.css">
+		<link rel="stylesheet" href="packages/quantum-js-vis/Q.css">
+		<link rel="stylesheet" href="packages/quantum-js-vis/Q-Circuit-Editor.css">
 		<link rel="stylesheet" href="assets/documentation.css">
 
 		<script src="https://www.googletagmanager.com/gtag/js" async></script>
 		<script src="assets/ga.js"></script>
-		<script src="Q/Q.js"></script>
-		<script src="Q/Q-ComplexNumber.js"></script>
-		<script src="Q/Q-Matrix.js"></script>
-		<script src="Q/Q-Qubit.js"></script>
-		<script src="Q/Q-Gate.js"></script>
-		<script src="Q/Q-History.js"></script>
-		<script src="Q/Q-Circuit.js"></script>
-		<script src="Q/Q-Circuit-Editor.js"></script>
+		<script src="build/bundle.js"></script>
 		<script src="assets/navigation.js"></script>
 		
 	</head>
@@ -1265,18 +1258,18 @@ new <a href="Q.html">Q</a>.Gate({
 
 
 
-var gup = new Q.Gate({
+var gup = new Gate({
 
 	symbol:  'G',
 	name:    'Gup',
 	nameCss: 'gup',
-	matrix: Q.Gate.PAULI_X.matrix
+	matrix: Gate.PAULI_X.matrix
 })
 
 
 
 
-var fox = Q.Gate.PHASE.clone({ symbol: 'F', phi: Math.PI })
+var fox = Gate.PHASE.clone({ symbol: 'F', phi: Math.PI })
 
 
 

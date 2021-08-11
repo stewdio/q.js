@@ -40,20 +40,13 @@
 		<link href="assets/Q-favicon-064.png" rel="icon" type="image/png">
 		<link href="assets/Q-favicon-144.png" rel="apple-touch-icon">
 		
-		<link rel="stylesheet" href="Q/Q.css">
-		<link rel="stylesheet" href="Q/Q-Circuit-Editor.css">
+		<link rel="stylesheet" href="packages/quantum-js-vis/Q.css">
+		<link rel="stylesheet" href="packages/quantum-js-vis/Q-Circuit-Editor.css">
 		<link rel="stylesheet" href="assets/documentation.css">
 
 		<script src="https://www.googletagmanager.com/gtag/js" async></script>
 		<script src="assets/ga.js"></script>
-		<script src="Q/Q.js"></script>
-		<script src="Q/Q-ComplexNumber.js"></script>
-		<script src="Q/Q-Matrix.js"></script>
-		<script src="Q/Q-Qubit.js"></script>
-		<script src="Q/Q-Gate.js"></script>
-		<script src="Q/Q-History.js"></script>
-		<script src="Q/Q-Circuit.js"></script>
-		<script src="Q/Q-Circuit-Editor.js"></script>
+		<script src="build/bundle.js"></script>
 		<script src="assets/navigation.js"></script>
 	
 	</head>
@@ -585,7 +578,7 @@ window.addEventListener( 'Q.Circuit.evaluate progressed', function( event ){
 	// console.log( 'state width', state.getWidth(), 'state height', state.getHeight() )
 	// console.log( 'state', state.toTsv() )
 })
-window.addEventListener( 'Q.Circuit.evaluate completed', function( event ){
+window.addEventListener( 'Circuit.evaluate completed', function( event ){
 
 	const circuit = event.detail.circuit
 	console.log( 
@@ -624,7 +617,7 @@ console.log( '\n\n\nNow try navigating to the other topic pages to learn more an
 
 //  Demonstrate Q’s random naming feature.
 
-const circuitNameRandom = Q.getRandomName$()
+const circuitNameRandom = misc.getRandomName$()
 
 Array
 .from( document.querySelectorAll( '.circuit-name-random' ))
@@ -639,8 +632,8 @@ Array
 //  so wee can begin playing with them straight away.
 
 var 
-cat = new Q.ComplexNumber( 1,  2 ),
-dog = new Q.ComplexNumber( 3, -4 )
+cat = new ComplexNumber( 1,  2 ),
+dog = new ComplexNumber( 3, -4 )
 
 
 
@@ -661,7 +654,7 @@ Array
 .from( document.querySelectorAll( '.Q-circuit-palette' ))
 .forEach( function( el ){
 
-	Q.Circuit.Editor.createPalette( el )
+	Editor.createPalette( el )
 })
 
 
