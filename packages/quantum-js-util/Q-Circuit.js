@@ -425,13 +425,13 @@ Object.assign( Circuit, {
 
 		// console.log( circuit.toDiagram() )
 
-		misc.dispatchEventToGlobal(new CustomEvent( 
+		misc.dispatchCustomEventToGlobal(
 
 			'Circuit.evaluate began', { 
 
 				detail: { circuit }
 			}
-		))
+		);
 
 
 		//  Our circuit’s operations must be in the correct order
@@ -541,7 +541,7 @@ Object.assign( Circuit, {
 			const progress = operationsCompleted / operationsTotal
 
 
-			misc.dispatchEventToGlobal(new CustomEvent( 'Circuit.evaluate progressed', { detail: {
+			misc.dispatchCustomEventToGlobal('Circuit.evaluate progressed', { detail: {
 
 				circuit,
 				progress,
@@ -552,7 +552,7 @@ Object.assign( Circuit, {
 				gate: operation.gate.name,
 				state
 
-			}}))
+			}})
 
 
 			// console.log( `\n\nProgress ... ${ Math.round( operationsCompleted / operationsTotal * 100 )}%`)
@@ -591,13 +591,13 @@ Object.assign( Circuit, {
 
 
 
-		misc.dispatchEventToGlobal(new CustomEvent( 'Circuit.evaluate completed', { detail: {
+		misc.dispatchCustomEventToGlobal('Circuit.evaluate completed', { detail: {
 		// circuit.dispatchEvent( new CustomEvent( 'evaluation complete', { detail: {
 
 			circuit,
 			results: outcomes
 
-		}}))
+		}})
 
 
 
@@ -1388,7 +1388,7 @@ print(task.result().measurement_counts)`
 
 			foundOperations.forEach( function( operation ){
 
-				misc.dispatchEventToGlobal(new CustomEvent( 
+				misc.dispatchCustomEventToGlobal(
 
 					'Circuit.clear$', { detail: { 
 
@@ -1396,7 +1396,7 @@ print(task.result().measurement_counts)`
 						momentIndex,
 						registerIndices: operation.registerIndices
 					}}
-				))
+				)
 			})
 		}
 
@@ -1545,14 +1545,14 @@ print(task.result().measurement_counts)`
 			//  Emit an event that we have set an operation
 			//  on this circuit.
 
-			misc.dispatchEventToGlobal(new CustomEvent( 
+			misc.dispatchCustomEventToGlobal(
 
 				'Circuit.set$', { detail: { 
 
 					circuit,
 					operation
 				}}
-			))
+			)
 		}
 		return circuit
 	},
