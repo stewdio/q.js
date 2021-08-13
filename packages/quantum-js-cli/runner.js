@@ -9,10 +9,10 @@ function prepareCircuit() {
     console.clear();
     let circuit;
     while(!selection) {
-        console.log("Please select a method to begin circuit creation: ");
+        //the following prompt requires the user to select between a number of options to create a circuit. they will enter the NUMBER that corresponds with the action they'd like.
+        console.log("Please select a method (number value) to begin circuit creation: ");
         console.log("1. From Scratch\n" + 
-                    "2. From Text Diagram\n"
-                    /*+ "3. From Table Transposed\n"*/);
+                    "2. From Text Diagram\n");
         selection = Number(prompt(mark));
         switch(selection) {
             case 1:
