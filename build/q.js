@@ -1,15 +1,10 @@
 
-//  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
-
-
-
-
+//  Copyright Â© 2019â€“2020, Stewart Smith. See LICENSE for details.
 const Q = function(){
 
 
 	//  Did we send arguments of the form
 	//  ( bandwidth, timewidth )?
-
 	if( arguments.length === 2 &&
 		Array.from( arguments ).every( function( argument ){
 
@@ -68,7 +63,7 @@ Object.assign( Q, {
 		function countPrefixTabs( text ){
 		
 
-			//  Is counting tabs “manually” 
+			//  Is counting tabs â€œmanuallyâ€ 
 			//  actually more performant than regex?
 
 			let count = index = 0
@@ -79,7 +74,7 @@ Object.assign( Q, {
 
 		//-------------------  TO DO!
 		//  we should check that there is ONLY whitespace between the function opening and the tick mark!
-		//  otherwise it’s not documentation.
+		//  otherwise itâ€™s not documentation.
 		
 		let
 		tabs  = Number.MAX_SAFE_INTEGER
@@ -284,11 +279,11 @@ Q.createConstants(
 	'REVISION', 19,
 
 
-	//  Yeah... F’ing floating point numbers, Man!
-	//  Here’s the issue:
+	//  Yeah... Fâ€™ing floating point numbers, Man!
+	//  Hereâ€™s the issue:
 	//  var a = new Q.ComplexNumber( 1, 2 )
 	//  a.multiply(a).isEqualTo( a.power( new Q.ComplexNumber( 2, 0 )))
-	//  That’s only true if Q.EPSILON >= Number.EPSILON * 6
+	//  Thatâ€™s only true if Q.EPSILON >= Number.EPSILON * 6
 	
 	'EPSILON', Number.EPSILON * 6,
 
@@ -506,7 +501,7 @@ Q.createConstants(
 		'Turkey',
 		'Turtle',
 		//  U
-		'Vicuña',
+		'VicuÃ±a',
 		'Viper',
 		'Vulture',
 		'Wallaby',
@@ -622,7 +617,7 @@ https://quantumjavascript.app
 
 
 
-//  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
+//  Copyright Â© 2019â€“2020, Stewart Smith. See LICENSE for details.
 
 
 
@@ -630,28 +625,28 @@ https://quantumjavascript.app
 Q.ComplexNumber = function( real, imaginary ){
 
 	`
-	The set of “real numbers” (ℝ) contains any number that can be expressed 
+	The set of â€œreal numbersâ€ (â„) contains any number that can be expressed 
 	along an infinite timeline. https://en.wikipedia.org/wiki/Real_number  
 
-	  …  -3  -2  -1   0  +1  +2  +3   …  
-	  ┄───┴───┴───┴───┴───┴─┬─┴──┬┴┬──┄  
-	                       √2    𝒆 π  
+	  â€¦  -3  -2  -1   0  +1  +2  +3   â€¦  
+	  â”„â”€â”€â”€â”´â”€â”€â”€â”´â”€â”€â”€â”´â”€â”€â”€â”´â”€â”€â”€â”´â”€â”¬â”€â”´â”€â”€â”¬â”´â”¬â”€â”€â”„  
+	                       âˆš2    ð’† Ï€  
 
 
-	Meanwhile, “imaginary numbers” (𝕀) consist of a real (ℝ) multiplier and 
-	the symbol 𝒊, which is the impossible solution to the equation 𝒙² = −1. 
+	Meanwhile, â€œimaginary numbersâ€ (ð•€) consist of a real (â„) multiplier and 
+	the symbol ð’Š, which is the impossible solution to the equation ð’™Â² = âˆ’1. 
 	Note that no number when multiplied by itself can ever result in a 
-	negative product, but the concept of 𝒊 gives us a way to reason around 
+	negative product, but the concept of ð’Š gives us a way to reason around 
 	this imaginary scenario nonetheless. 
 	https://en.wikipedia.org/wiki/Imaginary_number  
 
-	  …  -3𝒊 -2𝒊  -1𝒊  0𝒊  +1𝒊 +2𝒊 +3𝒊  …  
-	  ┄───┴───┴───┴───┴───┴───┴───┴───┄  
+	  â€¦  -3ð’Š -2ð’Š  -1ð’Š  0ð’Š  +1ð’Š +2ð’Š +3ð’Š  â€¦  
+	  â”„â”€â”€â”€â”´â”€â”€â”€â”´â”€â”€â”€â”´â”€â”€â”€â”´â”€â”€â”€â”´â”€â”€â”€â”´â”€â”€â”€â”´â”€â”€â”€â”„  
 
 
-	A “complex number“ (ℂ) is a number that can be expressed in the form 
-	𝒂 + 𝒃𝒊, where 𝒂 is the real component (ℝ) and 𝒃𝒊 is the imaginary 
-	component (𝕀). https://en.wikipedia.org/wiki/Complex_number  
+	A â€œcomplex numberâ€œ (â„‚) is a number that can be expressed in the form 
+	ð’‚ + ð’ƒð’Š, where ð’‚ is the real component (â„) and ð’ƒð’Š is the imaginary 
+	component (ð•€). https://en.wikipedia.org/wiki/Complex_number  
 
 
 	Operation functions on Q.ComplexNumber instances generally accept as 
@@ -664,7 +659,7 @@ Q.ComplexNumber = function( real, imaginary ){
 
 		imaginary = real.imaginary
 		real = real.real
-		Q.warn( 'Q.ComplexNumber tried to create a new instance with an argument that is already a Q.ComplexNumber — and that’s weird!' )
+		Q.warn( 'Q.ComplexNumber tried to create a new instance with an argument that is already a Q.ComplexNumber â€” and thatâ€™s weird!' )
 	}
 	else if( real === undefined ) real = 0
 	if( imaginary === undefined ) imaginary = 0
@@ -687,6 +682,82 @@ Object.assign( Q.ComplexNumber, {
 	constants: {},
 	createConstant: Q.createConstant,
 	createConstants: Q.createConstants,
+
+
+
+
+	toText: function( rNumber, iNumber, roundToDecimal, padPositive ){
+
+		//  Should we round these numbers?
+		//  Our default is yes: to 3 digits.
+		//  Otherwise round to specified decimal.
+
+		if( typeof roundToDecimal !== 'number' ) roundToDecimal = 3
+		const factor = Math.pow( 10, roundToDecimal )
+		rNumber = Math.round( rNumber * factor ) / factor
+		iNumber = Math.round( iNumber * factor ) / factor
+
+
+		//  Convert padPositive 
+		//  from a potential Boolean
+		//  to a String.
+		//  If we donâ€™t receive a FALSE
+		//  then weâ€™ll pad the positive numbers.
+
+		padPositive = padPositive === false ? '' : ' '
+
+
+		//  We need the absolute values of each.
+
+		let
+		rAbsolute = Math.abs( rNumber ),
+		iAbsolute = Math.abs( iNumber )
+
+
+		//  And an absolute value string.
+
+		let
+		rText = rAbsolute.toString(),
+		iText = iAbsolute.toString()
+
+
+		//  Is this an IMAGINARY-ONLY number?
+		//  Donâ€™t worry: -0 === 0.
+
+		if( rNumber === 0 ){
+
+			if( iNumber ===  Infinity ) return padPositive +'âˆži'
+			if( iNumber === -Infinity ) return '-âˆži'
+			if( iNumber ===  0 ) return padPositive +'0'
+			if( iNumber === -1 ) return '-i'
+			if( iNumber ===  1 ) return padPositive +'i'
+			if( iNumber >=   0 ) return padPositive + iText +'i'
+			if( iNumber <    0 ) return '-'+ iText +'i'
+			return iText +'i'//  NaN
+		}
+		
+
+		//  This number contains a real component
+		//  and may also contain an imaginary one as well.
+
+		if( rNumber ===  Infinity ) rText = padPositive +'âˆž'
+		else if( rNumber === -Infinity ) rText = '-âˆž'
+		else if( rNumber >= 0 ) rText = padPositive + rText
+		else if( rNumber <  0 ) rText = '-'+ rText
+
+		if( iNumber ===  Infinity ) return rText +' + âˆži'
+		if( iNumber === -Infinity ) return rText +' - âˆži'
+		if( iNumber ===  0 ) return rText
+		if( iNumber === -1 ) return rText +' - i'
+		if( iNumber ===  1 ) return rText +' + i'
+		if( iNumber >    0 ) return rText +' + '+ iText +'i'
+		if( iNumber <    0 ) return rText +' - '+ iText +'i'
+		return rText +' + '+ iText +'i'//  NaN
+	},
+
+
+
+
 	isNumberLike: function( n ){
 
 		return isNaN( n ) === false && ( typeof n === 'number' || n instanceof Number )
@@ -743,6 +814,7 @@ Object.assign( Q.ComplexNumber, {
 			}
 		)
 	},
+
 
 
 
@@ -875,7 +947,7 @@ Object.assign( Q.ComplexNumber, {
 
 
 		//  If our exponent is Real (has no Imaginary component)
-		//  then we’re really just raising to a power.
+		//  then weâ€™re really just raising to a power.
 		
 		if( b.imaginary === 0 ){
 
@@ -987,7 +1059,7 @@ Object.assign( Q.ComplexNumber, {
 				firsts = a.real * b.real,
 				outers = a.real * b.imaginary,
 				inners = a.imaginary * b.real,				
-				lasts  = a.imaginary * b.imaginary * -1//  Because i² = -1.
+				lasts  = a.imaginary * b.imaginary * -1//  Because iÂ² = -1.
 				
 				return new Q.ComplexNumber( 
 
@@ -1021,7 +1093,7 @@ Object.assign( Q.ComplexNumber, {
 			function( a, b ){
 
 
-				//  Ermergerd I had to look this up because it’s been so long.
+				//  Ermergerd I had to look this up because itâ€™s been so long.
 				//  https://www.khanacademy.org/math/precalculus/imaginary-and-complex-numbers/complex-conjugates-and-dividing-complex-numbers/a/dividing-complex-numbers-review
 
 				const 
@@ -1145,6 +1217,13 @@ Object.assign( Q.ComplexNumber.prototype, {
 		if( this.imaginary === 0 ) return this.real
 		return this
 	},
+	toText: function( roundToDecimal, padPositive ){
+
+
+		//  Note: this will kill function chaining.
+
+		return Q.ComplexNumber.toText( this.real, this.imaginary, roundToDecimal, padPositive )
+	},
 
 
 	isNaN: function( n ){
@@ -1209,84 +1288,6 @@ Object.assign( Q.ComplexNumber.prototype, {
 	},
 
 
-	toText: function( roundToDecimal, padPositive ){
-
-
-		//  Convert padPositive 
-		//  from a potential Boolean
-		//  to a String.
-		//  If we don’t receive a FALSE
-		//  then we’ll pad the positive numbers.
-
-		padPositive = padPositive === false ? '' : ' '
-
-
-		//  Right. Let’s copy over the actual numbers.
-
-		let
-		rNumber = this.real,
-		iNumber = this.imaginary
-
-
-		//  Should we round these numbers?
-		//  Our default is yes: to 3 digits.
-		//  Otherwise round to specified decimal.
-
-		if( typeof roundToDecimal !== 'number' ) roundToDecimal = 3
-		const factor = Math.pow( 10, roundToDecimal )
-		rNumber = Math.round( rNumber * factor ) / factor
-		iNumber = Math.round( iNumber * factor ) / factor
-
-
-		//  We need the absolute values of each.
-
-		let
-		rAbsolute = Math.abs( rNumber ),
-		iAbsolute = Math.abs( iNumber )
-
-
-		//  And an absolute value string.
-
-		let
-		rText = rAbsolute.toString(),
-		iText = iAbsolute.toString()
-
-
-		//  Is this an IMAGINARY-ONLY number?
-		//  Don’t worry: -0 === 0.
-
-		if( rNumber === 0 ){
-
-			if( iNumber ===  Infinity ) return padPositive +'∞i'
-			if( iNumber === -Infinity ) return '-∞i'
-			if( iNumber ===  0 ) return padPositive +'0'
-			if( iNumber === -1 ) return '-i'
-			if( iNumber ===  1 ) return padPositive +'i'
-			if( iNumber >=   0 ) return padPositive + iText +'i'
-			if( iNumber <    0 ) return '-'+ iText +'i'
-			return iText +'i'//  NaN
-		}
-		
-
-		//  This number contains a real component
-		//  and may also contain an imaginary one as well.
-
-		if( rNumber ===  Infinity ) rText = padPositive +'∞'
-		else if( rNumber === -Infinity ) rText = '-∞'
-		else if( rNumber >= 0 ) rText = padPositive + rText
-		else if( rNumber <  0 ) rText = '-'+ rText
-
-		if( iNumber ===  Infinity ) return rText +' + ∞i'
-		if( iNumber === -Infinity ) return rText +' - ∞i'
-		if( iNumber ===  0 ) return rText
-		if( iNumber === -1 ) return rText +' - i'
-		if( iNumber ===  1 ) return rText +' + i'
-		if( iNumber >    0 ) return rText +' + '+ iText +'i'
-		if( iNumber <    0 ) return rText +' - '+ iText +'i'
-		return rText +' + '+ iText +'i'//  NaN
-	},
-
-
 
 
 	//  DESTRUCTIVE operations.
@@ -1337,7 +1338,7 @@ Object.assign( Q.ComplexNumber.prototype, {
 
 
 
-//  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
+//  Copyright Â© 2019â€“2020, Stewart Smith. See LICENSE for details.
 
 
 
@@ -1345,7 +1346,7 @@ Object.assign( Q.ComplexNumber.prototype, {
 Q.Matrix = function(){
 
 
-	//  We’re keeping track of how many matrices are
+	//  Weâ€™re keeping track of how many matrices are
 	//  actually being generated. Just curiosity.
 
 	this.index = Q.Matrix.index ++
@@ -1379,10 +1380,10 @@ Q.Matrix = function(){
 	}
 	else {
 
-		//  Matrices’ primary organization is by rows,
+		//  Matricesâ€™ primary organization is by rows,
 		//  which is more congruent with our written langauge;
 		//  primarily organizated by horizontally juxtaposed glyphs.
-		//  That means it’s easier to write an instance invocation in code
+		//  That means itâ€™s easier to write an instance invocation in code
 		//  and easier to read when inspecting properties in the console.
 
 		let matrixWidthIsBroken = false
@@ -1413,7 +1414,7 @@ Q.Matrix = function(){
 		for( let y = 0; y < this.rows.length; y ++ ){
 
 
-			//  Since we’re combing through here
+			//  Since weâ€™re combing through here
 			//  this is a good time to convert Number to ComplexNumber!
 
 			const value = matrix.rows[ y ][ x ]
@@ -1547,7 +1548,7 @@ Object.assign( Q.Matrix, {
 		const f = Q.Matrix[ 'from'+ format ]
 		format = format.toLowerCase()
 		if( typeof f !== 'function' )
-			return Q.error( `Q.Matrix could not find an importer for “${format}” data.` )
+			return Q.error( `Q.Matrix could not find an importer for â€œ${format}â€ data.` )
 		return f
 	},
 	fromArray: function( array ){
@@ -1999,16 +2000,16 @@ Q.Matrix.createConstants(
 
 
 
-//  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
+//  Copyright Â© 2019â€“2020, Stewart Smith. See LICENSE for details.
 
 
 
 
-Q.Qubit = function( a, b, label, name ){
+Q.Qubit = function( a, b, symbol, name ){
 	
 
-	//  If we’ve received an instance of Q.Matrix as our first argument
-	//  then we’ll assume there are no further arguments
+	//  If weâ€™ve received an instance of Q.Matrix as our first argument
+	//  then weâ€™ll assume there are no further arguments
 	//  and just use that matrix as our new Q.Qubit instance.
 
 	if( Q.Matrix.isMatrixLike( a ) && b === undefined ){
@@ -2021,14 +2022,14 @@ Q.Qubit = function( a, b, label, name ){
 
 		//  All of our internal math now uses complex numbers
 		//  rather than Number literals
-		//  so we’d better convert!
+		//  so weâ€™d better convert!
 
 		if( typeof a === 'number' ) a = new Q.ComplexNumber( a, 0 )
 		if( typeof b === 'number' ) b = new Q.ComplexNumber( b, 0 )
 
 
 		//  If we receive undefined (or garbage inputs)
-		//  let’s try to make it useable.
+		//  letâ€™s try to make it useable.
 		//  This way we can always call Q.Qubit with no arguments
 		//  to make a new qubit available for computing with.
 
@@ -2036,10 +2037,10 @@ Q.Qubit = function( a, b, label, name ){
 		if( b instanceof Q.ComplexNumber !== true ){
 
 
-			//  1 - |𝒂|² = |𝒃|²
-			//  So this does NOT account for if 𝒃 ought to be imaginary or not.
+			//  1 - |ð’‚|Â² = |ð’ƒ|Â²
+			//  So this does NOT account for if ð’ƒ ought to be imaginary or not.
 			//  Perhaps for completeness we could randomly decide
-			//  to flip the real and imaginary components of 𝒃 after this line?
+			//  to flip the real and imaginary components of ð’ƒ after this line?
 
 			b = Q.ComplexNumber.ONE.subtract( Math.pow( a.absolute(), 2 )).squareRoot()
 		}
@@ -2047,7 +2048,7 @@ Q.Qubit = function( a, b, label, name ){
 
 
 	//  Sanity check!
-	//  Does this constraint hold true? |𝒂|² + |𝒃|² = 1
+	//  Does this constraint hold true? |ð’‚|Â² + |ð’ƒ|Â² = 1
 
 	if( Math.pow( a.absolute(), 2 ) + Math.pow( b.absolute(), 2 ) - 1 > Q.EPSILON )
 	 	return Q.error( `Q.Qubit could not accept the initialization values of a=${a} and b=${b} because their squares do not add up to 1.` )	
@@ -2056,7 +2057,7 @@ Q.Qubit = function( a, b, label, name ){
 	this.index = Q.Qubit.index ++
 
 
-	//  Convenience getters and setters for this qubit’s
+	//  Convenience getters and setters for this qubitâ€™s
 	//  controll bit and target bit.
 
 	Object.defineProperty( this, 'alpha', { 
@@ -2071,11 +2072,11 @@ Q.Qubit = function( a, b, label, name ){
 	})
 
 
-	//  Used for Dirac notation: |?⟩
+	//  Used for Dirac notation: |?âŸ©
 
-	if( typeof label === 'string' ) this.label = label
+	if( typeof symbol === 'string' ) this.symbol = symbol
 	if( typeof name  === 'string' ) this.name  = name
-	if( this.label === undefined || this.name === undefined ){
+	if( this.symbol === undefined || this.name === undefined ){
 
 		const found = Object.values( Q.Qubit.constants ).find( function( qubit ){
 
@@ -2087,12 +2088,12 @@ Q.Qubit = function( a, b, label, name ){
 		})
 		if( found === undefined ){
 
-			this.label = '?'
+			this.symbol = '?'
 			this.name  = 'Unnamed'
 		}
 		else {
 
-			if( this.label === undefined ) this.label = found.label
+			if( this.symbol === undefined ) this.symbol = found.symbol
 			if( this.name  === undefined ) this.name  = found.name
 		}
 	}
@@ -2182,7 +2183,7 @@ Object.assign( Q.Qubit, {
 		This is means of inverting what comes first:
 		the Gate or the Qubit?
 		If the Gate only operates on a single qubit,
-		then it doesn’t matter and we can do this:
+		then it doesnâ€™t matter and we can do this:
 		`
 
 		if( gate instanceof Q.Gate === false ) return Q.error( `Q.Qubit attempted to apply something that was not a gate to this qubit #${ qubit.index }.` )
@@ -2190,12 +2191,12 @@ Object.assign( Q.Qubit, {
 	},
 	toText: function( qubit ){
 
-		//return `|${qubit.beta.toText()}⟩`
+		//return `|${qubit.beta.toText()}âŸ©`
 		return qubit.alpha.toText() +'\n'+ qubit.beta.toText()
 	},
 	toStateVectorText: function( qubit ){
 
-		return `|${ qubit.beta.toText() }⟩`
+		return `|${ qubit.beta.toText() }âŸ©`
 	},
 	toStateVectorHtml: function( qubit ){
 
@@ -2205,7 +2206,7 @@ Object.assign( Q.Qubit, {
 
 
 	//  This code was a pain in the ass to figure out.
-	//  I’m not fluent in trigonometry
+	//  Iâ€™m not fluent in trigonometry
 	//  and none of the quantum primers actually lay out
 	//  how to convert arbitrary qubit states
 	//  to Bloch Sphere representation.
@@ -2217,9 +2218,9 @@ Object.assign( Q.Qubit, {
 	toBlochSphere: function( qubit ){
 
 		`
-		Based on this qubit’s state return the
-		Polar angle θ (theta),
-		azimuth angle ϕ (phi),
+		Based on this qubitâ€™s state return the
+		Polar angle Î¸ (theta),
+		azimuth angle Ï• (phi),
 		Bloch vector,
 		corrected surface coordinate.
 
@@ -2227,14 +2228,14 @@ Object.assign( Q.Qubit, {
 		`
 
 
-		//  Polar angle θ (theta).
+		//  Polar angle Î¸ (theta).
 
 		const theta = Q.ComplexNumber.arcCosine( qubit.alpha ).multiply( 2 )
 		if( isNaN( theta.real )) theta.real = 0
 		if( isNaN( theta.imaginary )) theta.imaginary = 0
 
 		
-		//  Azimuth angle ϕ (phi).
+		//  Azimuth angle Ï• (phi).
 		
 		const phi = Q.ComplexNumber.log( 
 
@@ -2255,8 +2256,8 @@ Object.assign( Q.Qubit, {
 		}
 
 
-		//  Bloch vector’s axes are wonked.
-		//  Let’s “correct” them for use with Three.js, etc.
+		//  Bloch vectorâ€™s axes are wonked.
+		//  Letâ€™s â€œcorrectâ€ them for use with Three.js, etc.
 
 		const position = {
 
@@ -2268,10 +2269,18 @@ Object.assign( Q.Qubit, {
 		return {
 
 
-			//  Ummm... I’m only returnig the REAL portions. Please forgive me!
+			//  Wow does this make tweening easier down the road.
+
+			alphaReal:      qubit.alpha.real,
+			alphaImaginary: qubit.alpha.imaginary,
+			betaReal:       qubit.beta.real,
+			betaImaginary:  qubit.beta.imaginary,
+
+
+			//  Ummm... Iâ€™m only returnig the REAL portions. Please forgive me!
 
 			theta: theta.real,
-			phi: phi.real,
+			phi:   phi.real,
 			vector, //  Wonked YZX vector for maths because maths.
 			position//  Un-wonked XYZ for use by actual 3D engines.
 		}
@@ -2291,9 +2300,9 @@ Q.Qubit.createConstants(
 
 
 	//  Opposing pairs:
-	//  |H⟩ and |V⟩
-	//  |D⟩ and |A⟩
-	//  |R⟩ and |L⟩
+	//  |HâŸ© and |VâŸ©
+	//  |DâŸ© and |AâŸ©
+	//  |RâŸ© and |LâŸ©
 
 	'HORIZONTAL', new Q.Qubit( 1, 0, 'H', 'Horizontal' ),//  ZERO.
 	'VERTICAL',   new Q.Qubit( 0, 1, 'V', 'Vertical' ),//  ONE.
@@ -2384,7 +2393,8 @@ Q.Gate = function( params ){
 	
 	if( typeof this.symbol !== 'string' ) this.symbol = '?'
 	if( typeof this.symbolAmazonBraket !== 'string' ) this.symbolAmazonBraket = this.symbol.toLowerCase()
-	
+	const parameters = Object.assign( {}, params.parameters )
+	this.parameters = parameters
 	
 	//  We use symbols as unique identifiers
 	//  among gate CONSTANTS
@@ -2401,10 +2411,12 @@ Q.Gate = function( params ){
 		return gate.symbol === scope.symbol
 	})
 
-	if( foundConstant ){
+	//Muting this warning in order to have parameterized gates (that don't totally mess with the constants), we need
+	//to make clones of the constants...a lot if you're using a lot of parameterized gates. Warning gets annoying :/.
+	// if( foundConstant ){
 		
-		Q.warn( `Q.Gate is creating a new instance, #${ this.index }, that uses the same symbol as a pre-existing Gate constant:`, foundConstant )
-	}
+	// 	Q.warn( `Q.Gate is creating a new instance, #${ this.index }, that uses the same symbol as a pre-existing Gate constant:`, foundConstant )
+	// }
 
 	if( typeof this.name    !== 'string' ) this.name    = 'Unknown'
 	if( typeof this.nameCss !== 'string' ) this.nameCss = 'unknown'
@@ -2553,8 +2565,13 @@ Q.Gate.createConstants(
 		nameCss:   'pauli-x',
 		matrix: new Q.Matrix(
 			[ 0, 1 ],
-			[ 1, 0 ])
-	}),
+			[ 1, 0 ]),
+		//ltnln: NOTE! can_be_controlled refers to whether or not the Braket SDK supports a controlled
+		//application of this gate; if we want Q to be able to support controlled gated regardless of whether
+		//or not Braket can, this must be changed..
+		can_be_controlled:  true
+		},
+	),
 	'PAULI_Y', new Q.Gate({
 
 		symbol:    'Y',
@@ -2564,8 +2581,10 @@ Q.Gate.createConstants(
 		nameCss:   'pauli-y',
 		matrix: new Q.Matrix(
 			[ 0, new Q.ComplexNumber( 0, -1 )],
-			[ new Q.ComplexNumber( 0, 1 ), 0 ])
-	}),
+			[ new Q.ComplexNumber( 0, 1 ), 0 ]),
+		can_be_controlled:  true
+		},
+	),
 	'PAULI_Z', new Q.Gate({
 
 		symbol:    'Z',
@@ -2575,32 +2594,35 @@ Q.Gate.createConstants(
 		nameCss:   'pauli-z',
 		matrix: new Q.Matrix(
 			[ 1,  0 ],
-			[ 0, -1 ])
-	}),
+			[ 0, -1 ]),
+		can_be_controlled:  true
+		},
+		),
 	'PHASE', new Q.Gate({
 
 		symbol:    'P',
-		symbolAmazonBraket: 'p',//  !!! Double check this !!!
+		symbolAmazonBraket: 'phaseshift',//  ltnln edit: change from 'p' to 'phaseshift'
 		symbolSvg: '',
 		name:      'Phase',
 		nameCss:   'phase',
-		phi:        1,
+		parameters: { "phi" : 1 },
 		updateMatrix$: function( phi ){
-
-			if( Q.isUsefulNumber( phi ) === true ) this.phi = phi
+			if( Q.isUsefulNumber( phi ) === true ) this.parameters[ "phi" ]  = phi
 			this.matrix = new Q.Matrix(
 				[ 1, 0 ],
-				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.phi ))])
+				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters["phi"] ))])
 			return this
 		},
 		applyToQubit: function( qubit, phi ){
 
-			if( Q.isUsefulNumber( phi ) !== true ) phi = this.phi
+			if( Q.isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
 			const matrix = new Q.Matrix(
 				[ 1, 0 ],
 				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi ))])
 			return new Q.Qubit( matrix.multiply( qubit ))
-		}
+		},
+		can_be_controlled:  true,
+		has_parameters:		true
 	}),
 	'PI_8', new Q.Gate({
 
@@ -2625,22 +2647,224 @@ Q.Gate.createConstants(
 			//  Create Bloch sphere visualizer instance.
 		}
 	}),
+	'RX', new Q.Gate({
 
+		symbol:		'Rx',
+		symbolAmazonBraket:	'rx', 
+		symbolSvg:  '', 
+		name:       'X Rotation', 
+		nameCss: 	'x-rotation', 
+		parameters: { "phi" : Math.PI / 2 },
+		updateMatrix$: function( phi ){
 
+			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Q.Matrix(
+				[ Math.cos( this.parameters[ "phi" ] / 2 ), new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )) ],
+				[ new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 )])
+			return this
+		},
+		applyToQubit: function( qubit, phi ){
+
+			if( Q.isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
+			const matrix = new Q.Matrix(
+				[ Math.cos( phi / 2 ), new Q.ComplexNumber( 0, -Math.sin( phi / 2 )) ],
+				[ new Q.ComplexNumber( 0, -Math.sin( phi / 2 )), Math.cos( phi / 2 )])
+			return new Q.Qubit( matrix.multiply( qubit ))
+		},
+		has_parameters:		true
+	}),
+	'RY', new Q.Gate({
+
+		symbol:		'Ry',
+		symbolAmazonBraket:	'ry', 
+		symbolSvg:  '', 
+		name:       'Y Rotation', 
+		nameCss: 	'y-rotation',
+		parameters: { "phi" : Math.PI / 2 },
+		updateMatrix$: function( phi ){
+
+			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Q.Matrix(
+				[ Math.cos( this.parameters[ "phi" ] / 2 ), -Math.sin( phi / 2 ) ],
+				[ Math.sin( this.parameters[ "phi" ] / 2 ), Math.cos( this.parameters[ "phi" ] / 2 )])
+			return this
+		},
+		applyToQubit: function( qubit, phi ){
+
+			if( Q.isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
+			const matrix = new Q.Matrix(
+				[ Math.cos( phi / 2 ), -Math.sin( phi / 2 ) ],
+				[ Math.sin( phi / 2 ), Math.cos( phi / 2 )])
+			return new Q.Qubit( matrix.multiply( qubit ))
+		},
+		has_parameters:		true
+	}),
+	'RZ', new Q.Gate({
+
+		symbol:		'Rz',
+		symbolAmazonBraket:	'rz', 
+		symbolSvg:  '', 
+		name:       'Z Rotation', 
+		nameCss: 	'z-rotation',
+		parameters: { "phi" : Math.PI / 2 },
+		updateMatrix$: function( phi ){
+
+			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Q.Matrix(
+				[ Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -this.parameters[ "phi" ] / 2 )), 0 ],
+				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] / 2 ))])
+			return this
+		},
+		applyToQubit: function( qubit, phi ){
+
+			if( Q.isUsefulNumber( phi ) !== true ) phi = this.parameters[ "phi" ]
+			const matrix = new Q.Matrix(
+				[ Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -phi / 2 )), 0 ],
+				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi / 2 ))])
+			return new Q.Qubit( matrix.multiply( qubit ))
+		},
+		has_parameters:		true
+	}),
+	'UNITARY', new Q.Gate({
+
+		symbol:    'U',
+		symbolAmazonBraket: 'unitary',
+		symbolSvg: '',
+		name:      'Unitary',
+		nameCss:   'unitary',
+		//toAmazonBraket will have to use the following matrix as an argument for unitary()
+		parameters: { "phi" : Math.PI / 2,
+					"theta" : Math.PI / 2,
+					"lambda" : Math.PI / 2 },
+		updateMatrix$: function( phi, theta, lambda ){
+			//if all are valid, update; otherwise, update none. 
+			if( (Q.isUsefulNumber( +phi ) === true) && (Q.isUsefulNumber( +theta ) === true) && (Q.isUsefulNumber( +lambda ) === true) ) {
+				this.parameters[ "phi" ] = +phi;
+				this.parameters[ "theta" ] = +theta;
+				this.parameters[ "lambda" ] = +lambda;
+			} 
+			const a = Q.ComplexNumber.multiply(
+				Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -( this.parameters[ "phi" ] + this.parameters[ "lambda" ] ) / 2 )),  Math.cos( this.parameters[ "theta" ] / 2 ))
+			const b = Q.ComplexNumber.multiply(
+				 Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -( this.parameters[ "phi" ] - this.parameters[ "lambda" ] ) / 2 )), -Math.sin( this.parameters[ "theta" ] / 2 ))
+			const c = Q.ComplexNumber.multiply(
+				Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, ( this.parameters[ "phi" ] - this.parameters[ "lambda" ] ) / 2 )), Math.sin( this.parameters[ "theta" ] / 2 ))
+			const d = Q.ComplexNumber.multiply(
+				Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, ( this.parameters[ "phi" ] + this.parameters[ "lambda" ] ) / 2 )), Math.cos( this.parameters[ "theta" ] / 2 ))
+			this.matrix = new Q.Matrix(
+				[ a, b ], 
+				[ c, d ])
+			return this
+		},
+		applyToQubit: function( qubit, phi, theta, lambda ){
+			if( Q.isUsefulNumber( phi ) === true ) phi = this.parameters[ "phi" ]
+			if( Q.isUsefulNumber( theta ) === true ) theta = this.parameters[ "theta" ]
+			if( Q.isUsefulNumber( lambda ) === true ) lambda = this.parameters[ "lambda" ]
+			const a = Q.ComplexNumber.multiply(
+				Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -( phi + lambda ) / 2 )),  Math.cos( theta / 2 ));
+			const b = Q.ComplexNumber.multiply(
+				 Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -( phi - lambda ) / 2 )), -Math.sin( theta / 2 ));
+			const c = Q.ComplexNumber.multiply(
+				Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, ( phi - lambda ) / 2 )), Math.sin( theta / 2 ));
+			const d = Q.ComplexNumber.multiply(
+				Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, ( phi + lambda ) / 2 )), Math.cos( theta / 2 ));
+			const matrix = new Q.Matrix(
+				[ a, b ],
+				[ c, d ])
+			return new Q.Qubit( matrix.multiply( qubit ))
+		},
+		has_parameters:		true
+	}),
+	'NOT1_2', new Q.Gate({
+
+		symbol:    'V',
+		symbolAmazonBraket: 'v',
+		symbolSvg: '',
+		name:      '√Not',
+		nameCss:   'not1-2',
+		matrix: new Q.Matrix(
+			[ new Q.ComplexNumber( 1, 1 ) / 2,  new Q.ComplexNumber( 1, -1 ) / 2 ],
+			[ new Q.ComplexNumber( 1, -1 ) / 2, new Q.ComplexNumber( 1, 1 ) / 2 ])
+	}),
+	'PI_8_Dagger', new Q.Gate({
+
+		symbol:    'T†',
+		symbolAmazonBraket: 'ti',
+		symbolSvg: '',
+		name:      'PI_8_Dagger',
+		nameCss:   'pi8-dagger',
+		matrix: new Q.Matrix(
+			[ 1, 0 ],
+			[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -Math.PI / 4 )) ])
+	}),
+	'NOT1_2_Dagger', new Q.Gate({
+
+		symbol:    'V†',
+		symbolAmazonBraket: 'vi',
+		symbolSvg: '',
+		name:      '√Not_Dagger',
+		nameCss:   'not1-2-dagger',
+		matrix: new Q.Matrix(
+			[ new Q.ComplexNumber( 1, -1 ) / 2,  new Q.ComplexNumber( 1, 1 ) / 2 ],
+			[ new Q.ComplexNumber( 1, 1 ) / 2, new Q.ComplexNumber( 1, -1 ) / 2 ])
+	}),
+	//Note that S, S_Dagger, PI_8, and PI_8_Dagger can all be implemented by applying the PHASE gate
+	//using certain values of phi. 
+	//These gates are included for completeness. 
+	'S', new Q.Gate({
+		symbol:    'S*', //Gotta think of a better symbol name...
+		symbolAmazonBraket: 's',
+		symbolSvg: '',
+		name:      'π ÷ 4',
+		nameCss:   'pi4',
+		matrix: new Q.Matrix(
+			[ 1, 0 ],
+			[ 0, new Q.ComplexNumber( 0, 1 ) ])
+	}),
+	'S_Dagger', new Q.Gate({
+
+		symbol:    'S†',
+		symbolAmazonBraket: 'si',
+		symbolSvg: '',
+		name:      'π ÷ 4 Dagger',
+		nameCss:   'pi4-dagger',
+		matrix: new Q.Matrix(
+			[ 1, 0 ],
+			[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -1 )) ])
+	}),
 	//  Operate on 2 qubits.
-
 	'SWAP', new Q.Gate({
 
-		symbol:    'S',
-		symbolAmazonBraket: 's',//  !!! Double check this !!!
+		symbol:    'S', 
+		symbolAmazonBraket: 'swap',
 		symbolSvg: '',
 		name:      'Swap',
 		nameCss:   'swap',
-		matrix: new Q.Matrix(
-			[ 1, 0, 0, 0 ],
-			[ 0, 0, 1, 0 ],
-			[ 0, 1, 0, 0 ],
-			[ 0, 0, 0, 1 ])
+		parameters: { "phi" : 0.0 },
+		updateMatrix$: function( phi ) {
+			
+			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Q.Matrix(
+				[ 1, 0, 0, 0 ],
+				[ 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] )), 0 ],
+				[ 0, Q.ComplexNumber.E.power(new Q.ComplexNumber( 0, this.parameters[ "phi" ] )), 0, 0 ],
+				[ 0, 0, 0, 1 ])
+			return this
+		},
+		applyToQubit: function( qubit, phi ) {
+
+			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Q.Matrix( 
+				[ 1, 0, 0, 0 ],
+				[ 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi )), 0 ],
+				[ 0, new Q.ComplexNumber( 0, 1 ), 0, 0 ],
+				[ 0, 0, 0, 1 ]
+			)
+			return new Q.Qubit( matrix.multiply( qubit ))
+		},
+		can_be_controlled:  true,
+		has_parameters: 	true,
+		is_multi_qubit: 	true
 	}),
 	'SWAP1_2', new Q.Gate({
 
@@ -2653,8 +2877,258 @@ Q.Gate.createConstants(
 			[ 1, 0, 0, 0 ],
 			[ 0, new Q.ComplexNumber( 0.5,  0.5 ), new Q.ComplexNumber( 0.5, -0.5 ), 0 ],
 			[ 0, new Q.ComplexNumber( 0.5, -0.5 ), new Q.ComplexNumber( 0.5,  0.5 ), 0 ],
-			[ 0, 0, 0, 1 ])
-	})
+			[ 0, 0, 0, 1 ]),
+		is_multi_qubit: 	true
+	}),
+	'ISWAP', new Q.Gate({
+		
+		symbol:    'iS',
+		symbolAmazonBraket: 'iswap',
+		symbolSvg: '',
+		name:      'Imaginary Swap',
+		nameCss:   'iswap',
+		matrix: new Q.Matrix(
+			[ 1, 0, 0, 0 ],
+			[ 0, 0, new Q.ComplexNumber( 0, 1 ), 0 ],
+			[ 0, new Q.ComplexNumber( 0, 1 ), 0, 0 ],
+			[ 0, 0, 0, 1 ]),
+			is_multi_qubit:	true
+	}),
+	'ISING-XX', new Q.Gate({
+
+		symbol:    'XX', 
+		symbolAmazonBraket: 'xx', 
+		symbolSvg: '', 
+		name:      'Ising XX Coupling',
+		nameCss:   'ising-xx-coupling',
+		parameters: { "phi" : 1 },
+		updateMatrix$: function( phi ) {
+			
+			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Q.Matrix(
+				[ Math.cos( this.parameters[ "phi" ] / 2 ), 0, 0, new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )) ],
+				[ 0, Math.cos( this.parameters[ "phi" ] / 2 ), new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0 ],
+				[ 0, new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 ), 0 ],
+				[ new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0, 0, Math.cos( this.parameters[ "phi" ] / 2 ) ])
+			return this
+		},
+		applyToQubit: function( qubit, phi ) {
+			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Q.Matrix( 
+				[ Math.cos( phi / 2 ), 0, 0, new Q.ComplexNumber( 0, -Math.sin( phi / 2 )) ],
+				[ 0, Math.cos( phi / 2 ), new Q.ComplexNumber( 0, -Math.sin( phi / 2 )), 0 ],
+				[ 0, new Q.ComplexNumber( 0, -Math.sin( phi / 2 )), Math.cos( phi / 2 ), 0 ],
+				[ new Q.ComplexNumber( 0, -Math.sin( phi / 2 )), 0, 0, Math.cos( phi / 2 ) ]
+			)
+			return new Q.Qubit( matrix.multiply( qubit ))
+		},
+		is_multi_qubit: true,
+		has_parameters:		true 
+	}), 
+	'ISING-XY', new Q.Gate({
+
+		symbol:    'XY', 
+		symbolAmazonBraket: 'xy', 
+		symbolSvg: '', 
+		name:      'Ising XY Coupling',
+		nameCss:   'ising-xy-coupling',
+		parameters: { "phi" : 1 },
+		updateMatrix$: function( phi ) {
+			
+			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Q.Matrix(
+				[ 1, 0, 0, 0 ],
+				[ 0, Math.cos( this.parameters[ "phi" ] / 2 ), new Q.ComplexNumber( 0, Math.sin( this.parameters[ "phi" ] / 2 )), 0 ],
+				[ 0, new Q.ComplexNumber( 0, Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 ), 0 ],
+				[ 0, 0, 0, 1 ])
+			return this
+		},
+		applyToQubit: function( qubit, phi ) {
+			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Q.Matrix( 
+				[ 1, 0, 0, 0 ],
+				[ 0, Math.cos( phi / 2 ), new Q.ComplexNumber( 0, Math.sin( phi / 2 )), 0 ],
+				[ 0, new Q.ComplexNumber( 0, Math.sin( phi / 2 )), Math.cos( phi / 2 ), 0 ],
+				[ 0, 0, 0, 1 ]
+			)
+			return new Q.Qubit( matrix.multiply( qubit ))
+		},
+		is_multi_qubit: true,
+		has_parameters:		true	 	 
+	}), 
+	'ISING-YY', new Q.Gate({
+		
+		symbol:    'YY', 
+		symbolAmazonBraket: 'yy', 
+		symbolSvg: '', 
+		name:      'Ising YY Coupling',
+		nameCss:   'ising-yy-coupling',
+		parameters: { "phi" : 1 },
+		updateMatrix$: function( phi ) {
+			
+			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Q.Matrix(
+				[ Math.cos( this.parameters[ "phi" ] / 2 ), 0, 0, new Q.ComplexNumber( 0, Math.sin( this.parameters[ "phi" ] / 2 )) ],
+				[ 0, Math.cos( this.parameters[ "phi" ] / 2 ), new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0 ],
+				[ 0, new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), Math.cos( this.parameters[ "phi" ] / 2 ), 0 ],
+				[ new Q.ComplexNumber( 0, -Math.sin( this.parameters[ "phi" ] / 2 )), 0, 0, Math.cos( this.parameters[ "phi" ] / 2 ) ])
+			return this
+		},
+		applyToQubit: function( qubit, phi ) {
+			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Q.Matrix( 
+				[ Math.cos( phi / 2 ), 0, 0, new Q.ComplexNumber( 0, -Math.sin( phi / 2 )) ],
+				[ 0, Math.cos( phi / 2 ), new Q.ComplexNumber( 0, -Math.sin( phi / 2 )), 0 ],
+				[ 0, new Q.ComplexNumber( 0, -Math.sin( phi / 2 )), Math.cos( phi / 2 ), 0 ],
+				[ new Q.ComplexNumber( 0, Math.sin( phi / 2 )), 0, 0, Math.cos( phi / 2 ) ]
+			)
+			return new Q.Qubit( matrix.multiply( qubit ))
+		},
+		is_multi_qubit: true,
+		has_parameters:		true
+	}), 
+	'ISING-ZZ', new Q.Gate({
+
+		symbol:    'ZZ', 
+		symbolAmazonBraket: 'zz', 
+		symbolSvg: '', 
+		name:      'Ising ZZ Coupling',
+		nameCss:   'ising-zz-coupling',
+		parameters: { "phi" : 1 },
+		updateMatrix$: function( phi ) {
+			
+			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Q.Matrix(
+				[ Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] / 2 )), 0, 0, 0 ],
+				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] / 2 )), 0, 0 ],
+				[ 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] / 2 )), 0],
+				[ 0, 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -this.parameters[ "phi" ] / 2 )) ])
+			return this
+		},
+		applyToQubit: function( qubit, phi ) {
+			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Q.Matrix( 
+				[ Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi / 2 )), 0, 0, 0 ],
+				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi / 2 )), 0, 0 ],
+				[ 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi / 2 )), 0],
+				[ 0, 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, -phi / 2 )) ]
+			)
+			return new Q.Qubit( matrix.multiply( qubit ))
+		},
+		is_multi_qubit: true,
+		has_parameters:		true	 
+	}), 
+	'CPhase00', new Q.Gate({
+
+		symbol:    '00', //placeholder 
+		symbolAmazonBraket: 'cphaseshift00', 
+		symbolSvg: '', 
+		name:      'Controlled Phase Shift 00',
+		nameCss:   'cphase00',
+		parameters: { "phi" : 1 },
+		updateMatrix$: function( phi ) {
+			
+			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Q.Matrix(
+				[ Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] )), 0, 0, 0 ],
+				[ 0, 1, 0, 0 ],
+				[ 0, 0, 1, 0 ],
+				[ 0, 0, 0, 1 ])
+			return this
+		},
+		applyToQubit: function( qubit, phi ) {
+			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Q.Matrix( 
+				[ Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi )), 0, 0, 0 ],
+				[ 0, 1, 0, 0 ],
+				[ 0, 0, 1, 0 ],
+				[ 0, 0, 0, 1 ]
+			)
+			return new Q.Qubit( matrix.multiply( qubit ))
+		},
+		is_multi_qubit: true,
+		has_parameters:		true	 	 
+	}),
+	'CPhase01', new Q.Gate({
+
+		symbol:    '01', //placeholder 
+		symbolAmazonBraket: 'cphaseshift01', 
+		symbolSvg: '', 
+		name:      'Controlled Phase Shift 01',
+		nameCss:   'cphase01',
+		parameters: { "phi" : 1 },
+		updateMatrix$: function( phi ) {
+			
+			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Q.Matrix(
+				[ 1, 0, 0, 0 ],
+				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] )), 0, 0 ],
+				[ 0, 0, 1, 0 ],
+				[ 0, 0, 0, 1 ])
+			return this
+		},
+		applyToQubit: function( qubit, phi ) {
+			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Q.Matrix( 
+				[ 1, 0, 0, 0 ],
+				[ 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi)), 0, 0 ],
+				[ 0, 0, 1, 0 ],
+				[ 0, 0, 0, 1 ]
+			)
+			return new Q.Qubit( matrix.multiply( qubit ))
+		},
+		is_multi_qubit: true,
+		has_parameters:		true	 	 
+	}),
+	'CPhase10', new Q.Gate({
+
+		symbol:    '10', //placeholder 
+		symbolAmazonBraket: 'cphaseshift10', 
+		symbolSvg: '', 
+		name:      'Controlled Phase Shift 10',
+		nameCss:   'cphase01',
+		parameters: { "phi" : 1 },
+		updateMatrix$: function( phi ) {
+			
+			if( Q.isUsefulNumber( +phi ) === true ) this.parameters[ "phi" ] = +phi
+			this.matrix = new Q.Matrix(
+				[ 1, 0, 0, 0 ],
+				[ 0, 1, 0, 0 ],
+				[ 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, this.parameters[ "phi" ] )), 0 ],
+				[ 0, 0, 0, 1 ])
+			return this
+		},
+		applyToQubit: function( qubit, phi ) {
+			if( Q.isUsefulNumber( phi ) !== true) phi = this.parameters[ "phi" ]
+			const matrix = new Q.Matrix( 
+				[ 1, 0, 0, 0 ],
+				[ 0, 1, 0, 0 ],
+				[ 0, 0, Q.ComplexNumber.E.power( new Q.ComplexNumber( 0, phi)), 0 ],
+				[ 0, 0, 0, 1 ]
+			)
+			return new Q.Qubit( matrix.multiply( qubit ))
+		},
+		is_multi_qubit: 	true,
+		has_parameters:		true	 
+	}), 
+	'CSWAP', new Q.Gate({
+
+		symbol:    'CSWAP',
+		symbolAmazonBraket: 'cswap', 
+		symbolSvg: '', 
+		name:      'Controlled Swap',
+		nameCss:   'controlled-swap',
+		matrix: new Q.Matrix(
+			[1, 0, 0, 0, 0, 0, 0, 0],
+			[0, 1, 0, 0, 0, 0, 0, 0],
+			[0, 0, 1, 0, 0, 0, 0, 0],
+			[0, 0, 0, 1, 0, 0, 0, 0],
+			[0, 0, 0, 0, 1, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 1, 0],
+			[0, 0, 0, 0, 0, 1, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 1]
+		)
+	})	 
 	/*
 
 
@@ -2667,12 +3141,14 @@ Q.Gate.createConstants(
 
 
 	*/
-)	
+)
 
 
 
 
-//  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
+
+
+//  Copyright Â© 2019â€“2020, Stewart Smith. See LICENSE for details.
 
 
 
@@ -2738,7 +3214,7 @@ Object.assign( Q.History.prototype, {
 
 		//  Are we recording this history?
 		//  Usually, yes.
-		//  But if our history state is “playback”
+		//  But if our history state is â€œplaybackâ€
 		//  then we will NOT record this.
 
 		if( this.isRecording ){
@@ -2815,7 +3291,7 @@ Object.assign( Q.History.prototype, {
 		if( direction < 0 ) this.index --
 		
 
-		//  It’s now safe to turn recording back on.
+		//  Itâ€™s now safe to turn recording back on.
 
 		this.isRecording = true
 
@@ -2838,18 +3314,18 @@ Object.assign( Q.History.prototype, {
 		}
 		return this.entries.reduce( function( output, entry, i ){
 
-			output += '\n\n'+ i + ' ════════════════════════════════════════'+
+			output += '\n\n'+ i + ' â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•'+
 			entry.reduce( function( output, entry, i ){
 
-				output += '\n\n    '+ i +' ────────────────────────────────────────\n'
+				output += '\n\n    '+ i +' â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€\n'
 				if( entry.redo ){
 				
-					output += '\n        ⟳ Redo   ── '+ entry.redo.name +'  '
+					output += '\n        âŸ³ Redo   â”€â”€ '+ entry.redo.name +'  '
 					if( entry.redo.args ) output += entry.redo.args.reduce( argsParse, '' )
 				}
 				output += entry.undo.reduce( function( output, entry, i ){
 
-					output += '\n        ⟲ Undo '+ i +' ── '+ entry.name +'  '
+					output += '\n        âŸ² Undo '+ i +' â”€â”€ '+ entry.name +'  '
 					if( entry.args ) output += entry.args.reduce( argsParse, '' )
 					return output
 
@@ -2943,7 +3419,6 @@ Object.assign( Q.Circuit, {
 		//  to return a default new Q.Circuit().
 
 		if( text === undefined ) return new Q.Circuit()
-
 
 		//  Is this a String Template -- as opposed to a regular String?
 		//  If so, let’s convert it to a regular String.
@@ -3064,7 +3539,6 @@ Object.assign( Q.Circuit, {
 
 
 	fromTableTransposed: function( table ){
-
 		const
 		bandwidth = table.length,
 		timewidth = table.reduce( function( max, moments ){
@@ -3084,7 +3558,6 @@ Object.assign( Q.Circuit, {
 				const 
 				momentIndex = m + 1,
 				operation = table[ r ][ m ]
-
 				let siblingHasBeenFound = false
 				for( let s = 0; s < r; s ++ ){
 
@@ -3097,7 +3570,6 @@ Object.assign( Q.Circuit, {
 
 
 						//  We’ve found a sibling !
-
 						const operationsIndex = circuit.operations.findIndex( function( operation ){
 
 							return (
@@ -3245,7 +3717,6 @@ Object.assign( Q.Circuit, {
 				if( bitsEqual ){
 
 					// console.log( 'bits ARE equal' )
-					
 					let
 					istar = 0,
 					jstar = 0,
@@ -3257,8 +3728,6 @@ Object.assign( Q.Circuit, {
 						istar |= (( i & ( 1 << q )) >> q ) << k
 						jstar |= (( j & ( 1 << q )) >> q ) << k
 					}
-
-
 					//console.log( 'U.read( istar, jstar )', U.read( istar, jstar ).toText() )
 
 					// console.log( 'before write$', result.toTsv())
@@ -3373,11 +3842,15 @@ Object.assign( Q.Circuit, {
 
 			//  Yikes. May need to separate registerIndices in to controls[] and targets[] ??
 			//  Works for now tho..... 
-
-			for( let j = 0; j < operation.registerIndices.length - 1; j ++ ){
-			
-				U = Q.Circuit.controlled( U )
-				// console.log( 'qubitIndex #', j, 'U = Q.Circuit.controlled( U )', U.toTsv() )
+			// Houston we have a problem. Turns out, not every gate with registerIndices.length > 1 is
+			// controlled.
+			// This is a nasty fix, leads to a lot of edge cases. (For instance: hard-coding cswaps...) But just experimenting. 
+			if(!operation.gate.is_multi_qubit || (operation.gate.symbol == 'S' && operation.registerIndices.length > 2) && operation.gate.can_be_controlled) {
+				for( let j = 0; j < operation.registerIndices.length - 1; j ++ ){
+				
+					U = Q.Circuit.controlled( U )
+					//console.log( 'qubitIndex #', j, 'U = Q.Circuit.controlled( U )', U.toTsv() )
+				}
 			}
 
 
@@ -3387,8 +3860,6 @@ Object.assign( Q.Circuit, {
 			//  and wow -- tracking down that bug was painful!
 
 			const registerIndices = operation.registerIndices.slice()
-
-
 			state = Q.Circuit.expandMatrix( 
 
 				circuit.bandwidth, 
@@ -3396,7 +3867,6 @@ Object.assign( Q.Circuit, {
 				registerIndices
 
 			).multiply( state )
-
 
 
 
@@ -3465,7 +3935,6 @@ Object.assign( Q.Circuit, {
 
 
 
-		
 
 		return matrix
 	}
@@ -3982,46 +4451,102 @@ https://cirq.readthedocs.io/en/stable/tutorial.html
 		return headers
 	},
 	toAmazonBraket: function(){
-
+		let is_valid_braket_circuit = true
 		const header = `import boto3
-from braket.aws import AwsQuantumSimulator, AwsQuantumSimulatorArns
+from braket.aws import AwsDevice
 from braket.circuits import Circuit
 
-aws_account_id = boto3.client("sts").get_caller_identity()["Account"]
-device = AwsQuantumSimulator(AwsQuantumSimulatorArns.QS1)
-s3_folder = (f"braket-output-{aws_account_id}", "folder-name")
-
-`
+my_bucket = f"amazon-braket-Your-Bucket-Name" # the name of the bucket
+my_prefix = "Your-Folder-Name" # the name of the folder in the bucket
+s3_folder = (my_bucket, my_prefix)\n
+device = LocalSimulator()\n\n`
+//TODO (ltnln): Syntax is different for simulators and actual quantum computers. Should there be a default? Should there be a way to change?
+//vs an actual quantum computer? May not be necessary. 
+		let variables = ''
+		let num_unitaries = 0
 		//`qjs_circuit = Circuit().h(0).cnot(0,1)`
+		//ltnln change: from gate.AmazonBraketName -> gate.symbolAmazonBraket
 		let circuit = this.operations.reduce( function( string, operation ){
-
-			let awsGate = operation.gate.AmazonBraketName !== undefined ?
-				operation.gate.AmazonBraketName :
+			let awsGate = operation.gate.symbolAmazonBraket !== undefined ?
+				operation.gate.symbolAmazonBraket :
 				operation.gate.symbol.substr( 0, 1 ).toLowerCase()
-
-			if( operation.gate.symbol === 'X' && 
-				operation.registerIndices.length > 1 ){
-
-				awsGate = 'cnot'
+			if( operation.gate.symbolAmazonBraket === undefined ) is_valid_braket_circuit = false
+			if( operation.gate.symbol === 'X' ) {
+				if( operation.registerIndices.length === 1 ) awsGate = operation.gate.symbolAmazonBraket
+				else if( operation.registerIndices.length === 2 ) awsGate = 'cnot'
+				else if( operation.registerIndices.length === 3) awsGate = 'ccnot'
+				else is_valid_braket_circuit = false
 			}
-			if( operation.gate.symbol === '*' ){
 
-				awsGate = 'i'
+			else if( operation.gate.symbol === 'S' ) {
+				if( operation.gate.parameters["phi"] === 0 ) {
+					awsGate = operation.registerIndices.length == 2 ? awsGate : "cswap"
+					return string +'.'+ awsGate +'(' +
+				operation.registerIndices.reduce( function( string, registerIndex, r ){
+
+					return string + (( r > 0 ) ? ',' : '' ) + ( registerIndex - 1 )
+
+					}, '' ) + ')'
+				}
+				awsGate = 'pswap'
 			}
-			
-			return string +'.'+ awsGate +'(' + 
+			//ltnln note: removed the if( operation.gate.symbol == '*') branch as it should be covered by
+        	//the inclusion of the CURSOR gate. 
+			else if( operation.gate.symbol === 'Y' || operation.gate.symbol === 'Z' || operation.gate.symbol === 'P' ) {
+				if( operation.registerIndices.length === 1) awsGate = operation.gate.symbolAmazonBraket
+				else if( operation.registerIndices.length === 2 ) awsGate = (operation.gate.symbol === 'Y') ? 'cy' : (operation.gate.symbol === 'Z') ? 'cz' : 'cphaseshift'
+				else is_valid_braket_circuit = false
+			}
+			//for all unitary gates, there must be a line of code to initialize the matrix for use
+        //in Braket's .u(matrix=my_unitary, targets[0]) function
+			else if( operation.gate.symbol === 'U') {
+				//check that this truly works as a unique id
+				is_valid_braket_circuit &= operation.registerIndices.length === 1
+				const new_matrix = `unitary_` + num_unitaries
+				num_unitaries++
+				const a = Q.ComplexNumber.toText(Math.cos(-(operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2),
+												Math.sin(-(operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2))
+												.replace('i', 'j')
+				const b = Q.ComplexNumber.toText(-Math.cos(-(operation.gate.parameters[ "phi" ] - operation.gate.parameters[ "lambda" ])*Math.sin(operation.gate.parameters[ "theta" ] / 2) / 2),
+												-Math.sin(-(operation.gate.parameters[ "phi" ] - operation.gate.parameters[ "lambda" ])*Math.sin(operation.gate.parameters[ "theta" ] / 2)) / 2)
+												.replace('i', 'j')
+				const c = Q.ComplexNumber.toText(Math.cos((operation.gate.parameters[ "phi" ] - operation.gate.parameters[ "lambda" ])*Math.sin(operation.gate.parameters[ "theta" ] / 2) / 2),
+												-Math.sin((operation.gate.parameters[ "phi" ] - operation.gate.parameters[ "lambda" ])*Math.sin(operation.gate.parameters[ "theta" ] / 2)) / 2)
+												.replace('i', 'j')
+				const d = Q.ComplexNumber.toText(Math.cos((operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2) / 2),
+												Math.sin((operation.gate.parameters[ "phi" ] + operation.gate.parameters[ "lambda" ])*Math.cos(operation.gate.parameters[ "theta" ] / 2)) / 2)
+												.replace('i', 'j')  
+				variables += new_matrix + ` = np.array(` + 
+							`[[` + a + ', ' + b + `],`+
+							`[` + c + ', ' + d + `]])\n`
+				return string +'.'+ awsGate +'(' + new_matrix +','+
 				operation.registerIndices.reduce( function( string, registerIndex, r ){
 
 					return string + (( r > 0 ) ? ',' : '' ) + ( registerIndex - 1 )
 
 				}, '' ) + ')'
+			}
+			// I believe this line should ensure that we don't include any controlled single-qubit gates that aren't allowed in Braket. 
+			// The registerIndices.length > 1 technically shouldn't be necessary, but if changes are made later, it's just for safety. 
+			else is_valid_braket_circuit &= (operation.registerIndices.length === 1) || ( operation.registerIndices.length > 1 && operation.gate.is_multi_qubit )
+			return string +'.'+ awsGate +'(' + 
+				operation.registerIndices.reduce( function( string, registerIndex, r ){
+
+					return string + (( r > 0 ) ? ',' : '' ) + ( registerIndex - 1 )
+
+				}, '' ) + ((operation.gate.has_parameters) ?
+				Object.values( operation.gate.parameters ).reduce( function( string, parameter ) {
+					return string + "," + parameter
+				}, '') 
+				: '') + ')'
 
 		}, 'qjs_circuit = Circuit()' )
+		variables += '\n'
 		if( this.operations.length === 0 ) circuit +=  '.i(0)'//  Quick fix to avoid an error here!
 
 		const footer = `\n\ntask = device.run(qjs_circuit, s3_folder, shots=100)
 print(task.result().measurement_counts)`
-		return header + circuit + footer
+		return is_valid_braket_circuit ? header + variables + circuit + footer : `###This circuit is not representable as a Braket circuit!###`
 	},
 	toLatex: function(){
 
@@ -4228,15 +4753,13 @@ print(task.result().measurement_counts)`
 	},
 
 
-	set$: function( gate, momentIndex, registerIndices ){
+	set$: function( gate, momentIndex, registerIndices, parameters = {} ){
 
 		const circuit = this
-
-
 		//  Is this a valid gate?
-
-		if( typeof gate === 'string' ) gate = Q.Gate.findBySymbol( gate )
-		if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to add a gate to circuit #${ this.index } at moment #${ momentIndex } that is not a gate:`, gate )
+		// 	We clone the gate rather than using the constant; this way, if we change it's parameters, we don't change the constant. 
+		if( typeof gate === 'string' ) gate = Q.Gate.prototype.clone( Q.Gate.findBySymbol( gate ) )
+		if( gate instanceof Q.Gate !== true ) return Q.error( `Q.Circuit attempted to add a gate (${ gate }) to circuit #${ this.index } at moment #${ momentIndex } that is not a gate:`, gate )
 
 
 		//  Is this a valid moment index?
@@ -4307,7 +4830,11 @@ print(task.result().measurement_counts)`
 			//  Aren’t you glad we handle all this for you?
 
 			const 
-			isControlled = registerIndices.length > 1 && gate !== Q.Gate.SWAP,
+			//TODO: For ltnln (have to fix)
+			//		a) allow users to control whatever they want! Just because it's not allowed in Braket 
+			//		doesn't mean they shouldn't be allowed to do it in Q! (Probably fixable by adjusting toAmazonBraket)
+			//		b) Controlling a multi_qubit gate will not treat the control icon like a control gate!
+			isControlled = registerIndices.length > 1 && gate !== Q.Gate.SWAP && gate.can_be_controlled !== undefined
 			operation = {
 
 				gate,
@@ -4315,6 +4842,9 @@ print(task.result().measurement_counts)`
 				registerIndices,
 				isControlled
 			}
+			//perform parameter update here!!! 
+			Object.keys(parameters).forEach( element => { parameters[element] = +parameters[element] })
+			if(gate.has_parameters) gate.updateMatrix$.apply( gate, Object.values(parameters) )
 			this.operations.push( operation )
 
 			
@@ -4327,14 +4857,15 @@ print(task.result().measurement_counts)`
 
 
 			//  Let’s make history.
-
+			const redo_args = Array.from( arguments )
+			Object.assign( redo_args[ redo_args.length - 1 ], parameters )
 			this.history.record$({
 
 				redo: {
 					
 					name: 'set$',
 					func: circuit.set$,
-					args: Array.from( arguments )
+					args: redo_args
 				},
 				undo: [{
 
@@ -4903,6 +5434,40 @@ Q.Circuit.createConstants(
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+%%HTML
+<link rel="stylesheet" href="https://quantumjavascript.app/jupyter/q.css">
+<script src="https://quantumjavascript.app/jupyter/q.js"></script>
+<script src="https://quantumjavascript.app/jupyter/Q-Jupyter.js"></script>
+
+
+%%javascript
+Q.braket( element )
+
+
+
+
+*/
+
+
+
+//%%javascript
+
+
+
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 
@@ -5088,7 +5653,6 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	boardContainerEl.classList.add( 'Q-circuit-board-container' )
 	//boardContainerEl.addEventListener( 'touchstart', Q.Circuit.Editor.onPointerPress )
 	boardContainerEl.addEventListener( 'mouseleave', function(){
-
 		Q.Circuit.Editor.unhighlightAll( circuitEl )
 	})
 
@@ -5100,7 +5664,9 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	boardEl.appendChild( backgroundEl )
 	backgroundEl.classList.add( 'Q-circuit-board-background' )
 
-
+	const parameterEl = createDiv()
+	boardEl.appendChild( parameterEl )
+	parameterEl.classList.add( 'Q-parameters-box' )
 	//  Create background highlight bars 
 	//  for each row.
 
@@ -5170,7 +5736,7 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	}
 
 
-	//  Add “Add register” button.
+	//  Add “Add register” button.q
 	
 	const addRegisterEl = createDiv()
 	foregroundEl.appendChild( addRegisterEl )
@@ -5227,7 +5793,6 @@ Q.Circuit.Editor = function( circuit, targetEl ){
 	//  Add operations.
 
 	circuit.operations.forEach( function( operation ){
-
 		Q.Circuit.Editor.set( circuitEl, operation )
 	})
 
@@ -5349,11 +5914,11 @@ Object.assign( Q.Circuit.Editor, {
 			const r = min + Math.random() * ( max - min )
 			return Math.floor( Math.random() * 2 ) ? r : -r
 		}
-
+		
+		//ltnln: added missing Braket operations. 
 		paletteEl.classList.add( 'Q-circuit-palette' )
-
-		'HXYZPT*'
-		.split( '' )
+		'H,X,Y,Z,P,Rx,Ry,Rz,U,V,V†,S*,S†,T,T†,00,01,10,√S,iS,XX,XY,YY,ZZ,*'
+		.split( ',' )
 		.forEach( function( symbol ){
 
 			const gate = Q.Gate.findBySymbol( symbol )
@@ -5446,7 +6011,6 @@ Q.Circuit.Editor.prototype.onExternalSet = function( event ){
 	}
 }
 Q.Circuit.Editor.set = function( circuitEl, operation ){
-
 	const
 	backgroundEl = circuitEl.querySelector( '.Q-circuit-board-background' ),
 	foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' ),
@@ -5454,7 +6018,6 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 	operationIndex = circuitEl.circuit.operations.indexOf( operation )
 
 	operation.registerIndices.forEach( function( registerIndex, i ){
-
 		const operationEl = document.createElement( 'div' )
 		foregroundEl.appendChild( operationEl )
 		operationEl.classList.add( 'Q-circuit-operation', 'Q-circuit-operation-'+ operation.gate.nameCss )
@@ -5468,7 +6031,9 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 		operationEl.setAttribute( 'title', operation.gate.name )
 		operationEl.style.gridColumnStart = Q.Circuit.Editor.momentIndexToGridColumn( operation.momentIndex )
 		operationEl.style.gridRowStart = Q.Circuit.Editor.registerIndexToGridRow( registerIndex )
-
+		if( operation.gate.has_parameters ) Object.keys(operation.gate.parameters).forEach( element => {
+			operationEl.setAttribute( element, operation.gate.parameters[element] ) //adds a parameter attribute to the operation!
+		})
 		const tileEl = document.createElement( 'div' )
 		operationEl.appendChild( tileEl )
 		tileEl.classList.add( 'Q-circuit-operation-tile' )		
@@ -5517,7 +6082,6 @@ Q.Circuit.Editor.set = function( circuitEl, operation ){
 				}
 			})
 			if( operation.isControlled && i === 0 ){
-
 				operationEl.classList.add( 'Q-circuit-operation-control' )
 				operationEl.setAttribute( 'title', 'Control' )
 				tileEl.innerText = ''
@@ -5622,12 +6186,10 @@ Q.Circuit.Editor.isValidControlCandidate = function( circuitEl ){
 
 	if( allSiblingsPresent !== true ) return false
 
-
 	//  Note the different gate types present
 	//  among the selected operations.
 
 	const gates = selectedOperations.reduce( function( gates, operationEl ){
-
 		const gateSymbol = operationEl.getAttribute( 'gate-symbol' )
 		if( !Q.isUsefulInteger( gates[ gateSymbol ])) gates[ gateSymbol ] = 1
 		else gates[ gateSymbol ] ++
@@ -5656,7 +6218,6 @@ Q.Circuit.Editor.isValidControlCandidate = function( circuitEl ){
 		totalControlled:    0, 
 		totalNotControlled: 0
 	})
-
 
 	//  This could be ONE “identity cursor” 
 	//  and one or more of a regular single gate
@@ -5741,7 +6302,6 @@ Q.Circuit.Editor.createControl = function( circuitEl ){
 		)
 	})
 	circuit.set$(
-
 		targets[ 0 ].getAttribute( 'gate-symbol' ),
 		+control.getAttribute( 'moment-index' ),
 		[ +control.getAttribute( 'register-index' )].concat(
@@ -5776,7 +6336,6 @@ Q.Circuit.Editor.isValidSwapCandidate = function( circuitEl ){
 
 	//  We can only swap between two registers.
 	//  No crazy rotation-swap bullshit. (Yet.)
-
 	if( selectedOperations.length !== 2 ) return false
 
 
@@ -5974,7 +6533,6 @@ Q.Circuit.Editor.onPointerMove = function( event ){
 
 	//  Let’s prioritize any element that is “sticky”
 	//  which means it can appear OVER another grid cell.
-
 	const
 	cellEl = foundEls.find( function( el ){
 
@@ -6074,9 +6632,6 @@ Q.Circuit.Editor.onPointerMove = function( event ){
 
 
 
-
-
-
     ///////////////////////
    //                   //
   //   Pointer PRESS   //
@@ -6085,32 +6640,27 @@ Q.Circuit.Editor.onPointerMove = function( event ){
 
 
 Q.Circuit.Editor.onPointerPress = function( event ){
-
-
 	//  This is just a safety net
 	//  in case something terrible has ocurred.
 	// (ex. Did the user click and then their mouse ran
 	//  outside the window but browser didn’t catch it?)
-
+	console.log("event target: ", event.target);
 	if( Q.Circuit.Editor.dragEl !== null ){
 
 		Q.Circuit.Editor.onPointerRelease( event )
 		return
 	}
-
-
 	const 
 	targetEl  = event.target,
 	circuitEl = targetEl.closest( '.Q-circuit' ),
 	paletteEl = targetEl.closest( '.Q-circuit-palette' )
-
+	parameterEl = targetEl.closest( '.Q-parameters-box' )
 
 	//  If we can’t find a circuit that’s a really bad sign
 	//  considering this event should be fired when a circuit
 	//  is clicked on. So... bail!
 
 	if( !circuitEl && !paletteEl ) return
-
 
 	//  This is a bit of a gamble.
 	//  There’s a possibility we’re not going to drag anything,
@@ -6126,9 +6676,8 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 	//  Are we dealing with a circuit interface?
 	//  ie. NOT a palette interface.
 
-	if( circuitEl ){
+	if( circuitEl && !parameterEl ){
 	
-
 		//  Shall we toggle the circuit lock?
 
 		const
@@ -6233,7 +6782,6 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 
 		if( !cellEl ) return
 
-
 		//  Once we know what cell we’ve pressed on
 		//  we can get the momentIndex and registerIndex
 		//  from its pre-defined attributes.
@@ -6262,7 +6810,6 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		inputEl         = targetEl.closest( '.Q-circuit-input' ),
 		operationEl     = targetEl.closest( '.Q-circuit-operation' )
 		
-
 		//  +++++++++++++++
 		//  We’ll have to add some input editing capability later...
 		//  Of course you can already do this in code!
@@ -6296,7 +6843,6 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 			if( operationsSelectedLength === operations.length ){
 
 				operations.forEach( function( el ){
-
 					el.classList.remove( 'Q-circuit-cell-selected' )
 				})
 			}
@@ -6341,14 +6887,21 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		//  then GO HOME.
 
 		if( !operationEl ) return
-
+		// If we've doubleclicked on an operation and the operation has parameters, we should be able
+		// to edit those parameters regardless of whether or not the circuit is locked.
+		if( event.detail == 2) {
+			const operation = Q.Gate.findBySymbol(operationEl.getAttribute( 'gate-symbol' ))
+			if( operation.has_parameters ) {
+				Q.Circuit.Editor.onDoubleclick( event, operationEl )
+				return
+			}
+		}
 
 		//  Ok now we know we are dealing with an operation.
 		//  This preserved selection state information
 		//  will be useful for when onPointerRelease is fired.
 
 		if( operationEl.classList.contains( 'Q-circuit-cell-selected' )){
-
 			operationEl.wasSelected = true
 		}
 		else operationEl.wasSelected = false
@@ -6454,7 +7007,6 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		dragEl.registerIndex = registerIndex
 	}
 	else if( paletteEl ){
-
 		const operationEl = targetEl.closest( '.Q-circuit-operation' )
 
 		if( !operationEl ) return
@@ -6467,6 +7019,29 @@ Q.Circuit.Editor.onPointerPress = function( event ){
 		dragEl.originEl = paletteEl
 		dragEl.offsetX  = bounds.left - x
 		dragEl.offsetY  = bounds.top  - y
+	}
+	else if( parameterEl ){
+		const exitEl = targetEl.closest( '.Q-parameter-box-exit' )
+		if( !exitEl ) return
+		parameterEl.style.display = 'none'
+		const foregroundEl = circuitEl.querySelector( '.Q-circuit-board-foreground' )
+		operationEl = foregroundEl.querySelector( 	`[moment-index="${ parameterEl.getAttribute( 'operation-moment-index' )}"]` +
+													`[register-index="${ parameterEl.getAttribute( 'operation-register-index' )}"]` )
+		parameters = {}
+		operationSkeleton = Q.Gate.findBySymbol( operationEl.getAttribute( 'gate-symbol' ))
+		Object.keys( operationSkeleton.parameters ).forEach( key => {
+			parameters[ key ] = operationEl.getAttribute( key ) ? operationEl.getAttribute( key ) : operationSkeleton.parameters[ key ]
+		})
+		//on exiting the parameter-input-box, we should update the circuit!!
+		circuitEl.circuit.set$(
+			operationEl.getAttribute( 'gate-symbol' ),
+			+operationEl.getAttribute( 'moment-index' ),
+			operationEl.getAttribute( 'register-indices' ) ? operationEl.getAttribute( 'register-indices' ).split(',').map( i => +i ) :
+			[ +operationEl.getAttribute( 'register-index' )],
+			parameters
+		)
+		parameterEl.innerHTML = ""
+		return
 	}
 	dragEl.timestamp = Date.now()
 
@@ -6496,10 +7071,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 
 	//  If there’s no dragEl then bail immediately.
-
 	if( Q.Circuit.Editor.dragEl === null ) return
-	
-
 	//  Looks like we’re moving forward with this plan,
 	//  so we’ll take control of the input now.
 
@@ -6514,13 +7086,18 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 	//  under the mouse / finger, skipping element [0]
 	//  because that will be the clipboard.
 
-	const
-	{ x, y } = Q.Circuit.Editor.getInteractionCoordinates( event ),
-	boardContainerEl = document.elementsFromPoint( x, y )
-	.find( function( el ){
-
-		return el.classList.contains( 'Q-circuit-board-container' )
-	}),
+	// doing this because elementsFromPoint() doesnt work well with JSDOM for testing purposes
+	const { x, y } = Q.Circuit.Editor.getInteractionCoordinates( event )
+	const boardContainerAll = document.querySelectorAll(".Q-circuit-board-container")
+	if( boardContainerAll.length === 0 ) return 
+	let boardContainerEl = Array.from(boardContainerAll).find((element) => {
+		let rect = element.getBoundingClientRect()
+		let clientX = rect.left
+		let clientY = rect.top
+		let height = element.offsetHeight
+		let width = element.offsetWidth
+		return ( x >= clientX && x <= clientX + width ) && ( y >= clientY && y <= clientY + height )
+	})
 	returnToOrigin = function(){
 
 
@@ -6665,7 +7242,6 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 		droppedAtRegisterIndex < 1 ||
 		droppedAtRegisterIndex > circuit.bandwidth
 	){
-
 		returnToOrigin()
 		return
 	}
@@ -6715,7 +7291,6 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 		const registerIndicesString = childEl.getAttribute( 'register-indices' )
 		if( registerIndicesString ){
-
 
 			//  What are ALL of the registerIndices
 			//  associated with this multi-register operation?
@@ -6800,6 +7375,13 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 			if( registerIndices.length === foundComponents.length ){
 
+				const operationSkeleton = Q.Gate.findBySymbol( gatesymbol )
+				parameters = {}
+				if( operationSkeleton.has_parameters ) {
+					Object.keys( operationSkeleton.parameters ).forEach( key => {
+						parameters[ key ] = childEl.getAttribute( key ) ? childEl.getAttribute( key ) : operationSkeleton.parameters[ key ]
+					})
+				}
 				//circuit.set$( 
 				setCommands.push([
 
@@ -6820,7 +7402,8 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 							registerIndexTarget += childEl.origin.registerIndex - Q.Circuit.Editor.dragEl.registerIndex + siblingDelta
 						}
 						return registerIndexTarget
-					})
+					}),
+					parameters
 				// )
 				])
 			}
@@ -6841,7 +7424,6 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				//  can sit at each register index.
 				//  This copies registerIndices, 
 				//  but inverts the key : property relationship.
-
 				const registerMap = registerIndices
 				.reduce( function( registerMap, registerIndex, r ){
 
@@ -6869,7 +7451,6 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				//  Now we can seat it at its new position.
 				//  Note: This may OVERWRITE one of its siblings!
 				//  And that’s ok.
-
 				foundComponents.forEach( function( component ){
 
 					const 
@@ -6879,7 +7460,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 
 					//  Now put it where it wants to go,
 					//  possibly overwriting a sibling component!
-
+					//ltnln: if a multiqubit operation component that requires a sibling, overwrites its sibling, both/all components should be destroyed
 					registerMap[
 	
 					 	componentRegisterIndex + draggedRegisterDelta
@@ -6904,34 +7485,47 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				//  ie. if a dragged sibling overwrote a seated one.
 
 				.filter( function( entry ){
-				
 					return Q.isUsefulInteger( entry )
 				})
 
-
+				const operationSkeleton = Q.Gate.findBySymbol( childEl.getAttribute( 'gate-symbol' ) )
+				parameters = {}
+				if( operationSkeleton.has_parameters ) {
+					Object.keys( operationSkeleton.parameters ).forEach( key => {
+						parameters[ key ] = childEl.getAttribute( key ) ? childEl.getAttribute( key ) : operationSkeleton.parameters[ key ]
+					})
+				}
 				//  Finally, we’re ready to set.
-
 				// circuit.set$( 
 				setCommands.push([
-
+					//ltnln: if a component of an operation that requires a sibling pair overwrites its sibling, we want it removed entirely. 
+					fixedRegistersIndices.length < 2 && Q.Gate.findBySymbol( childEl.getAttribute( 'gate-symbol' ) ).is_multi_qubit ?
+					Q.Gate.NOOP : 
 					childEl.getAttribute( 'gate-symbol' ), 
 					momentIndexTarget,
-					fixedRegistersIndices
+					fixedRegistersIndices,
+					parameters
 				// )
 				])
 			}
 			else {
-
 				remainingComponents.forEach( function( componentEl, i ){
-
 					//circuit.set$( 
+					const operationSkeleton = Q.Gate.findBySymbol( componentEl.getAttribute( 'gate-symbol' ) )
+					parameters = {}
+					if( operationSkeleton.has_parameters ) {
+						Object.keys( operationSkeleton.parameters ).forEach( key => {
+							parameters[ key ] = +componentEl.getAttribute( key ) ? +componentEl.getAttribute( key ) : operationSkeleton.parameters[ key ]
+						})
+					}
 					setCommands.push([
 
-						+componentEl.getAttribute( 'register-indices-index' ) ? 
+						+componentEl.getAttribute( 'register-indices-index' ) && !Q.Gate.findBySymbol( childEl.getAttribute( 'gate-symbol' ) ).is_multi_qubit ? 
 							gatesymbol : 
 							Q.Gate.NOOP,
 						+componentEl.getAttribute( 'moment-index' ),
-						+componentEl.getAttribute( 'register-index' )
+						+componentEl.getAttribute( 'register-index' ),
+						parameters
 					// )
 					])
 				})
@@ -6941,15 +7535,22 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 				//  all the components that were part of the drag.
 
 				foundComponents.forEach( function( componentEl ){
-
-					// circuit.set$( 
+					const operationSkeleton = Q.Gate.findBySymbol( componentEl.getAttribute( 'gate-symbol' ) )
+					parameters = {}
+					if( operationSkeleton.has_parameters ) {
+						Object.keys( operationSkeleton.parameters ).forEach( key => {
+							parameters[ key ] = +componentEl.getAttribute( key ) ? +componentEl.getAttribute( key ) : operationSkeleton.parameters[ key ]
+						})
+					}
 					setCommands.push([
-
-						+componentEl.getAttribute( 'register-indices-index' ) ? 
-							gatesymbol : 
+						//ltnln: temporary fix: certain multiqubit operations should only be represented in pairs of registers. If one is removed (i.e. a single component of the pair)
+						//then the entire operation should be removed. 
+						+componentEl.getAttribute( 'register-indices-index' ) && !Q.Gate.findBySymbol( componentEl.getAttribute( 'gate-symbol' ) ).is_multi_qubit ? 
+							componentEl.getAttribute( 'gate-symbol' ) : 
 							Q.Gate.NOOP,
 						+componentEl.getAttribute( 'moment-index' ) + draggedMomentDelta,
 						+componentEl.getAttribute( 'register-index' ) + draggedRegisterDelta,
+						parameters
 					// )
 					])
 				})
@@ -6983,7 +7584,7 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 		
 		else {
 			
-
+			
 			//  First, if this operation comes from a circuit
 			// (and not a circuit palette)
 			//  make sure the old positions are cleared away.
@@ -7005,11 +7606,24 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 			//  in its new home.
 
 			// circuit.set$( 
+			let registerIndices = [ registerIndexTarget ]
+			//ltnln: By default, multiqubit gates appear in pairs on the circuit rather than
+			//		requiring the user to have to pair them like with Swap/CNot. 
+			const operationSkeleton =  Q.Gate.findBySymbol( childEl.getAttribute( 'gate-symbol' ))
+			if(operationSkeleton.is_multi_qubit ) {
+				registerIndices.push( registerIndexTarget == circuit.bandwidth ? registerIndexTarget - 1 : registerIndexTarget + 1)
+			}
+			let parameters = {}
+			if( operationSkeleton.has_parameters ) {
+				Object.keys( operationSkeleton.parameters ).forEach( key => {
+					parameters[ key ] = childEl.getAttribute( key ) ? childEl.getAttribute( key ) : operationSkeleton.parameters[ key ]
+				})
+			}
 			setCommands.push([
-
 				childEl.getAttribute( 'gate-symbol' ), 
 				momentIndexTarget,
-				[ registerIndexTarget ]
+				registerIndices, 
+				parameters
 			// )
 			])
 		}
@@ -7053,8 +7667,83 @@ Q.Circuit.Editor.onPointerRelease = function( event ){
 }
 
 
+	/////////////////////////
+   //                     //
+  // Pointer DOUBLECLICK //
+ //                     //
+/////////////////////////
+//ltnln: my trying out an idea for parameterized gates...
+Q.Circuit.Editor.onDoubleclick = function( event, operationEl ) {
+	// assumption for the following 3 lines is that we've already decided that we are on-top of a valid gate operation in 
+	// the circuit
+	const operation = Q.Gate.findBySymbol( operationEl.getAttribute( 'gate-symbol' ))
+	const { x, y } = Q.Circuit.Editor.getInteractionCoordinates( event )
+
+	const boardContainerAll = document.querySelectorAll(".Q-circuit-board-container")
+	if( boardContainerAll.length === 0 ) return 
+	let boardContainerEl = Array.from(boardContainerAll).find((element) => {
+		let rect = element.getBoundingClientRect()
+		let clientX = rect.left
+		let clientY = rect.top
+		let height = element.offsetHeight
+		let width = element.offsetWidth
+		return ( x >= clientX && x <= clientX + width ) && ( y >= clientY && y <= clientY + height )
+	})
+	if( !boardContainerEl ) return;
+	const parameterEl = boardContainerEl.querySelector('.Q-parameters-box')
+	const exit = document.createElement( 'button' )
+	parameterEl.appendChild( exit )
+	exit.classList.add( 'Q-parameter-box-exit' )
+	exit.appendChild(document.createTextNode( '⬅' ))
+	parameterEl.setAttribute( "operation-moment-index", operationEl.getAttribute( 'moment-index' ))
+	parameterEl.setAttribute( "operation-register-index", operationEl.getAttribute( 'register-index' ))
+
+	
+	//here we generate queries for each parameter that the gate operation takes!
+	const parameters = Object.keys(operation.parameters)
+	parameters.forEach( element => {
+		if( operation.parameters && operation.parameters[element] !== null ) {
+			const input_fields = document.createElement( 'div' )
+			parameterEl.appendChild( input_fields )
+			input_fields.classList.add( 'Q-parameter-box-input-container' )
+			const label = document.createElement( "span" )
+			input_fields.appendChild( label )
+			label.classList.add( 'Q-parameter-input-label' )
+			label.appendChild(document.createTextNode( element ))
+
+			const textbox = document.createElement( "input" )
+			input_fields.appendChild( textbox )
+			textbox.classList.add( 'Q-parameter-box-input' )
+			textbox.setAttribute( 'type', 'text' )
+			textbox.setAttribute( 'placeholder', element )
+			textbox.setAttribute( 'value', operationEl.getAttribute(element) ? operationEl.getAttribute(element) : operation.parameters[element] )
+			//set textbox to update the operation instance (cellEl)'s parameters on value change
+			textbox.addEventListener( "change", () => {
+				let parameterValue
+				let oldValue = operationEl.getAttribute( element )
+				if( !oldValue ) oldValue = operation.parameters[ element ]
+				try {
+					//TODO: figure out how to properly import the mathjs library...
+					parameterValue = +(textbox.value.toLowerCase());
+				}
+				catch( err ) {
+					parameterValue = oldValue
+				}
+
+				if( !parameterValue || parameterValue === Infinity ) textbox.value = oldValue.toString()
+				else {
+					operationEl.setAttribute( element, parameterValue )
+					textbox.value = parameterValue.toString()
+				}
+			})
 
 
+		}
+	})
+
+	parameterEl.classList.toggle('overlay')
+	parameterEl.style.display = 'block'
+}
 
 
     ///////////////////
@@ -7078,3 +7767,108 @@ window.addEventListener( 'touchend',  Q.Circuit.Editor.onPointerRelease )
 
 
 
+/*
+
+
+%%HTML
+<link rel="stylesheet" href="https://quantumjavascript.app/jupyter/q.css">
+<script src="https://quantumjavascript.app/jupyter/q.js"></script>
+<script src="https://quantumjavascript.app/jupyter/Q-Jupyter.js"></script>
+
+
+%%javascript
+Q.braket( element )
+
+
+
+
+*/
+
+
+
+//%%javascript
+
+
+
+Q.braket = function(){
+
+
+	//  Create the HTML bits we need,
+	//  contain them all together,
+	//  and output them to Jupyter.
+	if( arguments.length === 0 || arguments.length > 3 ) return;
+	const element = arguments[0];
+	const args = (Array.from(arguments)).slice(1);
+	let circuit
+	if(args.length === 0) {
+		circuit = new Q( 4, 8 )
+	}
+	else if(args.length === 1) {
+		circuit = new Q( args[0] )
+	}
+	else { 
+		circuit = new Q( args[0], args[1] )
+	}
+	container = document.createElement( 'div' )
+	container.appendChild( Q.Circuit.Editor.createPalette() )
+	container.appendChild( circuit.toDom() )
+	element.html( container )
+	
+
+	//  Weâ€™re going to take this SLOOOOOOOOWLY
+	//  because there are many potential things to debug.
+
+	const thisCell = Jupyter.notebook.get_selected_cell()
+	// console.log( 'thisCell', thisCell )
+	
+	const thisCellIndex = Jupyter.notebook.get_cells().indexOf( thisCell )
+	// console.log( 'thisCellIndex', thisCellIndex )
+
+	const nextCell = Jupyter.notebook.insert_cell_below( 'code', thisCellIndex - 1 )
+	const nextNextCell = Jupyter.notebook.insert_cell_below( 'markdown', Jupyter.notebook.get_cells().indexOf( thisCell ) - 1 )
+	// console.log( 'nextCell', nextCell )
+
+	nextCell.set_text( circuit.toAmazonBraket() )
+	nextNextCell.set_text( circuit.report$() )
+	
+
+
+
+
+
+	window.addEventListener( 'Q gui altered circuit', function( event ){
+
+		// updatePlaygroundFromDom( event.detail.circuit )
+		if( event.detail.circuit === circuit ){
+			
+			console.log( 'Updating circuit from GUI', circuit )
+			circuit.evaluate$()
+			nextCell.set_text( circuit.toAmazonBraket() )
+
+		}
+	})
+
+	window.addEventListener( 'Q.Circuit.evaluate completed', function( event ) {
+		if( event.detail.circuit === circuit ) {
+			nextNextCell.set_text( circuit.report$() ) 
+		}
+	})
+
+
+	// nextCell.render()
+
+	// console.log( 'thisCell', thisCell )
+	// console.log( 'nextCell', nextCell )
+	// console.log( 'thisCellIndex', thisCellIndex )
+
+	// code = Jupyter.notebook.insert_cell_{0}('code');
+	// code.set_text(atob("{1}"))
+
+	// var t_cell = Jupyter.notebook.get_selected_cell()
+	// t_cell.set_text('<!--\\n' + t_cell.get_text() + '\\n--> \\n{}')
+	// var t_index = Jupyter.notebook.get_cells().indexOf(t_cell)
+	// Jupyter.notebook.to_markdown(t_index)
+	// Jupyter.notebook.get_cell(t_index).render()
+}
+
+module.exports = Q

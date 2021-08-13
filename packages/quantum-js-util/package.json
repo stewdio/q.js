@@ -2,10 +2,11 @@
   "name": "quantum-js-util",
   "version": "1.0.0",
   "description": "",
-  "main": "Q.js",
+  "main": "index.js",
   "scripts": {
     "test": "jest",
-    "prettier": "echo 'I am a prettier util!' && exit 0"
+    "prettier": "npx prettier --write", 
+    "lint": "npx eslint **/*.js"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
@@ -14,7 +15,9 @@
     "jsdom": "^16.6.0",
     "prettier": "2.3.2"
   },
-  "dependencies": {},
+  "dependencies": {
+    "custom-event": "^1.0.1"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"

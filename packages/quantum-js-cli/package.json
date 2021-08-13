@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "pretter": "npx prettier --write",
+    "lint": "npx eslint **/*.js"
   },
   "dependencies": {
     "prompt-sync": "^4.2.0",

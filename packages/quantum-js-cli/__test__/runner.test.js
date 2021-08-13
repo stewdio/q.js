@@ -95,7 +95,6 @@ describe("Testing various forms of gate-operation call expression and see that e
         Object.entries(quantumjs.Gate.constants).forEach(function(entry) {
             let gate = entry[1];
             let input = gate.nameCss + (gate.is_multi_qubit ? "(1, [1, 2])" : "(1, [1])");
-            console.log(input);
             test("Checking that evaluate operation is called once for the input '" + input + "'", () => {
                 let circuit = quantumjs.Q();
                 runner.evaluateInput(input, circuit);
