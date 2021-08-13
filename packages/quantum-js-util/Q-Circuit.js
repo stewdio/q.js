@@ -1942,9 +1942,9 @@ Object.entries( Gate.constants ).forEach( function( entry ){
 	const 
 	gateConstantName = entry[ 0 ],
 	gate = entry[ 1 ],
-	set$ = function( momentIndex, registerIndexOrIndices ){
+	set$ = function( momentIndex, registerIndexOrIndices, parameters ){
 
-		this.set$( gate, momentIndex, registerIndexOrIndices )
+		this.set$( gate, momentIndex, registerIndexOrIndices, parameters )
 		return this
 	}
 	Circuit.prototype[ gate.name ] = set$,
