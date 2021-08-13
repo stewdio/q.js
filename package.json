@@ -28,7 +28,6 @@
     "prettier": "2.3.2"
   },
   "dependencies": {
-    "requirejs": "^2.3.6"
   },
   "workspaces": [
     "./packages/*"
