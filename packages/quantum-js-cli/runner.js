@@ -1,25 +1,25 @@
 const {Q, Circuit, Gate, logger} = require('quantum-js-util');
-const prompt = require('prompt-sync')({sigint: true});
+const prompt_sync = require('prompt-sync')({sigint: true});
 var readlineSync = require('readline-sync');
 const mark = "> ";
 
 
-function prepareCircuit() {
+function prepareCircuit(prompt = prompt_sync) {
     let selection = NaN;
     console.clear();
     let circuit;
     while(!selection) {
-        console.log("Please select a method to begin circuit creation: ");
+        //the following prompt requires the user to select between a number of options to create a circuit. they will enter the NUMBER that corresponds with the action they'd like.
+        console.log("Please select a method (number value) to begin circuit creation: ");
         console.log("1. From Scratch\n" + 
-                    "2. From Text Diagram\n"
-                    /*+ "3. From Table Transposed\n"*/);
-        selection = +prompt(mark);
+                    "2. From Text Diagram\n");
+        selection = Number(prompt(mark));
         switch(selection) {
             case 1:
                 let num_registers = NaN;
-                while(!num_registers) {
+                while(!num_registers || num_registers <= 0) {
                     console.log("Enter the number of qubits you would like to start out with.\n");
-                    num_registers = +prompt(mark);
+                    num_registers = Number(prompt(mark));
                 }
                 circuit = Q(num_registers, 8);
                 break;
@@ -27,7 +27,7 @@ function prepareCircuit() {
                 circuit = prepareCircuitFromTable();
                 break;
             default:
-                selection = NaN
+                selection = NaN;
         }
     }
     if(!(circuit instanceof Circuit)) {
@@ -49,11 +49,12 @@ function prepareCircuitFromTable() {
     }, {prompt: ''});
     tableString = lines.join('\n');
     try {
-        resultingCircuit = Q(tableString);
+        resultingCircuit = Q(tableString.trim());
     }
     catch(e) {
         return logger.error("Failed to create circuit from table.");
     }
+    if(!(resultingCircuit instanceof Circuit) || resultingCircuit.bandwidth <= 0 || resultingCircuit.timewidth <= 0) return logger.error("Failed to create circuit from table.");
     return resultingCircuit;
 }
 
@@ -83,14 +84,16 @@ function evaluateOperation(input, circuit) {
     //Syntax: GateSymbol(momentIndex, [registerIndex0, registerIndex1,...])
         //Regex explanation: looks for the first INTEGER of the from "(digit0digit1digit2..." and removes the "(" at the beginning.
     let momentIndex = +(/\(\s*\d+/).exec(input)[0].substring(1);
+    if(momentIndex > circuit.timewidth || momentIndex < 0) return logger.error("Moment index out of bounds");
     if(momentIndex === undefined) {
         return logger.error("Invalid gate set operation syntax");
     }
-    //
+    
     let registerIndices;
-    let re = /\[(\s*\d+\s*,{0,1}\s*)+\]/g;
+    //This is a regex that selects an array of integers from a string, i.e. any substring of the form "[integer1, integer2, integer3...]"
+    let arrayRegex = /\[(\s*\d+\s*,{0,1}\s*)+\]/g;
     try {
-        registerIndices = (re)
+        registerIndices = (arrayRegex)
         .exec(input)[0]
         .slice(1, -1)
         .split(',')
@@ -99,12 +102,15 @@ function evaluateOperation(input, circuit) {
     catch(e) {
         return logger.error("Invalid gate set operation syntax");
     }
+    if(!registerIndices.every(index => {
+        return index > 0 && index < circuit.bandwidth;
+    })) return logger.error("Register index out of bounds");
     let newParameters = {};
-    input = input.substring(re.lastIndex);
-    re = /\d+\.{0,1}\d*/g
+    input = input.substring(arrayRegex.lastIndex);
+    let commaSeparatedDecimalRegex = /\d+\.{0,1}\d*/g
     let input_params = [];
-    while(value = re.exec(input)) {
-        input_params.push(+value[0]);
+    while(value = commaSeparatedDecimalRegex.exec(input)) {
+        input_params.push(Number(value[0]));
     }
     input_params.reverse();
     if(gate.has_parameters) {
@@ -116,7 +122,7 @@ function evaluateOperation(input, circuit) {
             }
         });
     }
-    else if(input_params.length !== 0) return logger.error("c Invalid gate set operation syntax");
+    else if(input_params.length !== 0) return logger.error("Invalid gate set operation syntax");
     return circuit[functionName](momentIndex, registerIndices, newParameters);
 }
 
@@ -128,18 +134,18 @@ function removeOperation(input, circuit) {
     }
     //
     let registerIndices;
-    let re = /\[(\s*\d+\s*,{0,1}\s*)+\]/g;
+    let arrayRegex = /\[(\s*\d+\s*,{0,1}\s*)+\]/g;
     try {
-        registerIndices = (re)
+        registerIndices = (arrayRegex)
         .exec(input)[0]
         .slice(1, -1)
         .split(',')
-        .map(index => +index);
+        .map(index => Number(index));
     } 
     catch(e) {
         return logger.error("Invalid gate set operation syntax");
     }
-    if(input.substring(re.lastIndex).trim() != ")") {
+    if(input.substring(arrayRegex.lastIndex).trim() != ")") {
         return logger.error("Invalid gate set operation syntax");
     }
     let operationToRemove = circuit.get(momentIndex, registerIndices[0]);
@@ -151,7 +157,7 @@ function removeOperation(input, circuit) {
     })) return circuit.clear$(momentIndex, operationToRemove.registerIndices);
 }
 
-function evaluateInput(input, circuit) {
+function evaluateInput(input, circuit, prompt=prompt_sync) {
     switch(input) {
         case "-h":
         case "help":
@@ -182,16 +188,16 @@ function evaluateInput(input, circuit) {
             else circuit = prepareCircuit();
             break;
         default:
-            let circuitBackup = circuit.clone();
-            let re = /((\w+-*)+\(\s*\d+\s*,\s*\[(\s*\d+\s*,{0,1}\s*)+\]\s*(,\s*\d+\.{0,1}\d*\s*)*\))/g;
-            while(functionCall = re.exec(input)) {
+            let circuitBackup = circuit.toText();
+            let functionCallRegex = /((\w+-*)+\(\s*\d+\s*,\s*\[(\s*\d+\s*,{0,1}\s*)+\]\s*(,\s*\d+\.{0,1}\d*\s*)*\))/g;
+            while(functionCall = functionCallRegex.exec(input)) {
                 functionCall = functionCall[0];
                 let functionName = (/[^\s,\[\]()]+/g).exec(functionCall)[0];
                 //checks that the function call is gate set$ operation and not another circuit operation.
                 //Syntax: GateSymbol(momentIndex, [registerIndex0, registerIndex1,...])
                 if(circuit[functionName] instanceof Function && (Gate.findBySymbol(functionName) instanceof Gate || Gate.findByNameCss(functionName) instanceof Gate)) {
                     if(evaluateOperation(functionCall, circuit) === "(error)") {
-                        circuit = circuitBackup;
+                        circuit = Q(circuitBackup);
                         break;
                     }
                 }
@@ -209,14 +215,14 @@ function evaluateInput(input, circuit) {
 }
 
 
-function run() {
-    let circuit = prepareCircuit();
+function run(prompt = prompt_sync) {
+    let circuit = prepareCircuit(prompt);
     let input = prompt(mark);
-    while(input !== "quit" && input !== "q") {
-        evaluateInput(input, circuit);
-        input = prompt(mark)
+    while(input !== "quit" && input !== "q" && circuit !== '(error)') {
+        circuit = evaluateInput(input, circuit, prompt);
+        input = prompt(mark);
     }
     
 }
 
-module.exports = {run, evaluateInput, removeOperation, evaluateOperation, printMenu};
+module.exports = {run, evaluateInput, removeOperation, evaluateOperation, printMenu, prepareCircuit};

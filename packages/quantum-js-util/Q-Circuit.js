@@ -1615,16 +1615,15 @@ print(task.result().measurement_counts)`
 		const original = this
 		let {
 
-			registerFirstIndex,
-			registerRange,
-			registerLastIndex,
+			qubitFirstIndex,
+			qubitRange,
+			qubitLastIndex,
 			momentFirstIndex,
 			momentRange,
 			momentLastIndex
 
 		} = this.determineRanges( options )
-
-		const copy = new Circuit( registerRange, momentRange )
+		const copy = new Circuit( qubitRange, momentRange )
 
 		original.operations
 		.filter( function( operation ){
@@ -1635,8 +1634,8 @@ print(task.result().measurement_counts)`
 
 					operation.momentIndex   >= momentFirstIndex &&
 					operation.momentIndex   <  momentLastIndex &&
-					operation.registerIndex >= registerFirstIndex && 
-					operation.registerIndex <  registerLastIndex
+					operation.registerIndex >= qubitFirstIndex && 
+					operation.registerIndex <  qubitLastIndex
 				)
 			}))
 		})			
@@ -1943,12 +1942,15 @@ Object.entries( Gate.constants ).forEach( function( entry ){
 	const 
 	gateConstantName = entry[ 0 ],
 	gate = entry[ 1 ],
-	set$ = function( momentIndex, registerIndexOrIndices ){
+	set$ = function( momentIndex, registerIndexOrIndices, parameters ){
 
-		this.set$( gate, momentIndex, registerIndexOrIndices )
+		this.set$( gate, momentIndex, registerIndexOrIndices, parameters )
 		return this
 	}
-	Circuit.prototype[ gateConstantName ] = set$
+	Circuit.prototype[ gate.name ] = set$,
+	Circuit.prototype[ gate.name.toLowerCase() ] = set$,
+	Circuit.prototype[ gate.nameCss ] = set$,
+	Circuit.prototype[ gate.nameCss.toLowerCase() ] = set$,
 	Circuit.prototype[ gate.symbol ] = set$
 	Circuit.prototype[ gate.symbol.toLowerCase() ] = set$
 })
