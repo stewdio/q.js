@@ -1,10 +1,10 @@
 const {Q, Circuit, Gate, logger} = require('quantum-js-util');
-const prompt = require('prompt-sync')({sigint: true});
+const prompt_sync = require('prompt-sync')({sigint: true});
 var readlineSync = require('readline-sync');
 const mark = "> ";
 
 
-function prepareCircuit() {
+function prepareCircuit(prompt = prompt_sync) {
     let selection = NaN;
     console.clear();
     let circuit;
@@ -17,7 +17,7 @@ function prepareCircuit() {
         switch(selection) {
             case 1:
                 let num_registers = NaN;
-                while(!num_registers) {
+                while(!num_registers || num_registers <= 0) {
                     console.log("Enter the number of qubits you would like to start out with.\n");
                     num_registers = Number(prompt(mark));
                 }
@@ -49,11 +49,12 @@ function prepareCircuitFromTable() {
     }, {prompt: ''});
     tableString = lines.join('\n');
     try {
-        resultingCircuit = Q(tableString);
+        resultingCircuit = Q(tableString.trim());
     }
     catch(e) {
         return logger.error("Failed to create circuit from table.");
     }
+    if(!(resultingCircuit instanceof Circuit) || resultingCircuit.bandwidth <= 0 || resultingCircuit.timewidth <= 0) return logger.error("Failed to create circuit from table.");
     return resultingCircuit;
 }
 
@@ -156,7 +157,7 @@ function removeOperation(input, circuit) {
     })) return circuit.clear$(momentIndex, operationToRemove.registerIndices);
 }
 
-function evaluateInput(input, circuit) {
+function evaluateInput(input, circuit, prompt=prompt_sync) {
     switch(input) {
         case "-h":
         case "help":
@@ -214,14 +215,14 @@ function evaluateInput(input, circuit) {
 }
 
 
-function run() {
-    let circuit = prepareCircuit();
+function run(prompt = prompt_sync) {
+    let circuit = prepareCircuit(prompt);
     let input = prompt(mark);
-    while(input !== "quit" && input !== "q") {
-        circuit = evaluateInput(input, circuit);
-        input = prompt(mark)
+    while(input !== "quit" && input !== "q" && circuit !== '(error)') {
+        circuit = evaluateInput(input, circuit, prompt);
+        input = prompt(mark);
     }
     
 }
 
-module.exports = {run, evaluateInput, removeOperation, evaluateOperation, printMenu};
+module.exports = {run, evaluateInput, removeOperation, evaluateOperation, printMenu, prepareCircuit};
