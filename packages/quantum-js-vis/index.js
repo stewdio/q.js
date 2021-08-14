@@ -20,7 +20,8 @@ braket = function(){
 		circuit = new Q( args[0] )
 	}
 	else { 
-		circuit = new Q( args[0], args[1] )
+		if(args[0] <= 0 || args[1] <= 0) circuit = new Q(4, 8);
+		else circuit = new Q( args[0], args[1] )
 	}
 	container = document.createElement( 'div' )
 	let paletteEl = Editor.createPalette();
