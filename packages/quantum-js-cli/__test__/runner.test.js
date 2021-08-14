@@ -91,7 +91,6 @@ describe("Testing various forms of gate-operation call expression and see that e
         expect(circuit.get(1, 1).gate.symbol).toBe("X");
         expect(circuit.get(1, 2).gate.symbol).toBe("X");
     })
-    console.log(quantumjs.Gate);
     describe("Check that gateSymbol(...,[...]) is valid for all gate constants in the Gate module using their nameCss value", ()=> {
         Object.entries(quantumjs.Gate.constants).forEach(function(entry) {
             let gate = entry[1];
