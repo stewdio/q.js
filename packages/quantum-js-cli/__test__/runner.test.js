@@ -105,8 +105,6 @@ describe("Testing various forms of gate-operation call expression and see that e
             })
         })
     })
-
-    
 })
 
 
@@ -183,7 +181,7 @@ describe("Check that parameters parameterized gates can be input and set properl
         let circuit = quantumjs.Q(4, 4);
         runner.evaluateInput("u(1, [1], 1, 2)", circuit);
         let result = circuit.get(1, 1).gate;
-        let defaultUnitary = Gate.findBySymbol('U');
+        let defaultUnitary = quantumjs.Gate.findBySymbol('U');
         expect(result.symbol).toBe('U');
         expect(result.parameters['phi']).toBe(1);
         expect(result.parameters['theta']).toBe(2);
@@ -223,5 +221,37 @@ describe("Test various combinations of set and remove operations chained togethe
         expect(circuit.get(2, 1).registerIndices).toEqual([1, 2]);
         expect(circuit.get(1, 3).gate.symbol).toBe('P');
         expect(circuit.get(1, 3).gate.parameters['phi']).toBe(3.14159);
+    })
+})
+
+
+describe.only("Check that the prepareCircuit() method correctly creates circuits based on user input", ()=> {
+    let prompt = jest.fn();
+    test("Test prepareCircuit() with inputs '1'...'4' at prompts to see it creates an empty circuit with bandwidth = 4", ()=> {
+        prompt.mockReturnValueOnce("1").mockReturnValueOnce("4");
+        let circuit = runner.prepareCircuit(prompt);
+        expect(circuit instanceof quantumjs.Circuit).toBeTruthy();
+        expect(circuit.bandwidth).toBe(4);
+        expect(circuit.timewidth).toBe(8);
+        //check that there are no operations on the circuit
+        for(let i = 0; i < circuit.bandwidth; i++) {
+            for(let j = 0; j < circuit.timewidth; j++) {
+                expect(circuit.get(i, j)).toBeUndefined();
+            }
+        }
+    })
+    test("Test prepareCircuit() with inputs '1'...'-1'...'4' at prompts to see it creates an empty circuit with bandwidth = 4", ()=> {
+        //the -1 input will not trigger a circuit creation as -1 is not a valid number of registers. The user will be prompted again, to which '4' will be a valid response.
+        prompt.mockReturnValueOnce("1").mockReturnValueOnce('-1').mockReturnValueOnce("4");
+        let circuit = runner.prepareCircuit(prompt);
+        expect(circuit instanceof quantumjs.Circuit).toBeTruthy();
+        expect(circuit.bandwidth).toBe(4);
+        expect(circuit.timewidth).toBe(8);
+        //check that there are no operations on the circuit
+        for(let i = 0; i < circuit.bandwidth; i++) {
+            for(let j = 0; j < circuit.timewidth; j++) {
+                expect(circuit.get(i, j)).toBeUndefined();
+            }
+        }
     })
 })

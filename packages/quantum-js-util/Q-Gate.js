@@ -98,6 +98,9 @@ Object.assign( Gate, {
 	findByName: function( name ){
 
 		return Gate.findBy( 'name', name )
+	},
+	findByNameCss: function( nameCss  ) {
+		return Gate.findBy( 'nameCss', nameCss )
 	}
 })
 
