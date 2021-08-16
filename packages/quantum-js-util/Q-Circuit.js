@@ -1121,6 +1121,7 @@ https://cirq.readthedocs.io/en/stable/tutorial.html
 		const header = `import boto3
 from braket.aws import AwsDevice
 from braket.circuits import Circuit
+from braket.devices import LocalSimulator
 
 my_bucket = f"amazon-braket-Your-Bucket-Name" # the name of the bucket
 my_prefix = "Your-Folder-Name" # the name of the folder in the bucket
