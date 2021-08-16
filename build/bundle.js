@@ -1875,6 +1875,7 @@ https://cirq.readthedocs.io/en/stable/tutorial.html
 		const header = `import boto3
 from braket.aws import AwsDevice
 from braket.circuits import Circuit
+from braket.devices import LocalSimulator
 
 my_bucket = f"amazon-braket-Your-Bucket-Name" # the name of the bucket
 my_prefix = "Your-Folder-Name" # the name of the folder in the bucket
@@ -2369,16 +2370,15 @@ print(task.result().measurement_counts)`
 		const original = this
 		let {
 
-			registerFirstIndex,
-			registerRange,
-			registerLastIndex,
+			qubitFirstIndex,
+			qubitRange,
+			qubitLastIndex,
 			momentFirstIndex,
 			momentRange,
 			momentLastIndex
 
 		} = this.determineRanges( options )
-
-		const copy = new Circuit( registerRange, momentRange )
+		const copy = new Circuit( qubitRange, momentRange )
 
 		original.operations
 		.filter( function( operation ){
@@ -2389,8 +2389,8 @@ print(task.result().measurement_counts)`
 
 					operation.momentIndex   >= momentFirstIndex &&
 					operation.momentIndex   <  momentLastIndex &&
-					operation.registerIndex >= registerFirstIndex && 
-					operation.registerIndex <  registerLastIndex
+					operation.registerIndex >= qubitFirstIndex && 
+					operation.registerIndex <  qubitLastIndex
 				)
 			}))
 		})			
@@ -2697,12 +2697,15 @@ Object.entries( Gate.constants ).forEach( function( entry ){
 	const 
 	gateConstantName = entry[ 0 ],
 	gate = entry[ 1 ],
-	set$ = function( momentIndex, registerIndexOrIndices ){
+	set$ = function( momentIndex, registerIndexOrIndices, parameters ){
 
-		this.set$( gate, momentIndex, registerIndexOrIndices )
+		this.set$( gate, momentIndex, registerIndexOrIndices, parameters )
 		return this
 	}
-	Circuit.prototype[ gateConstantName ] = set$
+	Circuit.prototype[ gate.name ] = set$,
+	Circuit.prototype[ gate.name.toLowerCase() ] = set$,
+	Circuit.prototype[ gate.nameCss ] = set$,
+	Circuit.prototype[ gate.nameCss.toLowerCase() ] = set$,
 	Circuit.prototype[ gate.symbol ] = set$
 	Circuit.prototype[ gate.symbol.toLowerCase() ] = set$
 })
@@ -3541,6 +3544,9 @@ Object.assign( Gate, {
 	findByName: function( name ){
 
 		return Gate.findBy( 'name', name )
+	},
+	findByNameCss: function( nameCss  ) {
+		return Gate.findBy( 'nameCss', nameCss )
 	}
 })
 
