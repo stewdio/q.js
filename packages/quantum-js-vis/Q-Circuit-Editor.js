@@ -1,5 +1,6 @@
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 const {Q, Circuit, Gate, logger, misc, mathf } = require('quantum-js-util');
+const {evaluate} = require('mathjs');
 Editor = function( circuit, targetEl ){
 	//  First order of business,
 	//  we require a valid circuit.
@@ -2245,10 +2246,10 @@ Editor.onDoubleclick = function( event, operationEl ) {
 			textbox.setAttribute( 'value', operationEl.getAttribute(element) ? operationEl.getAttribute(element) : operation.parameters[element] )
 			//set textbox to update the operation instance (cellEl)'s parameters on value change
 			textbox.addEventListener( "change", () => {
-				let parameterValue = +textbox.value;
+				let parameterValue = evaluate(textbox.value);
 				let oldValue = operationEl.getAttribute( element )
 				if( !oldValue ) oldValue = operation.parameters[ element ]
-				if( parameterValue === null || parameterValue === Infinity ) textbox.value = oldValue.toString()
+				if( !parameterValue || parameterValue === Infinity ) textbox.value = oldValue.toString()
 				else {
 					operationEl.setAttribute( element, parameterValue )
 					textbox.value = parameterValue

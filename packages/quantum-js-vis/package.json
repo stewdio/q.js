@@ -17,6 +17,6 @@
 
   },
   "dependencies": {
-    "requirejs": "^2.3.6"
+    "mathjs": "^9.4.4"
   }
 }
