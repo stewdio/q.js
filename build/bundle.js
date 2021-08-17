@@ -1964,7 +1964,7 @@ device = LocalSimulator()\n\n`
 		variables += '\n'
 		if( this.operations.length === 0 ) circuit +=  '.i(0)'//  Quick fix to avoid an error here!
 
-		const footer = `\n\ntask = device.run(qjs_circuit, s3_folder, shots=100)
+		const footer = `\n\ntask = device.run(qjs_circuit, shots=100)
 print(task.result().measurement_counts)`
 		return isValidBraketCircuit ? header + variables + circuit + footer : `###This circuit is not representable as a Braket circuit!###`
 	},
