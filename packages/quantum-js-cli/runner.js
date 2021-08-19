@@ -103,7 +103,7 @@ function evaluateOperation(input, circuit) {
         return logger.error("Invalid gate set operation syntax");
     }
     if(!registerIndices.every(index => {
-        return index > 0 && index < circuit.bandwidth;
+        return index > 0 && index <= circuit.bandwidth;
     })) return logger.error("Register index out of bounds");
     let newParameters = {};
     input = input.substring(arrayRegex.lastIndex);
