@@ -1,6 +1,6 @@
 /*
 
-	Copyright Â© 2019â€“2020, Stewart Smith. See LICENSE for details.
+	Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 */
 @charset "utf-8";
@@ -11,8 +11,8 @@
 /*
 
 	This file is in the process of being separated
-	in to â€œessential global Q.js stylesâ€ which will
-	remain here in Q.css, and â€œdocumentation-specificâ€
+	in to “essential global Q.js styles” which will
+	remain here in Q.css, and “documentation-specific”
 	styles which will be removed from here and placed
 	within the /other/documentation.css file instead.
 
@@ -319,7 +319,7 @@ svg, :root {
 
 /*
 
-	The below still need to be prefaced with â€œQ-â€
+	The below still need to be prefaced with “Q-”
 	and for the HTML pages to be updated accordingly.
 
 */
@@ -341,8 +341,6 @@ svg, :root {
 	max-width: 100%;
 	overflow-x: auto;
 	font-family: var( --Q-font-family-sans );
-	/*letter-spacing: 0.03em;*/
-	word-spacing: 0.2em;
 }
 dd .maths {
 
@@ -395,23 +393,22 @@ dd .maths {
 	vertical-align: middle;
 	position: relative;
 	align: middle;
-	margin:  1em 0.5em;
+	margin:  1em;
 	padding: 1em;
-	/*font-family: var( --Q-font-family-mono );*/
+	font-family: var( --Q-font-family-mono );
 	font-weight: 300;
 	line-height: 1em;
-	/*text-align: right;*/
-	text-align: center;
+	text-align: right;
 }
 .matrix td {
 
-	padding: 0.25em 0.5em;
+	padding: 5px 10px;
 }
 .matrix-bracket-left, .matrix-bracket-right {
 
 	position: absolute;
 	top:      0;
-	width:    0.5em;
+	width:    5px;
 	height: 100%;
 	border:   1px solid #CCC;
 }
@@ -440,7 +437,7 @@ dd .maths {
 .Q-state-vector.bra::before,
 .complex-vector.bra::before {
 
-	content: 'âŸ¨';
+	content: '⟨';
 	color: #BBB;
 }
 .Q-state-vector.bra::after,
@@ -458,7 +455,7 @@ dd .maths {
 .Q-state-vector.ket::after,
 .complex-vector.ket::after {
 
-	content: 'âŸ©';
+	content: '⟩';
 	color: #BBB;
 }
 .Q-state-vector.bra + .Q-state-vector.ket::before,
@@ -475,10 +472,11 @@ dd .maths {
 
 /*
 
-	Copyright Â© 2019â€“2020, Stewart Smith. See LICENSE for details.
+	Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 */
 @charset "utf-8";
+
 
 
 
@@ -569,12 +567,11 @@ dd .maths {
 
 
 
-
 .Q-circuit,
 .Q-circuit-palette {
 
 	position: relative;
-	width: 50%;
+	width: 100%;
 }
 .Q-circuit-palette {
 
@@ -598,7 +595,6 @@ dd .maths {
 	margin: 1rem 0 2rem 0;
 	/*border-top: 2px solid hsl( 0, 0%, 50% );*/
 }
-.Q-parameters-box,
 .Q-circuit-board-foreground {
 	
 	line-height: 3.85rem;
@@ -751,19 +747,6 @@ dd .maths {
 	grid-auto-columns: 4rem;
 	grid-auto-flow: column;
 }
-
-.Q-parameters-box {
-	
-	position: absolute;
-	display: none; 
-	z-index: 100;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: whitesmoke;
-}
-
 /*.Q-circuit-palette,*/
 .Q-circuit-board-foreground,
 .Q-circuit-board-background {
@@ -853,17 +836,8 @@ dd .maths {
 	);
 }
 
-.Q-parameter-box-exit {
-	position: relative;
-	right: 0;
-	left: 0;
-	width: 5rem;
-	height: 2.5rem;
-	background-color: whitesmoke;
-	border-radius: 0;
-}
 
-.Q-parameters-box > div,
+
 .Q-circuit-palette > div,
 .Q-circuit-clipboard > div,
 .Q-circuit-board-foreground > div {
@@ -1105,7 +1079,7 @@ dd .maths {
 			rgba( 0, 0, 0, 0.05 )
 		)*/;
 }
-.Q-parameter-box-exit .Q-circuit-palette .Q-circuit-operation:hover {
+.Q-circuit-palette .Q-circuit-operation:hover {
 
 	/*background-color: rgba( 255, 255, 255, 0.6 );*/
 	background-color: white;
@@ -1218,25 +1192,6 @@ dd .maths {
 }
 
 
-.Q-parameter-box-input-container {
-	position: relative;
-	text-align: center;
-	grid-auto-columns: 4rem;
-	grid-auto-flow: column;
-}
-
-.Q-parameter-box-input {
-	position: relative;
-	border-radius: .2rem;
-	margin-left: 10px;
-	font-family: var( --Q-font-family-mono );
-}
-
-.Q-parameter-input-label {
-	position: relative;
-	color: var( --Q-color-blue );
-	font-family: var( --Q-font-family-mono );
-}
 
 
 
@@ -1372,5 +1327,906 @@ dd .maths {
 		66%
 	);
 }
+
+
+
+/*
+
+	Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
+
+*/
+@charset "utf-8";
+
+
+
+
+
+
+
+
+
+/*
+
+	Z indices:
+
+	Clipboard   =100
+	Selected op   10
+	Operation      0
+	Shadow       -10
+	Background   -20
+
+
+
+
+
+	Circuit	
+
+	   Menu     Moments
+	  ╭───────┬───┬───┬───┬───╮
+	  │ ≡   ↘ │ 1 │ 2 │ 3 │ + │ Add moment
+	  ├───┬───┼───┼───┼───┼───╯
+	R │ 0 │|0⟩│ H │ C0│ X │ -
+	e ├───┼───┼───┼───┼───┤
+	g │ 1 │|0⟩│ I │ C1│ X │ -
+	s ├───┼───┴───┴───┴───┘
+      │ + │ -   -   -   -
+	  ╰───╯
+	    Add
+	    register
+
+
+	Circuit Palette
+
+	╭───────────────────┬───╮
+	│ H X Y Z S T π M … │ @ │
+	╰───────────────────┴───╯
+
+
+	Circuit clipboard
+
+	 ┌───────────────┐
+	▟│ ┌───┬───────┐ │
+	█│ │ H │ X#0.0 │ │
+	█│ ├───┼───────┤ │
+	█│ │ I │ X#0.1 │ │
+	█│ └───┴───────┘ │
+	█└───────────────┘
+	███████████████▛
+
+
+
+    ◢◣
+  ◢■■■■◣
+◢■■■■■■■■◣
+◥■■■■■■■■◤
+  ◥■■■■◤
+    ◥◤
+
+
+    ◢■■■■■■◤
+  ◢◤    ◢◤
+◢■■■■■■◤
+
+
+ ───────────
+  ╲ ╱  ╱  ╱
+   ╳  ╱  ╱
+  ╱ ╲╱  ╱
+ ───────
+
+
+  ─────⦢
+ ╱    ╱
+⦣─────
+
+
+*/
+
+
+
+
+
+.Q-circuit,
+.Q-circuit-palette {
+
+	position: relative;
+	width: 100%;
+}
+.Q-circuit-palette {
+
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	line-height: 0;
+}
+.Q-circuit-palette > div {
+
+	display: inline-block;
+	position: relative;
+	width:  4rem;
+	height: 4rem;
+}
+
+
+.Q-circuit {
+
+	margin: 1rem 0 2rem 0;
+	/*border-top: 2px solid hsl( 0, 0%, 50% );*/
+}
+.Q-parameters-box,
+.Q-circuit-board-foreground {
+	line-height: 3.85rem;
+	width: auto;
+}
+
+
+
+
+
+
+    /***************/
+   /*             */
+  /*   Toolbar   */
+ /*             */
+/***************/
+
+
+.Q-circuit-toolbar {
+
+	position: relative;
+	display: block;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	margin-bottom: 0.5rem;
+
+	box-sizing: border-box;
+	display: grid;
+	grid-auto-columns: 3.6rem;
+	grid-auto-rows:    3.0rem;
+	grid-auto-flow: column;
+
+}
+.Q-circuit-button {
+
+	position: relative;
+	display: inline-block;
+	/*margin: 0 0.5rem 0.5rem 0;*/
+	width:  3.6rem;
+	height: 3rem;
+/*	box-shadow: 
+		-0.1rem -0.1rem 0 rgba( 255, 255, 255, 0.8 ),
+		 0.1rem  0.1rem 0.1rem rgba( 0, 0, 0, 0.35 );*/
+
+	border-top: 1px solid hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		100%
+	);
+	border-right: 1px solid hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		90%
+	);
+	border-bottom: 1px solid hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		85%
+	);
+	border-left: 1px solid hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		97%
+	);
+	background: var( --Q-color-background );
+/*	background: 
+		var( --Q-color-background )
+		linear-gradient(
+
+			0.4turn,
+			
+			rgba( 0, 0, 0, 0.02 ),
+			rgba( 255, 255, 255, 0.1 )
+		);*/
+	color: hsl( 
+		
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		30%
+	);
+	text-shadow: 1px  1px 0 rgba( 255, 255, 255, 1 );
+	/*border-radius: 0.5rem;*/
+	/*border-radius: 100%;*/
+	line-height: 2.9rem;
+	text-align: center;
+	cursor: pointer;
+	overflow: hidden;
+	font-weight: 900;
+}
+.Q-circuit-toolbar .Q-circuit-button:first-child {
+
+	border-top-left-radius:    0.5rem;
+	border-bottom-left-radius: 0.5rem;
+}
+.Q-circuit-toolbar .Q-circuit-button:last-child {
+
+	border-top-right-radius:    0.5rem;
+	border-bottom-right-radius: 0.5rem;
+}
+.Q-circuit-locked .Q-circuit-button,
+.Q-circuit-button[Q-disabled] {
+	
+	color: hsl( 
+		
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		85%
+	);
+	cursor: not-allowed;
+}
+.Q-circuit-locked .Q-circuit-toggle-lock {
+
+	color: inherit;
+	cursor: pointer;
+}
+
+
+
+
+.Q-circuit-board-container {
+
+	position: relative;
+	margin: 0 0 2rem 0;
+	margin: 0;
+	width:  100%;
+	max-height: 60vh;
+	overflow: scroll;
+}
+.Q-circuit-board {
+
+	position: relative;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+/*.Q-circuit-palette,*/
+.Q-circuit-board-foreground,
+.Q-circuit-board-background,
+.Q-circuit-clipboard {
+
+	box-sizing: border-box;
+	display: grid;
+	grid-auto-rows:    4rem;
+	grid-auto-columns: 4rem;
+	grid-auto-flow: column;
+}
+
+.Q-parameters-box {
+	
+	position: absolute;
+	display: none; 
+	z-index: 100;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: whitesmoke;
+}
+
+/*.Q-circuit-palette,*/
+.Q-circuit-board-foreground,
+.Q-circuit-board-background {
+
+	position: relative;
+	top:  0;
+	left: 0;
+	width:  100%;
+	height: 100%;
+}
+.Q-circuit-clipboard {
+
+	position: absolute;
+	z-index: 100;
+	min-width:  4rem;
+	min-height: 4rem;
+	transform: scale( 1.05 );
+}
+.Q-circuit-clipboard, .Q-circuit-clipboard > div {
+
+	cursor: grabbing;
+}
+.Q-circuit-clipboard-danger .Q-circuit-operation {
+
+	background-color: var( --Q-color-yellow );
+}
+.Q-circuit-clipboard-destroy {
+	
+	animation-name: Q-circuit-clipboard-poof;
+	animation-fill-mode: forwards;
+	animation-duration: 0.3s;
+	animation-iteration-count: 1;
+}
+@keyframes Q-circuit-clipboard-poof {
+
+	100% {
+
+		transform: scale( 1.5 );
+		opacity: 0;
+	}
+}
+.Q-circuit-board-background {
+
+	/*
+
+	Clipboard:  100
+	Operation:    0
+	Shadow:     -10
+	Background: -20
+
+	*/
+	position: absolute;
+	z-index: -20;
+	color: rgba( 0, 0, 0, 0.2 );
+}
+.Q-circuit-board-background > div {
+
+/*	transition: 
+		background-color 0.2s,
+		color 0.2s;*/
+}
+.Q-circuit-board-background .Q-circuit-cell-highlighted {
+
+	background-color: hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		95%
+	);
+	/*transition: none;*/
+}
+
+
+
+
+.Q-circuit-register-wire {
+
+	position: absolute;
+	top: calc( 50% - 0.5px );
+	width: 100%;
+	height: 1px;
+	background-color: hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		50%
+	);
+}
+
+.Q-parameter-box-exit {
+	position: relative;
+	right: 0;
+	left: 0;
+	width: 5rem;
+	height: 2.5rem;
+	background-color: whitesmoke;
+}
+
+.Q-parameters-box > div,
+.Q-circuit-palette > div,
+.Q-circuit-clipboard > div,
+.Q-circuit-board-foreground > div {
+
+	text-align: center;
+}
+
+
+
+
+
+
+    /***************/
+   /*             */
+  /*   Headers   */
+ /*             */
+/***************/
+
+
+.Q-circuit-header {
+
+	position: sticky;
+	z-index: 2;
+	margin: 0;
+	/*background-color: var( --Q-color-background );*/
+	background-color: white;
+	color: hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		75%
+	);
+	font-family: var( --Q-font-family-mono );
+}
+.Q-circuit-input.Q-circuit-cell-highlighted,
+.Q-circuit-header.Q-circuit-cell-highlighted {
+
+	background-color: hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		95%
+	);
+	color: black;
+}
+.Q-circuit-selectall {
+
+	z-index: 3;
+	margin: 0;
+	top:  0;
+	/*left: 4rem;*/
+	/*grid-column: 2;*/
+	left: 0;
+	grid-column-start: 1;
+	grid-column-end: 3;
+	grid-row: 1;
+	cursor: se-resize;
+}
+.Q-circuit-moment-label,
+.Q-circuit-moment-add {
+
+	grid-row: 1;
+	top: 0;
+	cursor: s-resize;
+}
+.Q-circuit-register-label,
+.Q-circuit-register-add {
+
+	grid-column: 2;
+	left: 4rem;
+	cursor: e-resize;
+}
+.Q-circuit-moment-add,
+.Q-circuit-register-add {
+
+	cursor: pointer;
+}
+.Q-circuit-moment-add,
+.Q-circuit-register-add {
+
+	display: none;
+}
+.Q-circuit-selectall,
+.Q-circuit-moment-label,
+.Q-circuit-moment-add {
+
+	border-bottom: 1px solid hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		95%
+	);
+}
+.Q-circuit-selectall,
+.Q-circuit-register-label,
+.Q-circuit-register-add {
+
+	border-right: 1px solid hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		95%
+	);
+}
+.Q-circuit-input {
+
+	position: sticky;
+	z-index: 2;
+	grid-column: 1;
+	left: 0;
+	/*background-color: var( --Q-color-background );*/
+	background-color: white;
+	font-size: 1.5rem;
+	font-weight: 900;
+	font-family: var( --Q-font-family-mono );
+}
+
+
+
+
+
+
+.Q-circuit-operation-link-container {
+	
+	--Q-link-stroke: 3px;
+	--Q-link-radius: 100%;
+	
+	display: block;
+	position: relative;	
+	left:    calc( 50% - ( var( --Q-link-stroke ) / 2 ));
+	width:   50%;
+	height: 100%;
+	overflow: hidden;
+}
+.Q-circuit-operation-link-container.Q-circuit-cell-highlighted {
+
+	background-color: transparent;
+}
+.Q-circuit-operation-link {
+
+	display: block;
+	position: absolute;
+	width:  calc( var( --Q-link-stroke ) * 2 );
+	height: calc( 100% - 4rem + var( --Q-link-stroke ));
+	/*border: var( --Q-link-stroke ) solid hsl( 0, 0%, 50% );*/
+	border: var( --Q-link-stroke ) solid hsl(
+
+		var( --Q-color-background-hue ),
+		10%,
+		30%
+	);
+	
+	/*border: var( --Q-link-stroke ) solid var( --Q-color-orange );*/
+
+	transform: translate( -50%, calc( 2rem - ( var( --Q-link-stroke ) / 2 )));
+	transform-origin: center;
+}
+.Q-circuit-operation-link.Q-circuit-operation-link-curved {
+
+	width: calc( var( --Q-link-radius ) - var( --Q-link-stroke ));
+	width: 200%;
+	border-radius: 100%;
+}
+
+
+
+
+
+
+    /******************/
+   /*                */
+  /*   Operations   */
+ /*                */
+/******************/
+
+.Q-circuit-operation {
+	
+	position: relative;
+	/*--Q-operation-color-hue: var( --Q-color-green-hue );
+	--Q-operation-color-main: var( --Q-color-green );*/
+	
+	--Q-operation-color-hue:  var( --Q-color-blue-hue );
+	--Q-operation-color-main: hsl( 
+
+		var( --Q-operation-color-hue ),
+		10%, 
+		35%
+	);
+
+	--Q-operation-color-light: hsl(
+
+		var( --Q-operation-color-hue ),
+		10%,
+		50%
+	);
+	--Q-operation-color-dark: hsl(
+
+		var( --Q-operation-color-hue ),
+		10%,
+		25%
+	);
+	color: white;
+	text-shadow: -0.05rem -0.05rem 0 rgba( 0, 0, 0, 0.1 );
+	font-size:   1.5rem;
+	line-height: 2.9rem;
+	font-weight: 900;
+	cursor: grab;
+}
+.Q-circuit-locked .Q-circuit-operation {
+
+	cursor: not-allowed;
+}
+.Q-circuit-operation-tile {
+
+	position: absolute;
+	top:    0.5rem;
+	left:   0.5rem;
+	right:  0.5rem;
+	bottom: 0.5rem;
+
+	/*margin:  0.5rem;*/
+	/*padding: 0.5rem;*/
+
+	/*box-shadow: 0.1rem  0.1rem 0.2rem rgba( 0, 0, 0, 0.2 );*/
+	border-radius: 0.2rem;
+	/*
+	border-top:    0.1rem solid var( --Q-operation-color-light );
+	border-left:   0.1rem solid var( --Q-operation-color-light );
+	border-right:  0.1rem solid var( --Q-operation-color-dark );
+	border-bottom: 0.1rem solid var( --Q-operation-color-dark );
+	*/
+	background: 
+		var( --Q-operation-color-main )
+		/*linear-gradient(
+
+			0.45turn,
+			rgba( 255, 255, 255, 0.1 ),
+			rgba( 0, 0, 0, 0.05 )
+		)*/;
+}
+.Q-parameter-box-exit .Q-circuit-palette .Q-circuit-operation:hover {
+
+	/*background-color: rgba( 255, 255, 255, 0.6 );*/
+	background-color: white;
+}
+.Q-circuit-palette .Q-circuit-operation-tile {
+
+	--Q-before-rotation: 12deg;
+	--Q-before-x: 1px;
+	--Q-before-y: -2px;
+	
+	--Q-after-rotation: -7deg;
+	--Q-after-x: -2px;
+	--Q-after-y: 3px;
+	
+	box-shadow: 0.2rem 0.2rem 0.2rem rgba( 0, 0, 0, 0.2 );
+}
+.Q-circuit-palette .Q-circuit-operation-tile:before,
+.Q-circuit-palette .Q-circuit-operation-tile:after {
+
+	content: "";
+	position: absolute;
+	top:    0;
+	right:  0;
+	bottom: 0;
+	left:   0;
+	border-radius: 0.2rem;
+	/*background-color: hsl( 0, 0%, 60% );*/
+	
+	background-color: var( --Q-operation-color-dark );
+	transform: 
+		translate( var( --Q-before-x ), var( --Q-before-y ))
+		rotate( var( --Q-before-rotation ));		
+	z-index: -10;
+	/*z-index: 10;*/
+	display: block;
+	box-shadow: 0.2rem 0.2rem 0.2rem rgba( 0, 0, 0, 0.2 );
+}
+.Q-circuit-palette .Q-circuit-operation-tile:after {
+
+	transform: 		
+		translate( var( --Q-after-x ), var( --Q-after-y ))
+		rotate( var( --Q-after-rotation ));
+	box-shadow: 0.2rem 0.2rem 0.2rem rgba( 0, 0, 0, 0.2 );
+}
+.Q-circuit-operation:hover .Q-circuit-operation-tile {
+
+	color: white;
+}
+
+
+
+
+.Q-circuit-operation-hadamard .Q-circuit-operation-tile {
+
+	/*--Q-operation-color-hue:  var( --Q-color-red-hue );*/
+	/*--Q-operation-color-main: var( --Q-color-red );*/
+
+	/*--Q-operation-color-hue:  0;
+	--Q-operation-color-main: hsl( 0, 0%, 10% );*/
+
+
+/*	background: 
+		linear-gradient(
+
+			-33deg,
+			var( --Q-color-blue ) 20%,
+			#6f3c69 50%,
+			var( --Q-color-red  ) 80%
+		);*/
+}
+.Q-circuit-operation-identity .Q-circuit-operation-tile,
+.Q-circuit-operation-control .Q-circuit-operation-tile,
+.Q-circuit-operation-target .Q-circuit-operation-tile {
+
+	/*--Q-operation-color-hue:  var( --Q-color-orange-hue );*/
+	/*--Q-operation-color-main: var( --Q-color-orange );*/
+	border-radius: 100%;
+}
+.Q-circuit-operation-identity .Q-circuit-operation-tile,
+.Q-circuit-operation-control .Q-circuit-operation-tile {
+
+	top:  calc( 50% - 0.7rem );
+	left: calc( 50% - 0.7rem );
+	width:  1.4rem;
+	height: 1.4rem;
+	overflow: hidden;
+/*	--Q-operation-color-hue:  0;
+	--Q-operation-color-main: hsl( 0, 0%, 10% );*/
+}
+.Q-circuit-operation-pauli-x,
+.Q-circuit-operation-pauli-y,
+.Q-circuit-operation-pauli-z {
+
+	/*--Q-operation-color-hue:  var( --Q-color-red-hue );*/
+	/*--Q-operation-color-main: var( --Q-color-red );*/
+
+/*	--Q-operation-color-hue:  0;
+	--Q-operation-color-main: hsl( 0, 0%, 30% );*/
+}
+.Q-circuit-operation-swap .Q-circuit-operation-tile {
+
+	top:  calc( 50% - 0.55rem );
+	left: calc( 50% - 0.55rem );
+	width:  1.2rem;
+	height: 1.2rem;
+	border-radius: 0;
+	transform-origin: center;
+	transform: rotate( 45deg );
+	font-size: 0;
+}
+
+.Q-parameter-box-input-container {
+	position: relative;
+	text-align: center;
+	grid-auto-columns: 4rem;
+	grid-auto-flow: column;
+}
+
+.Q-parameter-box-input {
+	position: relative;
+	border-radius: .2rem;
+	margin-left: 10px;
+	font-family: var( --Q-font-family-mono );
+}
+
+.Q-parameter-input-label {
+	position: relative;
+	color: var( --Q-color-blue );
+	font-family: var( --Q-font-family-mono );
+}
+
+
+
+
+    /********************/
+   /*                  */
+  /*   Other states   */
+ /*                  */
+/********************/
+
+
+.Q-circuit-palette > div:hover,
+.Q-circuit-board-foreground > div:hover {
+
+	outline: 2px solid var( --Q-hyperlink-internal-color );
+	outline-offset: -2px;
+}
+.Q-circuit-palette > div:hover .Q-circuit-operation-tile {
+
+	box-shadow: none;
+}
+/*.Q-circuit-palette > div:hover,*/
+.Q-circuit-board-foreground > div:hover {
+	
+	background-color: white;
+	color: black;
+}
+
+
+
+
+
+
+.Q-circuit-clipboard > div,
+.Q-circuit-cell-selected {
+
+	background-color: white;
+}
+.Q-circuit-clipboard > div:before,
+.Q-circuit-cell-selected:before {
+
+	content: "";
+	position: absolute;
+	top:    0;
+	right:  0;
+	bottom: 0;
+	left:   0;
+	display: block;
+	z-index: -10;
+	box-shadow:
+		0 0 1rem rgba( 0, 0, 0, 0.2 ),
+		0.4rem 0.4rem 0.2rem rgba( 0, 0, 0, 0.2 );
+	outline: 1px solid hsl(
+
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		50%
+	);
+	/*outline-offset: -1px;*/
+}
+
+
+
+
+.Q-circuit-clipboard > div {
+
+	background-color: white;
+}
+.Q-circuit-clipboard > div:before {
+	
+	/*  
+
+	This was very helpful!
+	https://blog.dudak.me/2014/css-shadows-under-adjacent-elements/
+
+	*/
+	content: "";
+	position: absolute;
+	top:    0;
+	right:  0;
+	bottom: 0;
+	left:   0;
+	z-index: -10;
+	display: block;
+	box-shadow: 0.4rem 0.4rem 0.3rem rgba( 0, 0, 0, 0.2 );
+}
+
+
+
+
+
+
+
+    /***************/
+   /*             */
+  /*   Buttons   */
+ /*             */
+/***************/
+
+
+.Q-circuit-locked .Q-circuit-toggle-lock,
+.Q-circuit-locked .Q-circuit-toggle-lock:hover {
+
+	background-color: var( --Q-color-red );
+}
+.Q-circuit-toggle-lock {
+
+	z-index: 3;
+	left: 0;
+	top: 0;
+	grid-column: 1;
+	grid-row: 1;
+	cursor: pointer;
+	font-size: 1.1rem;
+	text-shadow: none;
+	font-weight: normal;
+}
+.Q-circuit-button-undo,
+.Q-circuit-button-redo {
+
+	font-size:   1.2rem;
+	line-height: 2.6rem;
+	font-weight: normal;
+}
+
+
+
+.Q-circuit p {
+
+	padding: 1rem;
+	color: hsl( 
+		
+		var( --Q-color-background-hue ),
+		var( --Q-color-background-saturation ),
+		66%
+	);
+}
+
 
 

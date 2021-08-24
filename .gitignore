@@ -1,3 +1,5 @@
 notes.txt
 .DS_Store
 node_modules
+coverage
+__test__

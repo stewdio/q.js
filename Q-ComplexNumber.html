@@ -40,20 +40,13 @@
 		<link href="assets/Q-favicon-064.png" rel="icon" type="image/png">
 		<link href="assets/Q-favicon-144.png" rel="apple-touch-icon">
 		
-		<link rel="stylesheet" href="Q/Q.css">
-		<link rel="stylesheet" href="Q/Q-Circuit-Editor.css">
+		<link rel="stylesheet" href="packages/quantum-js-vis/Q.css">
+		<link rel="stylesheet" href="packages/quantum-js-vis/Q-Circuit-Editor.css">
 		<link rel="stylesheet" href="assets/documentation.css">
 
 		<script src="https://www.googletagmanager.com/gtag/js" async></script>
 		<script src="assets/ga.js"></script>
-		<script src="Q/Q.js"></script>
-		<script src="Q/Q-ComplexNumber.js"></script>
-		<script src="Q/Q-Matrix.js"></script>
-		<script src="Q/Q-Qubit.js"></script>
-		<script src="Q/Q-Gate.js"></script>
-		<script src="Q/Q-History.js"></script>
-		<script src="Q/Q-Circuit.js"></script>
-		<script src="Q/Q-Circuit-Editor.js"></script>
+		<script src="build/bundle.js"></script>
 		<script src="assets/navigation.js"></script>
 		
 	</head>
@@ -1096,17 +1089,17 @@ elk.<a href="#this.index">index</a> === fox.<a href="#.prototype.index">index</a
 
 
 
-// console.log( '\n\nQ.ComplexNumber\n\n', Q.ComplexNumber.help(), '\n\n' )
+// console.log( '\n\nComplexNumber\n\n', ComplexNumber.help(), '\n\n' )
 
 var
-cat = new Q.ComplexNumber( 1,  2 ),
-dog = new Q.ComplexNumber( 3, -4 ),
-i   = new Q.ComplexNumber( 0,  1 )
+cat = new ComplexNumber( 1,  2 ),
+dog = new ComplexNumber( 3, -4 ),
+i   = new ComplexNumber( 0,  1 )
 
 var 
-ape = new Q.ComplexNumber(),
-bee = new Q.ComplexNumber( 1 ),
-elk = new Q.ComplexNumber( 1, 2 ),
+ape = new ComplexNumber(),
+bee = new ComplexNumber( 1 ),
+elk = new ComplexNumber( 1, 2 ),
 fox = elk.clone()//  We’re avoiding a warning here: new <a href="Q.html">Q</a>.ComplexNumber( cat ),
 
 

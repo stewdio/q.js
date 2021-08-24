@@ -425,13 +425,13 @@ Object.assign( Circuit, {
 
 		// console.log( circuit.toDiagram() )
 
-		misc.dispatchEventToGlobal(new CustomEvent( 
+		misc.dispatchCustomEventToGlobal(
 
 			'Circuit.evaluate began', { 
 
 				detail: { circuit }
 			}
-		))
+		);
 
 
 		//  Our circuit’s operations must be in the correct order
@@ -541,7 +541,7 @@ Object.assign( Circuit, {
 			const progress = operationsCompleted / operationsTotal
 
 
-			misc.dispatchEventToGlobal(new CustomEvent( 'Circuit.evaluate progressed', { detail: {
+			misc.dispatchCustomEventToGlobal('Circuit.evaluate progressed', { detail: {
 
 				circuit,
 				progress,
@@ -552,7 +552,7 @@ Object.assign( Circuit, {
 				gate: operation.gate.name,
 				state
 
-			}}))
+			}})
 
 
 			// console.log( `\n\nProgress ... ${ Math.round( operationsCompleted / operationsTotal * 100 )}%`)
@@ -591,13 +591,13 @@ Object.assign( Circuit, {
 
 
 
-		misc.dispatchEventToGlobal(new CustomEvent( 'Circuit.evaluate completed', { detail: {
+		misc.dispatchCustomEventToGlobal('Circuit.evaluate completed', { detail: {
 		// circuit.dispatchEvent( new CustomEvent( 'evaluation complete', { detail: {
 
 			circuit,
 			results: outcomes
 
-		}}))
+		}})
 
 
 
@@ -1121,6 +1121,7 @@ https://cirq.readthedocs.io/en/stable/tutorial.html
 		const header = `import boto3
 from braket.aws import AwsDevice
 from braket.circuits import Circuit
+from braket.devices import LocalSimulator
 
 my_bucket = f"amazon-braket-Your-Bucket-Name" # the name of the bucket
 my_prefix = "Your-Folder-Name" # the name of the folder in the bucket
@@ -1388,7 +1389,7 @@ print(task.result().measurement_counts)`
 
 			foundOperations.forEach( function( operation ){
 
-				misc.dispatchEventToGlobal(new CustomEvent( 
+				misc.dispatchCustomEventToGlobal(
 
 					'Circuit.clear$', { detail: { 
 
@@ -1396,7 +1397,7 @@ print(task.result().measurement_counts)`
 						momentIndex,
 						registerIndices: operation.registerIndices
 					}}
-				))
+				)
 			})
 		}
 
@@ -1545,14 +1546,14 @@ print(task.result().measurement_counts)`
 			//  Emit an event that we have set an operation
 			//  on this circuit.
 
-			misc.dispatchEventToGlobal(new CustomEvent( 
+			misc.dispatchCustomEventToGlobal(
 
 				'Circuit.set$', { detail: { 
 
 					circuit,
 					operation
 				}}
-			))
+			)
 		}
 		return circuit
 	},
@@ -1615,16 +1616,15 @@ print(task.result().measurement_counts)`
 		const original = this
 		let {
 
-			registerFirstIndex,
-			registerRange,
-			registerLastIndex,
+			qubitFirstIndex,
+			qubitRange,
+			qubitLastIndex,
 			momentFirstIndex,
 			momentRange,
 			momentLastIndex
 
 		} = this.determineRanges( options )
-
-		const copy = new Circuit( registerRange, momentRange )
+		const copy = new Circuit( qubitRange, momentRange )
 
 		original.operations
 		.filter( function( operation ){
@@ -1635,8 +1635,8 @@ print(task.result().measurement_counts)`
 
 					operation.momentIndex   >= momentFirstIndex &&
 					operation.momentIndex   <  momentLastIndex &&
-					operation.registerIndex >= registerFirstIndex && 
-					operation.registerIndex <  registerLastIndex
+					operation.registerIndex >= qubitFirstIndex && 
+					operation.registerIndex <  qubitLastIndex
 				)
 			}))
 		})			
@@ -1943,12 +1943,15 @@ Object.entries( Gate.constants ).forEach( function( entry ){
 	const 
 	gateConstantName = entry[ 0 ],
 	gate = entry[ 1 ],
-	set$ = function( momentIndex, registerIndexOrIndices ){
+	set$ = function( momentIndex, registerIndexOrIndices, parameters ){
 
-		this.set$( gate, momentIndex, registerIndexOrIndices )
+		this.set$( gate, momentIndex, registerIndexOrIndices, parameters )
 		return this
 	}
-	Circuit.prototype[ gateConstantName ] = set$
+	Circuit.prototype[ gate.name ] = set$,
+	Circuit.prototype[ gate.name.toLowerCase() ] = set$,
+	Circuit.prototype[ gate.nameCss ] = set$,
+	Circuit.prototype[ gate.nameCss.toLowerCase() ] = set$,
 	Circuit.prototype[ gate.symbol ] = set$
 	Circuit.prototype[ gate.symbol.toLowerCase() ] = set$
 })

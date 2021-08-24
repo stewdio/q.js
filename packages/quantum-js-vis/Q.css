@@ -1,6 +1,6 @@
 /*
 
-	Copyright Â© 2019â€“2020, Stewart Smith. See LICENSE for details.
+	Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 */
 @charset "utf-8";
@@ -11,8 +11,8 @@
 /*
 
 	This file is in the process of being separated
-	in to â€œessential global Q.js stylesâ€ which will
-	remain here in Q.css, and â€œdocumentation-specificâ€
+	in to “essential global Q.js styles” which will
+	remain here in Q.css, and “documentation-specific”
 	styles which will be removed from here and placed
 	within the /other/documentation.css file instead.
 
@@ -319,7 +319,7 @@ svg, :root {
 
 /*
 
-	The below still need to be prefaced with â€œQ-â€
+	The below still need to be prefaced with “Q-”
 	and for the HTML pages to be updated accordingly.
 
 */
@@ -341,8 +341,6 @@ svg, :root {
 	max-width: 100%;
 	overflow-x: auto;
 	font-family: var( --Q-font-family-sans );
-	/*letter-spacing: 0.03em;*/
-	word-spacing: 0.2em;
 }
 dd .maths {
 
@@ -395,23 +393,22 @@ dd .maths {
 	vertical-align: middle;
 	position: relative;
 	align: middle;
-	margin:  1em 0.5em;
+	margin:  1em;
 	padding: 1em;
-	/*font-family: var( --Q-font-family-mono );*/
+	font-family: var( --Q-font-family-mono );
 	font-weight: 300;
 	line-height: 1em;
-	/*text-align: right;*/
-	text-align: center;
+	text-align: right;
 }
 .matrix td {
 
-	padding: 0.25em 0.5em;
+	padding: 5px 10px;
 }
 .matrix-bracket-left, .matrix-bracket-right {
 
 	position: absolute;
 	top:      0;
-	width:    0.5em;
+	width:    5px;
 	height: 100%;
 	border:   1px solid #CCC;
 }
@@ -440,7 +437,7 @@ dd .maths {
 .Q-state-vector.bra::before,
 .complex-vector.bra::before {
 
-	content: 'âŸ¨';
+	content: '⟨';
 	color: #BBB;
 }
 .Q-state-vector.bra::after,
@@ -458,7 +455,7 @@ dd .maths {
 .Q-state-vector.ket::after,
 .complex-vector.ket::after {
 
-	content: 'âŸ©';
+	content: '⟩';
 	color: #BBB;
 }
 .Q-state-vector.bra + .Q-state-vector.ket::before,
@@ -475,10 +472,11 @@ dd .maths {
 
 /*
 
-	Copyright Â© 2019â€“2020, Stewart Smith. See LICENSE for details.
+	Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
 */
 @charset "utf-8";
+
 
 
 
@@ -569,12 +567,11 @@ dd .maths {
 
 
 
-
 .Q-circuit,
 .Q-circuit-palette {
 
 	position: relative;
-	width: 50%;
+	width: 100%;
 }
 .Q-circuit-palette {
 
@@ -598,7 +595,6 @@ dd .maths {
 	margin: 1rem 0 2rem 0;
 	/*border-top: 2px solid hsl( 0, 0%, 50% );*/
 }
-.Q-parameters-box,
 .Q-circuit-board-foreground {
 	
 	line-height: 3.85rem;
@@ -751,19 +747,6 @@ dd .maths {
 	grid-auto-columns: 4rem;
 	grid-auto-flow: column;
 }
-
-.Q-parameters-box {
-	
-	position: absolute;
-	display: none; 
-	z-index: 100;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: whitesmoke;
-}
-
 /*.Q-circuit-palette,*/
 .Q-circuit-board-foreground,
 .Q-circuit-board-background {
@@ -853,17 +836,8 @@ dd .maths {
 	);
 }
 
-.Q-parameter-box-exit {
-	position: relative;
-	right: 0;
-	left: 0;
-	width: 5rem;
-	height: 2.5rem;
-	background-color: whitesmoke;
-	border-radius: 0;
-}
 
-.Q-parameters-box > div,
+
 .Q-circuit-palette > div,
 .Q-circuit-clipboard > div,
 .Q-circuit-board-foreground > div {
@@ -1105,7 +1079,7 @@ dd .maths {
 			rgba( 0, 0, 0, 0.05 )
 		)*/;
 }
-.Q-parameter-box-exit .Q-circuit-palette .Q-circuit-operation:hover {
+.Q-circuit-palette .Q-circuit-operation:hover {
 
 	/*background-color: rgba( 255, 255, 255, 0.6 );*/
 	background-color: white;
@@ -1218,25 +1192,6 @@ dd .maths {
 }
 
 
-.Q-parameter-box-input-container {
-	position: relative;
-	text-align: center;
-	grid-auto-columns: 4rem;
-	grid-auto-flow: column;
-}
-
-.Q-parameter-box-input {
-	position: relative;
-	border-radius: .2rem;
-	margin-left: 10px;
-	font-family: var( --Q-font-family-mono );
-}
-
-.Q-parameter-input-label {
-	position: relative;
-	color: var( --Q-color-blue );
-	font-family: var( --Q-font-family-mono );
-}
 
 
 

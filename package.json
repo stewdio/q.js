@@ -4,9 +4,11 @@
   "description": "![Quantum JavaScript (Q.js)](./assets/Q-mark.svg \"Quantum JavaScript (Q.js)\")",
   "main": "Q/Q.js",
   "scripts": {
-    "test": "npm run test -ws && exit 0",
-    "lint": "eslint",
-    "prettier": "prettier --write"
+    "test": "npm run test -ws",
+    "lint": "npm run lint -ws",
+    "prettier": "npm run prettier -ws",
+    "dev": "vite",
+    "build": "npx browserify index.js > build/bundle.js && npx concat -o build/bundle.css packages/quantum-js-vis/Q.css packages/quantum-js-vis/Q-Circuit-Editor.css"
   },
   "repository": {
     "type": "git",
@@ -16,6 +18,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "browserify": "^17.0.0",
+    "concat": "^1.0.3",
     "eslint": "^7.31.0",
     "jest": "^27.0.6",
     "jsdom": "^16.6.0",
@@ -23,7 +27,8 @@
     "n": "^7.3.1",
     "prettier": "2.3.2"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "workspaces": [
     "./packages/*"
   ]
