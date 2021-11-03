@@ -1,0 +1,15 @@
+{
+  "name": "quantum-js-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "prompt-sync": "^4.2.0",
+    "readline-sync": "^1.4.10"
+  },
+  "author": "",
+  "license": "ISC"
+}

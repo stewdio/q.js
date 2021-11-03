@@ -96,7 +96,7 @@ Matrix = function () {
 Object.assign(Matrix, {
   index: 0,
   help: function () {
-    return help(this);
+    return logger.help(this);
   },
   constants: {}, //  Only holds references; an easy way to look up what constants exist.
   createConstant: function (key, value) {

@@ -1,13 +1,6 @@
-const {Q} = require('./Q/Q');
-const {Circuit} = require('./Q/Q-Circuit');
-const {Qubit} = require('./Q/Q-Qubit');
-const {Gate} = require('./Q/Q-Gate');
-const {Matrix} = require('./Q/Q-Matrix');
-const {ComplexNumber} = require('./Q/Q-ComplexNumber');
-const mathf = require('./Q/Math-Functions');
-const misc = require('./Q/Misc');
-const logger = require('./Q/Logging');
+let {logger, mathf, misc, ComplexNumber, Matrix, Gate, Qubit, Circuit, History, Q} = require('quantum-js-util');
+let {Editor, BlochSphere, braket} = require('quantum-js-vis');
+global.misc = misc;
+global.logger = logger;
+global.mathf = mathf;
 
-console.log("Howdy! Welcome to Q.js!");
-
-module.exports = {Q, Circuit, Qubit, Gate, Matrix, ComplexNumber, mathf, misc, logger};

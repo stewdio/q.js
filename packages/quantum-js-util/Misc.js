@@ -1,18 +1,23 @@
 const logger = require('./Logging');
 
-const COLORS = [];
-const ANIMALS = [];
 const constants = {};
-
-function dispatchEventToGlobal(event) {
-  if(typeof window != undefined) {
-    window.dispatchEvent(event);
+function dispatchCustomEventToGlobal(event_name, detail, terminate_on_error=false, silent=true) {
+  try {
+    const event = new CustomEvent(event_name, detail);
+    if(typeof window != undefined) {
+      window.dispatchEvent(event);
+    }
+    else {
+     //if window does exist, global == window is true. So maybe we can just do global.dispatchEvent instead of this wrapper?
+     global.dispatchEvent(event);
+     if(!silent) console.log(event);
+    }
+  } catch(e) {
+    //When running in node, CustomEvent and documents don't exist. We can emulate using a JSDOM package
+    if(!silent) logger.error("Could not dispatch custom event.");
+    if(terminate_on_error) process.exit();
   }
-  else {
-   //if window does exist, global == window is true. So maybe we can just do global.dispatchEvent instead of this wrapper?
-   global.dispatchEvent(event);
-   console.log(event);
-  }
+  
 }
 
 function createConstant(key, value) {
@@ -60,7 +65,6 @@ function shuffleNames$() {
 
 function getRandomName$() {
   if (shuffledNames.length === 0) shuffleNames$();
-
   const pair = shuffledNames[namesIndex],
     name = COLORS[pair[0]] + " " + ANIMALS[pair[1]];
 
@@ -397,4 +401,4 @@ createConstants(
   ]
 );
 
-module.exports = { createConstant, createConstants, getRandomName$, hueToColorName, colorIndexToHue, dispatchEventToGlobal, constants };
+module.exports = { createConstant, createConstants, getRandomName$, hueToColorName, colorIndexToHue, dispatchCustomEventToGlobal, constants };
