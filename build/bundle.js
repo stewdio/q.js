@@ -1872,14 +1872,14 @@ https://cirq.readthedocs.io/en/stable/tutorial.html
 	},
 	toAmazonBraket: function(){
 		let isValidBraketCircuit = true
-		const header = `import boto3
-from braket.aws import AwsDevice
-from braket.circuits import Circuit
+		const header = `from braket.circuits import Circuit
+from braket.devices import LocalSimulator
 import numpy as np
 
-my_bucket = f"amazon-braket-Your-Bucket-Name" # the name of the bucket
-my_prefix = "Your-Folder-Name" # the name of the folder in the bucket
-s3_folder = (my_bucket, my_prefix)\n
+'''Uncomment following 2 lines to set up and use the on-demand simulator SV1 instead of LocalSimualtor'''
+#from braket.aws import AwsDevice
+#device = AwsDevice("arn:aws:braket:::device/quantum-simulator/amazon/sv1")
+
 device = LocalSimulator()\n\n`
 //TODO (ltnln): Syntax is different for simulators and actual quantum computers. Should there be a default? Should there be a way to change?
 //vs an actual quantum computer? May not be necessary. 
