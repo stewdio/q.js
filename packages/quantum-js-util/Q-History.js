@@ -1,7 +1,7 @@
 
 //  Copyright © 2019–2020, Stewart Smith. See LICENSE for details.
 
-const {dispatchEventToGlobal} = require('./Misc');
+const {dispatchCustomEventToGlobal} = require('./Misc');
 
 
 History = function( instance ){
@@ -26,31 +26,27 @@ Object.assign( History.prototype, {
 		const instance = this.instance
 		if( this.index > 0 ){
 
-			dispatchEventToGlobal(new CustomEvent(
-
+			dispatchCustomEventToGlobal(
 				'History undo is capable', { detail: { instance }}
-			));
+			);
 		}
 		else {
 
-			dispatchEventToGlobal(new CustomEvent(
-
+			dispatchCustomEventToGlobal(
 				'History undo is depleted', { detail: { instance }}
-			))
+			)
 		}
 		if( this.index + 1 < this.entries.length ){
 
-			dispatchEventToGlobal(new CustomEvent(
-
+			dispatchCustomEventToGlobal(
 				'History redo is capable', { detail: { instance }}
-			))
+			)
 		}
 		else {
 
-			dispatchEventToGlobal(new CustomEvent(
-
+			dispatchCustomEventToGlobal(
 				'History redo is depleted', { detail: { instance }}
-			))
+			)
 		}
 		return this
 	},

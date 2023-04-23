@@ -425,13 +425,13 @@ Object.assign( Circuit, {
 
 		// console.log( circuit.toDiagram() )
 
-		misc.dispatchEventToGlobal(new CustomEvent( 
+		misc.dispatchCustomEventToGlobal(
 
 			'Circuit.evaluate began', { 
 
 				detail: { circuit }
 			}
-		))
+		);
 
 
 		//  Our circuit’s operations must be in the correct order
@@ -541,7 +541,7 @@ Object.assign( Circuit, {
 			const progress = operationsCompleted / operationsTotal
 
 
-			misc.dispatchEventToGlobal(new CustomEvent( 'Circuit.evaluate progressed', { detail: {
+			misc.dispatchCustomEventToGlobal('Circuit.evaluate progressed', { detail: {
 
 				circuit,
 				progress,
@@ -552,7 +552,7 @@ Object.assign( Circuit, {
 				gate: operation.gate.name,
 				state
 
-			}}))
+			}})
 
 
 			// console.log( `\n\nProgress ... ${ Math.round( operationsCompleted / operationsTotal * 100 )}%`)
@@ -591,13 +591,13 @@ Object.assign( Circuit, {
 
 
 
-		misc.dispatchEventToGlobal(new CustomEvent( 'Circuit.evaluate completed', { detail: {
+		misc.dispatchCustomEventToGlobal('Circuit.evaluate completed', { detail: {
 		// circuit.dispatchEvent( new CustomEvent( 'evaluation complete', { detail: {
 
 			circuit,
 			results: outcomes
 
-		}}))
+		}})
 
 
 
@@ -1121,6 +1121,7 @@ https://cirq.readthedocs.io/en/stable/tutorial.html
 		const header = `import boto3
 from braket.aws import AwsDevice
 from braket.circuits import Circuit
+import numpy as np
 
 my_bucket = f"amazon-braket-Your-Bucket-Name" # the name of the bucket
 my_prefix = "Your-Folder-Name" # the name of the folder in the bucket
@@ -1210,7 +1211,7 @@ device = LocalSimulator()\n\n`
 		variables += '\n'
 		if( this.operations.length === 0 ) circuit +=  '.i(0)'//  Quick fix to avoid an error here!
 
-		const footer = `\n\ntask = device.run(qjs_circuit, s3_folder, shots=100)
+		const footer = `\n\ntask = device.run(qjs_circuit, shots=100)
 print(task.result().measurement_counts)`
 		return isValidBraketCircuit ? header + variables + circuit + footer : `###This circuit is not representable as a Braket circuit!###`
 	},
@@ -1388,7 +1389,7 @@ print(task.result().measurement_counts)`
 
 			foundOperations.forEach( function( operation ){
 
-				misc.dispatchEventToGlobal(new CustomEvent( 
+				misc.dispatchCustomEventToGlobal(
 
 					'Circuit.clear$', { detail: { 
 
@@ -1396,7 +1397,7 @@ print(task.result().measurement_counts)`
 						momentIndex,
 						registerIndices: operation.registerIndices
 					}}
-				))
+				)
 			})
 		}
 
@@ -1545,14 +1546,14 @@ print(task.result().measurement_counts)`
 			//  Emit an event that we have set an operation
 			//  on this circuit.
 
-			misc.dispatchEventToGlobal(new CustomEvent( 
+			misc.dispatchCustomEventToGlobal(
 
 				'Circuit.set$', { detail: { 
 
 					circuit,
 					operation
 				}}
-			))
+			)
 		}
 		return circuit
 	},
